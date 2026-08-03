@@ -111,7 +111,7 @@
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-V3-0324 Release"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
