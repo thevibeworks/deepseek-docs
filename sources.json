@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-02",
+  "description": "DeepSeek content source registry. Discovered via robots.txt/sitemap/llms.txt probing.",
+  "site": {
+    "base_url": "https://api-docs.deepseek.com",
+    "generator": "Docusaurus v3.1.0",
+    "locales": {
+      "en": "",
+      "zh-cn": "/zh-cn"
+    }
+  },
+  "domains": {
+    "api-docs.deepseek.com": {
+      "robots": false,
+      "sitemap": true,
+      "llms_txt": false,
+      "md_variants": false,
+      "notes": "API docs, Docusaurus SSR. No llms.txt and no .md variants (unknown paths fall through to the SPA shell with HTTP 200) -- pages are mirrored by converting the server-rendered HTML article body to markdown. Sitemap per locale: /sitemap.xml (en), /zh-cn/sitemap.xml (zh-cn), 63 pages each."
+    },
+    "platform.deepseek.com": {
+      "notes": "API console (login-gated), not mirrorable"
+    },
+    "www.deepseek.com": {
+      "notes": "Product landing; not part of this mirror"
+    }
+  },
+  "sources": [
+    {
+      "name": "api-docs-en",
+      "type": "sitemap-html",
+      "sitemap": "https://api-docs.deepseek.com/sitemap.xml",
+      "output": "content/en/",
+      "pages": 63,
+      "enabled": true,
+      "notes": "English docs: quick start, API reference (OpenAI + Anthropic + Responses formats), guides, samples, agent integrations, news"
+    },
+    {
+      "name": "api-docs-zh-cn",
+      "type": "sitemap-html",
+      "sitemap": "https://api-docs.deepseek.com/zh-cn/sitemap.xml",
+      "output": "content/zh-cn/",
+      "pages": 63,
+      "enabled": true,
+      "notes": "Chinese mirror of the same pages, identical path layout"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+# DeepSeek API Docs
+
+> Unofficial markdown mirror of https://api-docs.deepseek.com/ -- the
+> DeepSeek API documentation (OpenAI/Anthropic-compatible chat, reasoning,
+> tool calls, pricing, agent integrations). English pages listed below;
+> a Chinese mirror lives in content/zh-cn/ with identical paths.
+
+Each file carries frontmatter with its canonical `source:` URL.
+
+## Getting Started
+
+- [Your First API Call](content/en/index.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
+- [Error Codes](content/en/quick_start/error_codes.md): When calling DeepSeek API, you may encounter errors. Here list the causes and solutions.
+- [Models & Pricing](content/en/quick_start/pricing.md): The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a pun...
+- [Rate Limit & Isolation](content/en/quick_start/rate_limit.md): Concurrency Limit
+- [Token & Token Usage](content/en/quick_start/token_usage.md): Tokens are the basic units used by models to represent natural language text, and also the units we use for billing. They can be intuitively understood as ...
+
+## API Reference
+
+- [Chat Completions API](content/en/api/create-chat-completion.md): Creates a model response for the given chat conversation.
+- [FIM Completion API (Beta)](content/en/api/create-completion.md): FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature.
+- [Responses API](content/en/api/create-response.md): Creates a model response in the OpenAI Responses API format.
+- [DeepSeek API](content/en/api/deepseek-api.md): The DeepSeek API. To use the DeepSeek API, please [create an API key first](https://platform.deepseek.com/api_keys).
+- [Get User Balance](content/en/api/get-user-balance.md): Get user current balance
+- [Lists Models](content/en/api/list-models.md): Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](/quick_sta...
+
+## Guides
+
+- [Using the Anthropic API](content/en/guides/anthropic_api.md): To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deeps...
+- [Chat Prefix Completion (Beta)](content/en/guides/chat_prefix_completion.md): The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the mes...
+- [Integrate with AI Tools](content/en/guides/coding_agents.md): This guide shows how to integrate DeepSeek models with popular AI coding tools, including Claude Code, OpenCode, and OpenClaw.
+- [FIM Completion (Beta)](content/en/guides/fim_completion.md): In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is comm...
+- [JSON Output](content/en/guides/json_mode.md): In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing.
+- [Context Caching](content/en/guides/kv_cache.md): The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code.
+- [Multi-round Conversation](content/en/guides/multi_round_chat.md): This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations.
+- [Using the Responses API](content/en/guides/responses_api.md): The Responses API currently only supports the deepseek-v4-flash model, and does not yet support the deepseek-v4-pro model. We will add support for the deep...
+- [Thinking Mode](content/en/guides/thinking_mode.md): The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the ...
+- [Tool Calls](content/en/guides/tool_calls.md): Tool Calls allows the model to call external tools to enhance its capabilities.
+
+## API Samples
+
+- [chat_curl](content/en/api_samples/chat_curl.md)
+- [chat_nodejs](content/en/api_samples/chat_nodejs.md)
+- [chat_python](content/en/api_samples/chat_python.md)
+- [thinking_mode_api_example_non_streaming](content/en/api_samples/thinking_mode_api_example_non_streaming.md)
+- [thinking_mode_api_example_streaming](content/en/api_samples/thinking_mode_api_example_streaming.md)
+- [thinking_mode_api_example_tool_call](content/en/api_samples/thinking_mode_api_example_tool_call.md)
+- [thinking_mode_api_example_tool_call_output](content/en/api_samples/thinking_mode_api_example_tool_call_output.md)
+
+## Agent Integrations
+
+- [Integrate with AstrBot](content/en/quick_start/agent_integrations/astrbot.md): AstrBot is an open-source all-in-one agent assistant that integrates with mainstream messaging platforms such as QQ, WeChat, Feishu, and Telegram, and can ...
+- [Integrate with Claude Code](content/en/quick_start/agent_integrations/claude_code.md): Claude Code is an AI coding assistant that runs in the terminal.
+- [Integrate with Codex](content/en/quick_start/agent_integrations/codex.md): Currently, only deepseek-v4-flash supports integrating with Codex. deepseek-v4-pro is expected to support Codex in early August 2026.
+- [Integrate with GitHub Copilot CLI](content/en/quick_start/agent_integrations/copilot_cli.md): Configure GitHub Copilot CLI to use DeepSeek V4 models via BYOK (Bring Your Own Key) with the Anthropic-compatible endpoint.
+- [Integrate with Crush](content/en/quick_start/agent_integrations/crush.md): Crush is a glamorous open-source AI coding agent that runs in your terminal, built by Charm. It supports multi-model switching, LSP integration, MCP server...
+- [Integrate with Deep Code](content/en/quick_start/agent_integrations/deepcode.md): Deep Code is an open-source terminal AI coding assistant for the DeepSeek-V4 model, supporting deep thinking, reasoning effort control, and Agent Skills.
+- [Integrate with GitHub Copilot](content/en/quick_start/agent_integrations/github_copilot.md): DeepSeek V4 for Copilot Chat is a VS Code extension that adds DeepSeek V4 Pro & Flash directly into the GitHub Copilot Chat model picker. You keep Copilot'...
+- [Integrate with Hermes Agent](content/en/quick_start/agent_integrations/hermes.md): Hermes is a self-improving AI agent built by Nous Research. It includes a built-in learning loop: it creates skills from experience, improves them during u...
+- [Integrate with Kilo Code](content/en/quick_start/agent_integrations/kilo_code.md): Kilo Code is an AI coding assistant available as a CLI and editor extension.
+- [Integrate with Langcli](content/en/quick_start/agent_integrations/langcli.md): Langcli is an AI coding assistant that supports CLI and Zed ACP Agent.
+- [Integrating nanobot](content/en/quick_start/agent_integrations/nanobot.md): nanobot is a lightweight AI agent that supports integration with popular chat tools.
+- [Using DeepSeek with Oh My Pi](content/en/quick_start/agent_integrations/oh_my_pi.md): Oh My Pi is a terminal AI coding agent. As of v14.5 it ships DeepSeek V4 model entries, but the built-in compat is incomplete — a custom models.yml is stil...
+- [Integrate with OpenClaw](content/en/quick_start/agent_integrations/openclaw.md): OpenClaw is an open-source personal AI assistant that can connect to popular chat tools like Feishu and WeChat, and can be extended through Skills.
+- [Integrate with OpenCode](content/en/quick_start/agent_integrations/opencode.md): OpenCode is an open-source AI coding assistant available in terminal, web, and other forms.
+- [Integrate with Pi](content/en/quick_start/agent_integrations/pi_mono.md): Pi (pi-mono) is a minimal, aggressively extensible terminal coding harness. It adapts to your workflows through TypeScript extensions, skills, prompt templ...
+- [Integrate with Reasonix](content/en/quick_start/agent_integrations/reasonix.md): Reasonix is a DeepSeek-native coding agent that runs in the terminal. It's designed around DeepSeek's API directly — cache-first loop, flash-first cost con...
+- [Integrate with WorkBuddy/CodeBuddy](content/en/quick_start/agent_integrations/workbuddy.md): WorkBuddy/CodeBuddy is an AI agent and coding assistant. It supports custom models through local model configuration files, and DeepSeek V4 can be connecte...
+
+## News & Updates
+
+- [DeepSeek API Upgrade](content/en/news/news0725.md): Now Supporting Chat Prefix Completion, FIM, Function Calling and JSON Output
+- [DeepSeek API introduces Context Caching on Disk, cutting prices by an order of magnitude](content/en/news/news0802.md): In large language model API usage, a significant portion of user inputs tends to be repetitive. For instance, user prompts often include repeated reference...
+- [DeepSeek-V2.5: A New Open-Source Model Combining General and Coding Capabilities](content/en/news/news0905.md): We’ve officially launched DeepSeek-V2.5 – a powerful combination of DeepSeek-V2-0628 and DeepSeek-Coder-V2-0724! This new version not only retains the gene...
+- [🚀 DeepSeek-R1-Lite-Preview is now live: unleashing supercharged reasoning power!](content/en/news/news1120.md): 🔍 o1-preview-level performance on AIME & MATH benchmarks.
+- [🚀 DeepSeek V2.5: The Grand Finale 🎉](content/en/news/news1210.md): 🌐 Internet Search is now live on the web! Visit https://chat.deepseek.com/ and toggle “Internet Search” for real-time answers. 🕒
+- [Your First API Call](content/en/news/news1226.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
+- [Introducing DeepSeek App](content/en/news/news250115.md): * 💡 Powered by world-class DeepSeek-V3
+- [DeepSeek-R1 Release](content/en/news/news250120.md): * ⚡ Performance on par with OpenAI-o1
+- [Your First API Call](content/en/news/news250325.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
+- [DeepSeek-R1-0528 Release](content/en/news/news250528.md): 🚀 DeepSeek-R1-0528 is here!
+- [DeepSeek-V3.1 Release](content/en/news/news250821.md): Introducing DeepSeek-V3.1: our first step toward the agent era! 🚀
+- [DeepSeek-V3.1-Terminus](content/en/news/news250922.md): 🚀 DeepSeek-V3.1 → DeepSeek-V3.1-Terminus
+- [Introducing DeepSeek-V3.2-Exp](content/en/news/news250929.md): 🚀 Introducing DeepSeek-V3.2-Exp — our latest experimental model!
+- [DeepSeek-V3.2 Release](content/en/news/news251201.md): 🚀 Launching DeepSeek-V3.2 & DeepSeek-V3.2-Speciale — Reasoning-first models built for agents!
+- [DeepSeek V4 Preview Release](content/en/news/news260424.md): 🚀 DeepSeek-V4 Preview is officially live & open-sourced! Welcome to the era of cost-effective 1M context length.
+- [Change Log](content/en/updates.md): Date: 2026-07-31
+
+## Other
+
+- [FAQ](content/en/faq.md): If you are not redirected automatically, please visit FAQ.
+- [Prompt Library (提示库)](content/en/prompt-library.md): DeepSeek prompt library: ready-to-use prompt examples with sample outputs.
