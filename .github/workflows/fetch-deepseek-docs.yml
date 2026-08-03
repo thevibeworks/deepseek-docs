@@ -5,8 +5,13 @@ on:
     - cron: "17 */6 * * *"   # every 6 hours
   workflow_dispatch:
 
+concurrency:
+  group: fetch
+  cancel-in-progress: false
+
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   fetch:
@@ -19,14 +24,124 @@ jobs:
       - name: Fetch docs
         run: uv run scripts/fetcher.py
 
-      - name: Commit changes
+      - name: Detect changes
+        id: diff
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A content llms.txt llms-full.txt
-          if git diff --cached --quiet; then
-            echo "no changes"
-            exit 0
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Mirror is up to date."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git status --short | head -30
           fi
-          git commit -m "docs: sync from api-docs.deepseek.com ($(date -u +%F))"
-          git push
+
+      # The agent only DECIDES: it reads the diff and writes gitignored
+      # .decision/ files. It runs with permissions skipped, which is safe
+      # because its blast radius is nil -- every side effect (commit, push,
+      # PR) lives in the deterministic Publish step below. Runs Claude Code
+      # on the DeepSeek API via the Anthropic-compatible endpoint.
+      - name: Agent triage (deepseek-v4-flash)
+        if: steps.diff.outputs.changed == 'true'
+        uses: anthropics/claude-code-action@v1.0.168
+        env:
+          ANTHROPIC_BASE_URL: https://api.deepseek.com/anthropic
+          ANTHROPIC_MODEL: deepseek-v4-flash
+          ANTHROPIC_DEFAULT_OPUS_MODEL: deepseek-v4-flash
+          ANTHROPIC_DEFAULT_SONNET_MODEL: deepseek-v4-flash
+          ANTHROPIC_DEFAULT_HAIKU_MODEL: deepseek-v4-flash
+          ANTHROPIC_SMALL_FAST_MODEL: deepseek-v4-flash
+          CLAUDE_CODE_SUBAGENT_MODEL: deepseek-v4-flash
+        with:
+          anthropic_api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          show_full_output: true
+          claude_args: |
+            --model deepseek-v4-flash
+            --dangerously-skip-permissions
+          prompt: |
+            You are the docs editor for this DeepSeek API docs mirror. The
+            fetcher already ran; the working tree holds whatever changed
+            upstream. You DECIDE what the changes mean. You do NOT commit,
+            push, or open PRs -- a deterministic publish step consumes the
+            decision files you write.
+
+            ## Workflow
+
+            1. `git status` and `git diff` to understand what changed.
+            2. Classify the change and write the decision files.
+
+            ## Signal criteria
+
+            **high** (humans should look -- a PR stays open for review):
+            - New or changed model versions, pricing, context/output limits
+              (quick_start/pricing.md)
+            - New API endpoints, parameters, or breaking schema changes (api/)
+            - New guides or new model releases (guides/, news/)
+            - Changed base URLs, auth, or rate-limit policy
+
+            **minor** (archive freshness -- committed straight to main):
+            - Wording, typos, formatting, link fixes
+            - Metadata or index churn (.metadata.json, llms.txt, llms-full.txt)
+            - zh-cn-only changes that mirror an already-known en change
+
+            ## Decision files (your only output)
+
+            Write into `.decision/` (gitignored):
+            - `.decision/signal` -- exactly `high` or `minor`
+            - `.decision/title` -- one line, no "docs:" prefix, name the
+              actual change (e.g. `deepseek-v4-pro effort mapping updated`)
+            - `.decision/body.md` -- short report: one paragraph on WHY it
+              matters, then a bullet list of highlights, most interesting
+              first.
+
+            Focus on why changes matter to developers using the DeepSeek
+            API, not on file statistics.
+
+      # Deterministic publisher: all side effects in plain bash.
+      - name: Publish
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          D=.decision
+          SIGNAL=$(tr -d '[:space:]' < "$D/signal" 2>/dev/null || echo "")
+          TITLE=$(head -1 "$D/title" 2>/dev/null || echo "")
+          if [ -z "$SIGNAL" ] || [ -z "$TITLE" ]; then
+            echo "::warning::Agent left no usable decision; committing generic sync so the mirror stays fresh"
+            SIGNAL=minor
+            TITLE="sync from api-docs.deepseek.com ($(date -u +%F))"
+            printf 'Automated sync; agent triage unavailable this run.\n' > /tmp/body.md
+          else
+            cp "$D/body.md" /tmp/body.md 2>/dev/null || printf '%s\n' "$TITLE" > /tmp/body.md
+          fi
+          case "$SIGNAL" in high|minor) ;; *)
+            echo "::warning::Invalid signal '$SIGNAL', downgrading to minor"; SIGNAL=minor;;
+          esac
+
+          if [ "$SIGNAL" = "minor" ]; then
+            git add -A
+            git commit -m "docs: ${TITLE}" -m "$(cat /tmp/body.md)"
+            git push
+            echo "Minor change committed to main."
+          else
+            BRANCH="docs/sync-$(date -u +%Y%m%d-%H%M)"
+            git checkout -b "$BRANCH"
+            git add -A
+            git commit -m "docs: ${TITLE}" -m "$(cat /tmp/body.md)"
+            git push -u origin "$BRANCH"
+            PR_URL=$(gh pr create --title "docs: ${TITLE}" --body-file /tmp/body.md)
+            echo "High-signal change, PR opened: $PR_URL"
+          fi
+
+      # A dirty tree after publish means something silently failed.
+      - name: Verify outcome
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Uncommitted changes remain after publish"
+            git status --short | head -20
+            exit 1
+          fi

@@ -223,6 +223,17 @@ def render_page(body: str, meta: dict, url: str) -> str:
 
 # ---------------------------------------------------------------- fetch loop
 
+
+def write_if_changed(out: Path, text: str) -> bool:
+    """Skip the write when only the fetched: date differs -- keeps re-fetch
+    diffs (and the sync automation reading them) free of timestamp churn."""
+    strip = lambda s: re.sub(r"^fetched: .*$", "", s, flags=re.M)  # noqa: E731
+    if out.exists() and strip(out.read_text()) == strip(text):
+        return False
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(text)
+    return True
+
 # The prompt-library page is client-rendered from a static JSON (the only
 # such page on the site); everything else is SSR HTML.
 PROMPTS_JSON = "/zh-cn/data/prompts.json"
@@ -254,12 +265,11 @@ def render_prompt_library(prompts: list[dict], url: str) -> str:
 async def fetch_prompt_library(session, url: str, out: Path, results: dict):
     try:
         data = json.loads(await fetch_text(session, SITE + PROMPTS_JSON))
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(render_prompt_library(data, url))
+        changed = write_if_changed(out, render_prompt_library(data, url))
         results[str(out.relative_to(ROOT))] = {
             "url": url, "data": SITE + PROMPTS_JSON,
-            "title": "Prompt Library (提示库)"}
-        print(f"  ok  {out.relative_to(ROOT)} (from {PROMPTS_JSON})")
+            "title": "Prompt Library (提示库)", "changed": changed}
+        print(f"  {'ok ' if changed else '== '} {out.relative_to(ROOT)} (from {PROMPTS_JSON})")
     except Exception as e:  # noqa: BLE001
         results[str(out.relative_to(ROOT))] = {"url": url, "error": str(e)}
         print(f"  ERR {url}: {e}", file=sys.stderr)
@@ -276,11 +286,10 @@ async def fetch_page(session, sem, url: str, out: Path, results: dict,
         try:
             html = await fetch_text(session, url)
             body, meta = html_to_markdown(html, url, locale, rel, page_paths)
-            out.parent.mkdir(parents=True, exist_ok=True)
-            out.write_text(render_page(body, meta, url))
+            changed = write_if_changed(out, render_page(body, meta, url))
             results[str(out.relative_to(ROOT))] = {
-                "url": url, "title": meta["title"]}
-            print(f"  ok  {out.relative_to(ROOT)}")
+                "url": url, "title": meta["title"], "changed": changed}
+            print(f"  {'ok ' if changed else '== '} {out.relative_to(ROOT)}")
         except Exception as e:  # noqa: BLE001 - report and continue
             results[str(out.relative_to(ROOT))] = {"url": url, "error": str(e)}
             print(f"  ERR {url}: {e}", file=sys.stderr)
@@ -404,8 +413,12 @@ def write_manifest(results: dict) -> None:
     manifest = {}
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text())
-    manifest.setdefault("files", {}).update(results)
-    manifest["updated"] = date.today().isoformat()
+    any_changed = any(r.get("changed") or "error" in r for r in results.values())
+    manifest.setdefault("files", {}).update(
+        {k: {kk: vv for kk, vv in v.items() if kk != "changed"}
+         for k, v in results.items()})
+    if any_changed or "updated" not in manifest:
+        manifest["updated"] = date.today().isoformat()
     manifest["site"] = SITE
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
 
