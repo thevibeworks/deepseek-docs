@@ -74,7 +74,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [DeepSeek-V2.5: A New Open-Source Model Combining General and Coding Capabilities](content/en/news/news0905.md): We’ve officially launched DeepSeek-V2.5 – a powerful combination of DeepSeek-V2-0628 and DeepSeek-Coder-V2-0724! This new version not only retains the gene...
 - [🚀 DeepSeek-R1-Lite-Preview is now live: unleashing supercharged reasoning power!](content/en/news/news1120.md): 🔍 o1-preview-level performance on AIME & MATH benchmarks.
 - [🚀 DeepSeek V2.5: The Grand Finale 🎉](content/en/news/news1210.md): 🌐 Internet Search is now live on the web! Visit https://chat.deepseek.com/ and toggle “Internet Search” for real-time answers. 🕒
-- [Your First API Call](content/en/news/news1226.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
+- [🚀 Introducing DeepSeek-V3](content/en/news/news1226.md): Biggest leap forward yet
 - [Introducing DeepSeek App](content/en/news/news250115.md): * 💡 Powered by world-class DeepSeek-V3
 - [DeepSeek-R1 Release](content/en/news/news250120.md): * ⚡ Performance on par with OpenAI-o1
 - [DeepSeek-V3-0324 Release](content/en/news/news250325.md): * 🔹 Major boost in reasoning performance

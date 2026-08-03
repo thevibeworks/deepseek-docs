@@ -107,7 +107,8 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "title": "Your First API Call"
+      "title": "🚀 Introducing DeepSeek-V3",
+      "note": "reconstructed from JS chunk; upstream EN page serves SPA fallback"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",

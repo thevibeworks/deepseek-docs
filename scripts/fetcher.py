@@ -78,6 +78,10 @@ def url_to_relpath(url: str, locale: str) -> str:
 
 # ---------------------------------------------------------------- conversion
 
+
+class FallbackPageError(ValueError):
+    """Server returned the SPA shell instead of the requested page."""
+
 LANG_ALIASES = {"jsx": "jsx", "tsx": "tsx", "bash": "bash", "shell": "bash"}
 
 
@@ -191,6 +195,17 @@ def html_to_markdown(html: str, url: str, locale: str, self_rel: str,
     desc_el = soup.select_one('meta[name="description"]')
     description = desc_el["content"].strip() if desc_el and desc_el.get("content") else ""
 
+    # The server answers unknown/hiccuped paths with HTTP 200 and the SPA
+    # shell carrying the homepage article; without this guard those save as
+    # silent homepage duplicates (bit us on two news pages, 2026-08-02).
+    canon = soup.select_one('link[rel="canonical"]')
+    if canon and canon.get("href"):
+        canon_path = urlparse(canon["href"]).path.rstrip("/") or "/"
+        req_path = urlparse(url).path.rstrip("/") or "/"
+        if canon_path != req_path:
+            raise FallbackPageError(
+                f"served fallback shell for {url} (canonical: {canon['href']})")
+
     article = (soup.select_one("article div.theme-doc-markdown")
                or soup.select_one("article")
                or soup.select_one("main"))
@@ -284,8 +299,16 @@ async def fetch_page(session, sem, url: str, out: Path, results: dict,
         return
     async with sem:
         try:
-            html = await fetch_text(session, url)
-            body, meta = html_to_markdown(html, url, locale, rel, page_paths)
+            for attempt in range(3):
+                html = await fetch_text(session, url)
+                try:
+                    body, meta = html_to_markdown(
+                        html, url, locale, rel, page_paths)
+                    break
+                except FallbackPageError:
+                    if attempt == 2:
+                        raise
+                    await asyncio.sleep(2.0 * (attempt + 1))
             changed = write_if_changed(out, render_page(body, meta, url))
             results[str(out.relative_to(ROOT))] = {
                 "url": url, "title": meta["title"], "changed": changed}
@@ -413,7 +436,7 @@ def write_manifest(results: dict) -> None:
     manifest = {}
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text())
-    any_changed = any(r.get("changed") or "error" in r for r in results.values())
+    any_changed = any(r.get("changed") for r in results.values())
     manifest.setdefault("files", {}).update(
         {k: {kk: vv for kk, vv in v.items() if kk != "changed"}
          for k, v in results.items()})
