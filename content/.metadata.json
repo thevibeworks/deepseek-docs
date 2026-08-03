@@ -107,11 +107,11 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)"
+      "title": "🚀 Introducing DeepSeek-V3"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "title": "DeepSeek-V3-0324 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
@@ -155,7 +155,7 @@
     },
     "content/en/news/news251201.md": {
       "url": "https://api-docs.deepseek.com/news/news251201",
-      "title": "DeepSeek-V3.2 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news251201 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news260424.md": {
       "url": "https://api-docs.deepseek.com/news/news260424",
