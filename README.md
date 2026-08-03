@@ -65,6 +65,17 @@ server-rendered HTML article body to markdown locally. The prompt library is
 the one client-rendered page; its data is fetched from the site's static
 `prompts.json` instead.
 
+## Automation
+
+[`fetch-deepseek-docs.yml`](.github/workflows/fetch-deepseek-docs.yml)
+runs every 6 hours: fetch, then hand the diff to Claude Code running on
+the **DeepSeek API itself** (`deepseek-v4-flash` via the
+Anthropic-compatible endpoint, `anthropic_api_key` = a `DEEPSEEK_API_KEY`
+repo secret). The agent only classifies the change and writes decision
+files; a deterministic bash step publishes -- minor changes commit
+straight to main, high-signal changes (new models, pricing, API schema)
+open a PR for human review. DeepSeek docs, kept fresh by DeepSeek.
+
 ## Disclaimer
 
 Unofficial mirror for educational and development purposes. Documentation
