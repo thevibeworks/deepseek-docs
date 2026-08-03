@@ -77,7 +77,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Your First API Call](content/en/news/news1226.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
 - [Introducing DeepSeek App](content/en/news/news250115.md): * 💡 Powered by world-class DeepSeek-V3
 - [DeepSeek-R1 Release](content/en/news/news250120.md): * ⚡ Performance on par with OpenAI-o1
-- [Your First API Call](content/en/news/news250325.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
+- [DeepSeek-V3-0324 Release](content/en/news/news250325.md): * 🔹 Major boost in reasoning performance
 - [DeepSeek-R1-0528 Release](content/en/news/news250528.md): 🚀 DeepSeek-R1-0528 is here!
 - [DeepSeek-V3.1 Release](content/en/news/news250821.md): Introducing DeepSeek-V3.1: our first step toward the agent era! 🚀
 - [DeepSeek-V3.1-Terminus](content/en/news/news250922.md): 🚀 DeepSeek-V3.1 → DeepSeek-V3.1-Terminus
