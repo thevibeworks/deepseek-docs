@@ -155,7 +155,7 @@
     },
     "content/en/news/news251201.md": {
       "url": "https://api-docs.deepseek.com/news/news251201",
-      "title": "DeepSeek-V3.2 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news251201 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news260424.md": {
       "url": "https://api-docs.deepseek.com/news/news260424",
@@ -368,7 +368,7 @@
     },
     "content/zh-cn/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news1226",
-      "title": "DeepSeek-V3 正式发布"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news1226 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/zh-cn/guides/tool_calls.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/guides/tool_calls",
