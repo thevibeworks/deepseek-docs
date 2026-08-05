@@ -1,8 +1,9 @@
 # DeepSeek API Docs Mirror
 
 > Unofficial markdown mirror of [api-docs.deepseek.com](https://api-docs.deepseek.com/).
-> 126 pages (en + zh-cn), built for LLM agents: plain markdown, stable paths,
-> `llms.txt` index, `llms-full.txt` single-file dump.
+> 134 pages (en + zh-cn), built for LLM agents: plain markdown, stable paths,
+> `llms.txt` index, `llms-full.txt` single-file dump. Includes the FAQ, which
+> is not part of the docs site and is not readable as text anywhere else.
 
 Clone this repo and point your coding agent at it. Every DeepSeek API doc --
 quick start, API reference, guides, samples, agent integrations, news --
@@ -23,6 +24,25 @@ claude "what's the Anthropic-format base URL and which params map to what?"
 claude "show me the FIM completion request schema"
 ```
 
+## The FAQ
+
+`content/*/faq/` does not come from the docs site. DeepSeek's FAQ lives at
+`static.deepseek.com/faq/`, whose `index.html` is a 562-byte shell — the
+content is a `JSON.parse('...')` blob inside a content-hashed JavaScript
+chunk, held as [mdast](https://github.com/syntax-tree/mdast) rather than
+HTML. `scripts/faq.py` finds the current chunk, decodes the blob and
+renders the AST back to markdown, so the result round-trips rather than
+being scraped out of rendered DOM.
+
+It is worth the trouble: 44 questions per locale, 15 of them about the API,
+covering things api-docs never mentions — invoices, refunds, what to do
+about a leaked key, how to request a higher rate limit.
+
+```bash
+uv run scripts/faq.py            # refresh content/<locale>/faq/
+uv run scripts/faq.py --check    # exit 1 if stale
+```
+
 ## Content
 
 ```
@@ -37,6 +57,8 @@ content/
                             Anthropic API, Responses API, FIM, prefix completion
     api_samples/            curl / python / nodejs request samples
     news/                   release notes (V3, R1, V3.1, V4, ...)
+    faq/                    the FAQ, one file per category, extracted from
+                            static.deepseek.com (see below)
     faq.md  updates.md  prompt-library.md
   zh-cn/                    Chinese mirror, identical paths
 llms.txt                    curated index of every English page
