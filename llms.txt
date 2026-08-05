@@ -88,5 +88,9 @@ Each file carries frontmatter with its canonical `source:` URL.
 
 ## Other
 
+- [FAQ: Login Issues](content/en/faq/category-1.md): DeepSeek FAQ, Login Issues — 8 questions and answers.
+- [FAQ: User Guide](content/en/faq/category-2.md): DeepSeek FAQ, User Guide — 11 questions and answers.
+- [FAQ: Chat Issues](content/en/faq/category-3.md): DeepSeek FAQ, Chat Issues — 10 questions and answers.
+- [FAQ: API](content/en/faq/category-4.md): DeepSeek FAQ, API — 15 questions and answers.
 - [FAQ](content/en/faq.md): If you are not redirected automatically, please visit FAQ.
 - [Prompt Library (提示库)](content/en/prompt-library.md): DeepSeek prompt library: ready-to-use prompt examples with sample outputs.
