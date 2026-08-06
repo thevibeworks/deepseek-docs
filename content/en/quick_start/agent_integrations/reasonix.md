@@ -1,13 +1,13 @@
 ---
 title: "Integrate with Reasonix"
-description: "Reasonix is a DeepSeek-native coding agent that runs in the terminal. It's designed around DeepSeek's API directly — cache-first loop, flash-first cost control, automatic tool-call repair — and talks to api.deepseek.com without a translation shim."
+description: "Reasonix is a coding agent that runs in the terminal."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix
-fetched: 2026-08-02
+fetched: 2026-08-06
 ---
 
 # Integrate with Reasonix
 
-Reasonix is a DeepSeek-native coding agent that runs in the terminal. It's designed around DeepSeek's API directly — cache-first loop, flash-first cost control, automatic tool-call repair — and talks to `api.deepseek.com` without a translation shim.
+Reasonix is a coding agent that runs in the terminal.
 
 #### 1. Install Node.js
 
