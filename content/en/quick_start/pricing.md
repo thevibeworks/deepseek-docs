@@ -2,7 +2,7 @@
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-08-02
+fetched: 2026-08-07
 ---
 
 # Models & Pricing
@@ -35,7 +35,7 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 
 (1) The Responses API currently only supports the `deepseek-v4-flash` model, and does not yet support the `deepseek-v4-pro` model. We will add support for the `deepseek-v4-pro` model in early August 2026.
 
-(2) The DeepSeek API service will soon adopt a peak/off-peak pricing policy. During peak hours, prices will be 2x the regular prices, applicable to all billing items. The effective date will be subject to the official announcement. [Peak hours: 9:00–12:00 and 14:00–18:00 (Beijing Time, UTC+8) daily]
+(2) We plan to raise the overall pricing for DeepSeek API services in the near future, with a significant increase expected. Please plan your usage accordingly. The specific pricing plan will be subject to official notice.
 
 (3) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md)
 
