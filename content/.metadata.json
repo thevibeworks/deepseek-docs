@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "title": "DeepSeek-R1 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -507,6 +507,6 @@
       "title": "Token 用量计算"
     }
   },
-  "updated": "2026-08-03",
+  "updated": "2026-08-07",
   "site": "https://api-docs.deepseek.com"
 }
