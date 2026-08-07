@@ -27,7 +27,7 @@
     },
     "content/en/api/create-chat-completion.md": {
       "url": "https://api-docs.deepseek.com/api/create-chat-completion",
-      "title": "Chat Completions API"
+      "error": "served fallback shell for https://api-docs.deepseek.com/api/create-chat-completion (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/api/create-completion.md": {
       "url": "https://api-docs.deepseek.com/api/create-completion",
@@ -87,7 +87,7 @@
     },
     "content/en/guides/kv_cache.md": {
       "url": "https://api-docs.deepseek.com/guides/kv_cache",
-      "title": "Context Caching"
+      "error": "Response payload is not completed: <TransferEncodingError: 400, message='Not enough data to satisfy transfer length header.'>. ConnectionResetError(104, 'Connection reset by peer')"
     },
     "content/en/guides/thinking_mode.md": {
       "url": "https://api-docs.deepseek.com/guides/thinking_mode",
@@ -507,6 +507,6 @@
       "title": "Token 用量计算"
     }
   },
-  "updated": "2026-08-03",
+  "updated": "2026-08-07",
   "site": "https://api-docs.deepseek.com"
 }
