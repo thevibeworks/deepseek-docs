@@ -107,7 +107,7 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "title": "🚀 Introducing DeepSeek-V3"
+      "error": "Response payload is not completed: <TransferEncodingError: 400, message='Not enough data to satisfy transfer length header.'>. ConnectionResetError(104, 'Connection reset by peer')"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
@@ -507,6 +507,6 @@
       "title": "Token 用量计算"
     }
   },
-  "updated": "2026-08-03",
+  "updated": "2026-08-07",
   "site": "https://api-docs.deepseek.com"
 }
