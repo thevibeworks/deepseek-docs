@@ -127,13 +127,26 @@ jobs:
             git push
             echo "Minor change committed to main."
           else
-            BRANCH="docs/sync-$(date -u +%Y%m%d-%H%M)"
-            git checkout -b "$BRANCH"
+            # One sync PR at a time, on a fixed branch rebuilt from the main
+            # we just checked out. A high-signal change that nobody merges is
+            # still there on the next run six hours later; a timestamped
+            # branch per run turned that into a new PR every six hours (seven
+            # of them for one pricing note, #2..#8). Rebuilding one branch
+            # keeps the PR as "main plus everything upstream changed that we
+            # have not taken yet" -- reviewing the newest is reviewing all.
+            BRANCH="docs/sync"
+            git checkout -B "$BRANCH"
             git add -A
             git commit -m "docs: ${TITLE}" -m "$(cat /tmp/body.md)"
-            git push -u origin "$BRANCH"
-            PR_URL=$(gh pr create --title "docs: ${TITLE}" --body-file /tmp/body.md)
-            echo "High-signal change, PR opened: $PR_URL"
+            git push -f -u origin "$BRANCH"
+            PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+            if [ -n "$PR" ]; then
+              gh pr edit "$PR" --title "docs: ${TITLE}" --body-file /tmp/body.md
+              echo "High-signal change, updated open PR #${PR}."
+            else
+              PR_URL=$(gh pr create --title "docs: ${TITLE}" --body-file /tmp/body.md)
+              echo "High-signal change, PR opened: $PR_URL"
+            fi
           fi
 
       # A dirty tree after publish means something silently failed.
