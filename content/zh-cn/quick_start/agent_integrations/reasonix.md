@@ -1,13 +1,13 @@
 ---
 title: "接入 Reasonix"
-description: "Reasonix 是一款以 DeepSeek 为原生后端的终端编程 Agent。设计围绕 DeepSeek API 展开 —— Cache-First 循环、Flash 优先的成本控制、工具调用自动修复 —— 直接对接 api.deepseek.com，不需要协议转换层。"
+description: "Reasonix 是一款终端编程 Agent。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/reasonix
-fetched: 2026-08-02
+fetched: 2026-08-08
 ---
 
 # 接入 Reasonix
 
-Reasonix 是一款以 DeepSeek 为原生后端的终端编程 Agent。设计围绕 DeepSeek API 展开 —— Cache-First 循环、Flash 优先的成本控制、工具调用自动修复 —— 直接对接 `api.deepseek.com`，不需要协议转换层。
+Reasonix 是一款终端编程 Agent。
 
 #### 1. 安装 Node.js
 
