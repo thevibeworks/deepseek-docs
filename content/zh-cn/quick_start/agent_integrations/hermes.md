@@ -1,13 +1,13 @@
 ---
 title: "接入 Hermes"
-description: "Hermes 是 Nous Research 打造的开源自我进化 AI Agent。它内置学习闭环：能够从经验中生成技能，在使用过程中持续优化，沉淀知识，并在跨会话中逐步构建你偏好的动态模型。"
+description: "Hermes 是 Nous Research 打造的开源 AI Agent。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/hermes
-fetched: 2026-08-02
+fetched: 2026-08-08
 ---
 
 # 接入 Hermes
 
-Hermes 是 Nous Research 打造的开源自我进化 AI Agent。它内置学习闭环：能够从经验中生成技能，在使用过程中持续优化，沉淀知识，并在跨会话中逐步构建你偏好的动态模型。
+Hermes 是 Nous Research 打造的开源 AI Agent。
 
 #### 1. 安装 Hermes
 
