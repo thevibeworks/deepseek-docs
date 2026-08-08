@@ -27,7 +27,7 @@
     },
     "content/en/api/create-chat-completion.md": {
       "url": "https://api-docs.deepseek.com/api/create-chat-completion",
-      "error": "served fallback shell for https://api-docs.deepseek.com/api/create-chat-completion (canonical: https://api-docs.deepseek.com/)"
+      "title": "Chat Completions API"
     },
     "content/en/api/create-completion.md": {
       "url": "https://api-docs.deepseek.com/api/create-completion",

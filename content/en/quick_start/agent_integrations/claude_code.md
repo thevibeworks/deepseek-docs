@@ -2,7 +2,7 @@
 title: "Integrate with Claude Code"
 description: "Claude Code is an AI coding assistant that runs in the terminal."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code
-fetched: 2026-08-02
+fetched: 2026-08-08
 ---
 
 # Integrate with Claude Code
@@ -24,6 +24,7 @@ export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
 export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
 export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 ```
 
 Windows users:
@@ -37,6 +38,7 @@ $env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
 $env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
 $env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
+$env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
 ```
 
 Then enter your project directory and run claude:
@@ -77,6 +79,7 @@ export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
 export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
 export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 ```
 
 Windows users, run:
@@ -90,6 +93,7 @@ $env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
 $env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
 $env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
+$env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
 ```
 
 #### 3. Enter the project directory and execute the `claude` command to get started.
