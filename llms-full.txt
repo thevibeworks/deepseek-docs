@@ -7,7 +7,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Chat Completions API
@@ -136,7 +136,7 @@ If set to `enabled`, then use thinking mode. If set to `disabled`, then use non-
 
 **Possible values:** [`low`, `high`, `max`]
 
-Controls the reasoning effort of the model. The default effort is `high`. For compatibility, `medium` and `xhigh` are mapped to `high`. Note that currently only `deepseek-v4-flash` supports the three effort levels; `deepseek-v4-pro` temporarily supports only `high` and `max` (`low` is treated as `high`, `xhigh` is treated as `max`), and is expected to support all three levels in early August 2026.
+Controls the reasoning effort of the model. The default effort is `high`. For compatibility, `medium` and `xhigh` are mapped to `high`.
 
 **max\_tokens** integernullable
 
@@ -1180,7 +1180,7 @@ Loading...
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Responses API
@@ -1201,9 +1201,9 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`]
+**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`]
 
-ID of the model to use. The Responses API currently only supports `deepseek-v4-flash` (`deepseek-v4-pro` is not supported yet).
+ID of the model to use.
 
 **inputobjectnullable**
 
@@ -3217,18 +3217,14 @@ The `messages` ultimately passed to the API are:
 
 ---
 title: "Using the Responses API"
-description: "The Responses API currently only supports the deepseek-v4-flash model, and does not yet support the deepseek-v4-pro model. We will add support for the deepseek-v4-pro model in early August 2026."
+description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Using the Responses API
 
-Supported Models
-
-The Responses API currently only supports the `deepseek-v4-flash` model, and does not yet support the `deepseek-v4-pro` model. We will add support for the `deepseek-v4-pro` model in early August 2026.
-
-To meet the demand for Codex, our API now supports the Responses API format, with the base\_url `https://api.deepseek.com`.
+To meet the demand for Codex, our API now supports the Responses API format, with the `base_url` being `https://api.deepseek.com`.
 
 With a simple configuration, you can use DeepSeek models in Codex.
 
@@ -3295,7 +3291,7 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 
 | Parameter | Support Status |
 | --- | --- |
-| `model` | Supported. Currently only `deepseek-v4-flash` (`deepseek-v4-pro` is not supported yet), see [Models & Pricing](../quick_start/pricing.md) |
+| `model` | Supported. `deepseek-v4-flash` / `deepseek-v4-pro`, see [Models & Pricing](../quick_start/pricing.md) |
 | `input` | Supported. String or input item list; at least one of `input` and `instructions` is required |
 | `instructions` | Supported. Inserted as the first system message |
 | `stream` | Supported |
@@ -3362,7 +3358,7 @@ Token usage is returned in `usage`:
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Thinking Mode
@@ -3378,17 +3374,16 @@ The DeepSeek model supports the thinking mode: before outputting the final answe
 | Thinking Effort Control(2) | `{"reasoning_effort": "low/high/max"}` | `{"output_config": {"effort": "low/high/max"}}` |
 
 (1) Thinking mode is enabled by default, with the default effort being `high`
-(2) The mapping between the effort set by the user and the model's actual reasoning effort is as follows:
+(2) The mapping between the effort set by the user and the model's actual reasoning effort is as follows (identical for `deepseek-v4-flash` and `deepseek-v4-pro`):
 
-|  |  |  |
-| --- | --- | --- |
-| Requested effort | deepseek-v4-flash actual mapped effort | deepseek-v4-pro actual mapped effort(3) |
-| low | low | high |
-| high | high | high |
-| xhigh | high | max |
-| max | max | max |
-
-(3) We will update the actual mapped effort of deepseek-v4-pro in early August 2026
+|  |  |
+| --- | --- |
+| Requested effort | Actual mapped effort |
+| low | low |
+| medium | high |
+| high | high |
+| xhigh | high |
+| max | max |
 
 When using Chat Completion with the OpenAI SDK to set the `thinking` parameter, you need to pass the `thinking` parameter within `extra_body`:
 
@@ -3635,7 +3630,7 @@ tool result for get_weather: Cloudy 7~13°C
 
 Turn 1.3
 reasoning_content='The weather result is in. Let me share this with the user.'
-content="Here's the weather forecast for **Hangzhou tomorrow (April 20, 2026)**:\n\n- 🌤 **Condition:** Cloudy  \n- 🌡 **Temperature:** 7°C ~ 13°C (45°F ~ 55°F)\n\nIt'll be on the cooler side, so you might want to bring a light jacket if you're heading out! Let me know if you need anything else."
+content="Here's the weather forecast for **Hangzhou tomorrow (April 20, 2026)**:\n\n- 🌤 **Condition:** Cloudy  \n-   🌡 **Temperature:** 7°C ~ 13°C (45°F ~ 55°F)\n\nIt'll be on the cooler side, so you might want to bring a light jacket if you're heading out! Let me know if you need anything else."
 tool_calls=None
 
 Turn 2.1
@@ -4000,7 +3995,7 @@ You can use `$def` to define reusable modules and then use `$ref` to reference t
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Your First API Call
@@ -4014,7 +4009,7 @@ The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifyi
 | api\_key | apply for an [API key](https://platform.deepseek.com/api_keys) |
 | model(1) | `deepseek-v4-flash` `deepseek-v4-pro` |
 
-(1) The `deepseek-v4-flash` model has been updated to DeepSeek-V4-Flash-0731. The calling method remains unchanged — simply use `deepseek-v4-flash` to access the latest version.
+(1) The `deepseek-v4-flash` model has been updated to DeepSeek-V4-Flash-0731, and the `deepseek-v4-pro` model has been updated to DeepSeek-V4-Pro-0813. The calling method remains unchanged — simply use `deepseek-v4-flash` or `deepseek-v4-pro` to access the latest version.
 
 ## Integrate with Agent Tools
 
@@ -5821,16 +5816,12 @@ With this mapping, when using the developer mode of the new Claude Desktop APP, 
 
 ---
 title: "Integrate with Codex"
-description: "Currently, only deepseek-v4-flash supports integrating with Codex. deepseek-v4-pro is expected to support Codex in early August 2026."
+description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Integrate with Codex
-
-Note
-
-Currently, only `deepseek-v4-flash` supports integrating with Codex. `deepseek-v4-pro` is expected to support Codex in early August 2026.
 
 Codex is an AI coding assistant from OpenAI. It talks to models via the [Responses API](../../guides/responses_api.md), which the DeepSeek API natively supports.
 
@@ -7213,7 +7204,7 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-08-08
+fetched: 2026-08-12
 ---
 
 # Models & Pricing
@@ -7229,26 +7220,24 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 | MODEL | | deepseek-v4-flash | deepseek-v4-pro |
 | BASE URL (OpenAI Format) | | <https://api.deepseek.com> | |
 | BASE URL (Anthropic Format) | | <https://api.deepseek.com/anthropic> | |
-| MODEL VERSION | | DeepSeek-V4-Flash-0731 | DeepSeek-V4-Pro |
+| MODEL VERSION | | DeepSeek-V4-Flash-0731 | DeepSeek-V4-Pro-0813 |
 | THINKING MODE | | Supports both non-thinking and thinking (default) modes See [Thinking Mode](../guides/thinking_mode.md) for how to switch | |
 | CONTEXT LENGTH | | 1M | |
 | MAX OUTPUT | | MAXIMUM: 384K | |
 | FEATURES | [Json Output](../guides/json_mode.md) | ✓ | ✓ |
 | [Tool Calls](../guides/tool_calls.md) | ✓ | ✓ |
-| [Responses API](../guides/responses_api.md)(1) | ✓ | ✗ |
+| [Responses API](../guides/responses_api.md) | ✓ | ✓ |
 | [Anthropic API](../guides/anthropic_api.md) | ✓ | ✓ |
 | [Chat Prefix Completion（Beta）](../guides/chat_prefix_completion.md) | ✓ | ✓ |
 | [FIM Completion（Beta）](../guides/fim_completion.md) | Non-thinking mode only | Non-thinking mode only |
-| PRICING(2) | 1M INPUT TOKENS (CACHE HIT) | $0.0028 | $0.003625 |
+| PRICING(1) | 1M INPUT TOKENS (CACHE HIT) | $0.0028 | $0.003625 |
 | 1M INPUT TOKENS (CACHE MISS) | $0.14 | $0.435 |
 | 1M OUTPUT TOKENS | $0.28 | $0.87 |
-| Concurrency Limit(3) | | 2500 | 500 |
+| Concurrency Limit(2) | | 2500 | 500 |
 
-(1) The Responses API currently only supports the `deepseek-v4-flash` model, and does not yet support the `deepseek-v4-pro` model. We will add support for the `deepseek-v4-pro` model in early August 2026.
+(1) We plan to raise the overall pricing for DeepSeek API services in the near future, with a significant increase expected. Please plan your usage accordingly. The specific pricing plan will be subject to official notice.
 
-(2) We plan to raise the overall pricing for DeepSeek API services in the near future, with a significant increase expected. Please plan your usage accordingly. The specific pricing plan will be subject to official notice.
-
-(3) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md)
+(2) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md)
 
 ---
 

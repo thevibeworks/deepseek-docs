@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Responses API
@@ -23,9 +23,9 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`]
+**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`]
 
-ID of the model to use. The Responses API currently only supports `deepseek-v4-flash` (`deepseek-v4-pro` is not supported yet).
+ID of the model to use.
 
 **inputobjectnullable**
 

@@ -1,15 +1,11 @@
 ---
 title: "接入 Codex"
-description: "目前仅 deepseek-v4-flash 支持接入 Codex，deepseek-v4-pro 预计 2026 年 8 月初支持接入 Codex。"
+description: "Codex 是 OpenAI 推出的 AI 编程助手，通过 Responses API 与模型交互，DeepSeek API 原生支持该格式。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # 接入 Codex
-
-提示
-
-目前仅 `deepseek-v4-flash` 支持接入 Codex，`deepseek-v4-pro` 预计 2026 年 8 月初支持接入 Codex。
 
 Codex 是 OpenAI 推出的 AI 编程助手，通过 [Responses API](../../guides/responses_api.md) 与模型交互，DeepSeek API 原生支持该格式。
 

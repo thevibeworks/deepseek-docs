@@ -2,7 +2,7 @@
 title: "思考模式"
 description: "DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先输出一段思维链内容，以提升最终答案的准确性。"
 source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # 思考模式
@@ -18,17 +18,16 @@ DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先�
 | 思考强度控制(2) | `{"reasoning_effort": "low/high/max"}` | `{"output_config": {"effort": "low/high/max"}}` |
 
 (1) 思考模式默认打开，且 effort 默认为 `high`
-(2) 用户设置的 effort 与模型推理 effort 映射表如下：
+(2) 用户设置的 effort 与模型推理 effort 映射表如下（`deepseek-v4-flash` 与 `deepseek-v4-pro` 一致）：
 
-|  |  |  |
-| --- | --- | --- |
-| 请求传入 effort | deepseek-v4-flash 实际映射 effort | deepseek-v4-pro 实际映射 effort(3) |
-| low | low | high |
-| high | high | high |
-| xhigh | high | max |
-| max | max | max |
-
-(3) 我们将于 2026 年 8 月初，更新 deepseek-v4-pro 的实际映射
+|  |  |
+| --- | --- |
+| 请求传入 effort | 实际映射 effort |
+| low | low |
+| medium | high |
+| high | high |
+| xhigh | high |
+| max | max |
 
 您在 OpenAI SDK 中使用 Chat Completion 设置 `thinking` 参数时，需要将 `thinking` 参数传入 `extra_body` 中：
 
