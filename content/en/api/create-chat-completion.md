@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-08-02
+fetched: 2026-08-12
 ---
 
 # Chat Completions API
@@ -131,7 +131,7 @@ If set to `enabled`, then use thinking mode. If set to `disabled`, then use non-
 
 **Possible values:** [`low`, `high`, `max`]
 
-Controls the reasoning effort of the model. The default effort is `high`. For compatibility, `medium` and `xhigh` are mapped to `high`. Note that currently only `deepseek-v4-flash` supports the three effort levels; `deepseek-v4-pro` temporarily supports only `high` and `max` (`low` is treated as `high`, `xhigh` is treated as `max`), and is expected to support all three levels in early August 2026.
+Controls the reasoning effort of the model. The default effort is `high`. For compatibility, `medium` and `xhigh` are mapped to `high`.
 
 **max\_tokens** integernullable
 

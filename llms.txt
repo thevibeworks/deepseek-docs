@@ -33,7 +33,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [JSON Output](content/en/guides/json_mode.md): In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing.
 - [Context Caching](content/en/guides/kv_cache.md): The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code.
 - [Multi-round Conversation](content/en/guides/multi_round_chat.md): This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations.
-- [Using the Responses API](content/en/guides/responses_api.md): The Responses API currently only supports the deepseek-v4-flash model, and does not yet support the deepseek-v4-pro model. We will add support for the deep...
+- [Using the Responses API](content/en/guides/responses_api.md): To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com.
 - [Thinking Mode](content/en/guides/thinking_mode.md): The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the ...
 - [Tool Calls](content/en/guides/tool_calls.md): Tool Calls allows the model to call external tools to enhance its capabilities.
 
@@ -51,7 +51,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 
 - [Integrate with AstrBot](content/en/quick_start/agent_integrations/astrbot.md): AstrBot is an open-source all-in-one agent assistant that integrates with mainstream messaging platforms such as QQ, WeChat, Feishu, and Telegram, and can ...
 - [Integrate with Claude Code](content/en/quick_start/agent_integrations/claude_code.md): Claude Code is an AI coding assistant that runs in the terminal.
-- [Integrate with Codex](content/en/quick_start/agent_integrations/codex.md): Currently, only deepseek-v4-flash supports integrating with Codex. deepseek-v4-pro is expected to support Codex in early August 2026.
+- [Integrate with Codex](content/en/quick_start/agent_integrations/codex.md): Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports.
 - [Integrate with GitHub Copilot CLI](content/en/quick_start/agent_integrations/copilot_cli.md): Configure GitHub Copilot CLI to use DeepSeek V4 models via BYOK (Bring Your Own Key) with the Anthropic-compatible endpoint.
 - [Integrate with Crush](content/en/quick_start/agent_integrations/crush.md): Crush is a glamorous open-source AI coding agent that runs in your terminal, built by Charm. It supports multi-model switching, LSP integration, MCP server...
 - [Integrate with Deep Code](content/en/quick_start/agent_integrations/deepcode.md): Deep Code is an open-source terminal AI coding assistant for the DeepSeek-V4 model, supporting deep thinking, reasoning effort control, and Agent Skills.
