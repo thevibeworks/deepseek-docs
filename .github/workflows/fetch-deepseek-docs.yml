@@ -104,9 +104,23 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BARK_SERVER: ${{ secrets.BARK_SERVER }}
+          BARK_KEY: ${{ secrets.BARK_KEY }}
         run: |
           set -euo pipefail
           D=.decision
+
+          # iPhone push via Bark (same pattern as claude-code-docs). Changed
+          # pages are captured from the dirty tree before anything commits.
+          PAGES=$(git status --porcelain content/ | awk '{print $NF}' | head -12)
+          notify() {  # $1 = link target (commit or PR)
+            [ -n "${BARK_SERVER:-}" ] && [ -n "${BARK_KEY:-}" ] || return 0
+            jq -n --arg k "$BARK_KEY" --arg t "DeepSeek docs updated" \
+              --arg b "${TITLE}"$'\n\n'"${PAGES}" --arg u "$1" \
+              '{device_key:$k, title:$t, body:$b, url:$u, group:"DeepSeek Docs"}' \
+            | curl -sS -X POST "$BARK_SERVER/push" -H 'Content-Type: application/json' -d @- \
+            || echo "::warning::bark notification failed (sync itself is fine)"
+          }
           SIGNAL=$(tr -d '[:space:]' < "$D/signal" 2>/dev/null || echo "")
           TITLE=$(head -1 "$D/title" 2>/dev/null || echo "")
           if [ -z "$SIGNAL" ] || [ -z "$TITLE" ]; then
@@ -125,6 +139,7 @@ jobs:
             git add -A
             git commit -m "docs: ${TITLE}" -m "$(cat /tmp/body.md)"
             git push
+            notify "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$(git rev-parse HEAD)"
             echo "Minor change committed to main."
           else
             # One sync PR at a time, on a fixed branch rebuilt from the main
@@ -142,9 +157,11 @@ jobs:
             PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
             if [ -n "$PR" ]; then
               gh pr edit "$PR" --title "docs: ${TITLE}" --body-file /tmp/body.md
+              notify "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}"
               echo "High-signal change, updated open PR #${PR}."
             else
               PR_URL=$(gh pr create --title "docs: ${TITLE}" --body-file /tmp/body.md)
+              notify "$PR_URL"
               echo "High-signal change, PR opened: $PR_URL"
             fi
           fi
@@ -158,3 +175,17 @@ jobs:
             git status --short | head -20
             exit 1
           fi
+
+      # Same pattern as claude-code-docs: a failed sync run pushes to the
+      # phone instead of rotting silently in the Actions tab.
+      - name: Alert on failure
+        if: failure()
+        env:
+          BARK_SERVER: ${{ secrets.BARK_SERVER }}
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+        run: |
+          [ -n "${BARK_SERVER:-}" ] && [ -n "${BARK_KEY:-}" ] || exit 0
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          jq -n --arg k "$BARK_KEY" --arg u "$RUN_URL" \
+            '{device_key:$k, title:"DeepSeek docs sync failed", body:"needs human", url:$u, group:"DeepSeek Docs"}' \
+          | curl -sS -X POST "$BARK_SERVER/push" -H 'Content-Type: application/json' -d @- || true
