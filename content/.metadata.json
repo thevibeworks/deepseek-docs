@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -953,6 +953,14 @@
     "content/en/dsh/npm.md": {
       "url": "https://www.npmjs.com/package/@deepseek-ai/dsh",
       "title": "npm: @deepseek-ai/dsh"
+    },
+    "content/en/news/news260813.md": {
+      "url": "https://api-docs.deepseek.com/news/news260813",
+      "title": "DeepSeek-V4-Pro GA Release"
+    },
+    "content/zh-cn/news/news260813.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news260813",
+      "title": "DeepSeek-V4-Pro 正式版上线"
     }
   },
   "updated": "2026-08-13",

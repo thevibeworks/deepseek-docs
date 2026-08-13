@@ -2,7 +2,7 @@
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-08-12
+fetched: 2026-08-13
 ---
 
 # Models & Pricing
@@ -33,7 +33,15 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 | 1M OUTPUT TOKENS | $0.28 | $0.87 |
 | Concurrency Limit(2) | | 2500 | 500 |
 
-(1) We plan to raise the overall pricing for DeepSeek API services in the near future, with a significant increase expected. Please plan your usage accordingly. The specific pricing plan will be subject to official notice.
+(1) DeepSeek API pricing will be updated to peak / off-peak billing, with off-peak rates at half the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC (all other hours are off-peak). The new prices take effect at 16:00 UTC on August 16, 2026, as follows:
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+| MODEL | | 1M INPUT TOKENS (CACHE HIT) | 1M INPUT TOKENS (CACHE MISS) | 1M OUTPUT TOKENS |
+| deepseek-v4-flash | OFF-PEAK | $0.007 | $0.22 | $0.66 |
+| PEAK | $0.014 | $0.44 | $1.32 |
+| deepseek-v4-pro | OFF-PEAK | $0.022 | $0.66 | $1.98 |
+| PEAK | $0.044 | $1.32 | $3.96 |
 
 (2) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md)
 
