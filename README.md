@@ -59,6 +59,12 @@ deleted 2026-08-09, cold). That is exactly why it is mirrored here: the
 sync diff is the changelog upstream does not write. Pages deleted upstream
 are pruned, so deletions show up in the diff too.
 
+Community companions to this mirror: [howto-dsh](https://github.com/dshworks/howto-dsh)
+(verified traps, dated against specific dsh versions),
+[awesome-dsh-plugins](https://github.com/dshworks/awesome-dsh-plugins)
+(spam-filtered plugin registry), and the [dshworks](https://dshworks.github.io)
+org index.
+
 ```bash
 uv run scripts/dsh.py            # refresh content/en/dsh/
 uv run scripts/dsh.py --check    # exit 1 if stale
