@@ -86,7 +86,8 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Introducing DeepSeek-V3.2-Exp](content/en/news/news250929.md): 🚀 Introducing DeepSeek-V3.2-Exp — our latest experimental model!
 - [DeepSeek-V3.2 Release](content/en/news/news251201.md): 🚀 Launching DeepSeek-V3.2 & DeepSeek-V3.2-Speciale — Reasoning-first models built for agents!
 - [DeepSeek V4 Preview Release](content/en/news/news260424.md): 🚀 DeepSeek-V4 Preview is officially live & open-sourced! Welcome to the era of cost-effective 1M context length.
-- [Change Log](content/en/updates.md): Date: 2026-07-31
+- [DeepSeek-V4-Pro GA Release](content/en/news/news260813.md): We’re launching DeepSeek-V4-Pro today! 🚀
+- [Change Log](content/en/updates.md): Date: 2026-08-13
 
 ## dsh (DeepSeek Harness)
 

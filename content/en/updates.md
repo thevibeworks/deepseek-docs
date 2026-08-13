@@ -1,11 +1,48 @@
 ---
 title: "Change Log"
-description: "Date: 2026-07-31"
+description: "Date: 2026-08-13"
 source: https://api-docs.deepseek.com/updates
-fetched: 2026-08-02
+fetched: 2026-08-13
 ---
 
 # Change Log
+
+---
+
+## Date: 2026-08-13
+
+### DeepSeek-V4-Pro Update
+
+The GA release of DeepSeek-V4-Pro has been rolled out on the APP, Web, and API. The API calling method remains unchanged — simply set the model name to `deepseek-v4-pro` to use the latest version.
+
+**Significantly enhanced Agent capabilities**
+
+The GA version of DeepSeek V4 Pro greatly enhances agent capabilities, with particularly significant performance improvements in production environments.
+
+- HLE (wo / w tools): 42.7/60.0
+- Terminal Bench 2.1: 87.9
+- NL2Repo: 61.5
+- Cybergym: 83.3
+- DeepSWE: 62.7
+- Toolathlon-Verified: 74.1
+- Agents' Last Exam: 25.7
+- AutomationBench (Public): 31.8
+- DSBench-FullStack: 71.1
+- DSBench-Hard: 67.2
+
+**Native support for the Responses API**
+
+The DeepSeek API now natively supports the OpenAI Responses API format and is specifically adapted for Codex. Users can refer to the [official documentation](quick_start/agent_integrations/codex.md) and complete the Codex configuration with a one-click configuration script.
+
+**More flexible thinking effort control**
+
+The thinking modes of V4-Pro and V4-Flash now support three thinking effort levels: low / high / max. In real-world usage, users can flexibly choose based on task complexity: use low for simple tasks, high for daily Agent tasks, and max for more complex scenarios. For setup instructions, please refer to the official API documentation: [Thinking Mode](guides/thinking_mode.md).
+
+**API Pricing Adjustment**
+
+With the official release of the DeepSeek V4 model family, we will [update and adjust API pricing](quick_start/pricing.md). To allocate resources more reasonably, we will adopt peak/off-peak pricing, with off-peak prices set at half of the peak-hour prices, encouraging users to schedule their tasks based on actual usage. The new prices will take effect at 16:00 (UTC Time) on August 16, 2026.
+
+For more details, please refer to [this documentation](news/news260813.md).
 
 ---
 
