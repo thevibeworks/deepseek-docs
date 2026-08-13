@@ -353,6 +353,7 @@ SECTION_ORDER = [
     ("API Samples", ["api_samples/"]),
     ("Agent Integrations", ["quick_start/agent_integrations/"]),
     ("News & Updates", ["news/", "updates.md"]),
+    ("dsh (DeepSeek Harness)", ["dsh/"]),
     ("Other", ["faq.md", "prompt-library.md"]),
 ]
 
@@ -400,6 +401,8 @@ def build_llms_txt() -> None:
         "> DeepSeek API documentation (OpenAI/Anthropic-compatible chat, reasoning,",
         "> tool calls, pricing, agent integrations). English pages listed below;",
         "> a Chinese mirror lives in content/zh-cn/ with identical paths.",
+        "> The dsh section mirrors github.com/deepseek-ai/deepseek-harness and",
+        "> npm (@deepseek-ai/dsh), not api-docs -- see scripts/dsh.py.",
         "",
         "Each file carries frontmatter with its canonical `source:` URL.",
         "",
@@ -421,10 +424,14 @@ def build_llms_txt() -> None:
 
 
 def build_llms_full() -> None:
+    # The dsh section (github/npm source, ~1.5 MB on its own) is indexed in
+    # llms.txt but not concatenated here; this stays the api-docs dump.
     parts = ["<!-- llms-full.txt: every English page of the DeepSeek API docs "
              "mirror, concatenated. See llms.txt for the index. -->\n"]
     for f in collect_en_files():
         rel = str(f.relative_to(ROOT))
+        if rel.startswith("content/en/dsh/"):
+            continue
         parts.append(f"\n\n<!-- ===== {rel} ===== -->\n\n{f.read_text()}")
     (ROOT / "llms-full.txt").write_text("".join(parts))
     size = (ROOT / "llms-full.txt").stat().st_size

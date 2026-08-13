@@ -505,8 +505,456 @@
     "content/zh-cn/quick_start/token_usage.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/quick_start/token_usage",
       "title": "Token 用量计算"
+    },
+    "content/en/dsh/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/README.md",
+      "title": "DeepSeek Harness"
+    },
+    "content/en/dsh/docs/AGENTS.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/AGENTS.md",
+      "title": "AGENTS.md — The documentation standard"
+    },
+    "content/en/dsh/docs/agent-lifecycle.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/agent-lifecycle.md",
+      "title": "Agent Turn And Step Lifecycle"
+    },
+    "content/en/dsh/docs/api-gateway.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/api-gateway.md",
+      "title": "API Gateway"
+    },
+    "content/en/dsh/docs/architecture.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md",
+      "title": "DeepSeek Harness Architecture"
+    },
+    "content/en/dsh/docs/capability-seams.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/capability-seams.md",
+      "title": "Capability Seams And Core Services"
+    },
+    "content/en/dsh/docs/config-catalog.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/config-catalog.md",
+      "title": "Plugin Config Catalog"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-conversation-node.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-conversation-node.md",
+      "title": "Add a Web Client conversation node"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-package.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-package.md",
+      "title": "Cookbook: adding a workspace package"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-tool.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-tool.md",
+      "title": "Tool authoring reference"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-vendored-package.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-vendored-package.md",
+      "title": "Cookbook: adding a vendored package"
+    },
+    "content/en/dsh/docs/cookbook/adding-an-llm-adapter.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-an-llm-adapter.md",
+      "title": "Cookbook: adding an LLM adapter"
+    },
+    "content/en/dsh/docs/cookbook/extension-cookbook.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/extension-cookbook.md",
+      "title": "Cookbook: extension plugin shapes"
+    },
+    "content/en/dsh/docs/cookbook/maintaining-dsh-code-review.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/maintaining-dsh-code-review.md",
+      "title": "Maintaining the dsh-code-review skill"
+    },
+    "content/en/dsh/docs/cookbook/responding-to-pr-review-on-a-stack.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/responding-to-pr-review-on-a-stack.md",
+      "title": "Responding to review across a stacked PR chain"
+    },
+    "content/en/dsh/docs/cordis-api/context.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-api/context.md",
+      "title": "Context"
+    },
+    "content/en/dsh/docs/cordis-api/events.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-api/events.md",
+      "title": "Events"
+    },
+    "content/en/dsh/docs/cordis-api/fiber.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-api/fiber.md",
+      "title": "Fiber"
+    },
+    "content/en/dsh/docs/cordis-api/inherited.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-api/inherited.md",
+      "title": "Inherited Cordis API"
+    },
+    "content/en/dsh/docs/cordis-api/registry.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-api/registry.md",
+      "title": "Registry"
+    },
+    "content/en/dsh/docs/cordis-api/service.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-api/service.md",
+      "title": "Service"
+    },
+    "content/en/dsh/docs/cordis-primer.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-primer.md",
+      "title": "Cordis Primer"
+    },
+    "content/en/dsh/docs/cordis-tutorial/01-first-plugin.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/01-first-plugin.md",
+      "title": "1. Your first plugin"
+    },
+    "content/en/dsh/docs/cordis-tutorial/02-lifecycle-and-effects.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/02-lifecycle-and-effects.md",
+      "title": "2. Lifecycle and effects"
+    },
+    "content/en/dsh/docs/cordis-tutorial/03-services.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/03-services.md",
+      "title": "3. Services"
+    },
+    "content/en/dsh/docs/cordis-tutorial/04-events.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/04-events.md",
+      "title": "4. Events"
+    },
+    "content/en/dsh/docs/cordis-tutorial/05-config.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/05-config.md",
+      "title": "5. Configuration"
+    },
+    "content/en/dsh/docs/cordis-tutorial/06-composition-and-hmr.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/06-composition-and-hmr.md",
+      "title": "6. Composition and HMR"
+    },
+    "content/en/dsh/docs/cordis-tutorial/07-into-the-harness.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/07-into-the-harness.md",
+      "title": "7. Into the harness"
+    },
+    "content/en/dsh/docs/cordis-tutorial/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/index.md",
+      "title": "Cordis tutorial"
+    },
+    "content/en/dsh/docs/defensive-patterns.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/defensive-patterns.md",
+      "title": "Defensive patterns"
+    },
+    "content/en/dsh/docs/development.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/development.md",
+      "title": "Development guide"
+    },
+    "content/en/dsh/docs/event-producer-consumer.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/event-producer-consumer.md",
+      "title": "Event Producer And Consumer Matrix"
+    },
+    "content/en/dsh/docs/glossary.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/glossary.md",
+      "title": "Glossary"
+    },
+    "content/en/dsh/docs/graph-atlas.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/graph-atlas.md",
+      "title": "Documentation Graph Index"
+    },
+    "content/en/dsh/docs/i18n/README.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/i18n/README.md",
+      "title": "Bilingual documentation"
+    },
+    "content/en/dsh/docs/i18n/style-samples.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/i18n/style-samples.md",
+      "title": "翻译语体样例（style samples）"
+    },
+    "content/en/dsh/docs/i18n/terminology.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/i18n/terminology.md",
+      "title": "Terminology"
+    },
+    "content/en/dsh/docs/i18n/translation-prompt.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/i18n/translation-prompt.md",
+      "title": "Translation prompt (pipeline asset)"
+    },
+    "content/en/dsh/docs/i18n/translation-rules.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/i18n/translation-rules.md",
+      "title": "Translation rules"
+    },
+    "content/en/dsh/docs/module-graph.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/module-graph.md",
+      "title": "Module dependency graph"
+    },
+    "content/en/dsh/docs/persistence-catalog.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-catalog.md",
+      "title": "Session Persistence Event Catalog"
+    },
+    "content/en/dsh/docs/postmortem/0001-acp-default-export-drops-inject.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/postmortem/0001-acp-default-export-drops-inject.md",
+      "title": "Post-mortem 0001: ACP server crashed on connect — `export default` dropped the plugin's `inject`"
+    },
+    "content/en/dsh/docs/postmortem/0002-js-expression-disabled-filesystem-tools.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/postmortem/0002-js-expression-disabled-filesystem-tools.md",
+      "title": "Post-mortem 0002: Filesystem snapshot tools were permanently disabled"
+    },
+    "content/en/dsh/docs/postmortem/0003-web-agent-gui-feedback-loop.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/postmortem/0003-web-agent-gui-feedback-loop.md",
+      "title": "Post-mortem 0003: Web agent validated a replacement server instead of its current GUI"
+    },
+    "content/en/dsh/docs/postmortem/0004-landlock-partial-notice-misclassified-child-failures.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/postmortem/0004-landlock-partial-notice-misclassified-child-failures.md",
+      "title": "Post-mortem 0004: Landlock partial-enforcement notice misclassified child failures"
+    },
+    "content/en/dsh/docs/postmortem/README.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/postmortem/README.md",
+      "title": "Post-mortems"
+    },
+    "content/en/dsh/docs/rescope.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/rescope.md",
+      "title": "Vendored package rescope"
+    },
+    "content/en/dsh/docs/subsystems/README.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/README.md",
+      "title": "Subsystems"
+    },
+    "content/en/dsh/docs/subsystems/approval.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/approval.md",
+      "title": "User Approval"
+    },
+    "content/en/dsh/docs/subsystems/attachment.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/attachment.md",
+      "title": "Durable Image Attachments"
+    },
+    "content/en/dsh/docs/subsystems/client-modules.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/client-modules.md",
+      "title": "Client Modules"
+    },
+    "content/en/dsh/docs/subsystems/code-runtime.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/code-runtime.md",
+      "title": "Code Runtime"
+    },
+    "content/en/dsh/docs/subsystems/commands.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/commands.md",
+      "title": "Human Commands"
+    },
+    "content/en/dsh/docs/subsystems/compaction.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/compaction.md",
+      "title": "Compaction"
+    },
+    "content/en/dsh/docs/subsystems/core.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/core.md",
+      "title": "Core"
+    },
+    "content/en/dsh/docs/subsystems/credentials.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/credentials.md",
+      "title": "User Credentials"
+    },
+    "content/en/dsh/docs/subsystems/extensions.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/extensions.md",
+      "title": "Extensions"
+    },
+    "content/en/dsh/docs/subsystems/feedback.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/feedback.md",
+      "title": "Message Feedback"
+    },
+    "content/en/dsh/docs/subsystems/filesystem.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/filesystem.md",
+      "title": "Filesystem"
+    },
+    "content/en/dsh/docs/subsystems/goal.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/goal.md",
+      "title": "Same-session goals"
+    },
+    "content/en/dsh/docs/subsystems/invariants.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/invariants.md",
+      "title": "Runtime Invariants"
+    },
+    "content/en/dsh/docs/subsystems/jobs.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/jobs.md",
+      "title": "Background Task Runtime"
+    },
+    "content/en/dsh/docs/subsystems/llm-streaming.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/llm-streaming.md",
+      "title": "LLM Streaming"
+    },
+    "content/en/dsh/docs/subsystems/lsp.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/lsp.md",
+      "title": "LSP navigation"
+    },
+    "content/en/dsh/docs/subsystems/permission-presets.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/permission-presets.md",
+      "title": "Permission Presets"
+    },
+    "content/en/dsh/docs/subsystems/persistence.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/persistence.md",
+      "title": "Session Persistence"
+    },
+    "content/en/dsh/docs/subsystems/plan.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/plan.md",
+      "title": "Plan Mode"
+    },
+    "content/en/dsh/docs/subsystems/sandbox.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/sandbox.md",
+      "title": "Process Sandbox"
+    },
+    "content/en/dsh/docs/subsystems/schedule.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/schedule.md",
+      "title": "Session-local Schedule"
+    },
+    "content/en/dsh/docs/subsystems/scope.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/scope.md",
+      "title": "Scoped Registration"
+    },
+    "content/en/dsh/docs/subsystems/session-projection.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-projection.md",
+      "title": "Session Projections"
+    },
+    "content/en/dsh/docs/subsystems/session-query.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-query.md",
+      "title": "Session Query"
+    },
+    "content/en/dsh/docs/subsystems/session-reference.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-reference.md",
+      "title": "Session References"
+    },
+    "content/en/dsh/docs/subsystems/session-telemetry.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-telemetry.md",
+      "title": "SessionTelemetryBackend"
+    },
+    "content/en/dsh/docs/subsystems/session-title.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-title.md",
+      "title": "Session Titles"
+    },
+    "content/en/dsh/docs/subsystems/session.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session.md",
+      "title": "Sessions"
+    },
+    "content/en/dsh/docs/subsystems/settings.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/settings.md",
+      "title": "User Settings"
+    },
+    "content/en/dsh/docs/subsystems/shell.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/shell.md",
+      "title": "Bash Executor"
+    },
+    "content/en/dsh/docs/subsystems/skills.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/skills.md",
+      "title": "Skills"
+    },
+    "content/en/dsh/docs/subsystems/spill.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/spill.md",
+      "title": "Spill Storage"
+    },
+    "content/en/dsh/docs/subsystems/storage.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/storage.md",
+      "title": "Storage"
+    },
+    "content/en/dsh/docs/subsystems/subagent.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subagent.md",
+      "title": "Subagent"
+    },
+    "content/en/dsh/docs/subsystems/subprocess.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subprocess.md",
+      "title": "Subprocess"
+    },
+    "content/en/dsh/docs/subsystems/system-prompt.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/system-prompt.md",
+      "title": "System Prompt Assembly"
+    },
+    "content/en/dsh/docs/subsystems/terminal.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/terminal.md",
+      "title": "Persistent PTY Sessions"
+    },
+    "content/en/dsh/docs/subsystems/token-meter.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/token-meter.md",
+      "title": "Token Meter"
+    },
+    "content/en/dsh/docs/subsystems/tools.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/tools.md",
+      "title": "Tools"
+    },
+    "content/en/dsh/docs/subsystems/typert.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/typert.md",
+      "title": "Typert remote calls"
+    },
+    "content/en/dsh/docs/subsystems/user-questions.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/user-questions.md",
+      "title": "User Interaction"
+    },
+    "content/en/dsh/docs/subsystems/web-server.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/web-server.md",
+      "title": "HTTP Server"
+    },
+    "content/en/dsh/docs/subsystems/web.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/web.md",
+      "title": "Web Access"
+    },
+    "content/en/dsh/docs/subsystems/workflow.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/workflow.md",
+      "title": "Workflow"
+    },
+    "content/en/dsh/docs/subsystems/workspace.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/workspace.md",
+      "title": "Workspaces"
+    },
+    "content/en/dsh/docs/testing.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/testing.md",
+      "title": "Testing policy"
+    },
+    "content/en/dsh/docs/tool-catalog.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/tool-catalog.md",
+      "title": "Tool Schema Catalog"
+    },
+    "content/en/dsh/docs/tool-execution-pipeline.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/tool-execution-pipeline.md",
+      "title": "Tool Execution Pipeline"
+    },
+    "content/en/dsh/docs/user/develop/basic/config.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/config.md",
+      "title": "Plugin configuration"
+    },
+    "content/en/dsh/docs/user/develop/basic/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/index.md",
+      "title": "Your first plugin"
+    },
+    "content/en/dsh/docs/user/develop/basic/publish.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/publish.md",
+      "title": "Package and install a plugin"
+    },
+    "content/en/dsh/docs/user/develop/basic/tool.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/tool.md",
+      "title": "Build a tool"
+    },
+    "content/en/dsh/docs/user/develop/framework/events.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/framework/events.md",
+      "title": "Event system"
+    },
+    "content/en/dsh/docs/user/develop/framework/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/framework/index.md",
+      "title": "Plugins and lifecycle"
+    },
+    "content/en/dsh/docs/user/develop/framework/service.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/framework/service.md",
+      "title": "Services and dependencies"
+    },
+    "content/en/dsh/docs/user/develop/practice/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/practice/index.md",
+      "title": "Three-role capability design"
+    },
+    "content/en/dsh/docs/user/develop/practice/llm-adapter.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/practice/llm-adapter.md",
+      "title": "LLM adapters"
+    },
+    "content/en/dsh/docs/user/guide/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/index.md",
+      "title": "Use the Web UI"
+    },
+    "content/en/dsh/docs/user/guide/providers.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md",
+      "title": "Configure models"
+    },
+    "content/en/dsh/docs/user/guide/python-sdk.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/python-sdk.md",
+      "title": "Get started with the Python SDK"
+    },
+    "content/en/dsh/docs/user/index.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/index.md",
+      "title": "DeepSeek Harness"
+    },
+    "content/en/dsh/docs/web-styling.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/web-styling.md",
+      "title": "Web UI style reference"
+    },
+    "content/en/dsh/npm.md": {
+      "url": "https://www.npmjs.com/package/@deepseek-ai/dsh",
+      "title": "npm: @deepseek-ai/dsh"
     }
   },
-  "updated": "2026-08-12",
+  "updated": "2026-08-13",
   "site": "https://api-docs.deepseek.com"
 }

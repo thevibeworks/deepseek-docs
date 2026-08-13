@@ -20,6 +20,10 @@ points:
 - `content/en/quick_start/agent_integrations/` - per-tool setup (Claude
   Code, Codex, OpenCode, ...)
 - `content/en/news/` - model release notes, newest = highest date prefix
+- `content/en/dsh/` - dsh (DeepSeek Harness) docs, mirrored from
+  github.com/deepseek-ai/deepseek-harness + npm (not api-docs);
+  index.md = repo README, npm.md = package versions. Refresh with
+  `uv run scripts/dsh.py`. Developer preview -- expect breaking changes.
 
 `content/zh-cn/` mirrors the same paths in Chinese. Prefer `en` unless the
 user asks in Chinese; the prompt library content is Chinese-only.

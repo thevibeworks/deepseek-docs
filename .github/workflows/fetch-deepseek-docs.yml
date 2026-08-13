@@ -21,6 +21,13 @@ jobs:
 
       - uses: astral-sh/setup-uv@v5
 
+      # dsh docs come from github/npm, not api-docs; fetched first so the
+      # index rebuild in the main fetcher sees fresh dsh content.
+      - name: Fetch dsh docs (deepseek-harness + npm)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uv run scripts/dsh.py
+
       - name: Fetch docs
         run: uv run scripts/fetcher.py
 
@@ -80,11 +87,16 @@ jobs:
             - New API endpoints, parameters, or breaking schema changes (api/)
             - New guides or new model releases (guides/, news/)
             - Changed base URLs, auth, or rate-limit policy
+            - dsh breaking changes (content/en/dsh/): deleted or renamed
+              pages, plugin manifest/API format changes, new npm releases
+              (dsh/npm.md) -- dsh is a developer preview that breaks
+              things without migration paths
 
             **minor** (archive freshness -- committed straight to main):
             - Wording, typos, formatting, link fixes
             - Metadata or index churn (.metadata.json, llms.txt, llms-full.txt)
             - zh-cn-only changes that mirror an already-known en change
+            - dsh doc wording/typo churn that changes no interface
 
             ## Decision files (your only output)
 
@@ -134,6 +146,21 @@ jobs:
           case "$SIGNAL" in high|minor) ;; *)
             echo "::warning::Invalid signal '$SIGNAL', downgrading to minor"; SIGNAL=minor;;
           esac
+
+          # Pricing tripwire (deterministic, overrides the agent): upstream
+          # dropped the peak/off-peak plan 2026-08-08 with an undated
+          # repricing pending. The moment time-of-day tier language touches
+          # pricing.md, downstream consumers need a loud PR the same day.
+          # grep -c (not -q) so the pipe drains; -q's early exit SIGPIPEs
+          # git diff and pipefail would eat the hit.
+          TRIP=$(git diff -U0 -- content/en/quick_start/pricing.md content/zh-cn/quick_start/pricing.md \
+            | grep -E '^[+-]' | grep -vE '^(\+\+\+ |--- )' \
+            | grep -icE '时段|off-peak|peak|discount|multiplier|分时' || true)
+          if [ "${TRIP:-0}" -gt 0 ]; then
+            echo "::warning::pricing tripwire hit (${TRIP} changed lines) -- forcing high signal"
+            SIGNAL=high
+            TITLE="PRICING TRIPWIRE: ${TITLE}"
+          fi
 
           if [ "$SIGNAL" = "minor" ]; then
             git add -A

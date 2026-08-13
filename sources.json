@@ -23,6 +23,12 @@
     },
     "www.deepseek.com": {
       "notes": "Product landing; not part of this mirror"
+    },
+    "github.com/deepseek-ai/deepseek-harness": {
+      "notes": "dsh (DeepSeek Harness) repo -- README + docs/ tree, the only home of the dsh docs. Developer preview, breaking changes promised; mirrored by scripts/dsh.py via the git trees API + raw.githubusercontent.com, pinned to the default branch."
+    },
+    "registry.npmjs.org": {
+      "notes": "@deepseek-ai/dsh packument; publishes no readme (as of 0.1.0-rc.6), so the mirror renders dist-tags + version history instead."
     }
   },
   "sources": [
@@ -43,6 +49,23 @@
       "pages": 63,
       "enabled": true,
       "notes": "Chinese mirror of the same pages, identical path layout"
+    },
+    {
+      "name": "dsh-github",
+      "type": "github-tree",
+      "repo": "deepseek-ai/deepseek-harness",
+      "branch": "default",
+      "output": "content/en/dsh/",
+      "enabled": true,
+      "notes": "dsh repo README (-> dsh/index.md) + English docs/ tree; .zh.md and .i18n.yaml sidecars skipped. Fetched by scripts/dsh.py; deletions are pruned because upstream deletes without migration (.dsh-plugin manifest, 2026-08-09)."
+    },
+    {
+      "name": "dsh-npm",
+      "type": "npm-registry",
+      "package": "@deepseek-ai/dsh",
+      "output": "content/en/dsh/npm.md",
+      "enabled": true,
+      "notes": "Package metadata page: dist-tags, latest, version history. No readme published upstream yet; picked up verbatim if one appears."
     }
   ]
 }
