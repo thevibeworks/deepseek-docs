@@ -3,7 +3,9 @@
 > Unofficial markdown mirror of [api-docs.deepseek.com](https://api-docs.deepseek.com/).
 > 134 pages (en + zh-cn), built for LLM agents: plain markdown, stable paths,
 > `llms.txt` index, `llms-full.txt` single-file dump. Includes the FAQ, which
-> is not part of the docs site and is not readable as text anywhere else.
+> is not part of the docs site and is not readable as text anywhere else,
+> and the [dsh (DeepSeek Harness)](content/en/dsh/) docs, which live on
+> GitHub/npm rather than the docs site.
 
 Clone this repo and point your coding agent at it. Every DeepSeek API doc --
 quick start, API reference, guides, samples, agent integrations, news --
@@ -43,6 +45,25 @@ uv run scripts/faq.py            # refresh content/<locale>/faq/
 uv run scripts/faq.py --check    # exit 1 if stale
 ```
 
+## dsh (DeepSeek Harness)
+
+`content/en/dsh/` mirrors [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
+(launched 2026-08-13) -- the repo README, its English `docs/` tree, and a
+metadata page for the [`@deepseek-ai/dsh`](https://www.npmjs.com/package/@deepseek-ai/dsh)
+npm package. These docs live on GitHub/npm, not on api-docs, so the main
+fetcher never sees them.
+
+dsh is a developer preview that ships breaking changes without migration
+paths (the `.dsh-plugin` manifest format and `dsh-plugin-prepare` were
+deleted 2026-08-09, cold). That is exactly why it is mirrored here: the
+sync diff is the changelog upstream does not write. Pages deleted upstream
+are pruned, so deletions show up in the diff too.
+
+```bash
+uv run scripts/dsh.py            # refresh content/en/dsh/
+uv run scripts/dsh.py --check    # exit 1 if stale
+```
+
 ## Content
 
 ```
@@ -58,11 +79,15 @@ content/
     api_samples/            curl / python / nodejs request samples
     news/                   release notes (V3, R1, V3.1, V4, ...)
     faq/                    the FAQ, one file per category, extracted from
-                            static.deepseek.com (see below)
+                            static.deepseek.com (see above)
+    dsh/                    dsh (DeepSeek Harness) docs from GitHub + npm
+                            (see above); index.md = repo README, docs/ =
+                            the repo's English docs tree, npm.md = package
     faq.md  updates.md  prompt-library.md
-  zh-cn/                    Chinese mirror, identical paths
+  zh-cn/                    Chinese mirror, identical paths (api-docs only)
 llms.txt                    curated index of every English page
-llms-full.txt               all English pages concatenated (~320 KB)
+llms-full.txt               all English api-docs pages concatenated (~330 KB;
+                            the dsh section is indexed but not concatenated)
 sources.json                machine-readable source registry
 ```
 
@@ -90,13 +115,20 @@ the one client-rendered page; its data is fetched from the site's static
 ## Automation
 
 [`fetch-deepseek-docs.yml`](.github/workflows/fetch-deepseek-docs.yml)
-runs every 6 hours: fetch, then hand the diff to Claude Code running on
+runs every 6 hours: fetch (dsh from GitHub/npm, then the api-docs site),
+then hand the diff to Claude Code running on
 the **DeepSeek API itself** (`deepseek-v4-flash` via the
 Anthropic-compatible endpoint, `anthropic_api_key` = a `DEEPSEEK_API_KEY`
 repo secret). The agent only classifies the change and writes decision
 files; a deterministic bash step publishes -- minor changes commit
-straight to main, high-signal changes (new models, pricing, API schema)
-open a PR for human review. DeepSeek docs, kept fresh by DeepSeek.
+straight to main, high-signal changes (new models, pricing, API schema,
+dsh breaking changes) open a PR for human review. A deterministic
+pricing tripwire overrides the agent: any pricing.md diff touching
+time-of-day tier language (时段 / off-peak / peak / discount /
+multiplier / 分时) is forced high-signal, because the peak-hour plan
+was dropped 2026-08-08 with a repricing pending and downstream
+consumers need to hear about its return the same day. DeepSeek docs,
+kept fresh by DeepSeek.
 
 ## Disclaimer
 
