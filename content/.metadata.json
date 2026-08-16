@@ -356,7 +356,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -963,6 +963,6 @@
       "title": "DeepSeek-V4-Pro 正式版上线"
     }
   },
-  "updated": "2026-08-13",
+  "updated": "2026-08-16",
   "site": "https://api-docs.deepseek.com"
 }
