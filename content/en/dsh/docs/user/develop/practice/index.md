@@ -1,13 +1,13 @@
 ---
 title: "Three-role capability design"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/practice/index.md
-fetched: 2026-08-13
+fetched: 2026-08-21
 ---
 # Three-role capability design
 
 English | [中文](index.zh.md)
 
-This page has two parts: a concept reference for the three-role capability pattern, followed by an advanced tutorial that builds one capability. Complete the [basic plugin path](../basic/) and [services tutorial](../framework/service.md) first.
+This page has two parts: a concept reference for the three-role capability pattern, followed by an advanced tutorial that builds one capability. Complete the [basic plugin path](../basic/index.md) and [services tutorial](../framework/service.md) first.
 
 ## Concept reference
 

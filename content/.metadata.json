@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "title": "DeepSeek-R1 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -239,7 +239,7 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "title": "Models & Pricing"
+      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
@@ -356,7 +356,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -961,8 +961,16 @@
     "content/zh-cn/news/news260813.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news260813",
       "title": "DeepSeek-V4-Pro 正式版上线"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-settings-card.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-settings-card.md",
+      "title": "Cookbook: adding a settings card"
+    },
+    "content/en/dsh/docs/subsystems/agent-team.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/agent-team.md",
+      "title": "Agent Teams"
     }
   },
-  "updated": "2026-08-17",
+  "updated": "2026-08-21",
   "site": "https://api-docs.deepseek.com"
 }

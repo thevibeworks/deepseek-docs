@@ -1,7 +1,7 @@
 ---
 title: "Event system"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/framework/events.md
-fetched: 2026-08-13
+fetched: 2026-08-21
 ---
 # Event system
 
@@ -144,5 +144,5 @@ export function apply(ctx: Context) {
 
 ## Next steps
 
-- [Capability layering](../practice/) — understand events within capability interfaces
+- [Capability layering](../practice/index.md) — understand events within capability interfaces
 - [LLM adapters](../practice/llm-adapter.md) — implement a complete LLM backend
