@@ -1,7 +1,7 @@
 ---
 title: "Permission Presets"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/permission-presets.md
-fetched: 2026-08-13
+fetched: 2026-08-21
 ---
 # Permission Presets
 
@@ -39,8 +39,9 @@ interface Config {
    */
   presets?: Record<string, PresetSpec>
   /**
-   * Default for new sessions. When omitted, the preset matching the composed
-   * sandbox and approval defaults is used.
+   * Default for fresh sessions and eligible confirmed blank reuse. When
+   * omitted, the preset matching the composed sandbox and approval defaults
+   * is used.
    */
   defaultPreset?: string
 }
@@ -78,7 +79,7 @@ interface PresetOption {
 
 ## Cordis API
 
-Generated from source by `scripts/gen-cordis-catalog.ts` (verified fresh by `pnpm run verify-cordis-catalog` in doc-sync; regenerate with `pnpm run gen-cordis-catalog`) — this section is byte-identical in both language sides of the page. Signature blocks use a `ts cordis-catalog` fence and keep the original source JSDoc; dispatch modes are defined in the [primer](../cordis-primer.md#dispatch-modes), and the framework-inherited `ctx` API lives in [cordis-api/inherited.md](../cordis-api/inherited.md).
+Generated from source by `scripts/gen-cordis-catalog.ts` (verified fresh by `pnpm run verify-cordis-catalog` in doc-sync; regenerate with `pnpm run gen-cordis-catalog`) — the language sides differ only in locale-specific paired document paths. Signature blocks use a `ts cordis-catalog` fence and keep the original source JSDoc; dispatch modes are defined in the [primer](../cordis-primer.md#dispatch-modes), and the framework-inherited `ctx` API lives in [cordis-api/inherited.md](../cordis-api/inherited.md).
 
 <a id="ctxpermissionpresets--permissionpresetservice"></a>
 
@@ -95,6 +96,17 @@ Owns the deployment's permission presets and their write path. Requires a confin
  * @returns the effective preset name, or `custom` when nothing matches.
  */
 current(events: readonly SessionEvent[]): string
+
+/**
+ * Advance one blank session after the host has confirmed it as the exact
+ * Web New Session reuse target. Only a still-effective
+ * default-origin selection advances; a started session, an explicit pick,
+ * legacy origin-less data, or independently changed knobs remain pinned.
+ * This is the permission-side half of the Web candidate selection and the
+ * host's blankness, membership, cwd, and archive verification.
+ * @param session - the live session selected for Workspace blank reuse.
+ */
+refreshDefaultForReuse(session: Session): void
 
 /**
  * Build the whole select value for one folded knob state: every table
@@ -132,5 +144,5 @@ set(session: Session, name: string): void
 
 Types: [Session](session.md) · [SessionEvent](session.md)
 
-Source: [`packages/interaction/permission-presets/src/index.ts:159`](../../packages/interaction/permission-presets/src/index.ts)
+Source: [`packages/interaction/permission-presets/src/index.ts`](../../packages/interaction/permission-presets/src/index.ts)
 <!-- END GENERATED cordis-surface -->
