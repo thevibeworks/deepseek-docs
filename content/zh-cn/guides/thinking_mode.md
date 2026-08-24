@@ -2,7 +2,7 @@
 title: "思考模式"
 description: "DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先输出一段思维链内容，以提升最终答案的准确性。"
 source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
-fetched: 2026-08-12
+fetched: 2026-08-23
 ---
 
 # 思考模式
@@ -46,12 +46,12 @@ response = client.chat.completions.create(
 
 在思考模式下，思维链内容通过 `reasoning_content` 参数返回，与 `content` 同级。在后续的轮次的拼接中，可以选择性地返回 `reasoning_content` 给 API：
 
-- 在两个 `user` 消息之间，如果模型**未进行工具调用**，则中间 `assistant` 的 `reasoning_content` 无需参与上下文拼接，在后续轮次中将其传入 API 会被忽略。详见[多轮对话拼接](#%E5%A4%9A%E8%BD%AE%E5%AF%B9%E8%AF%9D%E6%8B%BC%E6%8E%A5)。
-- 在两个 `user` 消息之间，如果模型**进行了工具调用**，则中间 `assistant` 的 `reasoning_content` 需参与上下文拼接，在后续所有 user 交互轮次中必须**回传给 API**。详见[工具调用](#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8)。
+- 在两个 `user` 消息之间，如果请求**未携带 `tools` 参数**，则中间 `assistant` 的 `reasoning_content` 无需参与上下文拼接，在后续轮次中将其传入 API 会被忽略。详见[多轮对话拼接](#%E5%A4%9A%E8%BD%AE%E5%AF%B9%E8%AF%9D%E6%8B%BC%E6%8E%A5)。
+- 在两个 `user` 消息之间，如果请求**携带了 `tools` 参数**，则中间 `assistant` 的 `reasoning_content` 需参与上下文拼接，在后续所有 user 交互轮次中必须**回传给 API**——即使该轮模型未实际进行工具调用，否则 API 会返回 `400` 错误。详见[工具调用](#tool-calls)。
 
 ## 多轮对话拼接
 
-在每一轮对话过程中，模型会输出思维链内容（`reasoning_content`）和最终回答（`content`）。如果没有工具调用，则在下一轮对话中，之前轮输出的思维链内容不会被拼接到上下文中，如下图所示：
+在每一轮对话过程中，模型会输出思维链内容（`reasoning_content`）和最终回答（`content`）。如果请求未携带 `tools` 参数，则在下一轮对话中，之前轮输出的思维链内容不会被拼接到上下文中，如下图所示：
 
 ![](https://api-docs.deepseek.com/zh-cn/img/deepseek_r1_multiround_example_cn.jpeg)
 
@@ -135,7 +135,7 @@ DeepSeek 模型的思考模式支持工具调用功能。模型在输出最终�
 
 ![](https://api-docs.deepseek.com/zh-cn/img/thinking_with_tools.jpg)
 
-请注意，携带了 `tools` 参数的请求，在后续所有请求中，必须完整回传 `reasoning_content` 给 API。若您的代码中未正确回传 `reasoning_content`，API 会返回 400 报错。正确回传方法请您参考下面的样例代码。
+请注意，携带了 `tools` 参数的请求，在后续所有请求中，必须完整回传 `reasoning_content` 给 API——即使该轮模型未实际进行工具调用。若您的代码中未正确回传 `reasoning_content`，API 会返回 400 报错。正确回传方法请您参考下面的样例代码。
 
 ### 样例代码
 

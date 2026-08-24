@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-08-16
+fetched: 2026-08-23
 ---
 
 # Chat Completions API
@@ -52,9 +52,82 @@ system 消息的内容。
 
 **[User message]**
 
-**content** Text content (string)required
+**contentobjectrequired**
 
-user 消息的内容。
+user 消息的内容。可以是字符串，也可以是内容块数组（使用 `deepseek-v4-flash-vision-exp` 模型时可携带图片）。详见[图像理解指南](../guides/vision.md)。
+
+oneOf
+
+- Text content
+- Array of content parts
+
+**[Assistant message]**
+
+string
+
+**[Tool message]**
+
+- Array [
+
+oneOf
+
+- Text content part
+- Image content part
+- File content part
+
+**[Text content]**
+
+**type** stringrequired
+
+**Possible values:** [`text`]
+
+内容块的类型，此场景下为 `text`。
+
+**text** stringrequired
+
+文本内容。
+
+**[Array of content parts]**
+
+**type** stringrequired
+
+**Possible values:** [`image_url`]
+
+内容块的类型，此场景下为 `image_url`。
+
+**image\_urlobjectrequired**
+
+**url** stringrequired
+
+图片的 `http(s)` URL（最多 8192 个字符）或 base64 编码的 data URL（`data:image/jpeg;base64,...`）。支持的格式：JPEG、PNG、GIF、WebP。
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。
+
+**[Text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`file`]
+
+内容块的类型，此场景下为 `file`。
+
+**file\_id** string
+
+通过 [Files API](../guides/files_api.md) 上传的文件 ID，形如 `file-api-...`。与 `file_data` 互斥。
+
+**file\_data** string
+
+图片的 base64 编码 data URL（`data:image/jpeg;base64,...`）。与 `file_id` 互斥。
+
+**filename** string
+
+可选的文件名，仅在配合 `file_data` 时有效。
+
+- ]
 
 **role** stringrequired
 
@@ -66,7 +139,7 @@ user 消息的内容。
 
 可以选填的参与者的名称，为模型提供信息以区分相同角色的参与者。
 
-**[Assistant message]**
+**[Image content part]**
 
 **content** stringnullablerequired
 
@@ -92,7 +165,7 @@ assistant 消息的内容。
 
 (Beta) 用于思考模式下在[对话前缀续写](../guides/chat_prefix_completion.md)功能下，作为最后一条 assistant 思维链内容的输入。使用此功能时，`prefix` 参数必须设置为 `true`。
 
-**[Tool message]**
+**[File content part]**
 
 **role** stringrequired
 
@@ -112,7 +185,7 @@ tool 消息的内容。
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`]
+**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
 
 使用的模型的 ID。
 
@@ -338,7 +411,7 @@ OK, 返回一个 `chat completion` 对象。
 
 **Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`]
 
-模型停止生  成 token 的原因。
+模型停止生成 token 的原因。
 
 `stop`：模型自然停止生成，或遇到 `stop` 序列中列出的字符串。
 
@@ -669,7 +742,7 @@ OK, 返回包含一系列 `chat completion chunk` 对象的流式输出。
 
 **deltaobjectrequired**
 
- 流式返回的一个 completion 增量。
+流式返回的一个 completion 增量。
 
 **content** stringnullable
 
@@ -741,7 +814,7 @@ completion 增量的内容。
 
 **logprob** numberrequired
 
-该 token 的对数概率。`-9999.0` 代表该 token   的输出概率极小，不在 top 20 最可能输出的 token 中。
+该 token 的对数概率。`-9999.0` 代表该 token 的输出概率极小，不在 top 20 最可能输出的 token 中。
 
 **bytes** integer[]nullablerequired
 
@@ -777,7 +850,7 @@ completion 增量的内容。
 
 `stop`：模型自然停止生成，或遇到 `stop` 序列中列出的字符串。
 
-`length` ：输出长度 达到了模型上下文长度限制，或达到了 `max_tokens` 的限制。
+`length` ：输出长度达到了模型上下文长度限制，或达到了 `max_tokens` 的限制。
 
 `content_filter`：输出内容因触发过滤策略而被过滤。
 

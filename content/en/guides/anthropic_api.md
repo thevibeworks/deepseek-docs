@@ -2,7 +2,7 @@
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-08-02
+fetched: 2026-08-23
 ---
 
 # Using the Anthropic API
@@ -81,7 +81,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 
 | Field | Support Status |
 | --- | --- |
-| anthropic-beta | Ignored |
+| anthropic-beta | Ignored for `/messages`; required (`files-api-2025-04-14`) for Files API endpoints — see [Files API](files_api.md#anthropic-compatible-files-api) |
 | anthropic-version | Ignored |
 | x-api-key | Fully Supported |
 
@@ -132,7 +132,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | array, type="text" | text | Fully Supported |
 | cache\_control | Ignored |
 | citations | Ignored |
-| array, type="image" |  | Not Supported |
+| array, type="image" | source | Supported. `source.type` can be base64 (media types: jpeg, png, gif, webp), url, or file (the file variant requires the header `anthropic-beta: files-api-2025-04-14`) |
 | array, type = "document" |  | Not Supported |
 | array, type = "search\_result" |  | Not Supported |
 | array, type = "thinking" |  | Supported |

@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-08-12
+fetched: 2026-08-23
 ---
 
 # Responses API
@@ -23,7 +23,7 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`]
+**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
 
 ID of the model to use.
 
@@ -31,7 +31,7 @@ ID of the model to use.
 
 The input to the model. Either a plain string (treated as a single `user` message), or a list of input items.
 
-Supported input item types are `message` / `function_call` / `function_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `system`). Image and file inputs are not supported (`input_image` parts do not cause an error, but are replaced with a placeholder text).
+Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`). With the `deepseek-v4-flash-vision-exp` model, `input_image` content parts are supported in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error. With other models, `input_image` parts are replaced with a placeholder text. File inputs are not supported.
 
 At least one of `input` and `instructions` is required.
 
@@ -50,19 +50,86 @@ string
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `reasoning`, `web_search_call`]
+**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
 
-The type of the input item. For `message` items, this field can be omitted if `role` is present.
+The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool.
 
 **role** string
 
 **Possible values:** [`user`, `assistant`, `system`, `developer`]
 
-For `message` items. The role of the message author. `developer` is treated as `system`.
+For `message` items. The role of the message author. `developer` is treated as `user`.
 
-**content**
+**contentobject**
 
-For `message` items, the message content, either a plain string or a list of `input_text` / `output_text` content parts. For `reasoning` items, a list of `reasoning_text` content parts.
+For `message` items, the message content, either a plain string or a list of `input_text` / `output_text` / `input_image` content parts. With the `deepseek-v4-flash-vision-exp` model, `input_image` parts carry images; with other models they are replaced with a placeholder text. For `reasoning` items, a list of `reasoning_text` content parts.
+
+oneOf
+
+- Text content
+- Array of content parts
+
+**[Text content]**
+
+string
+
+**[Array of content parts]**
+
+- Array [
+
+oneOf
+
+- Text content part
+- Image content part
+- Reasoning text content part
+
+**[Text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`input_text`, `output_text`]
+
+The type of the content part.
+
+**text** stringrequired
+
+The text content.
+
+**[Image content part]**
+
+**type** stringrequired
+
+**Possible values:** [`input_image`]
+
+The type of the content part, in this case `input_image`.
+
+**image\_url** string
+
+The image source, either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded data URL (`data:image/jpeg;base64,...`). Supported formats: JPEG, PNG, GIF, and WebP. Mutually exclusive with `file_id`: passing neither returns a `400` error ("input\_image must have image\_url or file\_id"); passing both returns a `400` error ("input\_image cannot have both image\_url and file\_id").
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image. Ignored when `file_id` is set.
+
+**file\_id** string
+
+The ID of an image file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`. Mutually exclusive with `image_url`; `detail` is ignored when `file_id` is set.
+
+**[Reasoning text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`reasoning_text`]
+
+The type of the content part, in this case `reasoning_text`.
+
+**text** stringrequired
+
+The chain-of-thought text content.
+
+- ]
 
 **call\_id** string
 
@@ -76,9 +143,76 @@ For `function_call` items. The name of the function to call.
 
 For `function_call` items. The arguments to call the function with, in JSON format.
 
-**output** string
+**outputobject**
 
-For `function_call_output` items. The output of the function call.
+For `function_call_output` / `custom_tool_call_output` items. The output of the tool call, either a plain string or a list of `input_text` / `input_image` content parts. With the `deepseek-v4-flash-vision-exp` model, `input_image` parts in the output are processed as real images; with other models they are replaced with a placeholder text.
+
+oneOf
+
+- Text output
+- Array of content parts
+
+**[Text output]**
+
+string
+
+**[Array of content parts]**
+
+- Array [
+
+oneOf
+
+- Text content part
+- Image content part
+- Reasoning text content part
+
+**[Text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`input_text`, `output_text`]
+
+The type of the content part.
+
+**text** stringrequired
+
+The text content.
+
+**[Image content part]**
+
+**type** stringrequired
+
+**Possible values:** [`input_image`]
+
+The type of the content part, in this case `input_image`.
+
+**image\_url** string
+
+The image source, either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded data URL (`data:image/jpeg;base64,...`). Supported formats: JPEG, PNG, GIF, and WebP. Mutually exclusive with `file_id`: passing neither returns a `400` error ("input\_image must have image\_url or file\_id"); passing both returns a `400` error ("input\_image cannot have both image\_url and file\_id").
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image. Ignored when `file_id` is set.
+
+**file\_id** string
+
+The ID of an image file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`. Mutually exclusive with `image_url`; `detail` is ignored when `file_id` is set.
+
+**[Reasoning text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`reasoning_text`]
+
+The type of the content part, in this case `reasoning_text`.
+
+**text** stringrequired
+
+The chain-of-thought text content.
+
+- ]
 
 - ]
 

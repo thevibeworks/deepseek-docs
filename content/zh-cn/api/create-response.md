@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-08-16
+fetched: 2026-08-23
 ---
 
 # Responses API
@@ -23,7 +23,7 @@ POST /responses
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`]
+**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
 
 使用的模型的 ID。
 
@@ -31,7 +31,7 @@ POST /responses
 
 模型的输入。既可以传纯字符串（视作一条 `user` 消息），也可以传输入 item 列表。
 
-支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `system`）。不支持图片、文件输入（`input_image` 内容块不会报错，但会被替换为占位文本）。
+支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）。使用 `deepseek-v4-flash-vision-exp` 模型时，`user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`system` / `assistant` 消息中的图片将返回 `400` 错误。使用其他模型时，`input_image` 内容块会被替换为占位文本。文件输入不支持。
 
 `input` 与 `instructions` 至少传一个。
 
@@ -50,19 +50,86 @@ string
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `reasoning`, `web_search_call`]
+**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
 
-输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。
+输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。`custom_tool_call` / `custom_tool_call_output` item 配合 `apply_patch` custom 工具使用。
 
 **role** string
 
 **Possible values:** [`user`, `assistant`, `system`, `developer`]
 
-用于 `message` item。消息作者的角色。`developer` 视同 `system`。
+用于 `message` item。消息作者的角色。`developer` 视同 `user`。
 
-**content**
+**contentobject**
 
-用于 `message` item 时为消息内容，可以是纯字符串或 `input_text` / `output_text` 内容块列表。用于 `reasoning` item 时为 `reasoning_text` 内容块列表。
+用于 `message` item 时为消息内容，可以是纯字符串或 `input_text` / `output_text` / `input_image` 内容块列表。使用 `deepseek-v4-flash-vision-exp` 模型时，`input_image` 内容块携带图片；使用其他模型时会被替换为占位文本。用于 `reasoning` item 时为 `reasoning_text` 内容块列表。
+
+oneOf
+
+- Text content
+- Array of content parts
+
+**[Text content]**
+
+string
+
+**[Array of content parts]**
+
+- Array [
+
+oneOf
+
+- 文本内容块
+- 图片内容块
+- 推理文本内容块
+
+**[文本内容块]**
+
+**type** stringrequired
+
+**Possible values:** [`input_text`, `output_text`]
+
+内容块的类型。
+
+**text** stringrequired
+
+文本内容。
+
+**[图片内容块]**
+
+**type** stringrequired
+
+**Possible values:** [`input_image`]
+
+内容块的类型，此场景下为 `input_image`。
+
+**image\_url** string
+
+图片来源，可以是图片的 `http(s)` URL（最多 8192 个字符）或 base64 编码的 data URL（`data:image/jpeg;base64,...`）。支持的格式：JPEG、PNG、GIF、WebP。与 `file_id` 互斥：两者都不传返回 `400` 错误（"input\_image must have image\_url or file\_id"），两者都传返回 `400` 错误（"input\_image cannot have both image\_url and file\_id"）。
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。设置 `file_id` 时该字段被忽略。
+
+**file\_id** string
+
+通过 [Files API](../guides/files_api.md) 上传的图片文件 ID，形如 `file-api-...`。与 `image_url` 互斥；设置 `file_id` 时 `detail` 被忽略。
+
+**[推理文本内容块]**
+
+**type** stringrequired
+
+**Possible values:** [`reasoning_text`]
+
+内容块的类型，此场景下为 `reasoning_text`。
+
+**text** stringrequired
+
+思维链文本内容。
+
+- ]
 
 **call\_id** string
 
@@ -76,9 +143,76 @@ string
 
 用于 `function_call` item。调用函数的入参，格式为 JSON。
 
-**output** string
+**outputobject**
 
-用于 `function_call_output` item。函数调用的结果。
+用于 `function_call_output` / `custom_tool_call_output` item。工具调用的结果，可以是纯字符串或 `input_text` / `input_image` 内容块列表。使用 `deepseek-v4-flash-vision-exp` 模型时，输出中的 `input_image` 内容块会作为真实图片处理；使用其他模型时会被替换为占位文本。
+
+oneOf
+
+- Text output
+- Array of content parts
+
+**[Text output]**
+
+string
+
+**[Array of content parts]**
+
+- Array [
+
+oneOf
+
+- 文本内容块
+- 图片内容块
+- 推理文本内容块
+
+**[文本内容块]**
+
+**type** stringrequired
+
+**Possible values:** [`input_text`, `output_text`]
+
+内容块的类型。
+
+**text** stringrequired
+
+文本内容。
+
+**[图片内容块]**
+
+**type** stringrequired
+
+**Possible values:** [`input_image`]
+
+内容块的类型，此场景下为 `input_image`。
+
+**image\_url** string
+
+图片来源，可以是图片的 `http(s)` URL（最多 8192 个字符）或 base64 编码的 data URL（`data:image/jpeg;base64,...`）。支持的格式：JPEG、PNG、GIF、WebP。与 `file_id` 互斥：两者都不传返回 `400` 错误（"input\_image must have image\_url or file\_id"），两者都传返回 `400` 错误（"input\_image cannot have both image\_url and file\_id"）。
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。设置 `file_id` 时该字段被忽略。
+
+**file\_id** string
+
+通过 [Files API](../guides/files_api.md) 上传的图片文件 ID，形如 `file-api-...`。与 `image_url` 互斥；设置 `file_id` 时 `detail` 被忽略。
+
+**[推理文本内容块]**
+
+**type** stringrequired
+
+**Possible values:** [`reasoning_text`]
+
+内容块的类型，此场景下为 `reasoning_text`。
+
+**text** stringrequired
+
+思维链文本内容。
+
+- ]
 
 - ]
 

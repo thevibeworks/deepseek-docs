@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-08-12
+fetched: 2026-08-23
 ---
 
 # Chat Completions API
@@ -52,9 +52,82 @@ An optional name for the participant. Provides the model information to differen
 
 **[User message]**
 
-**content** Text content (string)required
+**contentobjectrequired**
 
-The contents of the user message.
+The contents of the user message. Either a string, or an array of content parts (for image input with the `deepseek-v4-flash-vision-exp` model). See the [Vision guide](../guides/vision.md) for details.
+
+oneOf
+
+- Text content
+- Array of content parts
+
+**[Assistant message]**
+
+string
+
+**[Tool message]**
+
+- Array [
+
+oneOf
+
+- Text content part
+- Image content part
+- File content part
+
+**[Text content]**
+
+**type** stringrequired
+
+**Possible values:** [`text`]
+
+The type of the content part, in this case `text`.
+
+**text** stringrequired
+
+The text content.
+
+**[Array of content parts]**
+
+**type** stringrequired
+
+**Possible values:** [`image_url`]
+
+The type of the content part, in this case `image_url`.
+
+**image\_urlobjectrequired**
+
+**url** stringrequired
+
+Either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded data URL (`data:image/jpeg;base64,...`). Supported formats: JPEG, PNG, GIF, and WebP.
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image.
+
+**[Text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`file`]
+
+The type of the content part, in this case `file`.
+
+**file\_id** string
+
+The ID of a file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`. Mutually exclusive with `file_data`.
+
+**file\_data** string
+
+A base64-encoded data URL of the image (`data:image/jpeg;base64,...`). Mutually exclusive with `file_id`.
+
+**filename** string
+
+An optional filename. Only valid together with `file_data`.
+
+- ]
 
 **role** stringrequired
 
@@ -66,7 +139,7 @@ The role of the messages author, in this case `user`.
 
 An optional name for the participant. Provides the model information to differentiate between participants of the same role.
 
-**[Assistant message]**
+**[Image content part]**
 
 **content** stringnullablerequired
 
@@ -91,7 +164,7 @@ You must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 (Beta) Used for the thinking mode in the [Chat Prefix Completion](../guides/chat_prefix_completion.md) feature as the input for the CoT in the last assistant message. When using this feature, the `prefix` parameter must be set to `true`.
 
-**[Tool message]**
+**[File content part]**
 
 **role** stringrequired
 
@@ -111,7 +184,7 @@ Tool call that this message is responding to.
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`]
+**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
 
 ID of the model to use.
 

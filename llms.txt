@@ -21,16 +21,21 @@ Each file carries frontmatter with its canonical `source:` URL.
 
 - [Chat Completions API](content/en/api/create-chat-completion.md): Creates a model response for the given chat conversation.
 - [FIM Completion API (Beta)](content/en/api/create-completion.md): FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature.
+- [Upload File](content/en/api/create-file.md): Upload an image file that can later be referenced by its `file_id` in chat completion requests.
 - [Responses API](content/en/api/create-response.md): Creates a model response in the OpenAI Responses API format.
 - [DeepSeek API](content/en/api/deepseek-api.md): The DeepSeek API. To use the DeepSeek API, please [create an API key first](https://platform.deepseek.com/api_keys).
+- [Delete File](content/en/api/delete-file.md): Deletes a file.
 - [Get User Balance](content/en/api/get-user-balance.md): Get user current balance
+- [List Files](content/en/api/list-files.md): Returns a list of files that belong to the user, with cursor-based pagination.
 - [Lists Models](content/en/api/list-models.md): Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](/quick_sta...
+- [Retrieve File](content/en/api/retrieve-file.md): Returns information about a specific file.
 
 ## Guides
 
 - [Using the Anthropic API](content/en/guides/anthropic_api.md): To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deeps...
 - [Chat Prefix Completion (Beta)](content/en/guides/chat_prefix_completion.md): The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the mes...
 - [Integrate with AI Tools](content/en/guides/coding_agents.md): This guide shows how to integrate DeepSeek models with popular AI coding tools, including Claude Code, OpenCode, and OpenClaw.
+- [Files API](content/en/guides/files_api.md): The Files API lets you upload images and reference them later by file_id. It is the recommended way to:
 - [FIM Completion (Beta)](content/en/guides/fim_completion.md): In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is comm...
 - [JSON Output](content/en/guides/json_mode.md): In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing.
 - [Context Caching](content/en/guides/kv_cache.md): The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code.
@@ -38,6 +43,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Using the Responses API](content/en/guides/responses_api.md): To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com.
 - [Thinking Mode](content/en/guides/thinking_mode.md): The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the ...
 - [Tool Calls](content/en/guides/tool_calls.md): Tool Calls allows the model to call external tools to enhance its capabilities.
+- [Vision](content/en/guides/vision.md): The deepseek-v4-flash-vision-exp model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze ch...
 
 ## API Samples
 
@@ -87,7 +93,8 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [DeepSeek-V3.2 Release](content/en/news/news251201.md): 🚀 Launching DeepSeek-V3.2 & DeepSeek-V3.2-Speciale — Reasoning-first models built for agents!
 - [DeepSeek V4 Preview Release](content/en/news/news260424.md): 🚀 DeepSeek-V4 Preview is officially live & open-sourced! Welcome to the era of cost-effective 1M context length.
 - [DeepSeek-V4-Pro GA Release](content/en/news/news260813.md): We’re launching DeepSeek-V4-Pro today! 🚀
-- [Change Log](content/en/updates.md): Date: 2026-08-13
+- [DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live](content/en/news/news260821.md): DeepSeek-V4-Flash-Vision-Exp is now live on the DeepSeek API Platform! 🚀
+- [Change Log](content/en/updates.md): Date: 2026-08-21
 
 ## dsh (DeepSeek Harness)
 
