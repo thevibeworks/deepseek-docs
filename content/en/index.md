@@ -2,7 +2,7 @@
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-08-16
+fetched: 2026-08-23
 ---
 
 # Your First API Call
@@ -14,9 +14,9 @@ The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifyi
 | base\_url (OpenAI) | `https://api.deepseek.com` |
 | base\_url (Anthropic) | `https://api.deepseek.com/anthropic` |
 | api\_key | apply for an [API key](https://platform.deepseek.com/api_keys) |
-| model(1) | `deepseek-v4-flash` `deepseek-v4-pro` |
+| model(1) | `deepseek-v4-flash` `deepseek-v4-pro` `deepseek-v4-flash-vision-exp` |
 
-(1) The `deepseek-v4-flash` model has been updated to DeepSeek-V4-Flash-0731, and the `deepseek-v4-pro` model has been updated to DeepSeek-V4-Pro-0813. The calling method remains unchanged — simply use `deepseek-v4-flash` or `deepseek-v4-pro` to access the latest version.
+(1) The `deepseek-v4-flash` model has been updated to DeepSeek-V4-Flash-0731, and the `deepseek-v4-pro` model has been updated to DeepSeek-V4-Pro-0813. The calling method remains unchanged — simply use `deepseek-v4-flash` or `deepseek-v4-pro` to access the latest version. The newly released `deepseek-v4-flash-vision-exp` is an experimental model that additionally accepts image input; set the model name to `deepseek-v4-flash-vision-exp` to use it, and see [Vision](guides/vision.md) for details.
 
 ## Integrate with Agent Tools
 

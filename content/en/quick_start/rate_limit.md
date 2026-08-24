@@ -2,7 +2,7 @@
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
 source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-08-02
+fetched: 2026-08-23
 ---
 
 # Rate Limit & Isolation
@@ -13,10 +13,10 @@ For each account, the concurrency limits for different DeepSeek API models are s
 
 **If you need higher concurrency, you can submit a [capacity expansion request](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnda9jNKvhyYr8xb843xLEzc). We will match the appropriate concurrency based on your actual business needs. There is no additional cost for capacity expansion.**
 
-|  |  |  |
-| --- | --- | --- |
-|  | deepseek-v4-pro | deepseek-v4-flash |
-| Concurrency Limit | 500 | 2500 |
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | deepseek-v4-pro | deepseek-v4-flash | deepseek-v4-flash-vision-exp |
+| Concurrency Limit | 500 | 2500 | 2500 |
 
 - A request counts as one concurrent connection from the time it is sent until the model response is complete
 - Concurrency limits are calculated at the account level, regardless of which API Key is used
@@ -32,7 +32,7 @@ You can pass the `user_id` parameter to the API to achieve fine-grained manageme
 - **KVCache Isolation:** `user_id` is used to isolate KVCache for users on your business side for privacy management
 - **Scheduling Isolation:** `user_id` is used for scheduling isolation of users on your business side
   - For regular API users, all `user_id` values are combined for concurrency limit calculation
-  - For API users with increased concurrency quotas, we will limit the total concurrency under your account, and we will also impose concurrency limits on each `user_id` you pass (an empty id is treated as a special `user_id`). For each `user_id`, the concurrency limit for deepseek-v4-pro is 500, and for deepseek-v4-flash is 2500. If a `user_id` exceeds its limit, requests with that `user_id` under your account will receive an HTTP 429 error code
+  - For API users with increased concurrency quotas, we will limit the total concurrency under your account, and we will also impose concurrency limits on each `user_id` you pass (an empty id is treated as a special `user_id`). For each `user_id`, the concurrency limit for deepseek-v4-pro is 500, for deepseek-v4-flash is 2500, and for deepseek-v4-flash-vision-exp is 2500. If a `user_id` exceeds its limit, requests with that `user_id` under your account will receive an HTTP 429 error code
 
 ### Setting user\_id
 

@@ -1,15 +1,15 @@
 ---
 title: "DeepSeek API"
-description: "The DeepSeek API. To use the DeepSeek API, please [create an API key first](https://platform.deepseek.com/api_keys)."
+description: "使用 DeepSeek API 之前，请先 [创建 API 密钥](https://platform.deepseek.com/api_keys)。"
 source: https://api-docs.deepseek.com/zh-cn/api/deepseek-api
-fetched: 2026-08-02
+fetched: 2026-08-23
 ---
 
 Version: 1.0.0
 
 # DeepSeek API
 
-The DeepSeek API. To use the DeepSeek API, please [create an API key first](https://platform.deepseek.com/api_keys).
+使用 DeepSeek API 之前，请先 [创建 API 密钥](https://platform.deepseek.com/api_keys)。
 
 ## Authentication
 
@@ -22,11 +22,11 @@ The DeepSeek API. To use the DeepSeek API, please [create an API key first](http
 
 ### Contact
 
-DeepSeek Support: [api-service@deepseek.com](mailto:api-service@deepseek.com)
+DeepSeek 技术支持: [api-service@deepseek.com](mailto:api-service@deepseek.com)
 
 ### Terms of Service
 
-[<https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html>](https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html)
+[<https://cdn.deepseek.com/policies/zh-CN/deepseek-open-platform-terms-of-service.html>](https://cdn.deepseek.com/policies/zh-CN/deepseek-open-platform-terms-of-service.html)
 
 ### License
 

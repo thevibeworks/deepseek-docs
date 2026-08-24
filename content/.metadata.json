@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "title": "DeepSeek-R1 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -356,7 +356,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -961,8 +961,64 @@
     "content/zh-cn/news/news260813.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news260813",
       "title": "DeepSeek-V4-Pro 正式版上线"
+    },
+    "content/en/api/create-file.md": {
+      "url": "https://api-docs.deepseek.com/api/create-file",
+      "title": "Upload File"
+    },
+    "content/en/api/delete-file.md": {
+      "url": "https://api-docs.deepseek.com/api/delete-file",
+      "title": "Delete File"
+    },
+    "content/en/api/retrieve-file.md": {
+      "url": "https://api-docs.deepseek.com/api/retrieve-file",
+      "title": "Retrieve File"
+    },
+    "content/en/guides/files_api.md": {
+      "url": "https://api-docs.deepseek.com/guides/files_api",
+      "title": "Files API"
+    },
+    "content/en/guides/vision.md": {
+      "url": "https://api-docs.deepseek.com/guides/vision",
+      "title": "Vision"
+    },
+    "content/en/api/list-files.md": {
+      "url": "https://api-docs.deepseek.com/api/list-files",
+      "title": "List Files"
+    },
+    "content/en/news/news260821.md": {
+      "url": "https://api-docs.deepseek.com/news/news260821",
+      "title": "DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live"
+    },
+    "content/zh-cn/api/create-file.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-file",
+      "title": "上传文件"
+    },
+    "content/zh-cn/api/delete-file.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/delete-file",
+      "title": "删除文件"
+    },
+    "content/zh-cn/api/list-files.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/list-files",
+      "title": "列出文件"
+    },
+    "content/zh-cn/api/retrieve-file.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/retrieve-file",
+      "title": "查询文件"
+    },
+    "content/zh-cn/guides/files_api.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/files_api",
+      "title": "Files API"
+    },
+    "content/zh-cn/guides/vision.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/vision",
+      "title": "图像理解"
+    },
+    "content/zh-cn/news/news260821.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news260821",
+      "title": "V4-Flash-Vision-Exp 上线，开启多模态 API 服务"
     }
   },
-  "updated": "2026-08-17",
+  "updated": "2026-08-23",
   "site": "https://api-docs.deepseek.com"
 }

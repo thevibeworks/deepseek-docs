@@ -2,7 +2,7 @@
 title: "FIM 补全 API（Beta）"
 description: "FIM (Fill In the Middle) 补全 API。<br/>用户需要设置 `base_url='https://api.deepseek.com/beta'` 来使用此功能。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-completion
-fetched: 2026-08-02
+fetched: 2026-08-23
 ---
 
 # FIM 补全 API（Beta）

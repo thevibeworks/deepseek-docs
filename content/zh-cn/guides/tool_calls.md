@@ -2,7 +2,7 @@
 title: "Tool Calls"
 description: "Tool Calls 让模型能够调用外部工具，来增强自身能力。"
 source: https://api-docs.deepseek.com/zh-cn/guides/tool_calls
-fetched: 2026-08-02
+fetched: 2026-08-23
 ---
 
 # Tool Calls
@@ -80,7 +80,7 @@ print(f"Model>\t {message.content}")
 
 ## 思考模式
 
-从 DeepSeek-V3.2 开始，API 支持了思考模式下的工具调用能力，详见[思考模式](thinking_mode.md#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8)。
+从 DeepSeek-V3.2 开始，API 支持了思考模式下的工具调用能力，详见[思考模式](thinking_mode.md#tool-calls)。
 
 ---
 

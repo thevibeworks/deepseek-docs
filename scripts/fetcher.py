@@ -194,6 +194,8 @@ def html_to_markdown(html: str, url: str, locale: str, self_rel: str,
     title = title_el.get_text().split("|")[0].strip() if title_el else ""
     desc_el = soup.select_one('meta[name="description"]')
     description = desc_el["content"].strip() if desc_el and desc_el.get("content") else ""
+    # Frontmatter is rendered from meta and so bypasses the body pass below.
+    title, description = decontrol(title), decontrol(description)
 
     # The server answers unknown/hiccuped paths with HTTP 200 and the SPA
     # shell carrying the homepage article; without this guard those save as
@@ -220,11 +222,30 @@ def html_to_markdown(html: str, url: str, locale: str, self_rel: str,
         body)
     # Collapse the whitespace debris conversion leaves behind.
     body = re.sub(r"​", "", body)
+    body = decontrol(body)
     body = re.sub(r"[ \t]+$", "", body, flags=re.M)
     body = re.sub(r"\n{3,}", "\n\n", body).strip() + "\n"
 
     meta = {"title": title, "description": description}
     return body, meta
+
+
+def decontrol(text: str) -> str:
+    """Strip C0 control characters. Tab, newline and CR are kept.
+
+    Upstream really does publish these: several Chinese pages carry a
+    literal NUL mid-sentence -- responses_api has
+    "思维链文本增量 / \x00完整思维链文本", news250120 has "参\x00\x00考" --
+    almost certainly a bad paste into their CMS.
+
+    Carrying them through is not fidelity, it is a hazard. A NUL makes git
+    treat the file as binary, so every diff on an affected page reads
+    "Binary files differ" and the contamination is invisible in review;
+    that is how 24 files accumulated 57 of them unnoticed. This vault is
+    also packed into a Go binary and served by `ds docs`, and nothing in
+    C0 has a meaning in markdown.
+    """
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text)
 
 
 def render_page(body: str, meta: dict, url: str) -> str:

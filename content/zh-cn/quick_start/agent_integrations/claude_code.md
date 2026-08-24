@@ -2,7 +2,7 @@
 title: "接入 Claude Code"
 description: "Claude Code 是一个运行在终端内的 AI 编程助手。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code
-fetched: 2026-08-16
+fetched: 2026-08-23
 ---
 
 # 接入 Claude Code

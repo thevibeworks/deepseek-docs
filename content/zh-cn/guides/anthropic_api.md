@@ -2,7 +2,7 @@
 title: "使用 Anthropic API"
 description: "为了满足大家对 Anthropic API 生态的使用需求，我们的 API 新增了对 Anthropic API 格式的支持，其 base_url 为 https://api.deepseek.com/anthropic。"
 source: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api
-fetched: 2026-08-16
+fetched: 2026-08-23
 ---
 
 # 使用 Anthropic API
@@ -79,75 +79,75 @@ print(message.content)
 
 ### HTTP Header
 
-| Field | Support Status |
+| 字段 | 支持情况 |
 | --- | --- |
-| anthropic-beta | Ignored |
-| anthropic-version | Ignored |
-| x-api-key | Fully Supported |
+| anthropic-beta | `/messages` 忽略；Files API 端点必须携带（`files-api-2025-04-14`）——见 [Files API](files_api.md#anthropic-compatible-files-api) |
+| anthropic-version | 忽略 |
+| x-api-key | 完全支持 |
 
-### Simple Fields
+### 简单字段
 
-| Field | Support Status |
+| 字段 | 支持情况 |
 | --- | --- |
-| model | Use DeepSeek Model Instead |
-| max\_tokens | Fully Supported |
-| container | Ignored |
-| mcp\_servers | Ignored |
-| metadata | `user_id` is supported, others are ignored Please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md) for more information about `user_id` parameter. |
-| service\_tier | Ignored |
-| stop\_sequences | Fully Supported |
-| stream | Fully Supported |
-| system | Fully Supported |
-| temperature | Fully Supported (range [0.0 ~ 2.0]) |
-| thinking | Supported (`budget_tokens` is ignored) |
-| output\_config | Only `effort` is supported |
-| top\_k | Ignored |
-| top\_p | Fully Supported |
+| model | 改为使用 DeepSeek 模型 |
+| max\_tokens | 完全支持 |
+| container | 忽略 |
+| mcp\_servers | 忽略 |
+| metadata | 支持 `user_id`，其它字段忽略 关于 `user_id` 参数的更多信息，请参考 [限速与隔离](../quick_start/rate_limit.md)。 |
+| service\_tier | 忽略 |
+| stop\_sequences | 完全支持 |
+| stream | 完全支持 |
+| system | 完全支持 |
+| temperature | 完全支持（范围 [0.0 ~ 2.0]） |
+| thinking | 支持（`budget_tokens` 被忽略） |
+| output\_config | 仅支持 `effort` |
+| top\_k | 忽略 |
+| top\_p | 完全支持 |
 
-### Tool Fields
+### Tool 字段
 
 #### tools
 
-| Field | Support Status |
+| 字段 | 支持情况 |
 | --- | --- |
-| name | Fully Supported |
-| input\_schema | Fully Supported |
-| description | Fully Supported |
-| cache\_control | Ignored |
+| name | 完全支持 |
+| input\_schema | 完全支持 |
+| description | 完全支持 |
+| cache\_control | 忽略 |
 
 #### tool\_choice
 
-| Value | Support Status |
+| 取值 | 支持情况 |
 | --- | --- |
-| none | Fully Supported |
-| auto | Supported (`disable_parallel_tool_use` is ignored) |
-| any | Supported (`disable_parallel_tool_use` is ignored) |
-| tool | Supported (`disable_parallel_tool_use` is ignored) |
+| none | 完全支持 |
+| auto | 支持（`disable_parallel_tool_use` 被忽略） |
+| any | 支持（`disable_parallel_tool_use` 被忽略） |
+| tool | 支持（`disable_parallel_tool_use` 被忽略） |
 
-### Message Fields
+### Message 字段
 
-| Field | Variant | Sub-Field | Support Status |
+| 字段 | 变体 | 子字段 | 支持情况 |
 | --- | --- | --- | --- |
-| content | string |  | Fully Supported |
-| array, type="text" | text | Fully Supported |
-| cache\_control | Ignored |
-| citations | Ignored |
-| array, type="image" |  | Not Supported |
-| array, type = "document" |  | Not Supported |
-| array, type = "search\_result" |  | Not Supported |
-| array, type = "thinking" |  | Supported |
-| array, type="redacted\_thinking" |  | Not Supported |
-| array, type = "tool\_use" | id | Fully Supported |
-| input | Fully Supported |
-| name | Fully Supported |
-| cache\_control | Ignored |
-| array, type = "tool\_result" | tool\_use\_id | Fully Supported |
-| content | Fully Supported |
-| cache\_control | Ignored |
-| is\_error | Ignored |
-| array, type = "server\_tool\_use" |  | Supported |
-| array, type = "web\_search\_tool\_result" |  | Supported |
-| array, type = "code\_execution\_tool\_result" |  | Not Supported |
-| array, type = "mcp\_tool\_use" |  | Not Supported |
-| array, type = "mcp\_tool\_result" |  | Not Supported |
-| array, type = "container\_upload" |  | Not Supported |
+| content | string |  | 完全支持 |
+| array, type="text" | text | 完全支持 |
+| cache\_control | 忽略 |
+| citations | 忽略 |
+| array, type="image" | source | 支持。`source.type` 可为 base64（媒体类型：jpeg、png、gif、webp）、url 或 file（file 形式需带请求头 `anthropic-beta: files-api-2025-04-14`） |
+| array, type = "document" |  | 不支持 |
+| array, type = "search\_result" |  | 不支持 |
+| array, type = "thinking" |  | 支持 |
+| array, type="redacted\_thinking" |  | 不支持 |
+| array, type = "tool\_use" | id | 完全支持 |
+| input | 完全支持 |
+| name | 完全支持 |
+| cache\_control | 忽略 |
+| array, type = "tool\_result" | tool\_use\_id | 完全支持 |
+| content | 完全支持 |
+| cache\_control | 忽略 |
+| is\_error | 忽略 |
+| array, type = "server\_tool\_use" |  | 支持 |
+| array, type = "web\_search\_tool\_result" |  | 支持 |
+| array, type = "code\_execution\_tool\_result" |  | 不支持 |
+| array, type = "mcp\_tool\_use" |  | 不支持 |
+| array, type = "mcp\_tool\_result" |  | 不支持 |
+| array, type = "container\_upload" |  | 不支持 |
