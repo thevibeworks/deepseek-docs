@@ -1,7 +1,7 @@
 ---
 title: "Plugin configuration"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/config.md
-fetched: 2026-08-13
+fetched: 2026-08-26
 ---
 # Plugin configuration
 
@@ -107,5 +107,5 @@ A configuration edit hot-replaces the plugin: the framework unloads the old inst
 ## Next steps
 
 - [Package and install a plugin](./publish.md) — ship the plugin as an installable package
-- [Plugins and lifecycle](../framework/) — understand the full plugin lifecycle
+- [Plugins and lifecycle](../framework/index.md) — understand the full plugin lifecycle
 - [Services and dependencies](../framework/service.md) — provide a service to other plugins

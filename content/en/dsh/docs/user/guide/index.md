@@ -1,7 +1,7 @@
 ---
 title: "Use the Web UI"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/index.md
-fetched: 2026-08-13
+fetched: 2026-08-26
 ---
 # Use the Web UI
 
@@ -11,7 +11,7 @@ Start the Web UI through the [root README](../../../README.md#run); the command 
 
 ## Configure a model
 
-Open **Settings → Models**, enter a DeepSeek API key, and save it. The model route becomes usable immediately without restarting the server.
+Open **Settings → Models**, enter a [DeepSeek API key](https://platform.deepseek.com/), and save it. The model route becomes usable immediately without restarting the server.
 
 The [model configuration guide](./providers.md) covers other providers and custom OpenAI-compatible endpoints.
 
@@ -32,4 +32,4 @@ The agent can read and edit workspace files, run commands, delegate work, and ma
 - [Configure models](./providers.md)
 - [Use the Python SDK](./python-sdk.md)
 - [Use other CLI modes](../../../apps/cli/README.md)
-- [Develop a plugin](../develop/basic/)
+- [Develop a plugin](../develop/basic/index.md)

@@ -1,7 +1,7 @@
 ---
 title: "Services and dependencies"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/framework/service.md
-fetched: 2026-08-13
+fetched: 2026-08-26
 ---
 # Services and dependencies
 
@@ -150,4 +150,4 @@ The repository generates the service names, public methods, and source locations
 ## Next steps
 
 - [Event system](./events.md) — communicate between plugins without tight coupling
-- [Capability layering](../practice/) — use services as capability interfaces
+- [Capability layering](../practice/index.md) — use services as capability interfaces
