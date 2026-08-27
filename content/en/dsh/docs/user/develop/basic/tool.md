@@ -1,7 +1,7 @@
 ---
 title: "Build a tool"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/tool.md
-fetched: 2026-08-26
+fetched: 2026-08-27
 ---
 # Build a tool
 
@@ -53,5 +53,5 @@ Open `http://127.0.0.1:3080` and ask: `Use the greet tool to greet Ada.` The mod
 ## Next steps
 
 - [Plugin configuration](./config.md) — make the greeting configurable.
-- [Tool authoring reference](../../../cookbook/adding-a-tool.md) — look up nested schemas, canonical values, background work, policy hooks, Code Mode, and UI cards.
+- [Tool authoring reference](../../../cookbook/adding-a-tool.md) — look up nested schemas, canonical values, background work, policy hooks, PTC mode, and UI cards.
 - [Capability layering](../practice/index.md) — split a replaceable capability into Service Definition, Service Provider, and Consumer packages.

@@ -107,11 +107,11 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)"
+      "title": "🚀 Introducing DeepSeek-V3"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-V3-0324 Release"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -356,7 +356,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -533,10 +533,6 @@
     "content/en/dsh/docs/config-catalog.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/config-catalog.md",
       "title": "Plugin Config Catalog"
-    },
-    "content/en/dsh/docs/cookbook/adding-a-conversation-node.md": {
-      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-conversation-node.md",
-      "title": "Add a Web Client conversation node"
     },
     "content/en/dsh/docs/cookbook/adding-a-package.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-package.md",
@@ -1025,8 +1021,48 @@
     "content/en/dsh/docs/subsystems/agent-team.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/agent-team.md",
       "title": "Agent Teams"
+    },
+    "content/en/dsh/docs/deepseek-llm-api-wire-extensions.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/deepseek-llm-api-wire-extensions.md",
+      "title": "Official DeepSeek LLM API wire extensions"
+    },
+    "content/en/dsh/docs/subsystems/conversation.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/conversation.md",
+      "title": "Conversation assembly"
+    },
+    "content/en/dsh/docs/subsystems/slots.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/slots.md",
+      "title": "Web Client Slots"
+    },
+    "content/en/dsh/docs/subsystems/todo.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/todo.md",
+      "title": "Todo"
+    },
+    "content/en/dsh/docs/subsystems/web-client.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/web-client.md",
+      "title": "Web Client architecture"
+    },
+    "content/en/dsh/docs/subsystems/webhook.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/webhook.md",
+      "title": "Webhook runtime"
+    },
+    "content/en/dsh/docs/user/develop/practice/dynamic-cordis.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/practice/dynamic-cordis.md",
+      "title": "Extend a running agent with Cordis tools"
+    },
+    "content/en/dsh/docs/user/guide/github-review.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/github-review.md",
+      "title": "Create review Sessions from GitHub webhooks"
+    },
+    "content/en/dsh/docs/user/guide/mcp-memory.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/mcp-memory.md",
+      "title": "Connect a third-party memory MCP server"
+    },
+    "content/en/dsh/docs/user/guide/schedule.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/schedule.md",
+      "title": "Schedule session-local reminders"
     }
   },
-  "updated": "2026-08-26",
+  "updated": "2026-08-27",
   "site": "https://api-docs.deepseek.com"
 }
