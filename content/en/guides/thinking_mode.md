@@ -2,7 +2,7 @@
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-08-23
+fetched: 2026-08-27
 ---
 
 # Thinking Mode
@@ -44,10 +44,10 @@ response = client.chat.completions.create(
 
 Thinking mode does not support the `temperature`, `top_p`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
 
-In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. When concatenating subsequent turns, you can selectively return `reasoning_content` to the API:
+In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
-- Between two `user` messages, if the request **does not carry the `tools` parameter**, the intermediate `assistant`'s `reasoning_content` does not need to participate in the context concatenation. If passed to the API in subsequent turns, it will be ignored. See [Multi-turn Conversation](#multi-turn-conversation) for details.
-- Between two `user` messages, if the request **carries the `tools` parameter**, the intermediate `assistant`'s `reasoning_content` must participate in the context concatenation and must be **passed back to the API** in all subsequent user interaction turns — even if the model did not perform a tool call in that turn. Otherwise the API returns a `400` error. See [Tool Calls](#tool-calls) for details.
+- If the request **carries the `tools` parameter**: the `reasoning_content` of all previous turns should be passed back to the API and will be concatenated into the context. See [Tool Calls](#tool-calls) for details.
+- If the request **does not carry the `tools` parameter**: `reasoning_content` does not need to be passed back; even if passed to the API, it will be ignored and will not be concatenated into the context. See [Multi-turn Conversation](#multi-turn-conversation) for details.
 
 ## Multi-turn Conversation
 

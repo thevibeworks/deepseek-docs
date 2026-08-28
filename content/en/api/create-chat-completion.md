@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-08-23
+fetched: 2026-08-27
 ---
 
 # Chat Completions API
@@ -260,7 +260,9 @@ Options for streaming response. Only set this when you set `stream: true`.
 
 **include\_usage** boolean
 
-If set, an additional chunk will be streamed before the `data: [DONE]` message. The `usage` field on this chunk shows the token usage statistics for the entire request, and the `choices` field will always be an empty array. All other chunks will also include a `usage` field, but with a null value.
+If set to `true`, all chunks in the stream will include a `usage` field, whose value is `null` on every chunk except the last one. If omitted or set to `false`, the `usage` field is absent from all chunks except the last one.
+
+Either way, the last chunk before the `data: [DONE]` message carries the token usage statistics for the entire request in its `usage` field. Note that no separate usage-only chunk is emitted: the statistics ride on the last content chunk, whose `choices` array always contains exactly one element that carries no new content and a non-null `finish_reason`.
 
 **temperature** numbernullable
 

@@ -1,7 +1,7 @@
 ---
 title: "Plan Mode"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/plan.md
-fetched: 2026-08-26
+fetched: 2026-08-27
 ---
 # Plan Mode
 
@@ -31,7 +31,7 @@ interface PlanModeConfig {
 }
 ```
 
-A missing, blank, or non-string `section` and any unknown key fail at plugin load rather than being ignored. While plan mode is active, the exact `section` text renders as the `plan:policy` [system-prompt section](system-prompt.md) at order 50; inactive plan mode contributes no text.
+A missing, blank, or non-string `section` and any unknown key fail at plugin load rather than being ignored. While plan mode is active, the exact `section` text renders as the `plan:policy` [system-prompt section](system-prompt.md) at first-party order 500; inactive plan mode contributes no text.
 
 ## The exit tool and the `/plan` command
 

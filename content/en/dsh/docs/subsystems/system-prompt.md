@@ -1,7 +1,7 @@
 ---
 title: "System Prompt Assembly"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/system-prompt.md
-fetched: 2026-08-26
+fetched: 2026-08-27
 ---
 # System Prompt Assembly
 
@@ -44,7 +44,7 @@ interface ToolProviderResult {
 
 ## Prompt sections
 
-`PromptSection` is a readonly same-process registration contract. Its text may be static or resolved from the current assembly context. One effective `complete` section becomes the sole prompt section after cooperative assembly.
+`PromptSection` is a readonly same-process registration contract. Its text may be static or resolved from the current assembly context. Sections sort by ascending order and then code-unit name; `FIRST_PARTY_SECTION_ORDER` publishes the sparse named allocation for repository-owned contributions. One effective `complete` section becomes the sole prompt section after cooperative assembly.
 
 ```ts type-equiv
 /** One contributed section of the system prompt (registry input). */
@@ -52,9 +52,9 @@ interface PromptSection {
   /** Unique name — a duplicate registration throws (see {@link SystemPrompt.section}). */
   readonly name: string
   /**
-   * Sections are concatenated in ascending order. Convention: `-100` is the
-   * harness identity, `0` the deployment persona, tool guidance uses 100–199;
-   * other negative orders also render before the persona.
+   * Sections are concatenated in ascending order. Equal orders use code-unit
+   * name order. Repository-owned placements use
+   * {@link FIRST_PARTY_SECTION_ORDER}.
    */
   readonly order: number
   /**

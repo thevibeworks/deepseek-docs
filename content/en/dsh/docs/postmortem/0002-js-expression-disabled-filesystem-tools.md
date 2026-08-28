@@ -1,7 +1,7 @@
 ---
 title: "Post-mortem 0002: Filesystem snapshot tools were permanently disabled"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/postmortem/0002-js-expression-disabled-filesystem-tools.md
-fetched: 2026-08-13
+fetched: 2026-08-27
 ---
 # Post-mortem 0002: Filesystem snapshot tools were permanently disabled
 
@@ -41,9 +41,9 @@ The snapshot framework treated any deterministic transcript as valid behavior. H
 ## Guardrails added
 
 - Filesystem scenarios boot `fs.cordis.yml`, an explicit fixed full-access overlay with a paired replay config and its own request-header class.
-- [`AGENTS.md`](../../AGENTS.md) and the [Cordis primer](../cordis-primer.md#loader-configuration) state that `!!js` is valid only under plugin `config` and conditional composition uses overlays.
+- [`AGENTS.md`](../../AGENTS.md) and the [Cordis primer](../cordis-primer.md#loader-configuration) state that `!!js` is valid under plugin `config` and entry `disabled`; other entry metadata stays literal, so conditional composition uses overlays.
 - `verify-cordis-config` parses repository Cordis YAML and rejects expression nodes in Loader entry metadata, including include patches and inserted entries.
-- `dsh-acp-snapshot` rejects structured `UNKNOWN_TOOL` results in fresh runs and committed session fixtures before they can be committed as expected outputs.
+- `dsh-session-snapshot` rejects structured `UNKNOWN_TOOL` results in fresh runs and committed session fixtures before they can be committed as expected outputs.
 
 ## Lessons
 

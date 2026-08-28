@@ -7,7 +7,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-08-23
+fetched: 2026-08-27
 ---
 
 # Chat Completions API
@@ -265,7 +265,9 @@ Options for streaming response. Only set this when you set `stream: true`.
 
 **include\_usage** boolean
 
-If set, an additional chunk will be streamed before the `data: [DONE]` message. The `usage` field on this chunk shows the token usage statistics for the entire request, and the `choices` field will always be an empty array. All other chunks will also include a `usage` field, but with a null value.
+If set to `true`, all chunks in the stream will include a `usage` field, whose value is `null` on every chunk except the last one. If omitted or set to `false`, the `usage` field is absent from all chunks except the last one.
+
+Either way, the last chunk before the `data: [DONE]` message carries the token usage statistics for the entire request in its `usage` field. Note that no separate usage-only chunk is emitted: the statistics ride on the last content chunk, whose `choices` array always contains exactly one element that carries no new content and a non-null `finish_reason`.
 
 **temperature** numbernullable
 
@@ -990,7 +992,7 @@ Loading...
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-08-02
+fetched: 2026-08-27
 ---
 
 # FIM Completion API (Beta)
@@ -1067,7 +1069,9 @@ Options for streaming response. Only set this when you set `stream: true`.
 
 **include\_usage** boolean
 
-If set, an additional chunk will be streamed before the `data: [DONE]` message. The `usage` field on this chunk shows the token usage statistics for the entire request, and the `choices` field will always be an empty array. All other chunks will also include a `usage` field, but with a null value.
+If set to `true`, all chunks in the stream will include a `usage` field, whose value is `null` on every chunk except the last one. If omitted or set to `false`, the `usage` field is absent from all chunks except the last one.
+
+Either way, the last chunk before the `data: [DONE]` message carries the token usage statistics for the entire request in its `usage` field. Note that no separate usage-only chunk is emitted: the statistics ride on the last content chunk, whose `choices` array always contains exactly one element that carries no new content and a non-null `finish_reason`.
 
 **suffix** stringnullable
 
@@ -4341,7 +4345,7 @@ Token usage is returned in `usage`:
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-08-23
+fetched: 2026-08-27
 ---
 
 # Thinking Mode
@@ -4383,10 +4387,10 @@ response = client.chat.completions.create(
 
 Thinking mode does not support the `temperature`, `top_p`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
 
-In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. When concatenating subsequent turns, you can selectively return `reasoning_content` to the API:
+In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
-- Between two `user` messages, if the request **does not carry the `tools` parameter**, the intermediate `assistant`'s `reasoning_content` does not need to participate in the context concatenation. If passed to the API in subsequent turns, it will be ignored. See [Multi-turn Conversation](#multi-turn-conversation) for details.
-- Between two `user` messages, if the request **carries the `tools` parameter**, the intermediate `assistant`'s `reasoning_content` must participate in the context concatenation and must be **passed back to the API** in all subsequent user interaction turns — even if the model did not perform a tool call in that turn. Otherwise the API returns a `400` error. See [Tool Calls](#tool-calls) for details.
+- If the request **carries the `tools` parameter**: the `reasoning_content` of all previous turns should be passed back to the API and will be concatenated into the context. See [Tool Calls](#tool-calls) for details.
+- If the request **does not carry the `tools` parameter**: `reasoning_content` does not need to be passed back; even if passed to the API, it will be ignored and will not be concatenated into the context. See [Multi-turn Conversation](#multi-turn-conversation) for details.
 
 ## Multi-turn Conversation
 

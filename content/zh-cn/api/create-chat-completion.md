@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-08-23
+fetched: 2026-08-27
 ---
 
 # Chat Completions API
@@ -258,7 +258,9 @@ string
 
 **include\_usage** boolean
 
-如果设置为 true，在流式消息最后的 `data: [DONE]` 之前将会传输一个额外的块。此块上的 usage 字段显示整个请求的 token 使用统计信息，而 choices 字段将始终是一个空数组。所有其他块也将包含一个 usage 字段，但其值为 null。
+如果设置为 `true`，流式返回的所有块都会包含 `usage` 字段，其中除最后一个块外，该字段的值均为 `null`。如果不设置或设置为 `false`，则除最后一个块外，其余块都不含 `usage` 字段。
+
+无论是否设置，`data: [DONE]` 之前的最后一个块都会在其 `usage` 字段中给出整个请求的 token 使用统计信息。请注意，这里不会单独下发一个只含 usage 的块：统计信息附加在最后一个内容块上，该块的 `choices` 数组始终只包含一个元素，其中不含新增内容且 `finish_reason` 非 null。
 
 **temperature** numbernullable
 
