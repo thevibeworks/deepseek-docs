@@ -460,14 +460,31 @@ def build_llms_full() -> None:
 
 
 def write_manifest(results: dict) -> None:
+    """Persist per-page fetch state, and remember how long an error has held.
+
+    Upstream serves a fallback shell for a page now and then, so a page's
+    entry flips error -> title -> error across runs. That flapping is not
+    news, but the manifest is the only record of it, so a page that goes
+    dead for good looks exactly like a page having a bad afternoon.
+    `error_since` is what tells them apart: set on the first failing run,
+    carried across consecutive failures, dropped the moment the page comes
+    back. news250120 has carried one since 2026-08-08 and nobody noticed,
+    because 19 of the last 30 commits here were this file flapping.
+    """
     manifest_path = CONTENT / ".metadata.json"
     manifest = {}
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text())
+    previous = manifest.get("files", {})
     any_changed = any(r.get("changed") for r in results.values())
-    manifest.setdefault("files", {}).update(
-        {k: {kk: vv for kk, vv in v.items() if kk != "changed"}
-         for k, v in results.items()})
+    today = date.today().isoformat()
+    entries = {}
+    for k, v in results.items():
+        entry = {kk: vv for kk, vv in v.items() if kk != "changed"}
+        if "error" in entry:
+            entry["error_since"] = previous.get(k, {}).get("error_since", today)
+        entries[k] = entry
+    manifest.setdefault("files", {}).update(entries)
     if any_changed or "updated" not in manifest:
         manifest["updated"] = date.today().isoformat()
     manifest["site"] = SITE
