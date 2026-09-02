@@ -31,6 +31,15 @@ jobs:
       - name: Fetch docs
         run: uv run scripts/fetcher.py
 
+      # Two different questions. "Did the tree move?" decides whether there
+      # is anything to commit. "Is there news?" decides whether to spend an
+      # agent call and wake a phone -- and those came apart badly: 19 of the
+      # last 30 commits here changed nothing but content/.metadata.json,
+      # where a page's entry flips between a title and a transient "served
+      # fallback shell" error as upstream wobbles. Every one of those flips
+      # ran triage, committed, and pushed "DeepSeek docs updated" to Eric's
+      # phone for zero documentation changes. A notification channel that
+      # cries wolf 19 times in 30 is not a notification channel.
       - name: Detect changes
         id: diff
         run: |
@@ -38,9 +47,16 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ -z "$(git status --porcelain)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "newsworthy=false" >> "$GITHUB_OUTPUT"
             echo "Mirror is up to date."
+          elif [ -z "$(git status --porcelain -- ':!content/.metadata.json')" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "newsworthy=false" >> "$GITHUB_OUTPUT"
+            echo "Bookkeeping only: fetch-state metadata moved, no content changed."
+            git status --short | head -30
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "newsworthy=true" >> "$GITHUB_OUTPUT"
             git status --short | head -30
           fi
 
@@ -50,7 +66,7 @@ jobs:
       # PR) lives in the deterministic Publish step below. Runs Claude Code
       # on the DeepSeek API via the Anthropic-compatible endpoint.
       - name: Agent triage (deepseek-v4-flash)
-        if: steps.diff.outputs.changed == 'true'
+        if: steps.diff.outputs.newsworthy == 'true'
         uses: anthropics/claude-code-action@v1.0.168
         env:
           ANTHROPIC_BASE_URL: https://api.deepseek.com/anthropic
@@ -118,6 +134,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BARK_SERVER: ${{ secrets.BARK_SERVER }}
           BARK_KEY: ${{ secrets.BARK_KEY }}
+          NEWSWORTHY: ${{ steps.diff.outputs.newsworthy }}
         run: |
           set -euo pipefail
           D=.decision
@@ -126,6 +143,9 @@ jobs:
           # pages are captured from the dirty tree before anything commits.
           PAGES=$(git status --porcelain content/ | awk '{print $NF}' | head -12)
           notify() {  # $1 = link target (commit or PR)
+            # Bookkeeping commits get no push. The mirror stays honest in
+            # git; the phone only rings when a document actually changed.
+            [ "${NEWSWORTHY:-true}" = "true" ] || return 0
             [ -n "${BARK_SERVER:-}" ] && [ -n "${BARK_KEY:-}" ] || return 0
             jq -n --arg k "$BARK_KEY" --arg t "DeepSeek docs updated" \
               --arg b "${TITLE}"$'\n\n'"${PAGES}" --arg u "$1" \
@@ -133,6 +153,18 @@ jobs:
             | curl -sS -X POST "$BARK_SERVER/push" -H 'Content-Type: application/json' -d @- \
             || echo "::warning::bark notification failed (sync itself is fine)"
           }
+          # No triage ran for a metadata-only run, so do not go looking for
+          # a decision and do not warn about its absence -- that is the
+          # expected path now, not a degraded one.
+          if [ "${NEWSWORTHY:-true}" != "true" ]; then
+            git add -A
+            git commit -q -m "chore: refresh upstream fetch-state metadata" \
+              -m "No document content changed; content/.metadata.json only."
+            git push -q
+            echo "Bookkeeping commit pushed; no triage, no notification."
+            exit 0
+          fi
+
           SIGNAL=$(tr -d '[:space:]' < "$D/signal" 2>/dev/null || echo "")
           TITLE=$(head -1 "$D/title" 2>/dev/null || echo "")
           if [ -z "$SIGNAL" ] || [ -z "$TITLE" ]; then
@@ -201,6 +233,25 @@ jobs:
             echo "::error::Uncommitted changes remain after publish"
             git status --short | head -20
             exit 1
+          fi
+
+      # The question a green pipeline and a fresh main cannot answer: not
+      # "is the mirror updating?" but "is anything in it no longer being
+      # fetched?" Aggregate freshness hides a single page that stopped
+      # coming back, because the other 273 keep moving. Runs every time,
+      # including on no-change runs, since a page going dead does not
+      # announce itself with a diff.
+      - name: Sources that stopped fetching
+        if: success()
+        run: |
+          out=$(python3 scripts/stale_sources.py) || true
+          if [ -n "$out" ]; then
+            echo "::warning::sources unfetched for 7+ days -- the mirror is holding fossils"
+            printf '%s\n' "$out"
+            { echo "### Sources that stopped fetching"; echo '```'; printf '%s\n' "$out"; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "every source fetched within the last 7 days"
           fi
 
       # Same pattern as claude-code-docs: a failed sync run pushes to the
