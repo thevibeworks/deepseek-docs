@@ -1,7 +1,7 @@
 ---
 title: "Web Client Slots"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/slots.md
-fetched: 2026-08-27
+fetched: 2026-09-02
 ---
 # Web Client Slots
 
@@ -140,6 +140,7 @@ root
 │  │     │  ├─ conversation.chat.commandview
 │  │     │  ├─ conversation.chat.turnTail
 │  │     │  └─ tool.call.toolview
+│  │     │     ├─ tool.call.images
 │  │     │     └─ tool.view.cordis
 │  │     ├─ conversation.message.images
 │  │     └─ conversation.trajectory.images

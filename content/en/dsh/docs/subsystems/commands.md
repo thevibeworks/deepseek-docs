@@ -1,7 +1,7 @@
 ---
 title: "Human Commands"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/commands.md
-fetched: 2026-08-26
+fetched: 2026-09-02
 ---
 # Human Commands
 
@@ -88,7 +88,7 @@ type CommandResult =
     readonly kind: 'success'
     readonly text?: string
     /** Earlier authoritative domain event that owns a richer presentation. */
-    readonly sourceEventSeq?: number
+    readonly sourceEventSeq?: SessionSeq
   }
   | { readonly kind: 'error'; readonly text: string }
 ```

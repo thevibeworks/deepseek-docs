@@ -1,7 +1,7 @@
 ---
 title: "Same-session goals"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/goal.md
-fetched: 2026-08-26
+fetched: 2026-09-02
 ---
 # Same-session goals
 
@@ -147,7 +147,7 @@ interface GoalChanged {
 
 ## Service behavior
 
-[`GoalService`](../../packages/goal/goal/src/index.ts) resolves creation defaults, folds strict replay from durable `goal/change` events, enforces exact-live-agent identity and compare-and-set mutations, and emits contained `goal/changed` notifications. The package [README](../../packages/goal/goal/README.md) defines the callable API and model-visible contract.
+[`GoalService`](../../packages/goal/goal/src/index.ts) resolves creation defaults, reads strict replay from the optionally registered `goal` projection, enforces exact-live-agent identity and compare-and-set mutations, and emits contained `goal/changed` notifications. Its first dependent access fails if the projection registry or key is absent. The package [README](../../packages/goal/goal/README.md) defines the callable API and model-visible contract.
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

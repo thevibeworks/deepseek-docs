@@ -1,7 +1,7 @@
 ---
 title: "Token Meter"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/token-meter.md
-fetched: 2026-08-27
+fetched: 2026-09-02
 ---
 # Token Meter
 
@@ -17,7 +17,7 @@ Source: [`packages/llm/token-meter/src/types.ts`](../../packages/llm/token-meter
 /** Detached immutable request-pressure and surface snapshot at one consumed log revision. */
 interface TokenMeasurement {
   /** Number of durable events consumed; equal to the next unread event seq. */
-  readonly logRevision: number
+  readonly logRevision: SessionLogOffset
   /** Provider or heuristic anchor used for this measurement. */
   readonly baseline: TokenMeasurementBaseline
   /** Signed repricing of current surface content relative to the baseline anchor. */
@@ -39,7 +39,7 @@ Every measurement resolves the effective envelope's routed provider/model to tha
 /** One token-priced node in the current ordered session surface. */
 interface TokenSurfaceNode {
   /** Durable sequence number of the surface event. */
-  readonly seq: number
+  readonly seq: SessionSeq
   /**
    * Request-pressure tokens for the exact message projected by this node under
    * the measured route: image occurrences carry the route's declared visual

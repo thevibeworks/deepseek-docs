@@ -1,7 +1,7 @@
 ---
 title: "AGENTS.md — The documentation standard"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/AGENTS.md
-fetched: 2026-08-27
+fetched: 2026-09-02
 ---
 # AGENTS.md — The documentation standard
 
@@ -59,7 +59,7 @@ When the gate goes red:
 2. **Condense** content that belongs here but can be shorter.
 3. **Raise** the ceiling only when the words need the space; justify the manifest diff in the PR. A too-low ceiling is a budget bug.
 
-Ceilings are guardrails, not reduction targets. At or below target, retain at least 5% headroom; above target, freeze the ceiling until relocation or condensation brings the document under target. Lower a ceiling only when the document still has room. Targets: root `AGENTS.md` ≤ 1,950; `architecture.md` ≤ 2,400; subtree `AGENTS.md` ≤ 600, except `packages/AGENTS.md` ≤ 675 and this file ≤ 1,320; `packages/README.md` ≤ 994; plus `cordis-primer.md` 600, `defensive-patterns.md` 550, `testing.md` 1,150, `examples/AGENTS.md` 310. Review governs unbudgeted tiers.
+Ceilings are guardrails, not reduction targets. At or below target, retain at least 5% headroom; above target, freeze the ceiling until relocation or condensation brings the document under target. Lower a ceiling only when the document still has room. Targets: root `AGENTS.md` ≤ 1,950; `architecture.md` ≤ 2,400; subtree `AGENTS.md` ≤ 600, except `packages/AGENTS.md` ≤ 750 and this file ≤ 1,320; `packages/README.md` ≤ 994; plus `cordis-primer.md` 600, `defensive-patterns.md` 550, `testing.md` 1,300, `examples/AGENTS.md` 310. Review governs unbudgeted tiers.
 
 ## The slop checklist
 

@@ -107,7 +107,7 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "title": "🚀 Introducing DeepSeek-V3"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -356,7 +356,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -664,7 +664,7 @@
     },
     "content/en/dsh/docs/module-graph.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/module-graph.md",
-      "title": "Module dependency graph"
+      "title": "Shared-instance dependency graph"
     },
     "content/en/dsh/docs/persistence-catalog.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-catalog.md",
@@ -1061,8 +1061,12 @@
     "content/en/dsh/docs/user/guide/schedule.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/schedule.md",
       "title": "Schedule session-local reminders"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-remote-api.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-remote-api.md",
+      "title": "Cookbook: adding a Remote API"
     }
   },
-  "updated": "2026-08-29",
+  "updated": "2026-09-02",
   "site": "https://api-docs.deepseek.com"
 }

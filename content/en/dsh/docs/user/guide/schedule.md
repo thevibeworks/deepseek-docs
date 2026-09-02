@@ -1,7 +1,7 @@
 ---
 title: "Schedule session-local reminders"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/schedule.md
-fetched: 2026-08-27
+fetched: 2026-09-02
 ---
 # Schedule session-local reminders
 
@@ -14,6 +14,8 @@ dsh web --patch apps/cli/config/examples/schedule/cordis.yml
 ```
 
 The current overlay supports reminders created with a positive whole-number `after_seconds`, an absolute `at` target, or a fixed-rate `every_seconds` interval of at least 300 seconds. The model manages them through `schedule_create`, `schedule_list`, and `schedule_delete`; every result identifies delivery as `session-local`.
+
+With this overlay enabled, a successfully opened Session with active reminders shows a read-only catalog in the conversation header. It lists the complete prompt, scheduled or overdue status, one-time or exact repeating cadence, browser-local target time, and relative time. The sidebar also places a non-interactive alarm after the title of grouped, flat, and search rows when their currently available projection value is non-empty. These surfaces never create, edit, delete, or acknowledge reminders, and a cold Session's cached alarm can be briefly missing or stale.
 
 The browser attaches its IANA zone to each prompt. Time-context tells the model to interpret otherwise-unqualified dates and times in that request's browser zone. This assumption belongs to natural-language interpretation only: `schedule_create.at` must be either a strict RFC 3339 date-time with `Z` or a numeric offset, or `{ date, time, time_zone }` with an explicit `UTC` or IANA Area/Location zone. Schedule does not retain or infer a Session default zone. Daylight-saving gaps are rejected, overlaps choose the first instant, and successful records keep only the resulting UTC target.
 

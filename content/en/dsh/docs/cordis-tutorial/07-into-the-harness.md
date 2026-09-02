@@ -1,7 +1,7 @@
 ---
 title: "7. Into the harness"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/07-into-the-harness.md
-fetched: 2026-08-27
+fetched: 2026-09-02
 ---
 # 7. Into the harness
 
@@ -15,8 +15,9 @@ Create `greet-tool.ts` in `tmp/cordis-tutorial`:
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
+import { brandString } from '@deepseek-ai/dsh-brand'
 import { defineTool } from '@deepseek-ai/dsh-tools'
-import { ToolCallId } from '@deepseek-ai/dsh-llm'
+import type { ToolCallId } from '@deepseek-ai/dsh-llm'
 
 export const name = 'greet-tool'
 export const inject = ['tools']
@@ -41,7 +42,7 @@ export function apply(ctx: Context) {
   // the model. ToolCallId brands the correlation id a provider would issue.
   void (async () => {
     const result = await ctx.tools.execute({
-      callId: ToolCallId('demo-1'),
+      callId: brandString<ToolCallId>('demo-1'),
       name: 'greet',
       arguments: { name: 'Cordis' },
       signal: new AbortController().signal,

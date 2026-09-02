@@ -1,7 +1,7 @@
 ---
 title: "Testing policy"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/testing.md
-fetched: 2026-08-27
+fetched: 2026-09-02
 ---
 # Testing policy
 
@@ -19,6 +19,10 @@ How this repo tests, tier by tier, and the rules that keep a green suite meaning
 - **Web browser snapshot** (`pnpm run test:web`; required Linux PR gate): Chromium compares session-driven output under `snapshots/web/` and UI-only output under `apps/web/tests/expected/`. CI forces read-only `DSH_SNAPSHOT=replay`, never writing expected outputs; record/refresh stay local and every diff is reviewed ([web e2e lane](../.agents/notes/implemented/testing/2026-07-24-web-gui-browser-e2e-lane.md), [CI gate decision](../.agents/notes/implemented/testing/2026-07-30-web-browser-snapshot-ci-gate.md)). `test:web` [builds first](../.agents/notes/implemented/bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.md) for plugin CSS.
 
 Session fixtures keep headers and payloads but omit body sequence/time envelopes. Replay synthesizes them. Fixtures use canonical packed rows; [the migrator](../scripts/migrate-packed-session-fixtures.ts) rewrites old layouts.
+
+## How specs execute
+
+Forked workers run several spec files at once, the coverage gate splits into concurrent partitions beside the other gates in its job, and the self-hosted runners share one host and one volume. Only the process is isolated: ports, predictable paths, external namespaces, and inherited children are not. Own each acquired resource through its teardown, and read a spec that passes only when it runs alone as a defect in the spec rather than an unstable runner. [dsh-ci-test-reliability](../.agents/skills/dsh-ci-test-reliability/SKILL.md) owns the allocation, restoration, synchronization, timeout-budget, platform, and teardown rules; its [flake diagnosis workflow](../.agents/skills/dsh-ci-test-reliability/references/ci-flake-diagnosis.md) classifies an existing probabilistic failure.
 
 ## The with-key policy: inference is cheap here
 

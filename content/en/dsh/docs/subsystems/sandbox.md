@@ -1,7 +1,7 @@
 ---
 title: "Process Sandbox"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/sandbox.md
-fetched: 2026-08-26
+fetched: 2026-09-02
 ---
 # Process Sandbox
 
@@ -97,6 +97,8 @@ interface SandboxPolicy extends SandboxExecutionPolicy {
   mode: ConfinedSandboxMode
 }
 ```
+
+<a id="wrapped-argv-and-classification-dialects"></a>
 
 ## Wrapped argv and classification dialects
 
