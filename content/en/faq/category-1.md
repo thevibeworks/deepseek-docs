@@ -1,17 +1,25 @@
 ---
 title: "FAQ: Login Issues"
-description: "DeepSeek FAQ, Login Issues — 8 questions and answers."
+description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: Login Issues
 
-## Why am I not receiving the verification code?
+## Why haven’t I received the verification code?
 
-- Check if the phone number or email address was entered correctly.
-- You may have requested too many verification codes in a short period. Wait a while before trying again.
+Verification codes may be delayed. Please wait a moment.
+
+If you still haven’t received the SMS or email code, try the following:
+
+- Make sure your phone number or email address is correct.
+- Check that your phone is in service, powered on, and has a signal.
+- Check your SMS or email spam, blocking, and filtering settings to ensure the code hasn’t been blocked.
+- If you’ve requested too many codes within a short period, wait a while before trying again.
 - If you recently ported your number to a new carrier, it may take 24 hours to take effect.
+
+If you’ve confirmed all of the above, restart your phone and try signing in to DeepSeek again to request a new code.
 
 ## WeChat login: failed to bind phone number
 
@@ -25,6 +33,17 @@ WeChat login is only supported for IPs in Mainland China.
 ## Why can't I log in with Google?
 
 Google login is not supported for IPs in Mainland China.
+
+## How do I change a phone number that is no longer in service?
+
+If you need to change your bound phone number but the original number is no longer usable, please follow these guidelines:
+
+- **If the original number can still receive SMS:** Go directly to 「Settings」 --> 「Account settings」 to update the number yourself.
+- **If the original number is out of service or unusable:** You must fill out the 「[Account Rebinding/Unbinding Application](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnCPab0B7pIL30A5JHeho9le)」 form. To ensure account security, we need to verify your identity to confirm account ownership. Please provide the required information as instructed on the form.
+
+We will process your request as soon as possible. Most reviews are completed within 3 business days, and the results will be sent to the email address you provided.
+
+Thank you for your understanding and cooperation.
 
 ## Why does it say 「Current device environment error」?
 

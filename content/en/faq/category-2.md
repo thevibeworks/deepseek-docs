@@ -1,8 +1,8 @@
 ---
 title: "FAQ: User Guide"
-description: "DeepSeek FAQ, User Guide — 11 questions and answers."
+description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: User Guide
@@ -67,14 +67,3 @@ Go to 「Settings」 --> 「Account settings」 --> 「Delete Account」.
 After deletion, all chat history in the current account will be permanently deleted. Any unused balance in your developer account will be forfeited upon deletion. Please proceed with caution.
 
 If you cannot find this option, please upgrade your App to the latest version.
-
-## How do I change a phone number that is no longer in service?
-
-If you need to change your bound phone number but the original number is no longer usable, please follow these guidelines:
-
-- **If the original number can still receive SMS:** Go directly to 「Settings」 --> 「Account settings」 to update the number yourself.
-- **If the original number is out of service or unusable:** You must fill out the 「[Account Rebinding/Unbinding Application](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnCPab0B7pIL30A5JHeho9le)」 form. To ensure account security, we need to verify your identity to confirm account ownership. Please provide the required information as instructed on the form.
-
-We will process your request as soon as possible. Most reviews are completed within 3 business days, and the results will be sent to the email address you provided.
-
-Thank you for your understanding and cooperation.
