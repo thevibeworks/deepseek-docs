@@ -36,9 +36,15 @@ HTML. `scripts/faq.py` finds the current chunk, decodes the blob and
 renders the AST back to markdown, so the result round-trips rather than
 being scraped out of rendered DOM.
 
-It is worth the trouble: 44 questions per locale, 15 of them about the API,
+It is worth the trouble: 45 questions per locale, 16 of them about the API,
 covering things api-docs never mentions — invoices, refunds, what to do
 about a leaked key, how to request a higher rate limit.
+
+The scheduled fetch runs `faq.py` alongside the docs fetcher, so the FAQ is
+refreshed on the same cadence as everything else. It was not always: imported
+on 2026-08-05 and left out of the workflow, it went 35 days without a refresh
+while every run stayed green, because the FAQ is not in
+`content/.metadata.json` and nothing else looked at it.
 
 ```bash
 uv run scripts/faq.py            # refresh content/<locale>/faq/
