@@ -1,7 +1,7 @@
 ---
 title: "Same-session goals"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/goal.md
-fetched: 2026-09-02
+fetched: 2026-09-10
 ---
 # Same-session goals
 
@@ -71,6 +71,25 @@ interface GoalView extends GoalSnapshot {
   readonly updatedAt: number
   /** Process-local continuation eligibility; never persisted. */
   readonly activation: GoalActivation
+}
+```
+
+The service also publishes process-local activation edges without changing durable state; clients consume this event for live status.
+
+```ts type-equiv
+/** Live process-local activation update forwarded to UI clients. */
+interface GoalActivationChanged {
+  /** Session whose live goal activation changed. */
+  readonly sessionId: SessionId
+  /** Current exact activation, absent when no goal is current. */
+  readonly goal?: {
+    /** Exact current goal identity. */
+    readonly id: GoalId
+    /** Exact current goal revision. */
+    readonly revision: number
+    /** Current process-local continuation state. */
+    readonly activation: GoalActivation
+  }
 }
 ```
 
@@ -170,7 +189,7 @@ Goal service (`ctx.goals`) backed exclusively by the owning session log.
  * @returns a fresh view or `undefined` when no goal is current.
  * @throws {@link GoalError} when the agent is not the registry's live instance.
  */
-get(agent: Agent): GoalView | undefined
+@Remote('get') get(agent: Agent): GoalView | undefined
 
 /**
  * Remove process-local continuation authority without changing durable goal
@@ -257,6 +276,23 @@ Source: [`packages/goal/goal/src/index.ts`](../../packages/goal/goal/src/index.t
 <a id="goal-events"></a>
 
 ### `goal/*` events
+
+<a id="goalactivation-changed--emit"></a>
+
+#### `goal/activation-changed` — emit
+
+Process-local goal activation changed for one session.
+
+```ts cordis-catalog
+/**
+ * Process-local goal activation changed for one session.
+ * @mode emit
+ * @param payload - session id and the exact current goal activation, or no goal after a clear.
+ */
+'goal/activation-changed'(payload: GoalActivationChanged): void
+```
+
+Source: [`packages/goal/goal/src/types.ts`](../../packages/goal/goal/src/types.ts)
 
 <a id="goalchanged--emit"></a>
 

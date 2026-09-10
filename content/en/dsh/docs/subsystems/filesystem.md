@@ -1,7 +1,7 @@
 ---
 title: "Filesystem"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/filesystem.md
-fetched: 2026-08-27
+fetched: 2026-09-10
 ---
 # Filesystem
 
@@ -400,6 +400,21 @@ abstract streamText(target: FsTarget, signal?: AbortSignal): Promise<AsyncIterab
  * @returns the full raw content, at most `maxBytes` long.
  */
 abstract readBytes(target: FsTarget, signal: AbortSignal | undefined, maxBytes: number): Promise<Uint8Array>
+
+/**
+ * Read one byte window of the regular file as raw bytes with no decoding or
+ * binary rejection: the bytes at `[offset, offset + length)`, shorter when
+ * the file ends inside the window and empty when `offset` lies at or past
+ * its end. The window is the bound here, not the file: a backend transfers
+ * at most `length` bytes of content beyond the prefix it skips to reach
+ * `offset` and never buffers the whole file, so the caller's cap on `length`
+ * is the guard against unbounded buffering.
+ * @param target - the resolved target to read.
+ * @param range - `offset`, the 0-based first byte, and `length`, the largest byte count; both non-negative integers.
+ * @param signal - aborts the read.
+ * @returns the window's bytes, at most `length` long.
+ */
+abstract readByteRange(target: FsTarget, range: { offset: number; length: number }, signal?: AbortSignal): Promise<Uint8Array>
 
 /**
  * List direct children of a directory in stable name order. Returns resolved

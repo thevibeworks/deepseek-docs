@@ -1,7 +1,7 @@
 ---
 title: "User Approval"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/approval.md
-fetched: 2026-08-27
+fetched: 2026-09-10
 ---
 # User Approval
 
@@ -51,7 +51,7 @@ type ApprovalOutcome = 'allowed-once' | 'rejected' | 'cancelled' | 'unavailable'
 type ApprovalPolicy = 'ask' | 'never'
 ```
 
-Both policies contribute their complete current meaning to the cache-safe runtime-context snapshot. The sourced `user/message` is the durable model-visible input; changing approval state appends a new full snapshot after retained history without rewriting the request header's system prompt.
+Both policies contribute their complete current meaning to the cache-safe runtime-context snapshot. The sourced `user/message` is the durable model-visible input; changing approval state appends a new full snapshot after retained history without touching the `system/message` nodes that hold the rendered system prompt.
 
 ## Approval request
 

@@ -1,7 +1,7 @@
 ---
 title: "Client Modules"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/client-modules.md
-fetched: 2026-08-27
+fetched: 2026-09-10
 ---
 # Client Modules
 
@@ -134,6 +134,15 @@ graph(): WebBootGraph
  * @returns the path, or undefined for an unknown id.
  */
 clientPath(id: string): string | undefined
+
+/**
+ * Serve an advertised revisioned bundle or source map without a Web server.
+ * Unknown URLs return 404, unsupported methods return 405, and `HEAD`
+ * returns the same immutable headers without a body.
+ * @param request - shell-carrier request for a `/plugins` resource.
+ * @returns the exact response also exposed by the optional Web route.
+ */
+fetchBundle(request: Request): Response
 
 /**
  * Filesystem baseline captured before an entry's current bytes were read.

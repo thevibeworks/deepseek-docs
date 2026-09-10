@@ -107,7 +107,7 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)"
+      "title": "🚀 Introducing DeepSeek-V3"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
@@ -131,7 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -239,7 +239,7 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "title": "Models & Pricing"
+      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
@@ -704,7 +704,7 @@
     },
     "content/en/dsh/docs/subsystems/attachment.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/attachment.md",
-      "title": "Durable Image Attachments"
+      "title": "Durable Attachments"
     },
     "content/en/dsh/docs/subsystems/client-modules.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/client-modules.md",
@@ -1065,8 +1065,28 @@
     "content/en/dsh/docs/cookbook/adding-a-remote-api.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-remote-api.md",
       "title": "Cookbook: adding a Remote API"
+    },
+    "content/en/dsh/docs/cookbook/adding-a-session-format-version.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-session-format-version.md",
+      "title": "Cookbook: adding a Session log format version"
+    },
+    "content/en/dsh/docs/session-format-status.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/session-format-status.md",
+      "title": "Session format version and release status"
+    },
+    "content/en/dsh/docs/subsystems/client-resources.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/client-resources.md",
+      "title": "Client Resources"
+    },
+    "content/en/dsh/docs/subsystems/sidebar-right.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/sidebar-right.md",
+      "title": "Right Sidebar"
+    },
+    "content/en/dsh/docs/user/guide/network-proxy.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/network-proxy.md",
+      "title": "Run DSH behind a network proxy"
     }
   },
-  "updated": "2026-09-02",
+  "updated": "2026-09-10",
   "site": "https://api-docs.deepseek.com"
 }
