@@ -2,7 +2,7 @@
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Using the Responses API
@@ -24,7 +24,7 @@ from openai import OpenAI
 client = OpenAI(api_key="<your DeepSeek API Key>", base_url="https://api.deepseek.com")
 
 response = client.responses.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     instructions="You are a helpful assistant.",
     input="Hi, how are you?",
 )
@@ -38,7 +38,7 @@ Set `stream: true` to receive the response as a sequence of semantic server-sent
 
 ```python
 stream = client.responses.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     instructions="You are a helpful assistant.",
     input="Hi, how are you?",
     stream=True,
@@ -55,26 +55,25 @@ The full list of events:
 | --- | --- |
 | `response.created` | The first event; the response has been created with status `in_progress` |
 | `response.in_progress` | The response is being generated |
-| `response.output_item.added` / `response.output_item.done` | An output item (`reasoning` / `message` / `function_call` / `custom_tool_call` / `web_search_call`) starts / completes |
+| `response.output_item.added` / `response.output_item.done` | An output item (`reasoning` / `message` / `function_call` / `custom_tool_call`) starts / completes |
 | `response.content_part.added` / `response.content_part.done` | A content part within an output item starts / completes |
 | `response.reasoning_text.delta` / `response.reasoning_text.done` | Incremental chain-of-thought text / the full chain-of-thought text |
 | `response.output_text.delta` / `response.output_text.done` | Incremental output text / the full output text |
 | `response.function_call_arguments.delta` / `response.function_call_arguments.done` | Incremental function call arguments / the full arguments |
 | `response.custom_tool_call_input.delta` / `response.custom_tool_call_input.done` | Incremental custom tool call (`apply_patch`) input / the full input |
-| `response.web_search_call.in_progress` / `response.web_search_call.searching` / `response.web_search_call.completed` | Status updates of a server-side web search tool call |
 | `response.completed` | The final event when the response completes normally, carrying the full `response` object including `usage` |
 | `response.incomplete` | The final event when the response is truncated (e.g. reaching `max_output_tokens`), carrying the full `response` object |
 | `response.failed` | The final event when the response fails, carrying the full `response` object with `error` details |
 
 ## Image Input
 
-The Responses API accepts images with the `deepseek-v4-flash-vision-exp` model. The same image limits and supported formats as [Chat Completions](vision.md#limits) apply.
+The Responses API accepts images with the `deepseek-flash` model. The same image limits and supported formats as [Chat Completions](vision.md#limits) apply.
 
 Images are provided via an `input_image` content part in a `message` item, with either `image_url` (an `http(s)` URL or a base64 data URL) or `file_id` (an image uploaded via the [Files API](files_api.md)):
 
 ```python
 response = client.responses.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     input=[
         {
             "role": "user",
@@ -110,7 +109,7 @@ input=[
 ### Restrictions
 
 - Images are allowed only in `user` / `developer` message items and in `function_call_output` / `custom_tool_call_output` outputs. Images in `system` or `assistant` messages return a `400` error.
-- Only vision models (`deepseek-v4-flash-vision-exp`) process `input_image` parts; with other models they are replaced with a placeholder text.
+- `deepseek-flash` processes `input_image` parts as real images.
 - The same shared image limits as Chat Completions apply (32 MiB per inline image, 64 MiB per `file_id` image, 64 MiB total without `file_id` images or up to 200 MiB with them, 600 images per request, etc.) — see [Vision: Limits](vision.md#limits).
 
 ## Compatibility Details
@@ -121,16 +120,16 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 
 | Parameter | Support Status |
 | --- | --- |
-| `model` | Supported. `deepseek-v4-flash` / `deepseek-v4-pro` / `deepseek-v4-flash-vision-exp`, see [Models & Pricing](../quick_start/pricing.md) |
+| `model` | Supported. `deepseek-flash`, see [Models & Pricing](../quick_start/pricing.md) |
 | `input` | Supported. String or input item list; at least one of `input` and `instructions` is required |
 | `instructions` | Supported. Inserted as the first system message |
 | `stream` | Supported |
 | `temperature` | Supported (range [0.0, 2.0]; no effect in thinking mode) |
-| `top_p` | Supported (no effect in thinking mode) |
+| `top_p` | Supported (takes effect in thinking mode, with a lower bound of `0.95`; in non-thinking mode it is fixed at `1.0`) |
 | `max_output_tokens` | Supported |
 | `top_logprobs` | Supported (range [0, 20]) |
-| `tools` | Partially supported. `function` / `web_search` supported; other types ignored, see the Tools table below |
-| `tool_choice` | Supported. `none` / `auto` / `required` / a specific tool (`{"type": "function", "name": ...}` or `{"type": "web_search"}` / `{"type": "web_search_2025_08_26"}`) |
+| `tools` | Partially supported. `function` supported; other types ignored, see the Tools table below |
+| `tool_choice` | Supported. `none` / `auto` / `required` / a specific tool (`{"type": "function", "name": ...}`) |
 | `reasoning` | Partially supported. `effort` supported; `summary` accepted but no summary is generated |
 | `text` | Partially supported. `format` fully supported; `verbosity` accepted but has no effect |
 | `user` | Supported. See [Rate Limit & Isolation](../quick_start/rate_limit.md) |
@@ -156,22 +155,22 @@ Unsupported parameters are **silently ignored** and do not cause errors, so exis
 
 | Type | Support Status |
 | --- | --- |
-| `message` | Supported. Roles `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`); content supports strings and `input_text` / `output_text` / `input_image` content parts. With the `deepseek-v4-flash-vision-exp` model, `input_image` parts are processed as real images (allowed in `user` / `developer` messages only; images in `system` / `assistant` messages return a `400` error); with other models they are replaced with a placeholder text. File inputs are not supported |
+| `message` | Supported. Roles `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`); content supports strings and `input_text` / `output_text` / `input_image` content parts. `input_image` parts are processed as real images (allowed in `user` / `developer` messages only; images in `system` / `assistant` messages return a `400` error). File inputs are not supported |
 | `function_call` | Supported. Merged into the adjacent assistant message |
-| `function_call_output` | Supported. The `output` may be a string or a list of content parts; with the `deepseek-v4-flash-vision-exp` model, `input_image` parts in the output are processed as real images |
+| `function_call_output` | Supported. The `output` may be a string or a list of content parts; `input_image` parts in the output are processed as real images |
 | `reasoning` | Supported. Plain-text `content` is merged into the adjacent assistant message; `summary` and `encrypted_content` are not supported |
-| `web_search_call` | Supported. Pass back as-is; the server automatically restores the search results |
-| `custom_tool_call` / `custom_tool_call_output` | Supported (for the `apply_patch` custom tool, with `call_id` pairing validation). With the `deepseek-v4-flash-vision-exp` model, `input_image` parts in the `output` are processed as real images |
+| `custom_tool_call` / `custom_tool_call_output` | Supported (for the `apply_patch` custom tool, with `call_id` pairing validation). `input_image` parts in the `output` are processed as real images |
 | Other types | Ignored |
+
+Note: `web_search_call` items passed back in `input` — for example, search results produced by an earlier request with an older model — are still restored and concatenated into the context.
 
 ### Tools
 
 | Type | Support Status |
 | --- | --- |
 | `function` | Supported |
-| `web_search` / `web_search_2025_08_26` | Supported, executed on the server side. `search_context_size` and `user_location` are ignored; server-side auto-continuation is capped at 10 rounds |
 | `custom` | Only `{"type": "custom", "name": "apply_patch"}` is supported (for Codex compatibility); other names return a `400` error |
-| `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
+| `web_search` / `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
 
 ### Response Fields
 

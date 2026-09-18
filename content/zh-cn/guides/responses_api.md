@@ -2,7 +2,7 @@
 title: "使用 Responses API"
 description: "为了满足大家对 Codex 的需求，我们的 API 新增了对 Responses API 格式的支持，其 base_url 为 https://api.deepseek.com。"
 source: https://api-docs.deepseek.com/zh-cn/guides/responses_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # 使用 Responses API
@@ -24,7 +24,7 @@ from openai import OpenAI
 client = OpenAI(api_key="<your DeepSeek API Key>", base_url="https://api.deepseek.com")
 
 response = client.responses.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     instructions="You are a helpful assistant.",
     input="Hi, how are you?",
 )
@@ -38,7 +38,7 @@ print(response.output_text)
 
 ```python
 stream = client.responses.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     instructions="You are a helpful assistant.",
     input="Hi, how are you?",
     stream=True,
@@ -55,26 +55,25 @@ for event in stream:
 | --- | --- |
 | `response.created` | 首个事件；响应已创建，状态为 `in_progress` |
 | `response.in_progress` | 响应正在生成中 |
-| `response.output_item.added` / `response.output_item.done` | 一个输出 item（`reasoning` / `message` / `function_call` / `custom_tool_call` / `web_search_call`）开始 / 完成 |
+| `response.output_item.added` / `response.output_item.done` | 一个输出 item（`reasoning` / `message` / `function_call` / `custom_tool_call`）开始 / 完成 |
 | `response.content_part.added` / `response.content_part.done` | 输出 item 中的一个内容块开始 / 完成 |
 | `response.reasoning_text.delta` / `response.reasoning_text.done` | 思维链文本增量 / 完整思维链文本 |
 | `response.output_text.delta` / `response.output_text.done` | 输出文本增量 / 完整输出文本 |
 | `response.function_call_arguments.delta` / `response.function_call_arguments.done` | Function 调用参数增量 / 完整参数 |
 | `response.custom_tool_call_input.delta` / `response.custom_tool_call_input.done` | Custom 工具调用（`apply_patch`）输入增量 / 完整输入 |
-| `response.web_search_call.in_progress` / `response.web_search_call.searching` / `response.web_search_call.completed` | 服务端联网搜索工具调用的状态更新 |
 | `response.completed` | 响应正常完成时的最后一个事件，携带包含 `usage` 的完整 `response` 对象 |
 | `response.incomplete` | 响应被截断（如达到 `max_output_tokens`）时的最后一个事件，携带完整 `response` 对象 |
 | `response.failed` | 响应失败时的最后一个事件，携带含 `error` 详情的完整 `response` 对象 |
 
 ## 图片输入
 
-Responses API 支持使用 `deepseek-v4-flash-vision-exp` 模型传入图片，适用的图片限制与支持格式与[对话补全](vision.md#limits)一致。
+Responses API 支持使用 `deepseek-flash` 模型传入图片，适用的图片限制与支持格式与[对话补全](vision.md#limits)一致。
 
 图片通过 `message` item 中的 `input_image` 内容块提供，使用 `image_url`（`http(s)` URL 或 base64 data URL）或 `file_id`（通过 [Files API](files_api.md) 上传的图片）二者之一：
 
 ```python
 response = client.responses.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     input=[
         {
             "role": "user",
@@ -110,7 +109,7 @@ input=[
 ### 使用限制
 
 - 图片仅允许出现在 `user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` 的输出中；`system` / `assistant` 消息中的图片会返回 `400` 错误。
-- 只有视觉模型（`deepseek-v4-flash-vision-exp`）会真正处理 `input_image` 内容块，使用其他模型时会被替换为占位文本。
+- `deepseek-flash` 会真正处理 `input_image` 内容块。
 - 与对话补全相同的图片限制（内联单张 32 MiB、`file_id` 单张 64 MiB、不含 `file_id` 图片总计 64 MiB，含 `file_id` 图片最高 200 MiB、单请求 600 张等）同样适用，详见[图像理解：限制](vision.md#limits)。
 
 ## 兼容性明细
@@ -121,16 +120,16 @@ input=[
 
 | 参数 | 支持情况 |
 | --- | --- |
-| `model` | 支持。`deepseek-v4-flash` / `deepseek-v4-pro` / `deepseek-v4-flash-vision-exp`，见[模型 & 价格](../quick_start/pricing.md) |
+| `model` | 支持。`deepseek-flash`，见[模型 & 价格](../quick_start/pricing.md) |
 | `input` | 支持。字符串或输入 item 列表；`input` 与 `instructions` 至少传一个 |
 | `instructions` | 支持。作为第一条 system 消息 |
 | `stream` | 支持 |
 | `temperature` | 支持（范围 [0.0, 2.0]；思考模式下不生效） |
-| `top_p` | 支持（思考模式下不生效） |
+| `top_p` | 支持（思考模式下生效，下限为 `0.95`；非思考模式下恒为 `1.0`） |
 | `max_output_tokens` | 支持 |
 | `top_logprobs` | 支持（范围 [0, 20]） |
-| `tools` | 部分支持。`function` / `web_search` 支持；其他类型忽略，见下方 Tools 表 |
-| `tool_choice` | 支持。`none` / `auto` / `required` / 指定某个工具（`{"type": "function", "name": ...}` 或 `{"type": "web_search"}` / `{"type": "web_search_2025_08_26"}`） |
+| `tools` | 部分支持。`function` 支持；其他类型忽略，见下方 Tools 表 |
+| `tool_choice` | 支持。`none` / `auto` / `required` / 指定某个工具（`{"type": "function", "name": ...}`） |
 | `reasoning` | 部分支持。`effort` 支持；`summary` 可传入但不生成摘要 |
 | `text` | 部分支持。`format` 完整支持；`verbosity` 可传入但不生效 |
 | `user` | 支持。参考[限速与用户隔离](../quick_start/rate_limit.md) |
@@ -156,22 +155,22 @@ input=[
 
 | 类型 | 支持情况 |
 | --- | --- |
-| `message` | 支持。角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）；content 支持字符串和 `input_text` / `output_text` / `input_image` 内容块。使用 `deepseek-v4-flash-vision-exp` 模型时，`input_image` 内容块会作为真实图片处理（仅允许出现在 `user` / `developer` 消息中，`system` / `assistant` 消息中的图片会返回 `400` 错误）；使用其他模型时会被替换为占位文本。文件输入不支持 |
+| `message` | 支持。角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）；content 支持字符串和 `input_text` / `output_text` / `input_image` 内容块。`input_image` 内容块会作为真实图片处理（仅允许出现在 `user` / `developer` 消息中，`system` / `assistant` 消息中的图片会返回 `400` 错误）。文件输入不支持 |
 | `function_call` | 支持。归并到相邻 assistant 消息 |
-| `function_call_output` | 支持。`output` 可以是字符串或内容块列表；使用 `deepseek-v4-flash-vision-exp` 模型时，输出中的 `input_image` 内容块会作为真实图片处理 |
+| `function_call_output` | 支持。`output` 可以是字符串或内容块列表；输出中的 `input_image` 内容块会作为真实图片处理 |
 | `reasoning` | 支持。明文 `content` 归并到相邻 assistant 消息；`summary`、`encrypted_content` 不支持 |
-| `web_search_call` | 支持。原样回传即可，服务端自动恢复搜索结果 |
-| `custom_tool_call` / `custom_tool_call_output` | 支持（配合 `apply_patch` custom 工具使用，含 `call_id` 配对校验）。使用 `deepseek-v4-flash-vision-exp` 模型时，`output` 中的 `input_image` 内容块会作为真实图片处理 |
+| `custom_tool_call` / `custom_tool_call_output` | 支持（配合 `apply_patch` custom 工具使用，含 `call_id` 配对校验）。`output` 中的 `input_image` 内容块会作为真实图片处理 |
 | 其他类型 | 忽略 |
+
+注：`input` 中回传的 `web_search_call` item（例如旧模型此前请求产生的搜索结果）仍会被还原并拼接进上下文。
 
 ### Tools
 
 | 类型 | 支持情况 |
 | --- | --- |
 | `function` | 支持 |
-| `web_search` / `web_search_2025_08_26` | 支持，服务端执行。`search_context_size`、`user_location` 忽略；服务端自动续推上限 10 轮 |
 | `custom` | 仅支持 `{"type": "custom", "name": "apply_patch"}`（用于 Codex 兼容）；其他名称返回 `400` 错误 |
-| `file_search` / `code_interpreter` / `computer_use` / `mcp` 等其他内置工具 | 忽略 |
+| `web_search` / `file_search` / `code_interpreter` / `computer_use` / `mcp` 等内置工具 | 忽略 |
 
 ### 响应字段
 

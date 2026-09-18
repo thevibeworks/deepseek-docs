@@ -1,13 +1,13 @@
 ---
 title: "图像理解"
-description: "deepseek-v4-flash-vision-exp 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。"
+description: "deepseek-flash 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。旧模型名 deepseek-v4-flash-vision-exp 仍可调用，但该模型已下线，其请求同样由最新的 Flash 模型承接。"
 source: https://api-docs.deepseek.com/zh-cn/guides/vision
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # 图像理解
 
-`deepseek-v4-flash-vision-exp` 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。
+`deepseek-flash` 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。旧模型名 `deepseek-v4-flash-vision-exp` 仍可调用，但该模型已下线，其请求同样由最新的 Flash 模型承接。
 
 支持的图片格式：**JPEG、PNG、GIF、WebP**。格式由文件实际内容判断，而非文件名或声明的 MIME 类型。
 
@@ -33,7 +33,7 @@ with open("image.jpg", "rb") as f:
     b64 = base64.b64encode(f.read()).decode("utf-8")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -55,7 +55,7 @@ curl https://api.deepseek.com/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <DeepSeek API Key>" \
   -d '{
-    "model": "deepseek-v4-flash-vision-exp",
+    "model": "deepseek-flash",
     "messages": [
       {
         "role": "user",
@@ -74,7 +74,7 @@ curl https://api.deepseek.com/chat/completions \
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -99,7 +99,7 @@ print(response.choices[0].message.content)
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -161,10 +161,10 @@ print(response.choices[0].message.content)
 
 在进入模型前，每张图片都会被自动缩放：
 
-- 总像素小于约 384×384 的图片会被保持长宽比放大；
-- 更大的图片会被保持长宽比缩小，缩小后的总像素约相当于 **800×800** 的图片。
+- 总像素小于约 544×544 的图片会被保持长宽比放大；
+- 更大的图片会被保持长宽比缩小，缩小后的总像素约相当于 **1300×1300** 的图片。
 
-因此，每张图片消耗的 token 数存在上限（**384** 个）：例如 2000×2000 和 5000×5000 的图片，经缩放后消耗的 token 数是相同的。单个请求包含多张图片时，每张图片独立按同一规则计算，不存在额外的计算方式。
+因此，每张图片消耗的 token 数存在上限（**1024** 个）：例如 2000×2000 和 5000×5000 的图片，经缩放后消耗的 token 数是相同的。单个请求包含多张图片时，每张图片独立按同一规则计算，不存在额外的计算方式。
 
 如需估算具体尺寸图片的 token 消耗，请使用 [Token 与用量计算](../quick_start/token_usage.md) 页面的图片 Token 计算器。
 
@@ -189,9 +189,7 @@ Files API 上传文件的存储与上传配额见 [Files API：限制](files_api
 
 ## 使用限制
 
-- 图片仅支持出现在 `user` 消息中：`system` 或 `assistant` 消息携带图片会返回 `400` 错误。
-- 仅视觉模型（`deepseek-v4-flash-vision-exp`）接受图片，其他模型会返回 `400` 错误（“This model does not support image”）。
-- 用户文本包含保留的图片占位 token 会被拒绝并返回 `400` 错误。
+- 图片仅支持出现在 `user` 消息中。`system` 或 `assistant` 消息携带图片会返回 `400` 错误。
 
 ---
 
@@ -207,7 +205,7 @@ import anthropic
 client = anthropic.Anthropic()  # ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 
 message = client.messages.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     max_tokens=1024,
     messages=[
         {
@@ -241,11 +239,11 @@ print(message.content)
 
 ## 在 Responses API 中使用图片
 
-`deepseek-v4-flash-vision-exp` 模型同样支持通过 OpenAI 兼容的 [Responses API](responses_api.md#image-input) 传入图片。三种传入方式（base64 data URL、外部 `http(s)` URL、Files API `file_id`）与[限制](#limits)均与上文一致，只有内容块的结构不同——图片以 `input_image` 内容块承载，可出现在 `user` / `developer` 消息或 `function_call_output` / `custom_tool_call_output` item 的 `output` 中：
+`deepseek-flash` 模型同样支持通过 OpenAI 兼容的 [Responses API](responses_api.md#image-input) 传入图片。三种传入方式（base64 data URL、外部 `http(s)` URL、Files API `file_id`）与[限制](#limits)均与上文一致，只有内容块的结构不同——图片以 `input_image` 内容块承载，可出现在 `user` / `developer` 消息或 `function_call_output` / `custom_tool_call_output` item 的 `output` 中：
 
 ```python
 response = client.responses.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     input=[
         {
             "role": "user",

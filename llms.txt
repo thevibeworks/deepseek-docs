@@ -43,7 +43,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Using the Responses API](content/en/guides/responses_api.md): To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com.
 - [Thinking Mode](content/en/guides/thinking_mode.md): The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the ...
 - [Tool Calls](content/en/guides/tool_calls.md): Tool Calls allows the model to call external tools to enhance its capabilities.
-- [Vision](content/en/guides/vision.md): The deepseek-v4-flash-vision-exp model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze ch...
+- [Vision](content/en/guides/vision.md): The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more...
 
 ## API Samples
 
@@ -72,6 +72,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Integrate with OpenClaw](content/en/quick_start/agent_integrations/openclaw.md): OpenClaw is an open-source personal AI assistant that can connect to popular chat tools like Feishu and WeChat, and can be extended through Skills.
 - [Integrate with OpenCode](content/en/quick_start/agent_integrations/opencode.md): OpenCode is an open-source AI coding assistant available in terminal, web, and other forms.
 - [Integrate with Pi](content/en/quick_start/agent_integrations/pi_mono.md): Pi (pi-mono) is a minimal, aggressively extensible terminal coding harness. It adapts to your workflows through TypeScript extensions, skills, prompt templ...
+- [Integrate with Qoder](content/en/quick_start/agent_integrations/qoder.md): Qoder is an agentic coding product available in three forms: IDE, CLI, and JetBrains Plugin.
 - [Integrate with Reasonix](content/en/quick_start/agent_integrations/reasonix.md): Reasonix is a coding agent that runs in the terminal.
 - [Integrate with WorkBuddy/CodeBuddy](content/en/quick_start/agent_integrations/workbuddy.md): WorkBuddy/CodeBuddy is an AI agent and coding assistant. It supports custom models through local model configuration files, and DeepSeek V4 can be connecte...
 
@@ -94,7 +95,8 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [DeepSeek V4 Preview Release](content/en/news/news260424.md): 🚀 DeepSeek-V4 Preview is officially live & open-sourced! Welcome to the era of cost-effective 1M context length.
 - [DeepSeek-V4-Pro GA Release](content/en/news/news260813.md): We’re launching DeepSeek-V4-Pro today! 🚀
 - [DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live](content/en/news/news260821.md): DeepSeek-V4-Flash-Vision-Exp is now live on the DeepSeek API Platform! 🚀
-- [Change Log](content/en/updates.md): Date: 2026-08-21
+- [DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient](content/en/news/news260910.md): 🚀 Introducing DeepSeek-V4.1-Flash: smarter, faster, more efficient.
+- [Change Log](content/en/updates.md): Date: 2026-09-10
 
 ## dsh (DeepSeek Harness)
 
@@ -106,6 +108,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Plugin Config Catalog](content/en/dsh/docs/config-catalog.md)
 - [Cookbook: adding a workspace package](content/en/dsh/docs/cookbook/adding-a-package.md)
 - [Cookbook: adding a Remote API](content/en/dsh/docs/cookbook/adding-a-remote-api.md)
+- [Cookbook: adding a Session log format version](content/en/dsh/docs/cookbook/adding-a-session-format-version.md)
 - [Cookbook: adding a settings card](content/en/dsh/docs/cookbook/adding-a-settings-card.md)
 - [Tool authoring reference](content/en/dsh/docs/cookbook/adding-a-tool.md)
 - [Cookbook: adding a vendored package](content/en/dsh/docs/cookbook/adding-a-vendored-package.md)
@@ -113,6 +116,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Cookbook: extension plugin shapes](content/en/dsh/docs/cookbook/extension-cookbook.md)
 - [Maintaining the dsh-code-review skill](content/en/dsh/docs/cookbook/maintaining-dsh-code-review.md)
 - [Responding to review across a stacked PR chain](content/en/dsh/docs/cookbook/responding-to-pr-review-on-a-stack.md)
+- [Cookbook: reviewing persistence-type changes](content/en/dsh/docs/cookbook/reviewing-persistence-type-changes.md)
 - [Context](content/en/dsh/docs/cordis-api/context.md)
 - [Events](content/en/dsh/docs/cordis-api/events.md)
 - [Fiber](content/en/dsh/docs/cordis-api/fiber.md)
@@ -141,34 +145,78 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Translation rules](content/en/dsh/docs/i18n/translation-rules.md)
 - [Shared-instance dependency graph](content/en/dsh/docs/module-graph.md)
 - [Session Persistence Event Catalog](content/en/dsh/docs/persistence-catalog.md)
+- [Initial persistence type baseline](content/en/dsh/docs/persistence-changes/2026-09-11-initial.md)
+- [2026-09-12-auto-review-error-metadata](content/en/dsh/docs/persistence-changes/2026-09-12-auto-review-error-metadata.md)
+- [2026-09-14-image-offload](content/en/dsh/docs/persistence-changes/2026-09-14-image-offload.md)
+- [2026-09-14-workspace-changes-event](content/en/dsh/docs/persistence-changes/2026-09-14-workspace-changes-event.md)
+- [Persistence-type change records](content/en/dsh/docs/persistence-changes/README.md)
+- [Session persistence formats](content/en/dsh/docs/persistence-changes/historical-formats/README.md)
+- [Session V0 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v0.md)
+- [Session V1 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v1.md)
+- [Session V2 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v2.md)
+- [Persistence changes across DSH prereleases](content/en/dsh/docs/persistence-changes/releases/README.md)
+- [Persistence release: dsh-v0.0.1-rc.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.1.md)
+- [Persistence release: dsh-v0.0.1-rc.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.2.md)
+- [Persistence release: dsh-v0.0.1-rc.3](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.3.md)
+- [Persistence release: dsh-v0.0.1-rc.4](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.4.md)
+- [Persistence release: dsh-v0.0.1-rc.5](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.5.md)
+- [Persistence release: dsh-v0.1.0-rc.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.1.md)
+- [Persistence release: dsh-v0.1.0-rc.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.2.md)
+- [Persistence release: dsh-v0.1.0-rc.3](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.3.md)
+- [Persistence release: dsh-v0.1.0-rc.5](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.5.md)
+- [Persistence release: dsh-v0.1.0-rc.6](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.6.md)
+- [Persistence release: dsh-v0.1.0-rc.7](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.7.md)
+- [Persistence release: dsh-v0.1.0-rc.8](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.0-rc.8.md)
+- [Persistence release: dsh-v0.1.1-rc.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.1-rc.1.md)
+- [Persistence release: dsh-v0.1.1-rc.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.1-rc.2.md)
+- [Persistence release: dsh-v0.1.2-alpha.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.2-alpha.1.md)
+- [Persistence release: dsh-v0.1.2-alpha.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.2-alpha.2.md)
+- [Persistence release: dsh-v0.1.2-alpha.3](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.2-alpha.3.md)
+- [Persistence release: dsh-v0.1.2-alpha.4](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.2-alpha.4.md)
+- [Persistence release: dsh-v0.1.2-alpha.5](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.2-alpha.5.md)
+- [Persistence release: dsh-v0.1.2-rc.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.2-rc.1.md)
+- [Persistence release: dsh-v0.1.3-alpha.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.3-alpha.1.md)
+- [Persistence release: dsh-v0.1.3-alpha.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.3-alpha.2.md)
+- [Persistence release: dsh-v0.1.5-alpha.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.5-alpha.1.md)
+- [Persistence release: dsh-v0.1.5-alpha.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.5-alpha.2.md)
+- [Persistence release: dsh-v0.1.5-rc.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.5-rc.1.md)
+- [Persistence release: dsh-v0.1.5-rc.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.1.5-rc.2.md)
 - [Post-mortem 0001: ACP server crashed on connect — `export default` dropped the plugin's `inject`](content/en/dsh/docs/postmortem/0001-acp-default-export-drops-inject.md)
 - [Post-mortem 0002: Filesystem snapshot tools were permanently disabled](content/en/dsh/docs/postmortem/0002-js-expression-disabled-filesystem-tools.md)
 - [Post-mortem 0003: Web agent validated a replacement server instead of its current GUI](content/en/dsh/docs/postmortem/0003-web-agent-gui-feedback-loop.md)
 - [Post-mortem 0004: Landlock partial-enforcement notice misclassified child failures](content/en/dsh/docs/postmortem/0004-landlock-partial-notice-misclassified-child-failures.md)
 - [Post-mortems](content/en/dsh/docs/postmortem/README.md)
 - [Vendored package rescope](content/en/dsh/docs/rescope.md)
+- [Session format version and release status](content/en/dsh/docs/session-format-status.md)
 - [Subsystems](content/en/dsh/docs/subsystems/README.md)
 - [Agent Teams](content/en/dsh/docs/subsystems/agent-team.md)
 - [User Approval](content/en/dsh/docs/subsystems/approval.md)
-- [Durable Image Attachments](content/en/dsh/docs/subsystems/attachment.md)
+- [Durable Attachments](content/en/dsh/docs/subsystems/attachment.md)
+- [Profile management](content/en/dsh/docs/subsystems/boot.md)
+- [Browser use](content/en/dsh/docs/subsystems/browser-use.md)
 - [Client Modules](content/en/dsh/docs/subsystems/client-modules.md)
-- [Code Runtime](content/en/dsh/docs/subsystems/code-runtime.md)
+- [Client Resources](content/en/dsh/docs/subsystems/client-resources.md)
 - [Human Commands](content/en/dsh/docs/subsystems/commands.md)
 - [Compaction](content/en/dsh/docs/subsystems/compaction.md)
+- [Computer use](content/en/dsh/docs/subsystems/computer-use.md)
 - [Conversation assembly](content/en/dsh/docs/subsystems/conversation.md)
 - [Core](content/en/dsh/docs/subsystems/core.md)
 - [User Credentials](content/en/dsh/docs/subsystems/credentials.md)
+- [Deliverables](content/en/dsh/docs/subsystems/deliverables.md)
 - [Extensions](content/en/dsh/docs/subsystems/extensions.md)
 - [Message Feedback](content/en/dsh/docs/subsystems/feedback.md)
 - [Filesystem](content/en/dsh/docs/subsystems/filesystem.md)
 - [Same-session goals](content/en/dsh/docs/subsystems/goal.md)
 - [Runtime Invariants](content/en/dsh/docs/subsystems/invariants.md)
-- [Background Task Runtime](content/en/dsh/docs/subsystems/jobs.md)
+- [Background Job Runtime](content/en/dsh/docs/subsystems/jobs.md)
 - [LLM Streaming](content/en/dsh/docs/subsystems/llm-streaming.md)
 - [LSP navigation](content/en/dsh/docs/subsystems/lsp.md)
+- [MCP](content/en/dsh/docs/subsystems/mcp.md)
+- [Office to PDF](content/en/dsh/docs/subsystems/office-to-pdf.md)
 - [Permission Presets](content/en/dsh/docs/subsystems/permission-presets.md)
 - [Session Persistence](content/en/dsh/docs/subsystems/persistence.md)
 - [Plan Mode](content/en/dsh/docs/subsystems/plan.md)
+- [PTC runtime](content/en/dsh/docs/subsystems/ptc-runtime.md)
 - [Process Sandbox](content/en/dsh/docs/subsystems/sandbox.md)
 - [Session-local Schedule](content/en/dsh/docs/subsystems/schedule.md)
 - [Scoped Registration](content/en/dsh/docs/subsystems/scope.md)
@@ -179,10 +227,12 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Session Titles](content/en/dsh/docs/subsystems/session-title.md)
 - [Sessions](content/en/dsh/docs/subsystems/session.md)
 - [User Settings](content/en/dsh/docs/subsystems/settings.md)
-- [Bash Executor](content/en/dsh/docs/subsystems/shell.md)
+- [Shell Executor](content/en/dsh/docs/subsystems/shell.md)
+- [Right Sidebar](content/en/dsh/docs/subsystems/sidebar-right.md)
 - [Skills](content/en/dsh/docs/subsystems/skills.md)
 - [Web Client Slots](content/en/dsh/docs/subsystems/slots.md)
 - [Spill Storage](content/en/dsh/docs/subsystems/spill.md)
+- [SSH](content/en/dsh/docs/subsystems/ssh.md)
 - [Storage](content/en/dsh/docs/subsystems/storage.md)
 - [Subagent](content/en/dsh/docs/subsystems/subagent.md)
 - [Subprocess](content/en/dsh/docs/subsystems/subprocess.md)
@@ -209,12 +259,13 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Event system](content/en/dsh/docs/user/develop/framework/events.md)
 - [Plugins and lifecycle](content/en/dsh/docs/user/develop/framework/index.md)
 - [Services and dependencies](content/en/dsh/docs/user/develop/framework/service.md)
-- [Extend a running agent with Cordis tools](content/en/dsh/docs/user/develop/practice/dynamic-cordis.md)
+- [Configure persistent plugins from a prompt](content/en/dsh/docs/user/develop/practice/dynamic-cordis.md)
 - [Three-role capability design](content/en/dsh/docs/user/develop/practice/index.md)
 - [LLM adapters](content/en/dsh/docs/user/develop/practice/llm-adapter.md)
 - [Create review Sessions from GitHub webhooks](content/en/dsh/docs/user/guide/github-review.md)
 - [Use the Web UI](content/en/dsh/docs/user/guide/index.md)
 - [Connect a third-party memory MCP server](content/en/dsh/docs/user/guide/mcp-memory.md)
+- [Run DSH behind a network proxy](content/en/dsh/docs/user/guide/network-proxy.md)
 - [Configure models](content/en/dsh/docs/user/guide/providers.md)
 - [Get started with the Python SDK](content/en/dsh/docs/user/guide/python-sdk.md)
 - [Schedule session-local reminders](content/en/dsh/docs/user/guide/schedule.md)
@@ -225,9 +276,9 @@ Each file carries frontmatter with its canonical `source:` URL.
 
 ## Other
 
-- [FAQ: Login Issues](content/en/faq/category-1.md): DeepSeek FAQ, Login Issues — 8 questions and answers.
-- [FAQ: User Guide](content/en/faq/category-2.md): DeepSeek FAQ, User Guide — 11 questions and answers.
+- [FAQ: Login Issues](content/en/faq/category-1.md): DeepSeek FAQ, Login Issues — 9 questions and answers.
+- [FAQ: User Guide](content/en/faq/category-2.md): DeepSeek FAQ, User Guide — 10 questions and answers.
 - [FAQ: Chat Issues](content/en/faq/category-3.md): DeepSeek FAQ, Chat Issues — 10 questions and answers.
-- [FAQ: API](content/en/faq/category-4.md): DeepSeek FAQ, API — 15 questions and answers.
+- [FAQ: API](content/en/faq/category-4.md): DeepSeek FAQ, API — 16 questions and answers.
 - [FAQ](content/en/faq.md): If you are not redirected automatically, please visit FAQ.
 - [Prompt Library (提示库)](content/en/prompt-library.md): DeepSeek prompt library: ready-to-use prompt examples with sample outputs.

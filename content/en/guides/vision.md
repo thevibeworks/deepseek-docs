@@ -1,13 +1,13 @@
 ---
 title: "Vision"
-description: "The deepseek-v4-flash-vision-exp model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more."
+description: "The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name deepseek-v4-flash-vision-exp is still accepted, but the model has been retired and its requests are served by the latest Flash model as well."
 source: https://api-docs.deepseek.com/guides/vision
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Vision
 
-The `deepseek-v4-flash-vision-exp` model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more.
+The `deepseek-flash` model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name `deepseek-v4-flash-vision-exp` is still accepted, but the model has been retired and its requests are served by the latest Flash model as well.
 
 Supported image formats: **JPEG, PNG, GIF, and WebP**. The format is detected from the actual file content, not from the file name or the declared MIME type.
 
@@ -33,7 +33,7 @@ with open("image.jpg", "rb") as f:
     b64 = base64.b64encode(f.read()).decode("utf-8")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -55,7 +55,7 @@ curl https://api.deepseek.com/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <DeepSeek API Key>" \
   -d '{
-    "model": "deepseek-v4-flash-vision-exp",
+    "model": "deepseek-flash",
     "messages": [
       {
         "role": "user",
@@ -74,7 +74,7 @@ Pass a publicly accessible `http(s)` link and the model downloads the image for 
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -99,7 +99,7 @@ Use a `file` content block with the returned `file_id` (which has the form `file
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -161,10 +161,10 @@ Images are converted into tokens based on their dimensions, and these tokens are
 
 Before inference, every image is automatically resized:
 
-- Images with a total pixel count below roughly 384×384 are scaled up while preserving their aspect ratio.
-- Larger images are scaled down while preserving their aspect ratio, so that the total pixel count after resizing is roughly that of an **800×800** image.
+- Images with a total pixel count below roughly 544×544 are scaled up while preserving their aspect ratio.
+- Larger images are scaled down while preserving their aspect ratio, so that the total pixel count after resizing is roughly that of a **1300×1300** image.
 
-As a result, there is an upper bound of **384** tokens per image: for example, a 2000×2000 image and a 5000×5000 image consume the same number of tokens after resizing. When a request contains multiple images, each image is counted independently under the same rule — there is no separate calculation for multi-image requests.
+As a result, there is an upper bound of **1024** tokens per image: for example, a 2000×2000 image and a 5000×5000 image consume the same number of tokens after resizing. When a request contains multiple images, each image is counted independently under the same rule — there is no separate calculation for multi-image requests.
 
 To estimate the token cost of an image of a specific size, use the image token calculator on the [Token & Token Usage](../quick_start/token_usage.md) page.
 
@@ -189,9 +189,7 @@ For storage and upload quotas of files uploaded via the Files API, see [Files AP
 
 ## Restrictions
 
-- Images are supported in `user` messages only: images in `system` or `assistant` messages return a `400` error.
-- Only vision models (`deepseek-v4-flash-vision-exp`) accept images; other models return a `400` error ("This model does not support image").
-- User text containing the reserved image placeholder token is rejected with a `400` error.
+- Images are supported in `user` messages only. Images in `system` or `assistant` messages return a `400` error.
 
 ---
 
@@ -207,7 +205,7 @@ import anthropic
 client = anthropic.Anthropic()  # ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 
 message = client.messages.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     max_tokens=1024,
     messages=[
         {
@@ -241,11 +239,11 @@ The three `source` variants mirror the OpenAI methods above:
 
 ## Using Images with the Responses API
 
-The `deepseek-v4-flash-vision-exp` model also accepts images through the OpenAI-compatible [Responses API](responses_api.md#image-input). The same three input methods (base64 data URL, external `http(s)` URL, Files API `file_id`) and the same [limits](#limits) apply; only the content part shape differs — images are carried in `input_image` parts, either in `user` / `developer` messages or in the output of `function_call_output` / `custom_tool_call_output` items:
+The `deepseek-flash` model also accepts images through the OpenAI-compatible [Responses API](responses_api.md#image-input). The same three input methods (base64 data URL, external `http(s)` URL, Files API `file_id`) and the same [limits](#limits) apply; only the content part shape differs — images are carried in `input_image` parts, either in `user` / `developer` messages or in the output of `function_call_output` / `custom_tool_call_output` items:
 
 ```python
 response = client.responses.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     input=[
         {
             "role": "user",

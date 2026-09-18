@@ -2,7 +2,7 @@
 title: "Integrate with WorkBuddy/CodeBuddy"
 description: "WorkBuddy/CodeBuddy is an AI agent and coding assistant. It supports custom models through local model configuration files, and DeepSeek V4 can be connected through the OpenAI-compatible Chat Completions API."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Integrate with WorkBuddy/CodeBuddy
@@ -41,35 +41,19 @@ Then add the following configuration:
 {
   "models": [
     {
-      "id": "deepseek-v4-pro",
-      "name": "DeepSeek V4 Pro",
+      "id": "deepseek-flash",
+      "name": "DeepSeek Flash",
       "vendor": "DeepSeek",
       "url": "https://api.deepseek.com/v1/chat/completions",
       "apiKey": "${DEEPSEEK_API_KEY}",
       "maxInputTokens": 128000,
       "maxOutputTokens": 8192,
       "supportsToolCall": true,
-      "supportsImages": false,
-      "relatedModels": {
-        "lite": "deepseek-v4-flash",
-        "reasoning": "deepseek-v4-pro"
-      }
-    },
-    {
-      "id": "deepseek-v4-flash",
-      "name": "DeepSeek V4 Flash",
-      "vendor": "DeepSeek",
-      "url": "https://api.deepseek.com/v1/chat/completions",
-      "apiKey": "${DEEPSEEK_API_KEY}",
-      "maxInputTokens": 128000,
-      "maxOutputTokens": 8192,
-      "supportsToolCall": true,
-      "supportsImages": false
+      "supportsImages": true
     }
   ],
   "availableModels": [
-    "deepseek-v4-pro",
-    "deepseek-v4-flash"
+    "deepseek-flash"
   ]
 }
 ```
@@ -83,8 +67,7 @@ Fully quit WorkBuddy/CodeBuddy, then open it again.
 In the model selector, choose:
 
 ```text
-DeepSeek V4 Pro
-DeepSeek V4 Flash
+DeepSeek Flash
 ```
 
 #### 4. Optional: Verify the API Key
@@ -97,7 +80,7 @@ $env:DEEPSEEK_API_KEY="<your DeepSeek API Key>"
 curl https://api.deepseek.com/v1/chat/completions `
   -H "Content-Type: application/json" `
   -H "Authorization: Bearer $env:DEEPSEEK_API_KEY" `
-  -d '{"model":"deepseek-v4-flash","messages":[{"role":"user","content":"hi"}],"stream":false}'
+  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hi"}],"stream":false}'
 ```
 
 If the request succeeds, the API Key and model name are valid.
@@ -105,7 +88,7 @@ If the request succeeds, the API Key and model name are valid.
 #### Troubleshooting
 
 - `Authentication Fails` or `401`: Check whether `apiKey` is your real DeepSeek API Key. Do not put the API URL in the API Key field.
-- `Model Not Found` or `404`: Check whether the model id is exactly `deepseek-v4-pro` or `deepseek-v4-flash`.
+- `Model Not Found` or `404`: Check whether the model id is exactly `deepseek-flash`.
 - `Failed to read local model configuration`: Check whether `models.json` is valid JSON and saved as UTF-8 without BOM.
 - The model does not appear in the selector: Fully restart WorkBuddy/CodeBuddy and confirm the file is placed under `.codebuddy\models.json`.
 - `${DEEPSEEK_API_KEY}` is shown literally in the UI: Restart WorkBuddy/CodeBuddy from a terminal where `DEEPSEEK_API_KEY` is available. If the desktop UI still does not expand environment variables, paste the actual API Key in the UI or in your local `models.json`.

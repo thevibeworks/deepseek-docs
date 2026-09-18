@@ -2,7 +2,7 @@
 title: "限速与隔离"
 description: "并发限速"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # 限速与隔离
@@ -13,10 +13,10 @@ fetched: 2026-08-23
 
 **若您有更高的并发需求，可提交[账号扩容申请工单](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnda9jNKvhyYr8xb843xLEzc)，我们将根据您实际的业务需求匹配合适的并发量，扩容并不增加额外的费用。**
 
-|  |  |  |  |
-| --- | --- | --- | --- |
-|  | deepseek-v4-pro | deepseek-v4-flash | deepseek-v4-flash-vision-exp |
-| 并发限制 | 500 | 2500 | 2500 |
+|  |  |  |
+| --- | --- | --- |
+|  | deepseek-flash | deepseek-v4-pro |
+| 并发限制 | 2500 | 500 |
 
 - 一个请求从发出后，到模型响应完成之前记为一个并发
 - 并发限制以账号粒度计，与 API Key 无关
@@ -32,7 +32,7 @@ fetched: 2026-08-23
 - **KVCache 隔离：**`user_id` 用于我们对您业务侧用户进行 KVCache 隔离，以进行隐私管理
 - **调度隔离：**`user_id` 用于我们对您业务侧用户进行调度隔离
   - 对于普通 API 用户，所有 `user_id` 合并计算并发限速
-  - 对于提升了并发配额的 API 用户，我们会限制您账号下的总并发，同时我们会对每个您传入的 `user_id` 进行并发限制（空 id 为一个特殊的 `user_id`）。对每个 `user_id`，deepseek-v4-pro 并发限制为 500，deepseek-v4-flash 并发限制为 2500，deepseek-v4-flash-vision-exp 并发限制为 2500。若某个 `user_id` 超过了该限制，则您账号下设置了该 `user_id` 的请求将会收到 HTTP 429 错误码
+  - 对于提升了并发配额的 API 用户，我们会限制您账号下的总并发，同时我们会对每个您传入的 `user_id` 进行并发限制（空 id 为一个特殊的 `user_id`）。对每个 `user_id`，`deepseek-flash` 的并发限制为 2500，`deepseek-v4-pro` 的并发限制为 500。若某个 `user_id` 超过了该限制，则您账号下设置了该 `user_id` 的请求将会收到 HTTP 429 错误码
 
 ### user\_id 设置方法
 
@@ -46,7 +46,7 @@ HTTP 请求体：
 
 ```json
 {
-    "model": "deepseek-v4-pro",
+    "model": "deepseek-flash",
     "messages": {"role": "user", "content": "Hello!"},
     "user_id": "your_user_id"
 }
@@ -56,7 +56,7 @@ HTTP 请求体：
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[{"role": "user", "content": "Hello!"}],
     extra_body={"user_id": "your_user_id"}
 )
@@ -68,7 +68,7 @@ HTTP 请求体：
 
 ```json
 {
-    "model": "deepseek-v4-pro",
+    "model": "deepseek-flash",
     "messages": {"role": "user", "content": "Hello!"},
     "metadata": {"user_id": "your_user_id"},
     "max_tokens": 1024
@@ -79,7 +79,7 @@ HTTP 请求体：
 
 ```python
 message = client.messages.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[{"role": "user", "type": "text", "content": "Hello!"}],
     metadata={"user_id": "your_user_id"},
     max_tokens=1024

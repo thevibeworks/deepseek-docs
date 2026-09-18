@@ -2,7 +2,7 @@
 title: "FIM 补全（Beta）"
 description: "在 FIM (Fill In the Middle) 补全中，用户可以提供前缀和后缀（可选），模型来补全中间的内容。FIM 常用于内容续写、代码补全等场景。"
 source: https://api-docs.deepseek.com/zh-cn/guides/fim_completion
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # FIM 补全（Beta）
@@ -27,7 +27,7 @@ client = OpenAI(
 )
 
 response = client.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     prompt="def fib(a):",
     suffix="    return fib(a-1) + fib(a-2)",
     max_tokens=128

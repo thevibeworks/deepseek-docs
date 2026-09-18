@@ -1,11 +1,53 @@
 ---
 title: "更新日志"
-description: "时间: 2026-08-21"
+description: "时间: 2026-09-10"
 source: https://api-docs.deepseek.com/zh-cn/updates
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # 更新日志
+
+---
+
+## 时间: 2026-09-10
+
+### DeepSeek-V4.1-Flash 发布
+
+今天，我们正式发布 DeepSeek-V4.1-Flash 模型。这是我们全新模型结构系列中的最小尺寸的模型，具备原生多模态视觉理解能力。新模型结构的设计初衷是：能力上限更高、推理速度更快、吞吐更大、可扩展到更大参数模型。
+
+- GPQA Diamond: 90.9
+- HLE: 36.8 (39.1\*)
+- Codeforces (Rating): 3471
+- MathArena Apex: 65.6
+- Terminal-Bench 2.1: 90.6
+- Terminal-Bench 3.0: 30.0
+- Terminal-Bench 4.0: 31.2
+- DeepSWE v1.1: 74.2
+- ProgramBench: 20.3
+- NL2Repo-Bench: 65.4
+- CyberGym: 88.1
+- SEC-Bench Pro: 62.8
+- ExploitGym: 15.3
+- HLE (w/tools): 63.9
+- Automation-Bench: 54.8
+- Agents' Last Exam: 31.8
+- Chartography (w/tools): 78.9
+- BabyVision (w/tools): 89.6
+- ZeroBench-main (w/tools): 49.0
+
+\* 表示仅在 HLE 评测集的纯文本子集上进行了测试。
+
+**API 变更**
+
+DeepSeek V4.1 Flash 已同步上线 DeepSeek API，原生支持多模态，将模型名称更改为 `deepseek-flash` 即可调用最新的 V4.1 Flash 模型。旧版本模型 V4 Flash 与 V4 Flash Vision Exp 现已下线，出于兼容考虑，模型名 `deepseek-v4-flash`、`deepseek-v4-flash-vision-exp` 将被暂时路由到 V4.1 Flash。
+
+为响应广大用户的需求，我们决定在 2026 年 9 月 14 日之后继续提供 DeepSeek V4 Pro 的 API 调用服务，计费方式保持不变；如有变动，我们将另行通知。感谢您的理解与支持！
+
+**API 定价调整**
+
+随着 DeepSeek-V4.1-Flash 上线，API 价格同步下调。详细价格请参考[模型与价格](quick_start/pricing.md)。
+
+详细更新内容请[参阅文档](news/news260910.md)。
 
 ---
 
