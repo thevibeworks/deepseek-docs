@@ -1,7 +1,7 @@
 ---
 title: "chat_nodejs"
 source: https://api-docs.deepseek.com/api_samples/chat_nodejs
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # chat\_nodejs
@@ -19,7 +19,7 @@ const openai = new OpenAI({
 async function main() {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: "You are a helpful assistant." }],
-    model: "deepseek-v4-pro",
+    model: "deepseek-flash",
     thinking: {"type": "enabled"},
     reasoning_effort: "high",
     stream: false,

@@ -2,7 +2,7 @@
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-09-09
+fetched: 2026-09-18
 ---
 
 # FAQ: Login Issues

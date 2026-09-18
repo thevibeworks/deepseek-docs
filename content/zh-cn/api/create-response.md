@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Responses API
@@ -23,15 +23,15 @@ POST /responses
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
+**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
 
-使用的模型的 ID。
+使用的模型的 ID。请使用 `deepseek-flash` 或 `deepseek-v4-pro`。
 
 **inputobjectnullable**
 
 模型的输入。既可以传纯字符串（视作一条 `user` 消息），也可以传输入 item 列表。
 
-支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）。使用 `deepseek-v4-flash-vision-exp` 模型时，`user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`system` / `assistant` 消息中的图片将返回 `400` 错误。使用其他模型时，`input_image` 内容块会被替换为占位文本。文件输入不支持。
+支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`system` / `assistant` 消息中的图片将返回 `400` 错误。文件输入不支持。
 
 `input` 与 `instructions` 至少传一个。
 
@@ -50,7 +50,7 @@ string
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
+**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`]
 
 输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。`custom_tool_call` / `custom_tool_call_output` item 配合 `apply_patch` custom 工具使用。
 
@@ -62,7 +62,7 @@ string
 
 **contentobject**
 
-用于 `message` item 时为消息内容，可以是纯字符串或 `input_text` / `output_text` / `input_image` 内容块列表。使用 `deepseek-v4-flash-vision-exp` 模型时，`input_image` 内容块携带图片；使用其他模型时会被替换为占位文本。用于 `reasoning` item 时为 `reasoning_text` 内容块列表。
+用于 `message` item 时为消息内容，可以是纯字符串或 `input_text` / `output_text` / `input_image` 内容块列表。用于 `reasoning` item 时为 `reasoning_text` 内容块列表。
 
 oneOf
 
@@ -145,7 +145,7 @@ oneOf
 
 **outputobject**
 
-用于 `function_call_output` / `custom_tool_call_output` item。工具调用的结果，可以是纯字符串或 `input_text` / `input_image` 内容块列表。使用 `deepseek-v4-flash-vision-exp` 模型时，输出中的 `input_image` 内容块会作为真实图片处理；使用其他模型时会被替换为占位文本。
+用于 `function_call_output` / `custom_tool_call_output` item。工具调用的结果，可以是纯字符串或 `input_text` / `input_image` 内容块列表。
 
 oneOf
 
@@ -226,9 +226,9 @@ oneOf
 
 **effort** string
 
-**Possible values:** [`none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`]
+**Possible values:** [`none`, `low`, `high`, `max`]
 
-控制思考模式开关与思考强度。`none` 关闭思考模式；`minimal` / `low` 开启思考模式，思考强度为 `low`；`medium` / `high` / `xhigh` 开启思考模式，思考强度为 `high`；`max` 开启思考模式，思考强度为 `max`。不传时使用模型默认的思考行为（默认开启）。
+控制思考模式开关与思考强度。`none` 关闭思考模式；`low` / `high` / `max` 开启思考模式。不传时使用模型默认的思考行为（默认开启）。出于兼容考虑，`minimal` 映射为 `low`，`medium` / `xhigh` 映射为 `high`。
 
 **max\_output\_tokens** integernullable
 
@@ -252,7 +252,7 @@ oneOf
 
 **Default value:** `1`
 
-作为调节采样温度的替代方案，即核采样。思考模式下不生效。
+作为调节采样温度的替代方案，即核采样。该参数在思考模式下生效，但小于 0.95 的值会被抬升至 0.95；在非思考模式下恒为 1.0，传入的值会被忽略。
 
 **textobjectnullable**
 
@@ -278,13 +278,13 @@ schema 的名称。`type` 为 `json_schema` 时必填。
 
 **toolsobject[]nullable**
 
-模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。除 `function` 外，还支持内置的 `web_search` 工具（服务端执行），其他内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
+模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** [`function`, `web_search`, `web_search_2025_08_26`]
+**Possible values:** [`function`]
 
 工具的类型。
 
@@ -318,8 +318,6 @@ function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls �
 
 通过 `{"type": "function", "name": "my_function"}` 指定特定工具，会强制模型调用该工具。
 
-通过 `{"type": "web_search"}`（或 `{"type": "web_search_2025_08_26"}`）可强制模型执行联网搜索；此时 `tools` 中必须包含 `web_search` 工具，否则返回 `400` 错误。
-
 oneOf
 
 - Tool choice mode
@@ -335,7 +333,7 @@ string
 
 **type** stringrequired
 
-**Possible values:** [`function`, `web_search`, `web_search_2025_08_26`]
+**Possible values:** [`function`]
 
 **name** string
 
@@ -408,13 +406,13 @@ object 的类型，其值恒为 `response`。
 
 **outputobject[]required**
 
-模型生成的输出 item 列表。思考模式下，思维链以 `reasoning` item 的形式在 `message` item 之前返回。函数调用以 `function_call` item 返回，服务端联网搜索动作以 `web_search_call` item 返回。
+模型生成的输出 item 列表。思考模式下，思维链以 `reasoning` item 的形式在 `message` item 之前返回。函数调用以 `function_call` item 返回。
 
 - Array [
 
 **type** string
 
-**Possible values:** [`message`, `reasoning`, `function_call`, `web_search_call`]
+**Possible values:** [`message`, `reasoning`, `function_call`]
 
 输出 item 的类型。
 
@@ -459,10 +457,6 @@ object 的类型，其值恒为 `response`。
 **arguments** string
 
 用于 `function_call` item。模型生成的调用函数的入参，格式为 JSON。请注意，模型并不总是生成有效的 JSON，且可能会虚构出您的函数模式中未定义的参数。在调用函数之前，请在您的代码中验证这些入参是否有效。
-
-**action** object
-
-用于 `web_search_call` item。描述服务端执行的搜索动作（`search` / `open_page` / `find_in_page`）的对象。
 
 - ]
 
@@ -525,8 +519,7 @@ object 的类型，其值恒为 `response`。
       ],
       "call_id": "string",
       "name": "string",
-      "arguments": "string",
-      "action": {}
+      "arguments": "string"
     }
   ],
   "usage": {
@@ -551,7 +544,7 @@ object 的类型，其值恒为 `response`。
   "object": "response",
   "created_at": 1753000000,
   "status": "completed",
-  "model": "deepseek-v4-flash",
+  "model": "deepseek-flash",
   "output": [
     {
       "type": "reasoning",

@@ -2,7 +2,7 @@
 title: "对话前缀续写（Beta）"
 description: "对话前缀续写沿用 Chat Completion API，用户提供 assistant 开头的消息，来让模型补全其余的消息。"
 source: https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion
-fetched: 2026-08-16
+fetched: 2026-09-18
 ---
 
 # 对话前缀续写（Beta）
@@ -31,7 +31,7 @@ messages = [
     {"role": "assistant", "content": "```python\n", "prefix": True}
 ]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stop=["```"],
 )

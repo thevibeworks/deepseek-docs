@@ -1,7 +1,7 @@
 ---
 title: "thinking_mode_api_example_streaming"
 source: https://api-docs.deepseek.com/api_samples/thinking_mode_api_example_streaming
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # thinking\_mode\_api\_example\_streaming
@@ -13,7 +13,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -34,7 +34,7 @@ for chunk in response:
 messages.append({"role": "assistant", "reasoning_content": reasoning_content, "content": content})
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"

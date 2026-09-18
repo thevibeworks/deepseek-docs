@@ -2,7 +2,7 @@
 title: "JSON Output"
 description: "在很多场景下，用户需要让模型严格按照 JSON 格式来输出，以实现输出的结构化，便于后续逻辑进行解析。"
 source: https://api-docs.deepseek.com/zh-cn/guides/json_mode
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # JSON Output
@@ -50,7 +50,7 @@ messages = [{"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}]
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     response_format={
         'type': 'json_object'

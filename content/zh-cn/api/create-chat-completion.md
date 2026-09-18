@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 
 # Chat Completions API
@@ -54,7 +54,7 @@ system 消息的内容。
 
 **contentobjectrequired**
 
-user 消息的内容。可以是字符串，也可以是内容块数组（使用 `deepseek-v4-flash-vision-exp` 模型时可携带图片）。详见[图像理解指南](../guides/vision.md)。
+user 消息的内容。可以是字符串，也可以是内容块数组（可携带图片）。详见[图像理解指南](../guides/vision.md)。
 
 oneOf
 
@@ -173,9 +173,82 @@ assistant 消息的内容。
 
 该消息的发起角色，其值为 `tool`。
 
-**content** Text content (string)required
+**contentobjectrequired**
 
-tool 消息的内容。
+tool 消息的内容。可以是字符串，也可以是内容块数组（可以携带图片）。详见 [Vision 指南](../guides/vision.md)。
+
+oneOf
+
+- Text content
+- Array of content parts
+
+**[Text content]**
+
+string
+
+**[Array of content parts]**
+
+- Array [
+
+oneOf
+
+- Text content part
+- Image content part
+- File content part
+
+**[Text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`text`]
+
+内容块的类型，此场景下为 `text`。
+
+**text** stringrequired
+
+文本内容。
+
+**[Image content part]**
+
+**type** stringrequired
+
+**Possible values:** [`image_url`]
+
+内容块的类型，此场景下为 `image_url`。
+
+**image\_urlobjectrequired**
+
+**url** stringrequired
+
+图片的 `http(s)` URL（最多 8192 个字符）或 base64 编码的 data URL（`data:image/jpeg;base64,...`）。支持的格式：JPEG、PNG、GIF、WebP。
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。
+
+**[File content part]**
+
+**type** stringrequired
+
+**Possible values:** [`file`]
+
+内容块的类型，此场景下为 `file`。
+
+**file\_id** string
+
+通过 [Files API](../guides/files_api.md) 上传的文件 ID，形如 `file-api-...`。与 `file_data` 互斥。
+
+**file\_data** string
+
+图片的 base64 编码 data URL（`data:image/jpeg;base64,...`）。与 `file_id` 互斥。
+
+**filename** string
+
+可选的文件名，仅在配合 `file_data` 时有效。
+
+- ]
 
 **tool\_call\_id** stringrequired
 
@@ -185,9 +258,9 @@ tool 消息的内容。
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
+**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
 
-使用的模型的 ID。
+使用的模型的 ID。请使用 `deepseek-flash` 或 `deepseek-v4-pro`。
 
 **thinkingobjectnullable**
 
@@ -203,13 +276,13 @@ tool 消息的内容。
 
 **reasoning\_effort** string
 
-**Possible values:** [`low`, `high`, `max`]
+**Possible values:** [`none`, `low`, `high`, `max`]
 
-控制模型的推理强度。默认为 `high`。出于兼容考虑 `medium`、`xhigh` 会映射为 `high`。
+控制思考模式开关与思考强度。`none` 关闭思考模式；`low` / `high` / `max` 开启思考模式。默认强度为 `high`。出于兼容考虑，`minimal` 映射为 `low`，`medium` / `xhigh` 映射为 `high`。
 
 **max\_tokens** integernullable
 
-限制一次请求中模型生成 completion 的最大 token 数。输入 token 和输出 token 的总长度受模型的上下文长度的限制。取值范围与默认值详见[文档](../quick_start/pricing.md)。
+限制一次请求中模型生成 completion 的最大 token 数。取值范围为 1 到 384K（393216）。未设置时，非思考模式默认 8K，思考模式默认 64K（`reasoning_effort` 为 `max` 时为 128K）。输入 token 和输出 token 的总长度受模型的上下文长度的限制。详见[模型 & 价格](../quick_start/pricing.md)。
 
 **response\_formatobjectnullable**
 
@@ -254,7 +327,7 @@ string
 
 **stream\_optionsobjectnullable**
 
-流式输出相关选项。只有在 `stream` 参数为 `true` 时，才可设置此参数。
+流式输出相关选项。必须与 `stream: true` 一起使用；如果 `stream` 未设置为 `true`，API 会返回 `400` 错误。
 
 **include\_usage** boolean
 
@@ -268,7 +341,7 @@ string
 
 **Default value:** `1`
 
-采样温度，介于 0 和 2 之间。更高的值，如 0.8，会使输出更随机，而更低的值，如 0.2，会使其更加集中和确定。 我们通常建议可以更改这个值或者更改 `top_p`，但不建议同时对两者进行修改。
+采样温度，介于 0 和 2 之间。更高的值，如 0.8，会使输出更随机，而更低的值，如 0.2，会使其更加集中和确定。 我们通常建议可以更改这个值或者更改 `top_p`，但不建议同时对两者进行修改。思考模式下不生效。
 
 **top\_p** numbernullable
 
@@ -276,11 +349,11 @@ string
 
 **Default value:** `1`
 
-作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。
+作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 取值必须大于 0 且不超过 1。我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。该参数在思考模式下生效，但小于 0.95 的值会被抬升至 0.95；在非思考模式下恒为 1.0，传入的值会被忽略。
 
 **toolsobject[]nullable**
 
-模型可能会调用的 tool 的列表。目前，仅支持 function 作为工具。使用此参数来提供以 JSON 作为输入参数的 function 列表。最多支持 128 个 function。
+模型可能会调用的 tool 的列表。目前，仅支持 function 作为工具。使用此参数来提供以 JSON 作为输入参数的 function 列表。tool 名称必须唯一。
 
 - Array [
 
@@ -298,7 +371,7 @@ function 的功能描述，供模型理解何时以及如何调用该 function�
 
 **name** stringrequired
 
-要调用的 function 名称。必须由 a-z、A-Z、0-9 字符组成，或包含下划线和连字符，最大长度为 64 个字符。
+要调用的 function 名称。必须由 a-z、A-Z、0-9 字符组成，或包含下划线和连字符，最大长度为 128 个字符。
 
 **parametersobject**
 
@@ -329,6 +402,8 @@ function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls �
 通过 `{"type": "function", "function": {"name": "my_function"}}` 指定特定 tool，会强制模型调用该 tool。
 
 当没有 tool 时，默认值为 `none`。如果有 tool 存在，默认值为 `auto`。
+
+思考模式下不支持 `required` 和指定具体 tool 的用法，API 会返回 `400` 错误。请先关闭思考模式。
 
 oneOf
 
@@ -411,7 +486,7 @@ OK, 返回一个 `chat completion` 对象。
 
 **finish\_reason** stringrequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`]
+**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
 
 模型停止生成 token 的原因。
 
@@ -421,7 +496,11 @@ OK, 返回一个 `chat completion` 对象。
 
 `content_filter`：输出内容因触发过滤策略而被过滤。
 
+`tool_calls`：模型进行了工具调用。
+
 `insufficient_system_resource`：系统推理资源不足，生成被打断。
+
+`aborted`：生成过程被中断。
 
 **index** integerrequired
 
@@ -591,6 +670,14 @@ This fingerprint represents the backend configuration that the model runs with.
 
 用户 prompt 所包含的 token 数。该值等于 `prompt_cache_hit_tokens + prompt_cache_miss_tokens`
 
+**prompt\_tokens\_detailsobjectrequired**
+
+prompt tokens 的详细信息。
+
+**cached\_tokens** integer
+
+用户 prompt 中，命中上下文缓存的 token 数。与 `prompt_cache_hit_tokens` 相同。
+
 **prompt\_cache\_hit\_tokens** integerrequired
 
 用户 prompt 中，命中上下文缓存的 token 数。
@@ -682,6 +769,9 @@ completion tokens 的详细信息。
   "usage": {
     "completion_tokens": 0,
     "prompt_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
     "prompt_cache_hit_tokens": 0,
     "prompt_cache_miss_tokens": 0,
     "total_tokens": 0,
@@ -704,16 +794,23 @@ completion tokens 的详细信息。
       "message": {
         "content": "Hello! How can I help you today?",
         "role": "assistant"
-      }
+      },
+      "logprobs": null
     }
   ],
   "created": 1705651092,
-  "model": "deepseek-v4-pro",
+  "model": "deepseek-flash",
   "object": "chat.completion",
+  "system_fingerprint": "fp_7a09fdf9c2",
   "usage": {
     "completion_tokens": 10,
     "prompt_tokens": 16,
-    "total_tokens": 26
+    "total_tokens": 26,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 16
   }
 }
 ```
@@ -759,6 +856,36 @@ completion 增量的内容。
 **Possible values:** [`assistant`]
 
 产生这条消息的角色。
+
+**tool\_callsobject[]**
+
+模型生成的 tool 调用，例如 function 调用。每个 tool 调用的第一个 chunk 携带 `id`、`type` 和 `function` 字段，后续 chunk 只携带 function 参数。
+
+- Array [
+
+**index** integerrequired
+
+**id** string
+
+tool 的 ID。
+
+**type** string
+
+**Possible values:** [`function`]
+
+tool 的类型。目前仅支持 `function`。
+
+**functionobject**
+
+**name** string
+
+要调用的 function 名。
+
+**arguments** string
+
+要调用的 function 的参数，由模型生成，格式为 JSON。请注意，模型并不总是生成有效的 JSON，并且可能会臆造出你的函数模式中未定义的参数。在调用函数之前，请在代码中验证这些参数。
+
+- ]
 
 **logprobsobjectnullable**
 
@@ -846,7 +973,7 @@ completion 增量的内容。
 
 **finish\_reason** stringnullablerequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`]
+**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
 
 模型停止生成 token 的原因。
 
@@ -856,7 +983,11 @@ completion 增量的内容。
 
 `content_filter`：输出内容因触发过滤策略而被过滤。
 
+`tool_calls`：模型进行了工具调用。
+
 `insufficient_system_resource`: 由于后端推理资源受限，请求被打断。
+
+`aborted`：生成过程被中断。
 
 **index** integerrequired
 
@@ -895,7 +1026,18 @@ This fingerprint represents the backend configuration that the model runs with.
         "delta": {
           "content": "string",
           "reasoning_content": "string",
-          "role": "assistant"
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "index": 0,
+              "id": "string",
+              "type": "function",
+              "function": {
+                "name": "string",
+                "arguments": "string"
+              }
+            }
+          ]
         },
         "logprobs": {
           "content": [
@@ -950,27 +1092,27 @@ This fingerprint represents the backend configuration that the model runs with.
 **[Example]**
 
 ```shell
-data: {"id": "1f633d8bfc032625086f14113c411638", "choices": [{"index": 0, "delta": {"content": "", "role": "assistant"}, "finish_reason": null, "logprobs": null}], "created": 1718345013, "model": "deepseek-v4-pro", "system_fingerprint": "fp_a49d71b8a1", "object": "chat.completion.chunk", "usage": null}
+data: {"id": "1f633d8bfc032625086f14113c411638", "choices": [{"index": 0, "delta": {"content": "", "role": "assistant"}, "finish_reason": null, "logprobs": null}], "created": 1718345013, "model": "deepseek-flash", "system_fingerprint": "fp_a49d71b8a1", "object": "chat.completion.chunk"}
 
-data: {"choices": [{"delta": {"content": "Hello", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": "Hello", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": "!", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": "!", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " How", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " How", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " can", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " can", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " I", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " I", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " assist", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " assist", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " you", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " you", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " today", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " today", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": "?", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": "?", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": "", "role": null}, "finish_reason": "stop", "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1", "usage": {"completion_tokens": 9, "prompt_tokens": 17, "total_tokens": 26}}
+data: {"choices": [{"delta": {"content": "", "role": null}, "finish_reason": "stop", "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1", "usage": {"completion_tokens": 9, "prompt_tokens": 17, "total_tokens": 26, "prompt_tokens_details": {"cached_tokens": 0}, "prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 17}}
 
 data: [DONE]
 ```

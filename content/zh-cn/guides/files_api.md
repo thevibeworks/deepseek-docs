@@ -2,7 +2,7 @@
 title: "Files API"
 description: "Files API 让你上传图片，之后通过 file_id 引用。推荐在以下场景使用："
 source: https://api-docs.deepseek.com/zh-cn/guides/files_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Files API
@@ -12,7 +12,7 @@ Files API 让你上传图片，之后通过 `file_id` 引用。推荐在以下�
 - 在多个请求中复用同一张图片，无需重复上传。
 - 发送会超过 48 MiB 请求体限制或 32 MiB 单图内联限制的图片（见 [图像理解：限制](vision.md#limits)）。
 
-上传的文件与 `deepseek-v4-flash-vision-exp` 模型配合使用。如何在对话请求中引用已上传的文件，请参考 [图像理解](vision.md)。
+上传的文件与 `deepseek-flash` 模型配合使用。如何在对话请求中引用已上传的文件，请参考 [图像理解](vision.md)。
 
 支持的格式：**JPEG、PNG、GIF、WebP**。格式由文件实际内容判断。
 
@@ -155,7 +155,7 @@ curl -X DELETE https://api.deepseek.com/files/file-api-xxxxxxxxxxxxxxxx \
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",

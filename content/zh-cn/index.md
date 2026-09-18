@@ -2,7 +2,7 @@
 title: "首次调用 API"
 description: "DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配置，您可以使用 OpenAI/Anthropic SDK 来访问 DeepSeek API，或使用与 OpenAI/Anthropic API 兼容的软件。"
 source: https://api-docs.deepseek.com/zh-cn/
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # 首次调用 API
@@ -14,9 +14,11 @@ DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配�
 | base\_url (OpenAI) | `https://api.deepseek.com` |
 | base\_url (Anthropic) | `https://api.deepseek.com/anthropic` |
 | api\_key | 申请一个 [API key](https://platform.deepseek.com/api_keys) |
-| model(1) | `deepseek-v4-flash` `deepseek-v4-pro` `deepseek-v4-flash-vision-exp` |
+| model | `deepseek-flash`(1) `deepseek-v4-pro`(2) |
 
-(1) `deepseek-v4-flash` 模型版本已更新为 DeepSeek-V4-Flash-0731，`deepseek-v4-pro` 模型版本已更新为 DeepSeek-V4-Pro-0813，调用方法不变，使用 `deepseek-v4-flash`、`deepseek-v4-pro` 即可调用最新版本。新上线的 `deepseek-v4-flash-vision-exp` 为实验性模型，额外支持图片输入，将模型名设为 `deepseek-v4-flash-vision-exp` 即可调用，详见[图像理解](guides/vision.md)。
+(1) 模型名请使用 `deepseek-flash`。旧模型名 `deepseek-v4-flash`、`deepseek-v4-flash-vision-exp` 仍可调用，但对应模型已下线，请求将由 DeepSeek-V4.1-Flash 模型提供服务，并按 Flash 价格计费。
+
+(2) 为响应广大用户的需求，我们决定在 2026 年 9 月 14 日之后继续提供 DeepSeek V4 Pro 的 API 调用服务，计费方式保持不变；如有变动，我们将另行通知。感谢您的理解与支持！
 
 ## 接入 Agent 工具
 
@@ -39,7 +41,7 @@ curl https://api.deepseek.com/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${DEEPSEEK_API_KEY}" \
   -d '{
-        "model": "deepseek-v4-pro",
+        "model": "deepseek-flash",
         "messages": [
           {"role": "system", "content": "You are a helpful assistant."},
           {"role": "user", "content": "Hello!"}
@@ -62,7 +64,7 @@ client = OpenAI(
     base_url="https://api.deepseek.com")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[
         {"role": "system", "content": "You are a helpful assistant"},
         {"role": "user", "content": "Hello"},
@@ -90,7 +92,7 @@ const openai = new OpenAI({
 async function main() {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: "You are a helpful assistant." }],
-    model: "deepseek-v4-pro",
+    model: "deepseek-flash",
     thinking: {"type": "enabled"},
     reasoning_effort: "high",
     stream: false,

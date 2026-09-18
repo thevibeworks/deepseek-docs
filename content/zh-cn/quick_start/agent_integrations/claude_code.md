@@ -2,7 +2,7 @@
 title: "接入 Claude Code"
 description: "Claude Code 是一个运行在终端内的 AI 编程助手。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # 接入 Claude Code
@@ -18,11 +18,11 @@ Linux / Mac 用户，直接在终端中执行：
 ```text
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 export ANTHROPIC_AUTH_TOKEN=<你的 DeepSeek API Key>
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 ```
@@ -32,11 +32,11 @@ Windows 用户，在 Powershell 中执行：
 ```text
 $env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_AUTH_TOKEN="<你的 DeepSeek API Key>"
-$env:ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
 ```
@@ -73,11 +73,11 @@ Linux / Mac 用户执行以下命令配置相关环境变量，其中 API Key �
 ```text
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 export ANTHROPIC_AUTH_TOKEN=<你的 DeepSeek API Key>
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 ```
@@ -87,11 +87,11 @@ Windows 用户执行：
 ```text
 $env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_AUTH_TOKEN="<你的 DeepSeek API Key>"
-$env:ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
 ```
@@ -121,7 +121,9 @@ DeepSeek API 原生支持 Claude Code 中的 Web Search 功能。在使用 Claud
 
 您在使用 Claude Code 或者 Claude Desktop APP 时，我们会对您传入的 claude 模型名进行映射：
 
-- claude-opus 开头的模型，会映射到 deepseek-v4-pro
-- claude-haiku、claude-sonnet 开头的模型，会映射到 deepseek-v4-flash
+- claude-opus 开头的模型，会映射到 `deepseek-v4-pro`
+- claude-haiku、claude-sonnet 开头的模型，会映射到 `deepseek-flash`
+
+claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 
 通过这样的映射，您在使用新版 Claude Desktop APP 的 developer 模式时，可以绕过 APP 对模型名的限制，只需改动 base\_url 和 api\_key，即可在其中接入 DeepSeek 模型。

@@ -2,7 +2,7 @@
 title: "FIM 补全 API（Beta）"
 description: "FIM (Fill In the Middle) 补全 API。<br/>用户需要设置 `base_url='https://api.deepseek.com/beta'` 来使用此功能。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-completion
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 
 # FIM 补全 API（Beta）
@@ -22,19 +22,17 @@ FIM (Fill In the Middle) 补全 API。
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-pro`]
+**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
 
-模型的 ID
+模型的 ID。请使用 `deepseek-flash` 或 `deepseek-v4-pro`。
 
 **prompt** stringrequired
-
-**Default value:** `Once upon a time,`
 
 用于生成完成内容的提示
 
 **echo** booleannullable
 
-在输出中，把 prompt 的内容也输出出来
+在输出中，把 prompt 的内容也输出出来。不能与 `suffix` 或 `logprobs` 一起使用。
 
 **logprobs** integernullable
 
@@ -75,7 +73,7 @@ string
 
 **stream\_optionsobjectnullable**
 
-流式输出相关选项。只有在 `stream` 参数为 `true` 时，才可设置此参数。
+流式输出相关选项。必须与 `stream: true` 一起使用；如果 `stream` 未设置为 `true`，API 会返回 `400` 错误。
 
 **include\_usage** boolean
 
@@ -101,7 +99,7 @@ string
 
 **Default value:** `1`
 
-作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。
+作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 取值必须大于 0 且不超过 1。我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。
 
 **frequency\_penalty** deprecated
 
@@ -138,7 +136,7 @@ OK
 
 **finish\_reason** stringrequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `insufficient_system_resource`]
+**Possible values:** [`stop`, `length`, `content_filter`, `insufficient_system_resource`, `aborted`]
 
 模型停止生成 token 的原因。
 
@@ -149,6 +147,8 @@ OK
 `content_filter`：输出内容因触发过滤策略而被过滤。
 
 `insufficient_system_resource`: 由于后端推理资源受限，请求被打断。
+
+`aborted`：生成过程被中断。
 
 **index** integerrequired
 
@@ -195,6 +195,14 @@ object 的类型，一定为"text\_completion"
 **prompt\_tokens** integerrequired
 
 用户 prompt 所包含的 token 数。该值等于 `prompt_cache_hit_tokens + prompt_cache_miss_tokens`
+
+**prompt\_tokens\_detailsobjectrequired**
+
+prompt tokens 的详细信息。
+
+**cached\_tokens** integer
+
+用户 prompt 中，命中上下文缓存的 token 数。与 `prompt_cache_hit_tokens` 相同。
 
 **prompt\_cache\_hit\_tokens** integerrequired
 
@@ -249,6 +257,9 @@ completion tokens 的详细信息。
   "usage": {
     "completion_tokens": 0,
     "prompt_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
     "prompt_cache_hit_tokens": 0,
     "prompt_cache_miss_tokens": 0,
     "total_tokens": 0,

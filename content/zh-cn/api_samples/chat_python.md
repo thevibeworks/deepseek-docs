@@ -1,7 +1,7 @@
 ---
 title: "chat_python"
 source: https://api-docs.deepseek.com/zh-cn/api_samples/chat_python
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # chat\_python
@@ -16,7 +16,7 @@ client = OpenAI(
     base_url="https://api.deepseek.com")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[
         {"role": "system", "content": "You are a helpful assistant"},
         {"role": "user", "content": "Hello"},

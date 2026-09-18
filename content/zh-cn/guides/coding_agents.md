@@ -2,7 +2,7 @@
 title: "接入 Agent 工具"
 description: "本文介绍如何将 DeepSeek 模型接入到 Claude Code、OpenCode、OpenClaw 等主流 AI 工具中。"
 source: https://api-docs.deepseek.com/zh-cn/guides/coding_agents
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # 接入 Agent 工具
@@ -36,11 +36,11 @@ Linux / Mac 用户执行以下命令配置 [DeepSeek Anthropic API](https://api.
 ```text
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 export ANTHROPIC_AUTH_TOKEN=<你的 DeepSeek API Key>
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 ```
 
@@ -49,11 +49,11 @@ Windows 用户执行：
 ```text
 $env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_AUTH_TOKEN="<你的 DeepSeek API Key>"
-$env:ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 ```
 
@@ -83,7 +83,7 @@ OpenCode 是一个开源 AI 编程助手，提供终端、网页等运行形式�
 - 执行 `opencode` 命令
 - 输入框中输入 `/connect`，然后输入 `deepseek` 并选择供应商
 - 填入 [DeepSeek API Key](https://platform.deepseek.com/api_keys)
-- 选择 DeepSeek-V4-Pro 模型
+- 选择 DeepSeek-V4.1-Flash 模型
 
 ---
 
@@ -113,7 +113,7 @@ iwr -useb https://openclaw.ai/install.ps1 | iex
 - 遇到提示：`Setup mode` 推荐选择 **QuickStart**。
 - 遇到提示：`Model/auth provider` 请选择 **DeepSeek**。
 - 遇到提示：`Enter DeepSeek API key` 请填入你的 [DeepSeek API Key](https://platform.deepseek.com/api_keys)。
-- 遇到提示：`Default model` 请将光标指向 **Enter model**，填写模型名称（`deepseek-v4-pro` 或 `deepseek-v4-flash`）。
+- 遇到提示：`Default model` 请将光标指向 **Enter model**，填写模型名称（`deepseek-flash`）。
 - 后续的其余配置（消息频道、Skill 等）请根据需求配置，新手可以先选择 **Skip for now**。
 
 #### 3. 开始使用

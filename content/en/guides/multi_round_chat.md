@@ -2,7 +2,7 @@
 title: "Multi-round Conversation"
 description: "This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations."
 source: https://api-docs.deepseek.com/guides/multi_round_chat
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Multi-round Conversation
@@ -20,7 +20,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Round 1
 messages = [{"role": "user", "content": "What's the highest mountain in the world?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages
 )
 
@@ -30,7 +30,7 @@ print(f"Messages Round 1: {messages}")
 # Round 2
 messages.append({"role": "user", "content": "What is the second?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages
 )
 

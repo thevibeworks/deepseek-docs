@@ -2,7 +2,7 @@
 title: "思考模式"
 description: "DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先输出一段思维链内容，以提升最终答案的准确性。"
 source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 
 # 思考模式
@@ -18,22 +18,24 @@ DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先�
 | 思考强度控制(2) | `{"reasoning_effort": "low/high/max"}` | `{"output_config": {"effort": "low/high/max"}}` |
 
 (1) 思考模式默认打开，且 effort 默认为 `high`
-(2) 用户设置的 effort 与模型推理 effort 映射表如下（`deepseek-v4-flash` 与 `deepseek-v4-pro` 一致）：
+(2) 用户设置的 effort 与模型推理 effort 映射表如下：
 
 |  |  |
 | --- | --- |
 | 请求传入 effort | 实际映射 effort |
+| minimal | low |
 | low | low |
 | medium | high |
 | high | high |
 | xhigh | high |
 | max | max |
+| ultra | max |
 
 您在 OpenAI SDK 中使用 Chat Completion 设置 `thinking` 参数时，需要将 `thinking` 参数传入 `extra_body` 中：
 
 ```python
 response = client.chat.completions.create(
-  model="deepseek-v4-pro",
+  model="deepseek-flash",
   # ...
   reasoning_effort="high",
   extra_body={"thinking": {"type": "enabled"}}
@@ -42,7 +44,9 @@ response = client.chat.completions.create(
 
 ## 输入输出参数
 
-思考模式不支持 `temperature`、`top_p`、`presence_penalty`、`frequency_penalty` 参数。请注意，为了兼容已有软件，设置参数不会报错，但也不会生效。
+思考模式不支持 `temperature`、`presence_penalty`、`frequency_penalty` 参数。请注意，为了兼容已有软件，设置参数不会报错，但也不会生效。
+
+`top_p` 在思考模式下生效，但下限为 `0.95`：小于 `0.95` 的值会被抬升至 `0.95`。在非思考模式下，该参数恒为 `1.0`，传入的值会被忽略。
 
 在思考模式下，思维链内容通过 `reasoning_content` 参数返回，与 `content` 同级。在后续轮次的请求中，`reasoning_content` 是否需要回传、是否会被拼接进上下文，取决于请求是否携带 `tools` 参数：
 
@@ -68,7 +72,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     reasoning_effort="high"
     extra_body={"thinking": {"type": "enabled"}},
@@ -82,7 +86,7 @@ content = response.choices[0].message.content
 messages.append(response.choices[0].message)
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     reasoning_effort="high"
     extra_body={"thinking": {"type": "enabled"}},
@@ -99,7 +103,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -120,7 +124,7 @@ for chunk in response:
 messages.append({"role": "assistant", "reasoning_content": reasoning_content, "content": content})
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -190,7 +194,7 @@ def run_turn(turn, messages):
     sub_turn = 1
     while True:
         response = client.chat.completions.create(
-            model='deepseek-v4-pro',
+            model='deepseek-flash',
             messages=messages,
             tools=tools,
             reasoning_effort="high",

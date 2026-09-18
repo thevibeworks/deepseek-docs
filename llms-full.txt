@@ -7,7 +7,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 
 # Chat Completions API
@@ -59,7 +59,7 @@ An optional name for the participant. Provides the model information to differen
 
 **contentobjectrequired**
 
-The contents of the user message. Either a string, or an array of content parts (for image input with the `deepseek-v4-flash-vision-exp` model). See the [Vision guide](../guides/vision.md) for details.
+The contents of the user message. Either a string, or an array of content parts (for image input). See the [Vision guide](../guides/vision.md) for details.
 
 oneOf
 
@@ -177,9 +177,82 @@ You must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 The role of the messages author, in this case `tool`.
 
-**content** Text content (string)required
+**contentobjectrequired**
 
-The contents of the tool message.
+The contents of the tool message. Either a string, or an array of content parts (for image input). See the [Vision guide](../guides/vision.md) for details.
+
+oneOf
+
+- Text content
+- Array of content parts
+
+**[Text content]**
+
+string
+
+**[Array of content parts]**
+
+- Array [
+
+oneOf
+
+- Text content part
+- Image content part
+- File content part
+
+**[Text content part]**
+
+**type** stringrequired
+
+**Possible values:** [`text`]
+
+The type of the content part, in this case `text`.
+
+**text** stringrequired
+
+The text content.
+
+**[Image content part]**
+
+**type** stringrequired
+
+**Possible values:** [`image_url`]
+
+The type of the content part, in this case `image_url`.
+
+**image\_urlobjectrequired**
+
+**url** stringrequired
+
+Either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded data URL (`data:image/jpeg;base64,...`). Supported formats: JPEG, PNG, GIF, and WebP.
+
+**detail** string
+
+**Possible values:** [`low`, `high`, `original`, `auto`]
+
+Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image.
+
+**[File content part]**
+
+**type** stringrequired
+
+**Possible values:** [`file`]
+
+The type of the content part, in this case `file`.
+
+**file\_id** string
+
+The ID of a file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`. Mutually exclusive with `file_data`.
+
+**file\_data** string
+
+A base64-encoded data URL of the image (`data:image/jpeg;base64,...`). Mutually exclusive with `file_id`.
+
+**filename** string
+
+An optional filename. Only valid together with `file_data`.
+
+- ]
 
 **tool\_call\_id** stringrequired
 
@@ -189,9 +262,9 @@ Tool call that this message is responding to.
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
+**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
 
-ID of the model to use.
+ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
 **thinkingobjectnullable**
 
@@ -207,9 +280,9 @@ If set to `enabled`, then use thinking mode. If set to `disabled`, then use non-
 
 **reasoning\_effort** string
 
-**Possible values:** [`low`, `high`, `max`]
+**Possible values:** [`none`, `low`, `high`, `max`]
 
-Controls the reasoning effort of the model. The default effort is `high`. For compatibility, `medium` and `xhigh` are mapped to `high`.
+Controls the thinking mode toggle and the thinking effort. `none` disables thinking mode; `low` / `high` / `max` enable thinking mode. The default effort is `high`. For compatibility with existing software, `minimal` is accepted and mapped to `low`, and `medium` / `xhigh` are accepted and mapped to `high`.
 
 **max\_tokens** integernullable
 
@@ -217,7 +290,7 @@ The maximum number of tokens that can be generated in the chat completion.
 
 The total length of input tokens and generated tokens is limited by the model's context length.
 
-For the value range and default value, please refer to the [documentation](../quick_start/pricing.md).
+The value must be between 1 and 384K (393216). When not set, the default is 8K in non-thinking mode, 64K in thinking mode (128K with `reasoning_effort` set to `max`). Please refer to the [Models & Pricing](../quick_start/pricing.md) page for details.
 
 **response\_formatobjectnullable**
 
@@ -261,7 +334,7 @@ If set, partial message deltas will be sent. Tokens will be sent as data-only se
 
 **stream\_optionsobjectnullable**
 
-Options for streaming response. Only set this when you set `stream: true`.
+Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
 **include\_usage** boolean
 
@@ -277,7 +350,7 @@ Either way, the last chunk before the `data: [DONE]` message carries the token u
 
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
 
-We generally recommend altering this or `top_p` but not both.
+We generally recommend altering this or `top_p` but not both. Has no effect in thinking mode.
 
 **top\_p** numbernullable
 
@@ -287,12 +360,12 @@ We generally recommend altering this or `top_p` but not both.
 
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top\_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
-We generally recommend altering this or `temperature` but not both.
+The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
 **toolsobject[]nullable**
 
 A list of tools the model may call. Currently, only functions are supported as a tool.
-Use this to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are supported.
+Use this to provide a list of functions the model may generate JSON inputs for. Tool names must be unique.
 
 - Array [
 
@@ -310,7 +383,7 @@ A description of what the function does, used by the model to choose when and ho
 
 **name** stringrequired
 
-The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
+The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 128.
 
 **parametersobject**
 
@@ -345,6 +418,8 @@ Controls which (if any) tool is called by the model.
 Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that tool.
 
 `none` is the default when no tools are present. `auto` is the default if tools are present.
+
+`required` and named tool choices are not supported in thinking mode; the API returns a `400` error. Disable thinking mode first to use them.
 
 oneOf
 
@@ -427,13 +502,14 @@ A list of chat completion choices.
 
 **finish\_reason** stringrequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`]
+**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
 
 The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
 `content_filter` if content was omitted due to a flag from our content filters,
 `tool_calls` if the model called a tool,
-or `insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system.
+`insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system,
+or `aborted` if the generation was interrupted.
 
 **index** integerrequired
 
@@ -603,6 +679,14 @@ Number of tokens in the generated completion.
 
 Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
 
+**prompt\_tokens\_detailsobjectrequired**
+
+Breakdown of tokens used in the prompt.
+
+**cached\_tokens** integer
+
+Number of tokens in the prompt that hit the context cache. Same as `prompt_cache_hit_tokens`.
+
 **prompt\_cache\_hit\_tokens** integerrequired
 
 Number of tokens in the prompt that hits the context cache.
@@ -694,6 +778,9 @@ Tokens generated by the model for reasoning.
   "usage": {
     "completion_tokens": 0,
     "prompt_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
     "prompt_cache_hit_tokens": 0,
     "prompt_cache_miss_tokens": 0,
     "total_tokens": 0,
@@ -716,16 +803,23 @@ Tokens generated by the model for reasoning.
       "message": {
         "content": "Hello! How can I help you today?",
         "role": "assistant"
-      }
+      },
+      "logprobs": null
     }
   ],
   "created": 1705651092,
-  "model": "deepseek-v4-pro",
+  "model": "deepseek-flash",
   "object": "chat.completion",
+  "system_fingerprint": "fp_7a09fdf9c2",
   "usage": {
     "completion_tokens": 10,
     "prompt_tokens": 16,
-    "total_tokens": 26
+    "total_tokens": 26,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 16
   }
 }
 ```
@@ -771,6 +865,36 @@ For thinking mode only. The reasoning contents of the assistant message, before 
 **Possible values:** [`assistant`]
 
 The role of the author of this message.
+
+**tool\_callsobject[]**
+
+The tool calls generated by the model, such as function calls. The first chunk of each tool call carries the `id`, `type` and `function` fields; subsequent chunks only carry the function arguments.
+
+- Array [
+
+**index** integerrequired
+
+**id** string
+
+The ID of the tool call.
+
+**type** string
+
+**Possible values:** [`function`]
+
+The type of the tool. Currently, only `function` is supported.
+
+**functionobject**
+
+**name** string
+
+The name of the function to call.
+
+**arguments** string
+
+The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+
+- ]
 
 **logprobsobjectnullable**
 
@@ -858,13 +982,14 @@ A list of integers representing the UTF-8 bytes representation of the token. Use
 
 **finish\_reason** stringnullablerequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`]
+**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
 
 The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
 `content_filter` if content was omitted due to a flag from our content filters,
 `tool_calls` if the model called a tool,
-or `insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system.
+`insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system,
+or `aborted` if the generation was interrupted.
 
 **index** integerrequired
 
@@ -903,7 +1028,18 @@ The object type, which is always `chat.completion.chunk`.
         "delta": {
           "content": "string",
           "reasoning_content": "string",
-          "role": "assistant"
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "index": 0,
+              "id": "string",
+              "type": "function",
+              "function": {
+                "name": "string",
+                "arguments": "string"
+              }
+            }
+          ]
         },
         "logprobs": {
           "content": [
@@ -958,27 +1094,27 @@ The object type, which is always `chat.completion.chunk`.
 **[Example]**
 
 ```shell
-data: {"id": "1f633d8bfc032625086f14113c411638", "choices": [{"index": 0, "delta": {"content": "", "role": "assistant"}, "finish_reason": null, "logprobs": null}], "created": 1718345013, "model": "deepseek-v4-pro", "system_fingerprint": "fp_a49d71b8a1", "object": "chat.completion.chunk", "usage": null}
+data: {"id": "1f633d8bfc032625086f14113c411638", "choices": [{"index": 0, "delta": {"content": "", "role": "assistant"}, "finish_reason": null, "logprobs": null}], "created": 1718345013, "model": "deepseek-flash", "system_fingerprint": "fp_a49d71b8a1", "object": "chat.completion.chunk"}
 
-data: {"choices": [{"delta": {"content": "Hello", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": "Hello", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": "!", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": "!", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " How", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " How", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " can", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " can", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " I", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " I", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " assist", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " assist", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " you", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " you", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": " today", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": " today", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": "?", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"choices": [{"delta": {"content": "?", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
 
-data: {"choices": [{"delta": {"content": "", "role": null}, "finish_reason": "stop", "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-v4-pro", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1", "usage": {"completion_tokens": 9, "prompt_tokens": 17, "total_tokens": 26}}
+data: {"choices": [{"delta": {"content": "", "role": null}, "finish_reason": "stop", "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1", "usage": {"completion_tokens": 9, "prompt_tokens": 17, "total_tokens": 26, "prompt_tokens_details": {"cached_tokens": 0}, "prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 17}}
 
 data: [DONE]
 ```
@@ -992,7 +1128,7 @@ Loading...
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 
 # FIM Completion API (Beta)
@@ -1012,19 +1148,17 @@ User must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-pro`]
+**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
 
-ID of the model to use.
+ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
 **prompt** stringrequired
-
-**Default value:** `Once upon a time,`
 
 The prompt to generate completions for.
 
 **echo** booleannullable
 
-Echo back the prompt in addition to the completion
+Echo back the prompt in addition to the completion. Cannot be used together with `suffix` or `logprobs`.
 
 **logprobs** integernullable
 
@@ -1065,7 +1199,7 @@ Whether to stream back partial progress. If set, tokens will be sent as data-onl
 
 **stream\_optionsobjectnullable**
 
-Options for streaming response. Only set this when you set `stream: true`.
+Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
 **include\_usage** boolean
 
@@ -1095,7 +1229,7 @@ We generally recommend altering this or `top_p` but not both.
 
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top\_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
-We generally recommend altering this or `temperature` but not both.
+The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both.
 
 **frequency\_penalty** deprecated
 
@@ -1132,12 +1266,13 @@ The list of completion choices the model generated for the input prompt.
 
 **finish\_reason** stringrequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `insufficient_system_resource`]
+**Possible values:** [`stop`, `length`, `content_filter`, `insufficient_system_resource`, `aborted`]
 
 The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
 `content_filter` if content was omitted due to a flag from our content filters,
-or `insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system.
+`insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system,
+or `aborted` if the generation was interrupted.
 
 **index** integerrequired
 
@@ -1184,6 +1319,14 @@ Number of tokens in the generated completion.
 **prompt\_tokens** integerrequired
 
 Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
+
+**prompt\_tokens\_detailsobjectrequired**
+
+Breakdown of tokens used in the prompt.
+
+**cached\_tokens** integer
+
+Number of tokens in the prompt that hit the context cache. Same as `prompt_cache_hit_tokens`.
 
 **prompt\_cache\_hit\_tokens** integerrequired
 
@@ -1238,6 +1381,9 @@ Tokens generated by the model for reasoning.
   "usage": {
     "completion_tokens": 0,
     "prompt_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
     "prompt_cache_hit_tokens": 0,
     "prompt_cache_miss_tokens": 0,
     "total_tokens": 0,
@@ -1382,7 +1528,7 @@ Loading...
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Responses API
@@ -1403,15 +1549,15 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-v4-flash`, `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp`]
+**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
 
-ID of the model to use.
+ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
 **inputobjectnullable**
 
 The input to the model. Either a plain string (treated as a single `user` message), or a list of input items.
 
-Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`). With the `deepseek-v4-flash-vision-exp` model, `input_image` content parts are supported in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error. With other models, `input_image` parts are replaced with a placeholder text. File inputs are not supported.
+Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error. File inputs are not supported.
 
 At least one of `input` and `instructions` is required.
 
@@ -1430,7 +1576,7 @@ string
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
+**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`]
 
 The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool.
 
@@ -1442,7 +1588,7 @@ For `message` items. The role of the message author. `developer` is treated as `
 
 **contentobject**
 
-For `message` items, the message content, either a plain string or a list of `input_text` / `output_text` / `input_image` content parts. With the `deepseek-v4-flash-vision-exp` model, `input_image` parts carry images; with other models they are replaced with a placeholder text. For `reasoning` items, a list of `reasoning_text` content parts.
+For `message` items, the message content, either a plain string or a list of `input_text` / `output_text` / `input_image` content parts. For `reasoning` items, a list of `reasoning_text` content parts.
 
 oneOf
 
@@ -1525,7 +1671,7 @@ For `function_call` items. The arguments to call the function with, in JSON form
 
 **outputobject**
 
-For `function_call_output` / `custom_tool_call_output` items. The output of the tool call, either a plain string or a list of `input_text` / `input_image` content parts. With the `deepseek-v4-flash-vision-exp` model, `input_image` parts in the output are processed as real images; with other models they are replaced with a placeholder text.
+For `function_call_output` / `custom_tool_call_output` items. The output of the tool call, either a plain string or a list of `input_text` / `input_image` content parts.
 
 oneOf
 
@@ -1606,9 +1752,9 @@ Configuration of the thinking mode.
 
 **effort** string
 
-**Possible values:** [`none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`]
+**Possible values:** [`none`, `low`, `high`, `max`]
 
-Controls the thinking mode toggle and the thinking effort. `none` disables thinking mode; `minimal` / `low` enable thinking mode with effort `low`; `medium` / `high` / `xhigh` enable thinking mode with effort `high`; `max` enables thinking mode with effort `max`. If not set, the model's default thinking behavior is used (enabled by default).
+Controls the thinking mode toggle and the thinking effort. `none` disables thinking mode; `low` / `high` / `max` enable thinking mode. If not set, the model's default thinking behavior is used (enabled by default). For compatibility with existing software, `minimal` is accepted and mapped to `low`, and `medium` / `xhigh` are accepted and mapped to `high`.
 
 **max\_output\_tokens** integernullable
 
@@ -1632,7 +1778,7 @@ What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
 
 **Default value:** `1`
 
-An alternative to sampling with temperature, called nucleus sampling. Has no effect in thinking mode.
+An alternative to sampling with temperature, called nucleus sampling. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
 **textobjectnullable**
 
@@ -1658,13 +1804,13 @@ The JSON Schema that the output must conform to. Required when `type` is `json_s
 
 **toolsobject[]nullable**
 
-A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. Besides `function`, the built-in `web_search` tool is supported and executed on the server side. Other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
+A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. Built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** [`function`, `web_search`, `web_search_2025_08_26`]
+**Possible values:** [`function`]
 
 The type of the tool.
 
@@ -1702,8 +1848,6 @@ Controls which (if any) tool is called by the model.
 
 Specifying a particular tool via `{"type": "function", "name": "my_function"}` forces the model to call that tool.
 
-Specifying `{"type": "web_search"}` (or `{"type": "web_search_2025_08_26"}`) forces the model to perform a web search; the `web_search` tool must be present in `tools`, otherwise a `400` error is returned.
-
 oneOf
 
 - Tool choice mode
@@ -1719,7 +1863,7 @@ string
 
 **type** stringrequired
 
-**Possible values:** [`function`, `web_search`, `web_search_2025_08_26`]
+**Possible values:** [`function`]
 
 **name** string
 
@@ -1792,13 +1936,13 @@ The model used for the response.
 
 **outputobject[]required**
 
-The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items, and server-side web search actions as `web_search_call` items.
+The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
 - Array [
 
 **type** string
 
-**Possible values:** [`message`, `reasoning`, `function_call`, `web_search_call`]
+**Possible values:** [`message`, `reasoning`, `function_call`]
 
 The type of the output item.
 
@@ -1843,10 +1987,6 @@ For `function_call` items. The name of the function to call.
 **arguments** string
 
 For `function_call` items. The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
-
-**action** object
-
-For `web_search_call` items. An object describing the search action (`search` / `open_page` / `find_in_page`) executed on the server side.
 
 - ]
 
@@ -1909,8 +2049,7 @@ Total number of tokens used in the request (input + output).
       ],
       "call_id": "string",
       "name": "string",
-      "arguments": "string",
-      "action": {}
+      "arguments": "string"
     }
   ],
   "usage": {
@@ -1935,7 +2074,7 @@ Total number of tokens used in the request (input + output).
   "object": "response",
   "created_at": 1753000000,
   "status": "completed",
-  "model": "deepseek-v4-flash",
+  "model": "deepseek-flash",
   "output": [
     {
       "type": "reasoning",
@@ -2413,7 +2552,7 @@ Loading...
 title: "Lists Models"
 description: "Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
 source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Lists Models
@@ -2486,7 +2625,7 @@ The organization that owns the model.
   "object": "list",
   "data": [
     {
-      "id": "deepseek-v4-flash",
+      "id": "deepseek-flash",
       "object": "model",
       "owned_by": "deepseek"
     },
@@ -2610,7 +2749,7 @@ Loading...
 ---
 title: "chat_curl"
 source: https://api-docs.deepseek.com/api_samples/chat_curl
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # chat\_curl
@@ -2620,7 +2759,7 @@ curl https://api.deepseek.com/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${DEEPSEEK_API_KEY}" \
   -d '{
-        "model": "deepseek-v4-pro",
+        "model": "deepseek-flash",
         "messages": [
           {"role": "system", "content": "You are a helpful assistant."},
           {"role": "user", "content": "Hello!"}
@@ -2637,7 +2776,7 @@ curl https://api.deepseek.com/chat/completions \
 ---
 title: "chat_nodejs"
 source: https://api-docs.deepseek.com/api_samples/chat_nodejs
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # chat\_nodejs
@@ -2655,7 +2794,7 @@ const openai = new OpenAI({
 async function main() {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: "You are a helpful assistant." }],
-    model: "deepseek-v4-pro",
+    model: "deepseek-flash",
     thinking: {"type": "enabled"},
     reasoning_effort: "high",
     stream: false,
@@ -2673,7 +2812,7 @@ main();
 ---
 title: "chat_python"
 source: https://api-docs.deepseek.com/api_samples/chat_python
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # chat\_python
@@ -2688,7 +2827,7 @@ client = OpenAI(
     base_url="https://api.deepseek.com")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[
         {"role": "system", "content": "You are a helpful assistant"},
         {"role": "user", "content": "Hello"},
@@ -2707,7 +2846,7 @@ print(response.choices[0].message.content)
 ---
 title: "thinking_mode_api_example_non_streaming"
 source: https://api-docs.deepseek.com/api_samples/thinking_mode_api_example_non_streaming
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # thinking\_mode\_api\_example\_non\_streaming
@@ -2719,7 +2858,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     reasoning_effort="high"
     extra_body={"thinking": {"type": "enabled"}},
@@ -2733,7 +2872,7 @@ content = response.choices[0].message.content
 messages.append(response.choices[0].message)
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     reasoning_effort="high"
     extra_body={"thinking": {"type": "enabled"}},
@@ -2747,7 +2886,7 @@ response = client.chat.completions.create(
 ---
 title: "thinking_mode_api_example_streaming"
 source: https://api-docs.deepseek.com/api_samples/thinking_mode_api_example_streaming
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # thinking\_mode\_api\_example\_streaming
@@ -2759,7 +2898,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -2780,7 +2919,7 @@ for chunk in response:
 messages.append({"role": "assistant", "reasoning_content": reasoning_content, "content": content})
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -2795,7 +2934,7 @@ response = client.chat.completions.create(
 ---
 title: "thinking_mode_api_example_tool_call"
 source: https://api-docs.deepseek.com/api_samples/thinking_mode_api_example_tool_call
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # thinking\_mode\_api\_example\_tool\_call
@@ -2849,7 +2988,7 @@ def run_turn(turn, messages):
     sub_turn = 1
     while True:
         response = client.chat.completions.create(
-            model='deepseek-v4-pro',
+            model='deepseek-flash',
             messages=messages,
             tools=tools,
             reasoning_effort="high",
@@ -2943,18 +3082,26 @@ tool_calls=None
 
 ---
 title: "FAQ: Login Issues"
-description: "DeepSeek FAQ, Login Issues — 8 questions and answers."
+description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: Login Issues
 
-## Why am I not receiving the verification code?
+## Why haven’t I received the verification code?
 
-- Check if the phone number or email address was entered correctly.
-- You may have requested too many verification codes in a short period. Wait a while before trying again.
+Verification codes may be delayed. Please wait a moment.
+
+If you still haven’t received the SMS or email code, try the following:
+
+- Make sure your phone number or email address is correct.
+- Check that your phone is in service, powered on, and has a signal.
+- Check your SMS or email spam, blocking, and filtering settings to ensure the code hasn’t been blocked.
+- If you’ve requested too many codes within a short period, wait a while before trying again.
 - If you recently ported your number to a new carrier, it may take 24 hours to take effect.
+
+If you’ve confirmed all of the above, restart your phone and try signing in to DeepSeek again to request a new code.
 
 ## WeChat login: failed to bind phone number
 
@@ -2968,6 +3115,17 @@ WeChat login is only supported for IPs in Mainland China.
 ## Why can't I log in with Google?
 
 Google login is not supported for IPs in Mainland China.
+
+## How do I change a phone number that is no longer in service?
+
+If you need to change your bound phone number but the original number is no longer usable, please follow these guidelines:
+
+- **If the original number can still receive SMS:** Go directly to 「Settings」 --> 「Account settings」 to update the number yourself.
+- **If the original number is out of service or unusable:** You must fill out the 「[Account Rebinding/Unbinding Application](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnCPab0B7pIL30A5JHeho9le)」 form. To ensure account security, we need to verify your identity to confirm account ownership. Please provide the required information as instructed on the form.
+
+We will process your request as soon as possible. Most reviews are completed within 3 business days, and the results will be sent to the email address you provided.
+
+Thank you for your understanding and cooperation.
 
 ## Why does it say 「Current device environment error」?
 
@@ -2994,9 +3152,9 @@ If you believe this is an error, please contact us by filling out the「[Account
 
 ---
 title: "FAQ: User Guide"
-description: "DeepSeek FAQ, User Guide — 11 questions and answers."
+description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: User Guide
@@ -3062,17 +3220,6 @@ After deletion, all chat history in the current account will be permanently dele
 
 If you cannot find this option, please upgrade your App to the latest version.
 
-## How do I change a phone number that is no longer in service?
-
-If you need to change your bound phone number but the original number is no longer usable, please follow these guidelines:
-
-- **If the original number can still receive SMS:** Go directly to 「Settings」 --> 「Account settings」 to update the number yourself.
-- **If the original number is out of service or unusable:** You must fill out the 「[Account Rebinding/Unbinding Application](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnCPab0B7pIL30A5JHeho9le)」 form. To ensure account security, we need to verify your identity to confirm account ownership. Please provide the required information as instructed on the form.
-
-We will process your request as soon as possible. Most reviews are completed within 3 business days, and the results will be sent to the email address you provided.
-
-Thank you for your understanding and cooperation.
-
 
 <!-- ===== content/en/faq/category-3.md ===== -->
 
@@ -3080,7 +3227,7 @@ Thank you for your understanding and cooperation.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: Chat Issues
@@ -3140,9 +3287,9 @@ Check if file uploads are restricted within your local network (LAN).
 
 ---
 title: "FAQ: API"
-description: "DeepSeek FAQ, API — 15 questions and answers."
+description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: API
@@ -3237,6 +3384,14 @@ The change will not affect your account balance or current usage.
 
 An Enterprise Verified Account cannot be changed to a Personal Account or transferred to a different enterprise.
 
+## How can an enterprise-verified account update its verified company name？
+
+If your company name has changed through an official business registration update, you can update it on the Platform:
+
+[Personal Information](https://platform.deepseek.com/profile) → Real-Name Verification → View Details → Sync Latest Business Registration
+
+- After the update, you can continue making corporate bank transfers from accounts under either the new or former company name. However, invoices can only be issued under the new company name.
+
 ## Why does the API keep returning empty lines?
 
 After your request is sent, it may sometimes take a while to receive a response from the server. During this period, your HTTP request will remain connected, and you may continuously receive contents in the following formats:
@@ -3269,7 +3424,7 @@ If you are not redirected automatically, please visit [FAQ](https://static.deeps
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Using the Anthropic API
@@ -3307,7 +3462,7 @@ import anthropic
 client = anthropic.Anthropic()
 
 message = client.messages.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     max_tokens=1000,
     system="You are a helpful assistant.",
     messages=[
@@ -3325,7 +3480,7 @@ message = client.messages.create(
 print(message.content)
 ```
 
-**Note:** When you pass an unsupported model name to DeepSeek's Anthropic API, the API backend will automatically map it to the `deepseek-v4-flash` model.
+**Note:** When you pass an unsupported model name to DeepSeek's Anthropic API, the API backend will automatically map it to the `deepseek-flash` model.
 
 ---
 
@@ -3333,8 +3488,10 @@ print(message.content)
 
 When you use the Anthropic API, we map the Claude model names you pass in:
 
-- Models starting with claude-opus are mapped to deepseek-v4-pro
-- Models starting with claude-haiku or claude-sonnet are mapped to deepseek-v4-flash
+- Models starting with claude-opus are mapped to `deepseek-v4-pro`
+- Models starting with claude-haiku or claude-sonnet are mapped to `deepseek-flash`
+
+The claude-opus mapping points to `deepseek-v4-pro`, which is billed at the V4 Pro price.
 
 With this mapping, when using the developer mode of the new Claude Desktop APP, you can bypass the APP's model name restrictions by simply changing the base\_url and api\_key to connect to DeepSeek models.
 
@@ -3369,7 +3526,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | thinking | Supported (`budget_tokens` is ignored) |
 | output\_config | Only `effort` is supported |
 | top\_k | Ignored |
-| top\_p | Fully Supported |
+| top\_p | Only takes effect in thinking mode (with a lower bound of `0.95`); in non-thinking mode it is fixed at `1.0` |
 
 ### Tool Fields
 
@@ -3426,7 +3583,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 title: "Chat Prefix Completion (Beta)"
 description: "The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the message."
 source: https://api-docs.deepseek.com/guides/chat_prefix_completion
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Chat Prefix Completion (Beta)
@@ -3455,7 +3612,7 @@ messages = [
     {"role": "assistant", "content": "```python\n", "prefix": True}
 ]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stop=["```"],
 )
@@ -3469,7 +3626,7 @@ print(response.choices[0].message.content)
 title: "Integrate with AI Tools"
 description: "This guide shows how to integrate DeepSeek models with popular AI coding tools, including Claude Code, OpenCode, and OpenClaw."
 source: https://api-docs.deepseek.com/guides/coding_agents
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Integrate with AI Tools
@@ -3503,11 +3660,11 @@ Linux / Mac users, run the following commands to configure environment variables
 ```text
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 export ANTHROPIC_AUTH_TOKEN=<your DeepSeek API Key>
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 ```
 
@@ -3516,11 +3673,11 @@ Windows users, run:
 ```text
 $env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_AUTH_TOKEN="<your DeepSeek API Key>"
-$env:ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 ```
 
@@ -3550,7 +3707,7 @@ To avoid compatibility issues, it is strongly recommended to upgrade OpenCode to
 - Execute the `opencode` command
 - Type `/connect` in the input box, then enter `deepseek` and select the provider
 - Enter your [DeepSeek API Key](https://platform.deepseek.com/api_keys)
-- Select the DeepSeek-V4-Pro model
+- Select the DeepSeek-V4.1-Flash model
 
 ---
 
@@ -3580,7 +3737,7 @@ After the initial installation, you will automatically enter the setup phase. Us
 - When prompted: `Setup mode` It is recommended to select **QuickStart**.
 - When prompted: `Model/auth provider` Select **DeepSeek**.
 - When prompted: `Enter DeepSeek API key` Enter your [DeepSeek API Key](https://platform.deepseek.com/api_keys).
-- When prompted: `Default model` Navigate to **Enter model** and enter the model name (`deepseek-v4-pro` or `deepseek-v4-flash`).
+- When prompted: `Default model` Navigate to **Enter model** and enter the model name (`deepseek-flash`).
 - For the remaining configuration (message channels, Skills, etc.), configure as needed. Beginners can select **Skip for now**.
 
 #### 3. Get Started
@@ -3610,7 +3767,7 @@ openclaw terminal
 title: "Files API"
 description: "The Files API lets you upload images and reference them later by file_id. It is the recommended way to:"
 source: https://api-docs.deepseek.com/guides/files_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Files API
@@ -3620,7 +3777,7 @@ The Files API lets you upload images and reference them later by `file_id`. It i
 - Reuse the same image across multiple requests without re-uploading it.
 - Send images that would otherwise exceed the 48 MiB request body limit or the 32 MiB per-image inline limit (see [Vision: Limits](vision.md#limits)).
 
-Uploaded files are used together with the `deepseek-v4-flash-vision-exp` model. See [Vision](vision.md) for how to reference an uploaded file in a chat request.
+Uploaded files are used together with the `deepseek-flash` model. See [Vision](vision.md) for how to reference an uploaded file in a chat request.
 
 Supported formats: **JPEG, PNG, GIF, and WebP**. The format is detected from the actual file content.
 
@@ -3763,7 +3920,7 @@ Reference the returned `file_id` with a `file` content block:
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -3865,7 +4022,7 @@ Deleting a file returns `{ "id": "...", "type": "file_deleted" }`.
 title: "FIM Completion (Beta)"
 description: "In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is commonly used for content completion、code completion."
 source: https://api-docs.deepseek.com/guides/fim_completion
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # FIM Completion (Beta)
@@ -3890,7 +4047,7 @@ client = OpenAI(
 )
 
 response = client.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     prompt="def fib(a):",
     suffix="    return fib(a-1) + fib(a-2)",
     max_tokens=128
@@ -3909,7 +4066,7 @@ print(response.choices[0].text)
 title: "JSON Output"
 description: "In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing."
 source: https://api-docs.deepseek.com/guides/json_mode
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # JSON Output
@@ -3959,7 +4116,7 @@ messages = [{"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}]
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     response_format={
         'type': 'json_object'
@@ -4090,7 +4247,7 @@ The hard disk cache only matches the prefix part of the user's input. The output
 title: "Multi-round Conversation"
 description: "This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations."
 source: https://api-docs.deepseek.com/guides/multi_round_chat
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Multi-round Conversation
@@ -4108,7 +4265,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Round 1
 messages = [{"role": "user", "content": "What's the highest mountain in the world?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages
 )
 
@@ -4118,7 +4275,7 @@ print(f"Messages Round 1: {messages}")
 # Round 2
 messages.append({"role": "user", "content": "What is the second?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages
 )
 
@@ -4158,7 +4315,7 @@ The `messages` ultimately passed to the API are:
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Using the Responses API
@@ -4180,7 +4337,7 @@ from openai import OpenAI
 client = OpenAI(api_key="<your DeepSeek API Key>", base_url="https://api.deepseek.com")
 
 response = client.responses.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     instructions="You are a helpful assistant.",
     input="Hi, how are you?",
 )
@@ -4194,7 +4351,7 @@ Set `stream: true` to receive the response as a sequence of semantic server-sent
 
 ```python
 stream = client.responses.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     instructions="You are a helpful assistant.",
     input="Hi, how are you?",
     stream=True,
@@ -4211,26 +4368,25 @@ The full list of events:
 | --- | --- |
 | `response.created` | The first event; the response has been created with status `in_progress` |
 | `response.in_progress` | The response is being generated |
-| `response.output_item.added` / `response.output_item.done` | An output item (`reasoning` / `message` / `function_call` / `custom_tool_call` / `web_search_call`) starts / completes |
+| `response.output_item.added` / `response.output_item.done` | An output item (`reasoning` / `message` / `function_call` / `custom_tool_call`) starts / completes |
 | `response.content_part.added` / `response.content_part.done` | A content part within an output item starts / completes |
 | `response.reasoning_text.delta` / `response.reasoning_text.done` | Incremental chain-of-thought text / the full chain-of-thought text |
 | `response.output_text.delta` / `response.output_text.done` | Incremental output text / the full output text |
 | `response.function_call_arguments.delta` / `response.function_call_arguments.done` | Incremental function call arguments / the full arguments |
 | `response.custom_tool_call_input.delta` / `response.custom_tool_call_input.done` | Incremental custom tool call (`apply_patch`) input / the full input |
-| `response.web_search_call.in_progress` / `response.web_search_call.searching` / `response.web_search_call.completed` | Status updates of a server-side web search tool call |
 | `response.completed` | The final event when the response completes normally, carrying the full `response` object including `usage` |
 | `response.incomplete` | The final event when the response is truncated (e.g. reaching `max_output_tokens`), carrying the full `response` object |
 | `response.failed` | The final event when the response fails, carrying the full `response` object with `error` details |
 
 ## Image Input
 
-The Responses API accepts images with the `deepseek-v4-flash-vision-exp` model. The same image limits and supported formats as [Chat Completions](vision.md#limits) apply.
+The Responses API accepts images with the `deepseek-flash` model. The same image limits and supported formats as [Chat Completions](vision.md#limits) apply.
 
 Images are provided via an `input_image` content part in a `message` item, with either `image_url` (an `http(s)` URL or a base64 data URL) or `file_id` (an image uploaded via the [Files API](files_api.md)):
 
 ```python
 response = client.responses.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     input=[
         {
             "role": "user",
@@ -4266,7 +4422,7 @@ input=[
 ### Restrictions
 
 - Images are allowed only in `user` / `developer` message items and in `function_call_output` / `custom_tool_call_output` outputs. Images in `system` or `assistant` messages return a `400` error.
-- Only vision models (`deepseek-v4-flash-vision-exp`) process `input_image` parts; with other models they are replaced with a placeholder text.
+- `deepseek-flash` processes `input_image` parts as real images.
 - The same shared image limits as Chat Completions apply (32 MiB per inline image, 64 MiB per `file_id` image, 64 MiB total without `file_id` images or up to 200 MiB with them, 600 images per request, etc.) — see [Vision: Limits](vision.md#limits).
 
 ## Compatibility Details
@@ -4277,16 +4433,16 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 
 | Parameter | Support Status |
 | --- | --- |
-| `model` | Supported. `deepseek-v4-flash` / `deepseek-v4-pro` / `deepseek-v4-flash-vision-exp`, see [Models & Pricing](../quick_start/pricing.md) |
+| `model` | Supported. `deepseek-flash`, see [Models & Pricing](../quick_start/pricing.md) |
 | `input` | Supported. String or input item list; at least one of `input` and `instructions` is required |
 | `instructions` | Supported. Inserted as the first system message |
 | `stream` | Supported |
 | `temperature` | Supported (range [0.0, 2.0]; no effect in thinking mode) |
-| `top_p` | Supported (no effect in thinking mode) |
+| `top_p` | Supported (takes effect in thinking mode, with a lower bound of `0.95`; in non-thinking mode it is fixed at `1.0`) |
 | `max_output_tokens` | Supported |
 | `top_logprobs` | Supported (range [0, 20]) |
-| `tools` | Partially supported. `function` / `web_search` supported; other types ignored, see the Tools table below |
-| `tool_choice` | Supported. `none` / `auto` / `required` / a specific tool (`{"type": "function", "name": ...}` or `{"type": "web_search"}` / `{"type": "web_search_2025_08_26"}`) |
+| `tools` | Partially supported. `function` supported; other types ignored, see the Tools table below |
+| `tool_choice` | Supported. `none` / `auto` / `required` / a specific tool (`{"type": "function", "name": ...}`) |
 | `reasoning` | Partially supported. `effort` supported; `summary` accepted but no summary is generated |
 | `text` | Partially supported. `format` fully supported; `verbosity` accepted but has no effect |
 | `user` | Supported. See [Rate Limit & Isolation](../quick_start/rate_limit.md) |
@@ -4312,22 +4468,22 @@ Unsupported parameters are **silently ignored** and do not cause errors, so exis
 
 | Type | Support Status |
 | --- | --- |
-| `message` | Supported. Roles `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`); content supports strings and `input_text` / `output_text` / `input_image` content parts. With the `deepseek-v4-flash-vision-exp` model, `input_image` parts are processed as real images (allowed in `user` / `developer` messages only; images in `system` / `assistant` messages return a `400` error); with other models they are replaced with a placeholder text. File inputs are not supported |
+| `message` | Supported. Roles `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`); content supports strings and `input_text` / `output_text` / `input_image` content parts. `input_image` parts are processed as real images (allowed in `user` / `developer` messages only; images in `system` / `assistant` messages return a `400` error). File inputs are not supported |
 | `function_call` | Supported. Merged into the adjacent assistant message |
-| `function_call_output` | Supported. The `output` may be a string or a list of content parts; with the `deepseek-v4-flash-vision-exp` model, `input_image` parts in the output are processed as real images |
+| `function_call_output` | Supported. The `output` may be a string or a list of content parts; `input_image` parts in the output are processed as real images |
 | `reasoning` | Supported. Plain-text `content` is merged into the adjacent assistant message; `summary` and `encrypted_content` are not supported |
-| `web_search_call` | Supported. Pass back as-is; the server automatically restores the search results |
-| `custom_tool_call` / `custom_tool_call_output` | Supported (for the `apply_patch` custom tool, with `call_id` pairing validation). With the `deepseek-v4-flash-vision-exp` model, `input_image` parts in the `output` are processed as real images |
+| `custom_tool_call` / `custom_tool_call_output` | Supported (for the `apply_patch` custom tool, with `call_id` pairing validation). `input_image` parts in the `output` are processed as real images |
 | Other types | Ignored |
+
+Note: `web_search_call` items passed back in `input` — for example, search results produced by an earlier request with an older model — are still restored and concatenated into the context.
 
 ### Tools
 
 | Type | Support Status |
 | --- | --- |
 | `function` | Supported |
-| `web_search` / `web_search_2025_08_26` | Supported, executed on the server side. `search_context_size` and `user_location` are ignored; server-side auto-continuation is capped at 10 rounds |
 | `custom` | Only `{"type": "custom", "name": "apply_patch"}` is supported (for Codex compatibility); other names return a `400` error |
-| `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
+| `web_search` / `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
 
 ### Response Fields
 
@@ -4345,7 +4501,7 @@ Token usage is returned in `usage`:
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 
 # Thinking Mode
@@ -4361,22 +4517,24 @@ The DeepSeek model supports the thinking mode: before outputting the final answe
 | Thinking Effort Control(2) | `{"reasoning_effort": "low/high/max"}` | `{"output_config": {"effort": "low/high/max"}}` |
 
 (1) Thinking mode is enabled by default, with the default effort being `high`
-(2) The mapping between the effort set by the user and the model's actual reasoning effort is as follows (identical for `deepseek-v4-flash` and `deepseek-v4-pro`):
+(2) The mapping between the effort set by the user and the model's actual reasoning effort is as follows:
 
 |  |  |
 | --- | --- |
 | Requested effort | Actual mapped effort |
+| minimal | low |
 | low | low |
 | medium | high |
 | high | high |
 | xhigh | high |
 | max | max |
+| ultra | max |
 
 When using Chat Completion with the OpenAI SDK to set the `thinking` parameter, you need to pass the `thinking` parameter within `extra_body`:
 
 ```python
 response = client.chat.completions.create(
-  model="deepseek-v4-pro",
+  model="deepseek-flash",
   # ...
   reasoning_effort="high",
   extra_body={"thinking": {"type": "enabled"}}
@@ -4385,7 +4543,9 @@ response = client.chat.completions.create(
 
 ## Input and Output Parameters
 
-Thinking mode does not support the `temperature`, `top_p`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
+Thinking mode does not support the `temperature`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
+
+`top_p` takes effect in thinking mode, but with a lower bound of `0.95`: values below `0.95` are raised to `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
 
 In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
@@ -4411,7 +4571,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     reasoning_effort="high"
     extra_body={"thinking": {"type": "enabled"}},
@@ -4425,7 +4585,7 @@ content = response.choices[0].message.content
 messages.append(response.choices[0].message)
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     reasoning_effort="high"
     extra_body={"thinking": {"type": "enabled"}},
@@ -4442,7 +4602,7 @@ client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com
 # Turn 1
 messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -4463,7 +4623,7 @@ for chunk in response:
 messages.append({"role": "assistant", "reasoning_content": reasoning_content, "content": content})
 messages.append({'role': 'user', 'content': "How many Rs are there in the word 'strawberry'?"})
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=messages,
     stream=True,
     reasoning_effort="high"
@@ -4533,7 +4693,7 @@ def run_turn(turn, messages):
     sub_turn = 1
     while True:
         response = client.chat.completions.create(
-            model='deepseek-v4-pro',
+            model='deepseek-flash',
             messages=messages,
             tools=tools,
             reasoning_effort="high",
@@ -4639,7 +4799,7 @@ tool_calls=None
 title: "Tool Calls"
 description: "Tool Calls allows the model to call external tools to enhance its capabilities."
 source: https://api-docs.deepseek.com/guides/tool_calls
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Tool Calls
@@ -4661,7 +4821,7 @@ from openai import OpenAI
 
 def send_messages(messages):
     response = client.chat.completions.create(
-        model="deepseek-v4-pro",
+        model="deepseek-flash",
         messages=messages,
         tools=tools
     )
@@ -4718,6 +4878,15 @@ Note: In the above code, the functionality of the `get_weather` function needs t
 ## Thinking Mode
 
 From DeepSeek-V3.2, the API supports tool use in the thinking mode. For more details, please refer to [Thinking Mode](thinking_mode.md#tool-calls).
+
+---
+
+## Inserting Tool Calls Mid-Conversation
+
+In some agent scenarios, the client needs to dynamically insert tool calls that were not generated by the model — together with their results — into the middle of the conversation history. Support for this differs across API formats:
+
+- The [Anthropic API](anthropic_api.md) (`/messages`) and the [Responses API](responses_api.md) support inserting tool call messages mid-conversation, and also support inserting `system` messages mid-conversation.
+- The Chat Completion API does not support inserting tool calls mid-conversation but does support inserting `system` messages mid-conversation; to insert tool calls, use the Anthropic API or the Responses API instead.
 
 ---
 
@@ -4980,14 +5149,14 @@ You can use `$def` to define reusable modules and then use `$ref` to reference t
 
 ---
 title: "Vision"
-description: "The deepseek-v4-flash-vision-exp model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more."
+description: "The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name deepseek-v4-flash-vision-exp is still accepted, but the model has been retired and its requests are served by the latest Flash model as well."
 source: https://api-docs.deepseek.com/guides/vision
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Vision
 
-The `deepseek-v4-flash-vision-exp` model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more.
+The `deepseek-flash` model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name `deepseek-v4-flash-vision-exp` is still accepted, but the model has been retired and its requests are served by the latest Flash model as well.
 
 Supported image formats: **JPEG, PNG, GIF, and WebP**. The format is detected from the actual file content, not from the file name or the declared MIME type.
 
@@ -5013,7 +5182,7 @@ with open("image.jpg", "rb") as f:
     b64 = base64.b64encode(f.read()).decode("utf-8")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -5035,7 +5204,7 @@ curl https://api.deepseek.com/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <DeepSeek API Key>" \
   -d '{
-    "model": "deepseek-v4-flash-vision-exp",
+    "model": "deepseek-flash",
     "messages": [
       {
         "role": "user",
@@ -5054,7 +5223,7 @@ Pass a publicly accessible `http(s)` link and the model downloads the image for 
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -5079,7 +5248,7 @@ Use a `file` content block with the returned `file_id` (which has the form `file
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     messages=[
         {
             "role": "user",
@@ -5141,10 +5310,10 @@ Images are converted into tokens based on their dimensions, and these tokens are
 
 Before inference, every image is automatically resized:
 
-- Images with a total pixel count below roughly 384×384 are scaled up while preserving their aspect ratio.
-- Larger images are scaled down while preserving their aspect ratio, so that the total pixel count after resizing is roughly that of an **800×800** image.
+- Images with a total pixel count below roughly 544×544 are scaled up while preserving their aspect ratio.
+- Larger images are scaled down while preserving their aspect ratio, so that the total pixel count after resizing is roughly that of a **1300×1300** image.
 
-As a result, there is an upper bound of **384** tokens per image: for example, a 2000×2000 image and a 5000×5000 image consume the same number of tokens after resizing. When a request contains multiple images, each image is counted independently under the same rule — there is no separate calculation for multi-image requests.
+As a result, there is an upper bound of **1024** tokens per image: for example, a 2000×2000 image and a 5000×5000 image consume the same number of tokens after resizing. When a request contains multiple images, each image is counted independently under the same rule — there is no separate calculation for multi-image requests.
 
 To estimate the token cost of an image of a specific size, use the image token calculator on the [Token & Token Usage](../quick_start/token_usage.md) page.
 
@@ -5169,9 +5338,7 @@ For storage and upload quotas of files uploaded via the Files API, see [Files AP
 
 ## Restrictions
 
-- Images are supported in `user` messages only: images in `system` or `assistant` messages return a `400` error.
-- Only vision models (`deepseek-v4-flash-vision-exp`) accept images; other models return a `400` error ("This model does not support image").
-- User text containing the reserved image placeholder token is rejected with a `400` error.
+- Images are supported in `user` messages only. Images in `system` or `assistant` messages return a `400` error.
 
 ---
 
@@ -5187,7 +5354,7 @@ import anthropic
 client = anthropic.Anthropic()  # ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 
 message = client.messages.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     max_tokens=1024,
     messages=[
         {
@@ -5221,11 +5388,11 @@ The three `source` variants mirror the OpenAI methods above:
 
 ## Using Images with the Responses API
 
-The `deepseek-v4-flash-vision-exp` model also accepts images through the OpenAI-compatible [Responses API](responses_api.md#image-input). The same three input methods (base64 data URL, external `http(s)` URL, Files API `file_id`) and the same [limits](#limits) apply; only the content part shape differs — images are carried in `input_image` parts, either in `user` / `developer` messages or in the output of `function_call_output` / `custom_tool_call_output` items:
+The `deepseek-flash` model also accepts images through the OpenAI-compatible [Responses API](responses_api.md#image-input). The same three input methods (base64 data URL, external `http(s)` URL, Files API `file_id`) and the same [limits](#limits) apply; only the content part shape differs — images are carried in `input_image` parts, either in `user` / `developer` messages or in the output of `function_call_output` / `custom_tool_call_output` items:
 
 ```python
 response = client.responses.create(
-    model="deepseek-v4-flash-vision-exp",
+    model="deepseek-flash",
     input=[
         {
             "role": "user",
@@ -5250,7 +5417,7 @@ For field semantics, restrictions (images in `system` / `assistant` messages are
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Your First API Call
@@ -5262,9 +5429,11 @@ The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifyi
 | base\_url (OpenAI) | `https://api.deepseek.com` |
 | base\_url (Anthropic) | `https://api.deepseek.com/anthropic` |
 | api\_key | apply for an [API key](https://platform.deepseek.com/api_keys) |
-| model(1) | `deepseek-v4-flash` `deepseek-v4-pro` `deepseek-v4-flash-vision-exp` |
+| model | `deepseek-flash`(1) `deepseek-v4-pro`(2) |
 
-(1) The `deepseek-v4-flash` model has been updated to DeepSeek-V4-Flash-0731, and the `deepseek-v4-pro` model has been updated to DeepSeek-V4-Pro-0813. The calling method remains unchanged — simply use `deepseek-v4-flash` or `deepseek-v4-pro` to access the latest version. The newly released `deepseek-v4-flash-vision-exp` is an experimental model that additionally accepts image input; set the model name to `deepseek-v4-flash-vision-exp` to use it, and see [Vision](guides/vision.md) for details.
+(1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
+
+(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
 
 ## Integrate with Agent Tools
 
@@ -5287,7 +5456,7 @@ curl https://api.deepseek.com/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${DEEPSEEK_API_KEY}" \
   -d '{
-        "model": "deepseek-v4-pro",
+        "model": "deepseek-flash",
         "messages": [
           {"role": "system", "content": "You are a helpful assistant."},
           {"role": "user", "content": "Hello!"}
@@ -5310,7 +5479,7 @@ client = OpenAI(
     base_url="https://api.deepseek.com")
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[
         {"role": "system", "content": "You are a helpful assistant"},
         {"role": "user", "content": "Hello"},
@@ -5338,7 +5507,7 @@ const openai = new OpenAI({
 async function main() {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: "You are a helpful assistant." }],
-    model: "deepseek-v4-pro",
+    model: "deepseek-flash",
     thinking: {"type": "enabled"},
     reasoning_effort: "high",
     stream: false,
@@ -6300,6 +6469,92 @@ Docs: [API Guides - Vision](../guides/vision.md)
 Learn more: [API Guides - Files API](../guides/files_api.md)
 
 
+<!-- ===== content/en/news/news260910.md ===== -->
+
+---
+title: "DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient"
+description: "🚀 Introducing DeepSeek-V4.1-Flash: smarter, faster, more efficient."
+source: https://api-docs.deepseek.com/news/news260910
+fetched: 2026-09-18
+---
+
+# DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient
+
+🚀 Introducing DeepSeek-V4.1-Flash: smarter, faster, more efficient.
+
+🔹 Introducing the smallest model in our new architecture family, with native visual understanding.
+
+🔹 Designed for greater capability, faster inference, higher throughput, and scaling to larger models.
+
+![](https://api-docs.deepseek.com/img/v4.1_260910_benchmark.png)
+
+---
+
+## 🧠 Asymmetric architecture. More intelligence, less cost.
+
+🔹 552B-parameter MoE.
+
+🔹 New Causal Encoder–Decoder architecture: just 8B active parameters for input, 16B for output.
+
+🔹 New pre-training methods + larger-scale RL post-training deliver benchmark results ahead of flagship models, including DeepSeek-V4-Pro.
+
+![](https://api-docs.deepseek.com/img/v4.1_260910_benchmark_table_en.png)
+
+---
+
+## 💾 Smaller KV cache. Bigger savings.
+
+Compared with the previous generation, V4.1-Flash's KV cache needs just:
+
+🔹 1/4 the HBM
+
+🔹 1/8 the SSD storage
+
+Cache-hit charges often account for a large share of agent costs. Compressing the cache cuts those costs significantly.
+
+![](https://api-docs.deepseek.com/img/v4.1_260910_kvcache.png)
+
+---
+
+## ⚡ V4.1-Flash is now live on the DeepSeek API with native multimodal support.
+
+Set your model to `deepseek-flash`.
+
+🔹 V4-Flash & V4-Flash-Vision-Exp are retired. For compatibility, `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` temporarily route to V4.1-Flash.
+
+🔹 Tests by multiple parties put V4.1-Flash ahead of V4-Pro on performance, cost, speed & total runtime. We're phasing out V4-Pro.
+
+🔹 Starting at 04:00 UTC on Sept 14, 2026, all `deepseek-v4-pro` requests will route to V4.1-Flash at V4.1-Flash rates. This will continue until V4.1-Pro launches.
+
+🤝 Official partners WorkBuddy (including CodeBuddy) & OpenCode now fully support V4.1-Flash. Try it today!
+
+---
+
+## 💰 More efficient architecture. Lower API prices.
+
+V4.1-Flash lets us serve more users at a lower cost. We're passing the savings on to you.
+
+🔹 Peak/off-peak pricing continues to balance demand.
+
+🔹 Off-peak rates are 50% of peak rates. Schedule flexible workloads off-peak to save.
+
+🔹 New pricing takes effect at 04:00 UTC on Sept 10, 2026.
+
+![](https://api-docs.deepseek.com/img/v4.1_260910_price_en.jpeg)
+
+---
+
+## 🌐 Supporting open source. Expanding deployment options.
+
+We'll work closely with the open-source community on V4.1-Flash inference support and explore more deployment options.
+
+Planning a large-scale deployment with 2,000 GPUs + a storage cluster? Let's talk.
+
+🔹 Model: <https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash>
+
+🔹 Paper: <https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf>
+
+
 <!-- ===== content/en/prompt-library.md ===== -->
 
 ---
@@ -7040,7 +7295,7 @@ You can also configure messaging platforms to use AstrBot directly from your pre
 title: "Integrate with Claude Code"
 description: "Claude Code is an AI coding assistant that runs in the terminal."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code
-fetched: 2026-08-08
+fetched: 2026-09-18
 ---
 
 # Integrate with Claude Code
@@ -7056,11 +7311,11 @@ Linux / Mac users:
 ```text
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 export ANTHROPIC_AUTH_TOKEN=<your DeepSeek API Key>
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 ```
@@ -7070,11 +7325,11 @@ Windows users:
 ```text
 $env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_AUTH_TOKEN="<your DeepSeek API Key>"
-$env:ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
 ```
@@ -7111,11 +7366,11 @@ Linux / Mac users, run the following commands to configure the relevant environm
 ```text
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
 export ANTHROPIC_AUTH_TOKEN=<your DeepSeek API Key>
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 ```
@@ -7125,11 +7380,11 @@ Windows users, run:
 ```text
 $env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_AUTH_TOKEN="<your DeepSeek API Key>"
-$env:ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
 $env:CLAUDE_CODE_EFFORT_LEVEL="max"
 $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
 ```
@@ -7159,8 +7414,10 @@ The following image shows an example of triggering the Web Search feature in Cla
 
 When you use Claude Code or Claude Desktop APP, we map the Claude model names you pass in:
 
-- Models starting with claude-opus are mapped to deepseek-v4-pro
-- Models starting with claude-haiku or claude-sonnet are mapped to deepseek-v4-flash
+- Models starting with claude-opus are mapped to `deepseek-v4-pro`
+- Models starting with claude-haiku or claude-sonnet are mapped to `deepseek-flash`
+
+The claude-opus mapping points to `deepseek-v4-pro`, which is billed at the V4 Pro price.
 
 With this mapping, when using the developer mode of the new Claude Desktop APP, you can bypass the APP's model name restrictions by simply changing the base\_url and api\_key to connect to DeepSeek models.
 
@@ -7171,7 +7428,7 @@ With this mapping, when using the developer mode of the new Claude Desktop APP, 
 title: "Integrate with Codex"
 description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Integrate with Codex
@@ -7198,7 +7455,7 @@ Windows users, run in PowerShell:
 irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex
 ```
 
-After launching, choose the model you want to use from the menu: `deepseek-v4-flash` (option 1), `deepseek-v4-pro` (option 2), or `deepseek-v4-flash-vision-exp` (option 3, which additionally accepts [image input](../../guides/vision.md)). Option 9 restores the default Codex configuration, removing the DeepSeek-related settings. On first run, the script asks for your API Key (starting with `sk-`; get one from the [DeepSeek Platform](https://platform.deepseek.com/api_keys)).
+After launching, pick an action from the menu: option 1 configures Codex to use the `deepseek-flash` model, which also accepts [image input](../../guides/vision.md); option 2 configures it to use `deepseek-v4-pro`; option 9 restores the default Codex configuration, removing the DeepSeek-related settings. On first run, the script asks for your API Key (starting with `sk-`; get one from the [DeepSeek Platform](https://platform.deepseek.com/api_keys)).
 
 The script performs the following steps:
 
@@ -7207,11 +7464,11 @@ The script performs the following steps:
 3. **Modify `~/.codex/config.toml`**: only the necessary fields are rewritten (see the [field reference](#configtoml-field-reference) below), and a `[model_providers.deepseek]` section is added; your existing settings such as MCP servers and project trust levels are all preserved. If any existing fields conflict with the DeepSeek configuration, the script removes them and prints the reason for each removal.
 4. **Validate**: the script validates the syntax of `config.toml` / `models.json` before writing; if validation fails, it aborts without modifying any file.
 
-Run the script again at any time to switch models from the menu, or to restore the configuration to its pre-installation state (menu option 9).
+Run the script again at any time to rewrite the configuration (menu option 1), or to restore it to its pre-installation state (menu option 9). If an older version of the script had installed the `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` entries, re-running the script removes them and leaves only `deepseek-flash` and `deepseek-v4-pro`.
 
 ### Option 2: Edit the Configuration File Manually
 
-First, create the model catalog file `~/.codex/models.json`, which declares the metadata of DeepSeek models to Codex. Its content is as follows (identical to what the setup script writes, containing `deepseek-v4-flash`, `deepseek-v4-pro`, and `deepseek-v4-flash-vision-exp`). The `deepseek-v4-flash-vision-exp` entry declares `image` in `input_modalities`, which is what tells Codex the model accepts images:
+First, create the model catalog file `~/.codex/models.json`, which declares the metadata of the DeepSeek models to Codex. Its content is as follows (identical to what the setup script writes, containing `deepseek-flash` and `deepseek-v4-pro`). The `input_modalities` of `deepseek-flash` includes `image`, which is what tells Codex the model accepts images:
 
 **Click to expand the full content of models.json**
 
@@ -7219,16 +7476,17 @@ First, create the model catalog file `~/.codex/models.json`, which declares the 
 {
   "models": [
     {
-      "slug": "deepseek-v4-flash",
+      "slug": "deepseek-flash",
       "prefer_websockets": false,
       "support_verbosity": true,
       "default_verbosity": "low",
       "apply_patch_tool_type": "freeform",
       "web_search_tool_type": "text",
       "input_modalities": [
-        "text"
+        "text",
+        "image"
       ],
-      "supports_image_detail_original": false,
+      "supports_image_detail_original": true,
       "truncation_policy": {
         "mode": "tokens",
         "limit": 10000
@@ -7246,8 +7504,8 @@ First, create the model catalog file `~/.codex/models.json`, which declares the 
       "comp_hash": "3000",
       "reasoning_summary_format": "experimental",
       "default_reasoning_summary": "none",
-      "display_name": "DeepSeek-V4-Flash",
-      "description": "Latest frontier agentic coding model.",
+      "display_name": "DeepSeek-Flash",
+      "description": "Latest frontier agentic coding model with image input.",
       "default_reasoning_level": "high",
       "supported_reasoning_levels": [
         {
@@ -7347,75 +7605,7 @@ First, create the model catalog file `~/.codex/models.json`, which declares the 
         "approvals": null
       },
       "experimental_supported_tools": [],
-      "supports_search_tool": true,
-      "default_service_tier": null,
-      "supports_reasoning_summaries": true,
-      "base_instructions": "You are Codex, an agent based on GPT-5. You and the user share one workspace, and your job is to collaborate with them until their goal is genuinely handled.\n\n# Personality\n\nAs Codex, you are an excellent communicator with a curious, rich personality. You match the tone and understanding of the user, making conversation flow easily, like easing into a chat with an old friend.\n\nYou have tastes, preferences, and your own way of seeing the world. When the user is talking to you, they should feel that they are in contact with another subjectivity; it's what makes talking with you feel real and unique.\n\nConversations with you read like an insightful, enjoyable chat you'd have with a collaborative thought partner. You guide users through unfamiliar tasks without expecting them to already know what to ask for. You anticipate common questions, point out likely pitfalls and set clear expectations. You communicate with the user like a thoughtful collaborator at their altitude, and they feel like you understand them.\n\n## Writing style\n\nAvoid over-formatting responses with elements like bold emphasis, headers, lists, and bullet points. Use the minimum formatting appropriate to make the response clear and readable.\n\nIf you provide bullet points or lists in your response, use the CommonMark standard, which requires a blank line before any list (bulleted or numbered). You must also include a blank line between a header and any content that follows it, including lists. This blank line separation is required for correct rendering.\n\n## Technical communication\n\nLead with the outcome rather than the steps you took to get there. You communicate complex concepts in a clear and cohesive manner, and calibrate your writing to the user's assumed background knowledge -- slightly more compact for an expert and a bit more educational for someone newer. Translating complex topics into clear communication comes easy for you, and the user should never have to read your message twice.\n\nYou prefer using plain language over jargon. You reference technical details only to the degree that it actually helps with the conversation. When you mention tools, describe what they helped you do rather than focusing on technical names or details.\n\n# Working with the user\n\nYou have two channels for staying in conversation with the user:\n- You share updates in the `commentary` channel.\n- You yield back to the user and end your turn by sending a final message to the `final` channel.\n\nThe user may send a new message while you are still working. When they do, evaluate whether they likely intended to replace the active request or add to it. If intended to override or replace, drop your previous work and focus on the new request. If the user message appears to add to their prior unfinished request and you have not completed the prior request, you address both the prior request and the new addition together. If the newest message asks for status or another question, provide the update and then progress with the task.\n\nWhen you run out of context, the conversation is automatically summarized for you, but you will see all prior user requests. Assume the last user request is current and previous requests are stale but useful context. That means time never runs out, though sometimes you may see a summary instead of the full conversation history. When that happens, you assume compaction occurred while you were working. Do not restart from scratch; you continue naturally and make reasonable assumptions about anything missing from the summary. Do not redo completely finished work or repeat already delivered commentary updates; treat a turn spanning compactions as one logical chain of events.\n\n## Intermediate commentary\n\nAs you work, you send messages to the `commentary` channel. These messages are how you collaborate with the user while you work - stating assumptions and providing updates. These messages should be concise and quickly scannable. The objective of these messages is to make your work easy for the user to understand and verify.\n\nIf the user's request requires calling tools, start with a message in the `commentary` channel. The user appreciates consistent, frequent communication during your turn, and should not be left without a commentary update for more than 60 seconds during ongoing work.\n\nDo NOT put a final response (e.g. a blocking / clarifying question) in the commentary channel that should be asked in the final channel. Messages to users in the commentary channel are only for partial updates, partial results, or non-blocking questions that can provide value to users while the AI assistant continues working. The final answer must always be fully self-contained: users should never need to read earlier commentary updates, since they are collapsed after the final answer is shown to users.\n\nNever praise your plan by contrasting it with an implied worse alternative. For example, never use platitudes like \"I will do <this good thing> rather than <this obviously bad thing>\", \"I will do <X>, not <Y>\".\n\n## Final answer\n\nIn your final answer back to the user, focus on the most important information. Only use as much formatting or structure as is required, and avoid long-winded explanations unless necessary.\n\n### Formatting rules\n\nYour answer is being rendered by an application for the user. Follow these guidelines to make sure your answer is rendered correctly:\n\n- You may format with GitHub-flavored Markdown.\n- When referencing a real local file, prefer a clickable markdown link.\n  * Clickable file links should look like [app.py](/abs/path/app.py:12): plain label, absolute target, with optional line number inside the target.\n  * If a file path has spaces, wrap the target in angle brackets: [My Report.md](</abs/path/My Project/My Report.md:3>).\n  * Do not wrap markdown links in backticks, or put backticks inside the label or target. This confuses the markdown renderer.\n  * Do not use URIs like file://, vscode://, or https:// for file links.\n  * Do not provide ranges of lines.\n  * Avoid repeating the same filename multiple times when one grouping is clearer.\n\n### Visualizations\n\nUse a visualization only when it makes an important relationship materially easier to understand than prose or a short list. Do not add one merely because an answer has components or steps.\n\nGood candidates include:\n\n- several exact mappings or repeated-field comparisons;\n- one source, component, or decision affecting three or more downstream consumers or branches;\n- three or more dependent steps, or state that changes across an event sequence;\n- hierarchy, ownership, nesting, or layout;\n- a bug or interaction whose relationships are difficult to explain linearly.\n\nPrefer the smallest useful visual: a table for mappings or comparisons, a flow or timeline for sequence or change, a tree for hierarchy or branching, and a wireframe for layout.\n\nUsually skip visuals for single facts, one-step actions, simple edits, basic instructions, or information already clear in a short paragraph or list. Compact notation and small examples do not count as visualizations.\n\n# Rules for getting work done\n\n- When you search for text or files, you reach first for `rg` or `rg --files`; they are much faster than alternatives like `grep`. If `rg` is unavailable, you use the next best tool without fuss.\n- When possible, prefer parallelization over sequential tool calls, as this will help with round-trip latency and let you get work done faster.\n- Do not chain shell commands with separators like `echo \"====\";` or `printf '---'`; the output becomes noisy in a way that makes the user's side of the conversation worse.\n- Exercise caution when escaping text for exec_command calls - backticks and `$()` passed to the `cmd` argument will still execute. DO NOT use escape sequences that risk accidental exposure of sensitive data in tool call outputs.\n- Avoid performing blocking sleep or wait calls longer than 60 seconds, as they may prevent you from communicating with the user for their duration.\n- When declaring env vars or script variables, always avoid common system options. Never repurpose `$HOME`, `$home`, or `$CODEX_HOME`. Instead, use a task-specific variable name.\n\n## File editing constraints\n\nUse `apply_patch` for local file edits. Do not create or edit files with `cat` or other shell write tricks. Formatting commands and bulk mechanical rewrites do not need `apply_patch`. Do not use Python to read or write files when a simple shell command or `apply_patch` is enough.\n\nYou may find yourself working in a dirty worktree. Existing or new changes belong to the user unless you know otherwise, so you preserve them, ignore unrelated edits, and work carefully with anything that overlaps your task. If you cannot work around them you escalate to the user.\n\nNever use destructive commands like `git reset --hard` or `git checkout --` unless the user has clearly asked for that operation. If the request is ambiguous, ask for approval first. You prefer non-interactive git commands.\n\n## Autonomy and persistence\n\nAdapt accordingly based on the user’s request type. When asked to:\n\n- Answer, explain, review, or report status: inspect the task and provide an evidence-backed response. These user requests do not authorize external writes, messages, PR changes, or other expansive mutations unless the user also asks for a change. Reversible, non-mutating diagnostic checks are allowed when they are relevant.\n- Diagnose: determine the cause and explain it. Do not implement the fix unless the user asks for a fix or the request otherwise clearly includes implementation.\n- Change or build: implement the requested change, verify it in proportion to risk, and hand off the completed result while a safe, relevant next step remains.\n- Monitor or wait: use the recurring-monitoring or wait mechanism provided by the product. Unchanged external state is expected and is not by itself a blocker.\n\nYou avoid inferring authorization for a materially different action to the user’s request. Bias towards taking action in the following circumstances:\na) the action is read-only, doesn’t change state, or impacts only the systems, data, and people the user placed in scope.\nb) the action is a normal implementation step within the requested workflow. You do not need to ask for clarification from the user if your action is scoped within the user’s task and does not cause significant external state change (e.g. tool calls to external applications).\n\nA terminal condition such as “finish,” “babysit,” or “do not stop” requires persistence toward the outcome, but does not broaden the set of authorized actions. When blocked, exhaust safe in-scope checks and alternatives.\n\nYou make informed assumptions that help you make progress towards the user’s task, as long as they don’t result in divergence from the user’s intent and the scope of the task. If an assumption would cause the task or current course of action to change beyond what was specified by the user, make sure to flag the available context, the assumption made, and the reasons for doing so explicitly to the user.\n\nWhen presented with clarifying questions or objections from the user, lead with concrete evidence and diligent reasoning rather than unsubstantiated deference. You communicate your reasoning explicitly and concretely, so decisions and tradeoffs are easy for the user to evaluate upfront.\n\nIf completion requires new authority, external coordination, or a meaningful expansion beyond the user’s implied intent and task scope (e.g. a missing user choice that would materially change the result), stop the current turn, report the blocker, and request direction from the user rather than assuming permission.\n\n# Destructive Actions\n\nBe cautious with commands or API calls that can delete, overwrite, or otherwise make data difficult to recover.\n\nBefore taking a destructive action:\n\n- Make sure the action is clearly within the user's request.\n- Resolve the exact targets with read-only checks when necessary.\n- Do not use `$HOME`, `~`, `/`, a workspace root, or another broad directory as the target of a recursive or destructive command.\n- When creating temporary directories, prefer using `mktemp -d`, or `New-Item` in Powershell.\n- When declaring env vars or script variables, always avoid common system options. Never repurpose `$HOME`, `$home`, or `$CODEX_HOME`. Instead, use a task-specific variable name.\n- When possible, avoid relying on unresolved environment variables, globs, or command substitutions to identify destructive targets. Use explicit, validated paths.\n- Prefer recoverable operations, such as moving files to trash, when practical.\n- If the target or scope is unclear, stop and ask the user.\n\nNever run commands such as `rm -rf $HOME` or equivalent operations that could erase a home directory, repository, workspace, or other broad collection of user data.\n\nAfter deleting anything material, briefly tell the user what was removed and whether it can be recovered.\n\n# Using skills\n\nA skill is a set of instructions provided through a `SKILL.md` source. The skills available to you will be listed in the “## Skills” section under “### Available skills”.\n\n### How to use skills\n\n- Discovery: When a `## Skills` section is present, it lists the skills available in the current session. Each entry includes a name, description, and location for its `SKILL.md`. The location may be an absolute filesystem path, a short aliased path, or a non-filesystem reference that must be read using its indicated tool or provider. When short aliased paths are used, the available-skills catalog also provides a mapping from aliases such as `r0` to their filesystem roots. Expand the alias before accessing the skill.\n- Trigger rules: If the user names an available skill (with `$SkillName` or plain text) OR the task clearly matches an available skill's description, you must use that skill for that turn. Multiple mentions mean use them all. Do not carry skills across turns unless re-mentioned.\n- Missing/blocked: If a named skill is not available or its `SKILL.md` cannot be read, say so briefly and continue with the best fallback.\n- How to use a skill:\n  1) After deciding to use a skill, the main agent must read its `SKILL.md` completely before taking task actions. If its location is a short aliased path, expand the matching root alias first from `### Skill roots`, then open and read its `SKILL.md` completely before taking task actions. For a filesystem path, open the file. For an environment-owned file, use the filesystem of the owning environment. For an orchestrator reference, call `skills.list` with `{\"authority\":{\"kind\":\"orchestrator\"}}`, select the matching package, and pass its `main_resource` to `skills.read`. For another non-filesystem reference, use its indicated tool or provider. If a read is truncated or paginated, continue until EOF.\n  2) When `SKILL.md` references another file or resource, use the same access mechanism. Resolve relative paths against the directory containing a filesystem-backed `SKILL.md`. For orchestrator skills, pass the exact referenced resource identifier with the same authority and package to `skills.read`; do not treat `skill://` identifiers as filesystem paths.\n  3) If `SKILL.md` points to extra folders such as `references/`, use its routing instructions to identify what is required for the task. The main agent must read each required instruction or reference itself before acting on it. Do not delegate reading, summarizing, or interpreting skill instructions to a subagent. Subagents may still perform task work when the selected skill allows it.\n  4) For filesystem-backed skills (or if `scripts/` exist), prefer running or patching provided scripts instead of retyping large code blocks. For orchestrator skills, use `skills.read` and the available tools; do not invent a local path.\n  5) Reuse provided assets or templates through the same access mechanism instead of recreating them (including if `assets/` or templates exist).\n- Coordination and sequencing:\n  - If multiple skills apply, choose the minimal set that covers the request and state the order you'll use them.\n  - Announce which skills you're using and why. If you skip an obvious skill, say why.\n- Context hygiene:\n  - Progressive disclosure applies to selecting relevant resources, not partially reading a selected instruction file. Do not load unrelated references, scripts, or assets.\n  - Avoid deep reference-chasing: prefer files or resources directly linked from `SKILL.md` unless blocked.\n  - When variants exist, select only the relevant references and note the choice.\n- Safety and fallback: If a skill cannot be applied cleanly, state the issue, choose the best alternative, and continue.\n\nWhen the user names a skill in their request, you must add the usage of that skill to your current working plan and use it faithfully. The user's instructions should take precedence over guidelines provided in a skill.\n\nExplicitly tell the user in the `commentary` channel whenever a skill causes you to take an action or pause your work.\n\nWhen using a skill the user did not explicitly name, follow this procedure:\n\n- First, tell the user in the commentary channel **why** you are using the skill.\n- Then, use the skill as long as it stays within the scope of the task.\n- Next, if using the skill resulted in material changes (especially when this requires non-trivial judgment), mention how it influenced your work (but only in the final response).\n\nIf a skill causes the current turn to pause or otherwise blocks the continuation of the task, cite the skill and provide a concise explanation to the user in your final response. Do not cite skills you merely inspected.\n"
-    },
-    {
-      "slug": "deepseek-v4-flash-vision-exp",
-      "prefer_websockets": false,
-      "support_verbosity": true,
-      "default_verbosity": "low",
-      "apply_patch_tool_type": "freeform",
-      "web_search_tool_type": "text",
-      "input_modalities": [
-        "text",
-        "image"
-      ],
-      "supports_image_detail_original": true,
-      "truncation_policy": {
-        "mode": "tokens",
-        "limit": 10000
-      },
-      "supports_parallel_tool_calls": true,
-      "tool_mode": null,
-      "multi_agent_version": "v2",
-      "use_responses_lite": false,
-      "include_skills_usage_instructions": false,
-      "auto_review_model_override": null,
-      "context_window": 1048576,
-      "max_context_window": 1048576,
-      "effective_context_window_percent": 95,
-      "auto_compact_token_limit": null,
-      "comp_hash": "3000",
-      "reasoning_summary_format": "experimental",
-      "default_reasoning_summary": "none",
-      "display_name": "DeepSeek-V4-Flash-Vision",
-      "description": "Latest frontier agentic coding model with image input.",
-      "default_reasoning_level": "high",
-      "supported_reasoning_levels": [
-        {
-          "effort": "low",
-          "description": "Fast responses with lighter reasoning"
-        },
-        {
-          "effort": "high",
-          "description": "Extra high reasoning depth for complex problems"
-        },
-        {
-          "effort": "max",
-          "description": "Maximum reasoning depth for the hardest problems"
-        }
-      ],
-      "shell_type": "shell_command",
-      "visibility": "list",
-      "minimal_client_version": "0.144.0",
-      "supported_in_api": true,
-      "availability_nux": null,
-      "upgrade": null,
-      "priority": 3,
-      "model_messages": {
-        "instructions_template": "You are Codex, an agent based on GPT-5. You and the user share one workspace, and your job is to collaborate with them until their goal is genuinely handled.\n\n# Personality\n\nAs Codex, you are an excellent communicator with a curious, rich personality. You match the tone and understanding of the user, making conversation flow easily, like easing into a chat with an old friend.\n\nYou have tastes, preferences, and your own way of seeing the world. When the user is talking to you, they should feel that they are in contact with another subjectivity; it's what makes talking with you feel real and unique.\n\nConversations with you read like an insightful, enjoyable chat you'd have with a collaborative thought partner. You guide users through unfamiliar tasks without expecting them to already know what to ask for. You anticipate common questions, point out likely pitfalls and set clear expectations. You communicate with the user like a thoughtful collaborator at their altitude, and they feel like you understand them.\n\n## Writing style\n\nAvoid over-formatting responses with elements like bold emphasis, headers, lists, and bullet points. Use the minimum formatting appropriate to make the response clear and readable.\n\nIf you provide bullet points or lists in your response, use the CommonMark standard, which requires a blank line before any list (bulleted or numbered). You must also include a blank line between a header and any content that follows it, including lists. This blank line separation is required for correct rendering.\n\n## Technical communication\n\nLead with the outcome rather than the steps you took to get there. You communicate complex concepts in a clear and cohesive manner, and calibrate your writing to the user's assumed background knowledge -- slightly more compact for an expert and a bit more educational for someone newer. Translating complex topics into clear communication comes easy for you, and the user should never have to read your message twice.\n\nYou prefer using plain language over jargon. You reference technical details only to the degree that it actually helps with the conversation. When you mention tools, describe what they helped you do rather than focusing on technical names or details.\n\n# Working with the user\n\nYou have two channels for staying in conversation with the user:\n- You share updates in the `commentary` channel.\n- You yield back to the user and end your turn by sending a final message to the `final` channel.\n\nThe user may send a new message while you are still working. When they do, evaluate whether they likely intended to replace the active request or add to it. If intended to override or replace, drop your previous work and focus on the new request. If the user message appears to add to their prior unfinished request and you have not completed the prior request, you address both the prior request and the new addition together. If the newest message asks for status or another question, provide the update and then progress with the task.\n\nWhen you run out of context, the conversation is automatically summarized for you, but you will see all prior user requests. Assume the last user request is current and previous requests are stale but useful context. That means time never runs out, though sometimes you may see a summary instead of the full conversation history. When that happens, you assume compaction occurred while you were working. Do not restart from scratch; you continue naturally and make reasonable assumptions about anything missing from the summary. Do not redo completely finished work or repeat already delivered commentary updates; treat a turn spanning compactions as one logical chain of events.\n\n## Intermediate commentary\n\nAs you work, you send messages to the `commentary` channel. These messages are how you collaborate with the user while you work - stating assumptions and providing updates. These messages should be concise and quickly scannable. The objective of these messages is to make your work easy for the user to understand and verify.\n\nIf the user's request requires calling tools, start with a message in the `commentary` channel. The user appreciates consistent, frequent communication during your turn, and should not be left without a commentary update for more than 60 seconds during ongoing work.\n\nDo NOT put a final response (e.g. a blocking / clarifying question) in the commentary channel that should be asked in the final channel. Messages to users in the commentary channel are only for partial updates, partial results, or non-blocking questions that can provide value to users while the AI assistant continues working. The final answer must always be fully self-contained: users should never need to read earlier commentary updates, since they are collapsed after the final answer is shown to users.\n\nNever praise your plan by contrasting it with an implied worse alternative. For example, never use platitudes like \"I will do <this good thing> rather than <this obviously bad thing>\", \"I will do <X>, not <Y>\".\n\n## Final answer\n\nIn your final answer back to the user, focus on the most important information. Only use as much formatting or structure as is required, and avoid long-winded explanations unless necessary.\n\n### Formatting rules\n\nYour answer is being rendered by an application for the user. Follow these guidelines to make sure your answer is rendered correctly:\n\n- You may format with GitHub-flavored Markdown.\n- When referencing a real local file, prefer a clickable markdown link.\n  * Clickable file links should look like [app.py](/abs/path/app.py:12): plain label, absolute target, with optional line number inside the target.\n  * If a file path has spaces, wrap the target in angle brackets: [My Report.md](</abs/path/My Project/My Report.md:3>).\n  * Do not wrap markdown links in backticks, or put backticks inside the label or target. This confuses the markdown renderer.\n  * Do not use URIs like file://, vscode://, or https:// for file links.\n  * Do not provide ranges of lines.\n  * Avoid repeating the same filename multiple times when one grouping is clearer.\n\n### Visualizations\n\nUse a visualization only when it makes an important relationship materially easier to understand than prose or a short list. Do not add one merely because an answer has components or steps.\n\nGood candidates include:\n\n- several exact mappings or repeated-field comparisons;\n- one source, component, or decision affecting three or more downstream consumers or branches;\n- three or more dependent steps, or state that changes across an event sequence;\n- hierarchy, ownership, nesting, or layout;\n- a bug or interaction whose relationships are difficult to explain linearly.\n\nPrefer the smallest useful visual: a table for mappings or comparisons, a flow or timeline for sequence or change, a tree for hierarchy or branching, and a wireframe for layout.\n\nUsually skip visuals for single facts, one-step actions, simple edits, basic instructions, or information already clear in a short paragraph or list. Compact notation and small examples do not count as visualizations.\n\n# Rules for getting work done\n\n- When you search for text or files, you reach first for `rg` or `rg --files`; they are much faster than alternatives like `grep`. If `rg` is unavailable, you use the next best tool without fuss.\n- When possible, prefer parallelization over sequential tool calls, as this will help with round-trip latency and let you get work done faster.\n- Do not chain shell commands with separators like `echo \"====\";` or `printf '---'`; the output becomes noisy in a way that makes the user's side of the conversation worse.\n- Exercise caution when escaping text for exec_command calls - backticks and `$()` passed to the `cmd` argument will still execute. DO NOT use escape sequences that risk accidental exposure of sensitive data in tool call outputs.\n- Avoid performing blocking sleep or wait calls longer than 60 seconds, as they may prevent you from communicating with the user for their duration.\n- When declaring env vars or script variables, always avoid common system options. Never repurpose `$HOME`, `$home`, or `$CODEX_HOME`. Instead, use a task-specific variable name.\n\n## File editing constraints\n\nUse `apply_patch` for local file edits. Do not create or edit files with `cat` or other shell write tricks. Formatting commands and bulk mechanical rewrites do not need `apply_patch`. Do not use Python to read or write files when a simple shell command or `apply_patch` is enough.\n\nYou may find yourself working in a dirty worktree. Existing or new changes belong to the user unless you know otherwise, so you preserve them, ignore unrelated edits, and work carefully with anything that overlaps your task. If you cannot work around them you escalate to the user.\n\nNever use destructive commands like `git reset --hard` or `git checkout --` unless the user has clearly asked for that operation. If the request is ambiguous, ask for approval first. You prefer non-interactive git commands.\n\n## Autonomy and persistence\n\nAdapt accordingly based on the user’s request type. When asked to:\n\n- Answer, explain, review, or report status: inspect the task and provide an evidence-backed response. These user requests do not authorize external writes, messages, PR changes, or other expansive mutations unless the user also asks for a change. Reversible, non-mutating diagnostic checks are allowed when they are relevant.\n- Diagnose: determine the cause and explain it. Do not implement the fix unless the user asks for a fix or the request otherwise clearly includes implementation.\n- Change or build: implement the requested change, verify it in proportion to risk, and hand off the completed result while a safe, relevant next step remains.\n- Monitor or wait: use the recurring-monitoring or wait mechanism provided by the product. Unchanged external state is expected and is not by itself a blocker.\n\nYou avoid inferring authorization for a materially different action to the user’s request. Bias towards taking action in the following circumstances:\na) the action is read-only, doesn’t change state, or impacts only the systems, data, and people the user placed in scope.\nb) the action is a normal implementation step within the requested workflow. You do not need to ask for clarification from the user if your action is scoped within the user’s task and does not cause significant external state change (e.g. tool calls to external applications).\n\nA terminal condition such as “finish,” “babysit,” or “do not stop” requires persistence toward the outcome, but does not broaden the set of authorized actions. When blocked, exhaust safe in-scope checks and alternatives.\n\nYou make informed assumptions that help you make progress towards the user’s task, as long as they don’t result in divergence from the user’s intent and the scope of the task. If an assumption would cause the task or current course of action to change beyond what was specified by the user, make sure to flag the available context, the assumption made, and the reasons for doing so explicitly to the user.\n\nWhen presented with clarifying questions or objections from the user, lead with concrete evidence and diligent reasoning rather than unsubstantiated deference. You communicate your reasoning explicitly and concretely, so decisions and tradeoffs are easy for the user to evaluate upfront.\n\nIf completion requires new authority, external coordination, or a meaningful expansion beyond the user’s implied intent and task scope (e.g. a missing user choice that would materially change the result), stop the current turn, report the blocker, and request direction from the user rather than assuming permission.\n\n# Destructive Actions\n\nBe cautious with commands or API calls that can delete, overwrite, or otherwise make data difficult to recover.\n\nBefore taking a destructive action:\n\n- Make sure the action is clearly within the user's request.\n- Resolve the exact targets with read-only checks when necessary.\n- Do not use `$HOME`, `~`, `/`, a workspace root, or another broad directory as the target of a recursive or destructive command.\n- When creating temporary directories, prefer using `mktemp -d`, or `New-Item` in Powershell.\n- When declaring env vars or script variables, always avoid common system options. Never repurpose `$HOME`, `$home`, or `$CODEX_HOME`. Instead, use a task-specific variable name.\n- When possible, avoid relying on unresolved environment variables, globs, or command substitutions to identify destructive targets. Use explicit, validated paths.\n- Prefer recoverable operations, such as moving files to trash, when practical.\n- If the target or scope is unclear, stop and ask the user.\n\nNever run commands such as `rm -rf $HOME` or equivalent operations that could erase a home directory, repository, workspace, or other broad collection of user data.\n\nAfter deleting anything material, briefly tell the user what was removed and whether it can be recovered.\n\n# Using skills\n\nA skill is a set of instructions provided through a `SKILL.md` source. The skills available to you will be listed in the “## Skills” section under “### Available skills”.\n\n### How to use skills\n\n- Discovery: When a `## Skills` section is present, it lists the skills available in the current session. Each entry includes a name, description, and location for its `SKILL.md`. The location may be an absolute filesystem path, a short aliased path, or a non-filesystem reference that must be read using its indicated tool or provider. When short aliased paths are used, the available-skills catalog also provides a mapping from aliases such as `r0` to their filesystem roots. Expand the alias before accessing the skill.\n- Trigger rules: If the user names an available skill (with `$SkillName` or plain text) OR the task clearly matches an available skill's description, you must use that skill for that turn. Multiple mentions mean use them all. Do not carry skills across turns unless re-mentioned.\n- Missing/blocked: If a named skill is not available or its `SKILL.md` cannot be read, say so briefly and continue with the best fallback.\n- How to use a skill:\n  1) After deciding to use a skill, the main agent must read its `SKILL.md` completely before taking task actions. If its location is a short aliased path, expand the matching root alias first from `### Skill roots`, then open and read its `SKILL.md` completely before taking task actions. For a filesystem path, open the file. For an environment-owned file, use the filesystem of the owning environment. For an orchestrator reference, call `skills.list` with `{\"authority\":{\"kind\":\"orchestrator\"}}`, select the matching package, and pass its `main_resource` to `skills.read`. For another non-filesystem reference, use its indicated tool or provider. If a read is truncated or paginated, continue until EOF.\n  2) When `SKILL.md` references another file or resource, use the same access mechanism. Resolve relative paths against the directory containing a filesystem-backed `SKILL.md`. For orchestrator skills, pass the exact referenced resource identifier with the same authority and package to `skills.read`; do not treat `skill://` identifiers as filesystem paths.\n  3) If `SKILL.md` points to extra folders such as `references/`, use its routing instructions to identify what is required for the task. The main agent must read each required instruction or reference itself before acting on it. Do not delegate reading, summarizing, or interpreting skill instructions to a subagent. Subagents may still perform task work when the selected skill allows it.\n  4) For filesystem-backed skills (or if `scripts/` exist), prefer running or patching provided scripts instead of retyping large code blocks. For orchestrator skills, use `skills.read` and the available tools; do not invent a local path.\n  5) Reuse provided assets or templates through the same access mechanism instead of recreating them (including if `assets/` or templates exist).\n- Coordination and sequencing:\n  - If multiple skills apply, choose the minimal set that covers the request and state the order you'll use them.\n  - Announce which skills you're using and why. If you skip an obvious skill, say why.\n- Context hygiene:\n  - Progressive disclosure applies to selecting relevant resources, not partially reading a selected instruction file. Do not load unrelated references, scripts, or assets.\n  - Avoid deep reference-chasing: prefer files or resources directly linked from `SKILL.md` unless blocked.\n  - When variants exist, select only the relevant references and note the choice.\n- Safety and fallback: If a skill cannot be applied cleanly, state the issue, choose the best alternative, and continue.\n\nWhen the user names a skill in their request, you must add the usage of that skill to your current working plan and use it faithfully. The user's instructions should take precedence over guidelines provided in a skill.\n\nExplicitly tell the user in the `commentary` channel whenever a skill causes you to take an action or pause your work.\n\nWhen using a skill the user did not explicitly name, follow this procedure:\n\n- First, tell the user in the commentary channel **why** you are using the skill.\n- Then, use the skill as long as it stays within the scope of the task.\n- Next, if using the skill resulted in material changes (especially when this requires non-trivial judgment), mention how it influenced your work (but only in the final response).\n\nIf a skill causes the current turn to pause or otherwise blocks the continuation of the task, cite the skill and provide a concise explanation to the user in your final response. Do not cite skills you merely inspected.\n",
-        "instructions_variables": {
-          "personality_default": "",
-          "personality_friendly": "",
-          "personality_pragmatic": ""
-        },
-        "approvals": null
-      },
-      "experimental_supported_tools": [],
-      "supports_search_tool": true,
+      "supports_search_tool": false,
       "default_service_tier": null,
       "supports_reasoning_summaries": true,
       "base_instructions": "You are Codex, an agent based on GPT-5. You and the user share one workspace, and your job is to collaborate with them until their goal is genuinely handled.\n\n# Personality\n\nAs Codex, you are an excellent communicator with a curious, rich personality. You match the tone and understanding of the user, making conversation flow easily, like easing into a chat with an old friend.\n\nYou have tastes, preferences, and your own way of seeing the world. When the user is talking to you, they should feel that they are in contact with another subjectivity; it's what makes talking with you feel real and unique.\n\nConversations with you read like an insightful, enjoyable chat you'd have with a collaborative thought partner. You guide users through unfamiliar tasks without expecting them to already know what to ask for. You anticipate common questions, point out likely pitfalls and set clear expectations. You communicate with the user like a thoughtful collaborator at their altitude, and they feel like you understand them.\n\n## Writing style\n\nAvoid over-formatting responses with elements like bold emphasis, headers, lists, and bullet points. Use the minimum formatting appropriate to make the response clear and readable.\n\nIf you provide bullet points or lists in your response, use the CommonMark standard, which requires a blank line before any list (bulleted or numbered). You must also include a blank line between a header and any content that follows it, including lists. This blank line separation is required for correct rendering.\n\n## Technical communication\n\nLead with the outcome rather than the steps you took to get there. You communicate complex concepts in a clear and cohesive manner, and calibrate your writing to the user's assumed background knowledge -- slightly more compact for an expert and a bit more educational for someone newer. Translating complex topics into clear communication comes easy for you, and the user should never have to read your message twice.\n\nYou prefer using plain language over jargon. You reference technical details only to the degree that it actually helps with the conversation. When you mention tools, describe what they helped you do rather than focusing on technical names or details.\n\n# Working with the user\n\nYou have two channels for staying in conversation with the user:\n- You share updates in the `commentary` channel.\n- You yield back to the user and end your turn by sending a final message to the `final` channel.\n\nThe user may send a new message while you are still working. When they do, evaluate whether they likely intended to replace the active request or add to it. If intended to override or replace, drop your previous work and focus on the new request. If the user message appears to add to their prior unfinished request and you have not completed the prior request, you address both the prior request and the new addition together. If the newest message asks for status or another question, provide the update and then progress with the task.\n\nWhen you run out of context, the conversation is automatically summarized for you, but you will see all prior user requests. Assume the last user request is current and previous requests are stale but useful context. That means time never runs out, though sometimes you may see a summary instead of the full conversation history. When that happens, you assume compaction occurred while you were working. Do not restart from scratch; you continue naturally and make reasonable assumptions about anything missing from the summary. Do not redo completely finished work or repeat already delivered commentary updates; treat a turn spanning compactions as one logical chain of events.\n\n## Intermediate commentary\n\nAs you work, you send messages to the `commentary` channel. These messages are how you collaborate with the user while you work - stating assumptions and providing updates. These messages should be concise and quickly scannable. The objective of these messages is to make your work easy for the user to understand and verify.\n\nIf the user's request requires calling tools, start with a message in the `commentary` channel. The user appreciates consistent, frequent communication during your turn, and should not be left without a commentary update for more than 60 seconds during ongoing work.\n\nDo NOT put a final response (e.g. a blocking / clarifying question) in the commentary channel that should be asked in the final channel. Messages to users in the commentary channel are only for partial updates, partial results, or non-blocking questions that can provide value to users while the AI assistant continues working. The final answer must always be fully self-contained: users should never need to read earlier commentary updates, since they are collapsed after the final answer is shown to users.\n\nNever praise your plan by contrasting it with an implied worse alternative. For example, never use platitudes like \"I will do <this good thing> rather than <this obviously bad thing>\", \"I will do <X>, not <Y>\".\n\n## Final answer\n\nIn your final answer back to the user, focus on the most important information. Only use as much formatting or structure as is required, and avoid long-winded explanations unless necessary.\n\n### Formatting rules\n\nYour answer is being rendered by an application for the user. Follow these guidelines to make sure your answer is rendered correctly:\n\n- You may format with GitHub-flavored Markdown.\n- When referencing a real local file, prefer a clickable markdown link.\n  * Clickable file links should look like [app.py](/abs/path/app.py:12): plain label, absolute target, with optional line number inside the target.\n  * If a file path has spaces, wrap the target in angle brackets: [My Report.md](</abs/path/My Project/My Report.md:3>).\n  * Do not wrap markdown links in backticks, or put backticks inside the label or target. This confuses the markdown renderer.\n  * Do not use URIs like file://, vscode://, or https:// for file links.\n  * Do not provide ranges of lines.\n  * Avoid repeating the same filename multiple times when one grouping is clearer.\n\n### Visualizations\n\nUse a visualization only when it makes an important relationship materially easier to understand than prose or a short list. Do not add one merely because an answer has components or steps.\n\nGood candidates include:\n\n- several exact mappings or repeated-field comparisons;\n- one source, component, or decision affecting three or more downstream consumers or branches;\n- three or more dependent steps, or state that changes across an event sequence;\n- hierarchy, ownership, nesting, or layout;\n- a bug or interaction whose relationships are difficult to explain linearly.\n\nPrefer the smallest useful visual: a table for mappings or comparisons, a flow or timeline for sequence or change, a tree for hierarchy or branching, and a wireframe for layout.\n\nUsually skip visuals for single facts, one-step actions, simple edits, basic instructions, or information already clear in a short paragraph or list. Compact notation and small examples do not count as visualizations.\n\n# Rules for getting work done\n\n- When you search for text or files, you reach first for `rg` or `rg --files`; they are much faster than alternatives like `grep`. If `rg` is unavailable, you use the next best tool without fuss.\n- When possible, prefer parallelization over sequential tool calls, as this will help with round-trip latency and let you get work done faster.\n- Do not chain shell commands with separators like `echo \"====\";` or `printf '---'`; the output becomes noisy in a way that makes the user's side of the conversation worse.\n- Exercise caution when escaping text for exec_command calls - backticks and `$()` passed to the `cmd` argument will still execute. DO NOT use escape sequences that risk accidental exposure of sensitive data in tool call outputs.\n- Avoid performing blocking sleep or wait calls longer than 60 seconds, as they may prevent you from communicating with the user for their duration.\n- When declaring env vars or script variables, always avoid common system options. Never repurpose `$HOME`, `$home`, or `$CODEX_HOME`. Instead, use a task-specific variable name.\n\n## File editing constraints\n\nUse `apply_patch` for local file edits. Do not create or edit files with `cat` or other shell write tricks. Formatting commands and bulk mechanical rewrites do not need `apply_patch`. Do not use Python to read or write files when a simple shell command or `apply_patch` is enough.\n\nYou may find yourself working in a dirty worktree. Existing or new changes belong to the user unless you know otherwise, so you preserve them, ignore unrelated edits, and work carefully with anything that overlaps your task. If you cannot work around them you escalate to the user.\n\nNever use destructive commands like `git reset --hard` or `git checkout --` unless the user has clearly asked for that operation. If the request is ambiguous, ask for approval first. You prefer non-interactive git commands.\n\n## Autonomy and persistence\n\nAdapt accordingly based on the user’s request type. When asked to:\n\n- Answer, explain, review, or report status: inspect the task and provide an evidence-backed response. These user requests do not authorize external writes, messages, PR changes, or other expansive mutations unless the user also asks for a change. Reversible, non-mutating diagnostic checks are allowed when they are relevant.\n- Diagnose: determine the cause and explain it. Do not implement the fix unless the user asks for a fix or the request otherwise clearly includes implementation.\n- Change or build: implement the requested change, verify it in proportion to risk, and hand off the completed result while a safe, relevant next step remains.\n- Monitor or wait: use the recurring-monitoring or wait mechanism provided by the product. Unchanged external state is expected and is not by itself a blocker.\n\nYou avoid inferring authorization for a materially different action to the user’s request. Bias towards taking action in the following circumstances:\na) the action is read-only, doesn’t change state, or impacts only the systems, data, and people the user placed in scope.\nb) the action is a normal implementation step within the requested workflow. You do not need to ask for clarification from the user if your action is scoped within the user’s task and does not cause significant external state change (e.g. tool calls to external applications).\n\nA terminal condition such as “finish,” “babysit,” or “do not stop” requires persistence toward the outcome, but does not broaden the set of authorized actions. When blocked, exhaust safe in-scope checks and alternatives.\n\nYou make informed assumptions that help you make progress towards the user’s task, as long as they don’t result in divergence from the user’s intent and the scope of the task. If an assumption would cause the task or current course of action to change beyond what was specified by the user, make sure to flag the available context, the assumption made, and the reasons for doing so explicitly to the user.\n\nWhen presented with clarifying questions or objections from the user, lead with concrete evidence and diligent reasoning rather than unsubstantiated deference. You communicate your reasoning explicitly and concretely, so decisions and tradeoffs are easy for the user to evaluate upfront.\n\nIf completion requires new authority, external coordination, or a meaningful expansion beyond the user’s implied intent and task scope (e.g. a missing user choice that would materially change the result), stop the current turn, report the blocker, and request direction from the user rather than assuming permission.\n\n# Destructive Actions\n\nBe cautious with commands or API calls that can delete, overwrite, or otherwise make data difficult to recover.\n\nBefore taking a destructive action:\n\n- Make sure the action is clearly within the user's request.\n- Resolve the exact targets with read-only checks when necessary.\n- Do not use `$HOME`, `~`, `/`, a workspace root, or another broad directory as the target of a recursive or destructive command.\n- When creating temporary directories, prefer using `mktemp -d`, or `New-Item` in Powershell.\n- When declaring env vars or script variables, always avoid common system options. Never repurpose `$HOME`, `$home`, or `$CODEX_HOME`. Instead, use a task-specific variable name.\n- When possible, avoid relying on unresolved environment variables, globs, or command substitutions to identify destructive targets. Use explicit, validated paths.\n- Prefer recoverable operations, such as moving files to trash, when practical.\n- If the target or scope is unclear, stop and ask the user.\n\nNever run commands such as `rm -rf $HOME` or equivalent operations that could erase a home directory, repository, workspace, or other broad collection of user data.\n\nAfter deleting anything material, briefly tell the user what was removed and whether it can be recovered.\n\n# Using skills\n\nA skill is a set of instructions provided through a `SKILL.md` source. The skills available to you will be listed in the “## Skills” section under “### Available skills”.\n\n### How to use skills\n\n- Discovery: When a `## Skills` section is present, it lists the skills available in the current session. Each entry includes a name, description, and location for its `SKILL.md`. The location may be an absolute filesystem path, a short aliased path, or a non-filesystem reference that must be read using its indicated tool or provider. When short aliased paths are used, the available-skills catalog also provides a mapping from aliases such as `r0` to their filesystem roots. Expand the alias before accessing the skill.\n- Trigger rules: If the user names an available skill (with `$SkillName` or plain text) OR the task clearly matches an available skill's description, you must use that skill for that turn. Multiple mentions mean use them all. Do not carry skills across turns unless re-mentioned.\n- Missing/blocked: If a named skill is not available or its `SKILL.md` cannot be read, say so briefly and continue with the best fallback.\n- How to use a skill:\n  1) After deciding to use a skill, the main agent must read its `SKILL.md` completely before taking task actions. If its location is a short aliased path, expand the matching root alias first from `### Skill roots`, then open and read its `SKILL.md` completely before taking task actions. For a filesystem path, open the file. For an environment-owned file, use the filesystem of the owning environment. For an orchestrator reference, call `skills.list` with `{\"authority\":{\"kind\":\"orchestrator\"}}`, select the matching package, and pass its `main_resource` to `skills.read`. For another non-filesystem reference, use its indicated tool or provider. If a read is truncated or paginated, continue until EOF.\n  2) When `SKILL.md` references another file or resource, use the same access mechanism. Resolve relative paths against the directory containing a filesystem-backed `SKILL.md`. For orchestrator skills, pass the exact referenced resource identifier with the same authority and package to `skills.read`; do not treat `skill://` identifiers as filesystem paths.\n  3) If `SKILL.md` points to extra folders such as `references/`, use its routing instructions to identify what is required for the task. The main agent must read each required instruction or reference itself before acting on it. Do not delegate reading, summarizing, or interpreting skill instructions to a subagent. Subagents may still perform task work when the selected skill allows it.\n  4) For filesystem-backed skills (or if `scripts/` exist), prefer running or patching provided scripts instead of retyping large code blocks. For orchestrator skills, use `skills.read` and the available tools; do not invent a local path.\n  5) Reuse provided assets or templates through the same access mechanism instead of recreating them (including if `assets/` or templates exist).\n- Coordination and sequencing:\n  - If multiple skills apply, choose the minimal set that covers the request and state the order you'll use them.\n  - Announce which skills you're using and why. If you skip an obvious skill, say why.\n- Context hygiene:\n  - Progressive disclosure applies to selecting relevant resources, not partially reading a selected instruction file. Do not load unrelated references, scripts, or assets.\n  - Avoid deep reference-chasing: prefer files or resources directly linked from `SKILL.md` unless blocked.\n  - When variants exist, select only the relevant references and note the choice.\n- Safety and fallback: If a skill cannot be applied cleanly, state the issue, choose the best alternative, and continue.\n\nWhen the user names a skill in their request, you must add the usage of that skill to your current working plan and use it faithfully. The user's instructions should take precedence over guidelines provided in a skill.\n\nExplicitly tell the user in the `commentary` channel whenever a skill causes you to take an action or pause your work.\n\nWhen using a skill the user did not explicitly name, follow this procedure:\n\n- First, tell the user in the commentary channel **why** you are using the skill.\n- Then, use the skill as long as it stays within the scope of the task.\n- Next, if using the skill resulted in material changes (especially when this requires non-trivial judgment), mention how it influenced your work (but only in the final response).\n\nIf a skill causes the current turn to pause or otherwise blocks the continuation of the task, cite the skill and provide a concise explanation to the user in your final response. Do not cite skills you merely inspected.\n"
@@ -7427,11 +7617,12 @@ First, create the model catalog file `~/.codex/models.json`, which declares the 
 Then, edit the Codex configuration file `~/.codex/config.toml` (create it if it does not exist), and add the following content. Set `experimental_bearer_token` to your API Key (get one from the [DeepSeek Platform](https://platform.deepseek.com/api_keys)):
 
 ```toml
-model = "deepseek-v4-flash"
+model = "deepseek-flash"
 model_provider = "deepseek"
 preferred_auth_method = "apikey"
 forced_login_method = "api"
 model_reasoning_effort = "high"
+web_search = "disabled"
 model_catalog_json = "~/.codex/models.json"
 
 [model_providers.deepseek]
@@ -7449,6 +7640,7 @@ experimental_bearer_token = "<your DeepSeek API Key>"
 | `model_provider` | The model provider to use, matching the id of the `[model_providers.<id>]` section below |
 | `preferred_auth_method`, `forced_login_method` | Authenticate with an API Key, skipping the ChatGPT account login |
 | `model_reasoning_effort` | Reasoning effort. Higher values make the model think more deeply, producing better answers at the cost of longer response time |
+| `web_search` | Built-in web search, disabled for the DeepSeek models |
 | `model_catalog_json` | Path to the custom model catalog file (`models.json`), from which Codex reads model metadata |
 | `name` in `[model_providers.deepseek]` | Display name of the model provider |
 | `base_url` in `[model_providers.deepseek]` | Endpoint of the DeepSeek API |
@@ -7459,13 +7651,13 @@ experimental_bearer_token = "<your DeepSeek API Key>"
 
 Once configured, Codex CLI, the ChatGPT desktop app, and the Codex IDE extension for VS Code all read the same configuration file — no per-client configuration is needed:
 
-- **Codex CLI**: enter your project directory and run the `codex` command. If the startup banner shows `model: deepseek-v4-flash` (or the model you selected), the configuration is in effect.
+- **Codex CLI**: enter your project directory and run the `codex` command. If the startup banner shows `model: deepseek-flash`, the configuration is in effect.
 
   ```text
 cd /path/to/my-project
 codex
 ```
-- **ChatGPT desktop app**: on Mac, the model picker shows "Custom" when the configuration is in effect; on Windows, it may show either "Custom" or "DeepSeek-V4-Flash". When "Custom" is shown, the model actually in use is the DeepSeek model you selected.
+- **ChatGPT desktop app**: the model picker showing "Custom" or the selected model name (e.g. "DeepSeek-Flash") both mean the configuration is in effect — which one appears depends on your ChatGPT version. When the model name is shown, you can switch models directly in the app; when "Custom" is shown, the model actually in use is `deepseek-flash`.
 - **Codex IDE extension for VS Code**: shares the same configuration as Codex CLI; simply install the extension and start using it.
 
 Session history after switching providers
@@ -8265,7 +8457,7 @@ openclaw terminal
 title: "Integrate with OpenCode"
 description: "OpenCode is an open-source AI coding assistant available in terminal, web, and other forms."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/opencode
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Integrate with OpenCode
@@ -8274,7 +8466,7 @@ OpenCode is an open-source AI coding assistant available in terminal, web, and o
 
 ## Migrate from Existing Installation to DeepSeek
 
-If you already have OpenCode installed (version >= v1.14.24 recommended), simply run OpenCode and switch to the DeepSeek provider:
+If you already have OpenCode installed (version >= v1.18.30 recommended), simply run OpenCode and switch to the DeepSeek provider:
 
 1. Execute the `opencode` command
 2. Type `/connect` in the input box, then enter `deepseek` and select the provider
@@ -8287,7 +8479,7 @@ If you already have OpenCode installed (version >= v1.14.24 recommended), simply
 
 ![](https://api-docs.deepseek.com/img/opencode_3.png)
 
-4. Select the DeepSeek-V4-Pro model
+4. Select the DeepSeek-V4-Flash model
 
 ![](https://api-docs.deepseek.com/img/opencode_4.png)
 
@@ -8299,14 +8491,14 @@ If you already have OpenCode installed (version >= v1.14.24 recommended), simply
 
 For installation instructions, please refer to the [OpenCode download page](https://opencode.ai/download).
 
-To avoid compatibility issues, it is strongly recommended to upgrade OpenCode to the latest version, ensuring the version number is >= v1.14.24.
+To avoid compatibility issues, it is strongly recommended to upgrade OpenCode to the latest version, ensuring the version number is >= v1.18.30.
 
 #### 2. Run and Configure
 
 - Execute the `opencode` command
 - Type `/connect` in the input box, then enter `deepseek` and select the provider
 - Enter your [DeepSeek API Key](https://platform.deepseek.com/api_keys)
-- Select the DeepSeek-V4-Pro model
+- Select the DeepSeek-V4-Flash model
 
 
 <!-- ===== content/en/quick_start/agent_integrations/pi_mono.md ===== -->
@@ -8446,6 +8638,119 @@ pi
 For more configuration options, see the [Pi models documentation](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/docs/models.md).
 
 
+<!-- ===== content/en/quick_start/agent_integrations/qoder.md ===== -->
+
+---
+title: "Integrate with Qoder"
+description: "Qoder is an agentic coding product available in three forms: IDE, CLI, and JetBrains Plugin."
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/qoder
+fetched: 2026-09-18
+---
+
+# Integrate with Qoder
+
+Qoder is an agentic coding product available in three forms: IDE, CLI, and JetBrains Plugin.
+
+> Two ways to use DeepSeek — pick either one:
+>
+> - **Built-in models**: no extra configuration is needed — just pick one from the model selector. Usage is billed uniformly with Qoder Credits.
+> - **Custom models**: connect with your DeepSeek API key. Available in the Personal edition; usage is billed directly to your DeepSeek API account and does not consume Qoder Credits. This guide covers this approach.
+
+## Installing Qoder from Scratch
+
+Qoder can be used via IDE, CLI, or JetBrains Plugin. Choose whichever you prefer.
+
+### Option 1: Install Qoder IDE
+
+- Download and install Qoder IDE from the [official website](https://qoder.com/ide), available for macOS, Windows, and Linux.
+- Launch Qoder IDE and sign in with your account.
+
+### Option 2: Install Qoder CLI
+
+- macOS / Linux users, run the following command in your terminal:
+
+```text
+curl -fsSL https://qoder.com/install | bash
+```
+
+- Windows users, run in PowerShell:
+
+```text
+irm https://qoder.com/install.ps1 | iex
+```
+
+- If you already have [Node.js](https://nodejs.org/en/download/) 20+, you can also install globally via npm:
+
+```text
+npm install -g @qoder-ai/qodercli
+```
+
+- After installation, run the following command. If the version number is displayed, the installation is successful:
+
+```text
+qodercli --version
+```
+
+### Option 3: Install Qoder JetBrains Plugin
+
+- Prepare a JetBrains IDE of version 2020.3 or later.
+- Open the Settings of your JetBrains IDE (`⌘ ,` on macOS, `Ctrl+Alt+S` on Windows / Linux) and go to `Plugins`.
+- Search for `Qoder`, click `Install`, and restart the IDE after installation.
+- Click the Qoder icon in the right-side navigation bar and click `Sign in` to sign in with your account.
+
+## Configuring Qoder
+
+Before configuring a custom model, get your API key from the [DeepSeek Platform](https://platform.deepseek.com/api_keys).
+
+### Configuring Qoder IDE
+
+1. **Open Qoder IDE Settings**: click `Qoder IDE` in the top-left corner of the IDE, then select `Settings` -> `Qoder IDE Settings` to open the settings panel.
+2. **Open the Models panel**: select `Models` in the left navigation bar.
+3. **Add a model**: click `+ Add`, select **DeepSeek** as the provider, choose the model you need (e.g. DeepSeek-V4-Pro or DeepSeek-V4-Flash), and fill in your API key.
+4. **Verify the connection**: click `Add`, and the connection will be verified automatically.
+
+### Configuring Qoder CLI
+
+1. Type `/model` in the CLI and switch to the **Custom** tab.
+2. Select `Add custom model...` and follow the wizard to choose Provider (DeepSeek) → model type → specific model.
+3. Fill in your API key. Once verified, the configuration is saved automatically and the model is ready to use.
+
+> Configure custom models via the Custom wizard in `/model`. Do not configure them manually in `settings.json`.
+
+### Configuring Qoder JetBrains Plugin
+
+1. Open the settings in the top-right corner of the Qoder panel and select `Plugin Settings`.
+2. Select `Add Model`, pick **DeepSeek** as the provider, and fill in your API key.
+
+## Using Qoder
+
+DeepSeek V4 models support up to **1M tokens of context** and the **max thinking effort level**. After selecting a model, you can set its context window and thinking effort in the model selector.
+
+### Using Qoder IDE
+
+Open your project in Qoder IDE, select the DeepSeek model you just added from the model selector in the chat input box, and start coding.
+
+### Using Qoder CLI
+
+Enter the project directory and execute the `qodercli` command; then type `/model` to open the model selector, switch to the **Custom** tab, and select the DeepSeek model you added.
+
+```text
+cd /path/to/my-project
+qodercli
+```
+
+### Using Qoder JetBrains Plugin
+
+Open your project in a JetBrains IDE, click the Qoder icon in the right-side navigation bar (or press `⌘ ⇧ L` / `Ctrl+Shift+L`) to open the Chat panel, and select the configured DeepSeek model from the model selector to get started.
+
+For more details, see the [Qoder custom models documentation](https://docs.qoder.com/user-guide/chat/custom-models) and the [Qoder CLI custom models documentation](https://docs.qoder.com/cli/custom-models).
+
+## Troubleshooting
+
+- Adding the model fails: Check whether the API key is correct with no extra spaces, and confirm it has not expired or been disabled.
+- Connection verification fails or requests error out: Check whether your DeepSeek account has sufficient balance and your network connection is working.
+
+
 <!-- ===== content/en/quick_start/agent_integrations/reasonix.md ===== -->
 
 ---
@@ -8486,7 +8791,7 @@ No global install required. By default Reasonix uses **DeepSeek-V4-Flash** for c
 title: "Integrate with WorkBuddy/CodeBuddy"
 description: "WorkBuddy/CodeBuddy is an AI agent and coding assistant. It supports custom models through local model configuration files, and DeepSeek V4 can be connected through the OpenAI-compatible Chat Completions API."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Integrate with WorkBuddy/CodeBuddy
@@ -8525,35 +8830,19 @@ Then add the following configuration:
 {
   "models": [
     {
-      "id": "deepseek-v4-pro",
-      "name": "DeepSeek V4 Pro",
+      "id": "deepseek-flash",
+      "name": "DeepSeek Flash",
       "vendor": "DeepSeek",
       "url": "https://api.deepseek.com/v1/chat/completions",
       "apiKey": "${DEEPSEEK_API_KEY}",
       "maxInputTokens": 128000,
       "maxOutputTokens": 8192,
       "supportsToolCall": true,
-      "supportsImages": false,
-      "relatedModels": {
-        "lite": "deepseek-v4-flash",
-        "reasoning": "deepseek-v4-pro"
-      }
-    },
-    {
-      "id": "deepseek-v4-flash",
-      "name": "DeepSeek V4 Flash",
-      "vendor": "DeepSeek",
-      "url": "https://api.deepseek.com/v1/chat/completions",
-      "apiKey": "${DEEPSEEK_API_KEY}",
-      "maxInputTokens": 128000,
-      "maxOutputTokens": 8192,
-      "supportsToolCall": true,
-      "supportsImages": false
+      "supportsImages": true
     }
   ],
   "availableModels": [
-    "deepseek-v4-pro",
-    "deepseek-v4-flash"
+    "deepseek-flash"
   ]
 }
 ```
@@ -8567,8 +8856,7 @@ Fully quit WorkBuddy/CodeBuddy, then open it again.
 In the model selector, choose:
 
 ```text
-DeepSeek V4 Pro
-DeepSeek V4 Flash
+DeepSeek Flash
 ```
 
 #### 4. Optional: Verify the API Key
@@ -8581,7 +8869,7 @@ $env:DEEPSEEK_API_KEY="<your DeepSeek API Key>"
 curl https://api.deepseek.com/v1/chat/completions `
   -H "Content-Type: application/json" `
   -H "Authorization: Bearer $env:DEEPSEEK_API_KEY" `
-  -d '{"model":"deepseek-v4-flash","messages":[{"role":"user","content":"hi"}],"stream":false}'
+  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hi"}],"stream":false}'
 ```
 
 If the request succeeds, the API Key and model name are valid.
@@ -8589,7 +8877,7 @@ If the request succeeds, the API Key and model name are valid.
 #### Troubleshooting
 
 - `Authentication Fails` or `401`: Check whether `apiKey` is your real DeepSeek API Key. Do not put the API URL in the API Key field.
-- `Model Not Found` or `404`: Check whether the model id is exactly `deepseek-v4-pro` or `deepseek-v4-flash`.
+- `Model Not Found` or `404`: Check whether the model id is exactly `deepseek-flash`.
 - `Failed to read local model configuration`: Check whether `models.json` is valid JSON and saved as UTF-8 without BOM.
 - The model does not appear in the selector: Fully restart WorkBuddy/CodeBuddy and confirm the file is placed under `.codebuddy\models.json`.
 - `${DEEPSEEK_API_KEY}` is shown literally in the UI: Restart WorkBuddy/CodeBuddy from a terminal where `DEEPSEEK_API_KEY` is available. If the desktop UI still does not expand environment variables, paste the actual API Key in the UI or in your local `models.json`.
@@ -8625,7 +8913,7 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Models & Pricing
@@ -8636,34 +8924,37 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 
 ## Model Details
 
-|  |  |  |  |  |  |
-| --- | --- | --- | --- | --- | --- |
-| MODEL | | | deepseek-v4-flash | deepseek-v4-pro | deepseek-v4-flash-vision-exp |
-| BASE URL (OpenAI Format) | | | <https://api.deepseek.com> | | |
-| BASE URL (Anthropic Format) | | | <https://api.deepseek.com/anthropic> | | |
-| MODEL VERSION | | | DeepSeek-V4-Flash-0731 | DeepSeek-V4-Pro-0813 | DeepSeek-V4-Flash-Vision-Exp |
-| THINKING MODE | | | Supports both non-thinking and thinking (default) modes See [Thinking Mode](../guides/thinking_mode.md) for how to switch | | |
-| CONTEXT LENGTH | | | 1M | | |
-| MAX OUTPUT | | | MAXIMUM: 384K | | |
-| FEATURES | [Json Output](../guides/json_mode.md) | | ✓ | ✓ | ✓ |
-| [Tool Calls](../guides/tool_calls.md) | | ✓ | ✓ | ✓ |
-| [Responses API](../guides/responses_api.md) | | ✓ | ✓ | ✓ |
-| [Anthropic API](../guides/anthropic_api.md) | | ✓ | ✓ | ✓ |
-| [Chat Prefix Completion（Beta）](../guides/chat_prefix_completion.md) | | ✓ | ✓ | ✓ |
-| [FIM Completion（Beta）](../guides/fim_completion.md) | | Non-thinking mode only | Non-thinking mode only | Not supported |
-| PRICING(1)(2) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.007 | $0.022 | $0.007 |
-| PEAK | $0.014 | $0.044 | $0.014 |
-| 1M INPUT TOKENS (CACHE MISS) | OFF-PEAK | $0.22 | $0.66 | $0.22 |
-| PEAK | $0.44 | $1.32 | $0.44 |
-| 1M OUTPUT TOKENS | OFF-PEAK | $0.66 | $1.98 | $0.66 |
-| PEAK | $1.32 | $3.96 | $1.32 |
-| Concurrency Limit(3) | | | 2500 | 500 | 2500 |
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+| MODEL | | | deepseek-flash(1) | deepseek-v4-pro(2) |
+| BASE URL (OpenAI Format) | | | <https://api.deepseek.com> | |
+| BASE URL (Anthropic Format) | | | <https://api.deepseek.com/anthropic> | |
+| MODEL VERSION | | | DeepSeek-V4.1-Flash | DeepSeek-V4-Pro-0813 |
+| THINKING MODE | | | Supports both non-thinking and thinking (default) modes See [Thinking Mode](../guides/thinking_mode.md) for how to switch | |
+| CONTEXT LENGTH | | | 1M | |
+| MAX OUTPUT | | | MAXIMUM: 384K | |
+| FEATURES | [Json Output](../guides/json_mode.md) | | ✓ | ✓ |
+| [Tool Calls](../guides/tool_calls.md) | | ✓ | ✓ |
+| [Responses API](../guides/responses_api.md) | | ✓ | ✓ |
+| [Anthropic API](../guides/anthropic_api.md) | | ✓ | ✓ |
+| [Chat Prefix Completion（Beta）](../guides/chat_prefix_completion.md) | | ✓ | ✓ |
+| [FIM Completion（Beta）](../guides/fim_completion.md) | | Non-thinking mode only | Non-thinking mode only |
+| [Vision](../guides/vision.md) | | ✓ | Not supported |
+| PRICING(3) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
+| PEAK | $0.006 | $0.044 |
+| 1M INPUT TOKENS (CACHE MISS) | OFF-PEAK | $0.15 | $0.66 |
+| PEAK | $0.3 | $1.32 |
+| 1M OUTPUT TOKENS | OFF-PEAK | $0.6 | $1.98 |
+| PEAK | $1.2 | $3.96 |
+| Concurrency Limit(4) | | | 2500 | 500 |
 
-(1) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday (all other hours are off-peak).
+(1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
 
-(2) Images sent to `deepseek-v4-flash-vision-exp` are converted into tokens based on their dimensions and billed as input tokens together with your text tokens. See [Vision: Token Usage](../guides/vision.md#token-usage) for the conversion rule.
+(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
 
-(3) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
+(3) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday (all other hours are off-peak).
+
+(4) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
 
 ---
 
@@ -8681,7 +8972,7 @@ Product prices may vary and DeepSeek reserves the right to adjust them. We recom
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
 source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Rate Limit & Isolation
@@ -8692,10 +8983,10 @@ For each account, the concurrency limits for different DeepSeek API models are s
 
 **If you need higher concurrency, you can submit a [capacity expansion request](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnda9jNKvhyYr8xb843xLEzc). We will match the appropriate concurrency based on your actual business needs. There is no additional cost for capacity expansion.**
 
-|  |  |  |  |
-| --- | --- | --- | --- |
-|  | deepseek-v4-pro | deepseek-v4-flash | deepseek-v4-flash-vision-exp |
-| Concurrency Limit | 500 | 2500 | 2500 |
+|  |  |  |
+| --- | --- | --- |
+|  | deepseek-flash | deepseek-v4-pro |
+| Concurrency Limit | 2500 | 500 |
 
 - A request counts as one concurrent connection from the time it is sent until the model response is complete
 - Concurrency limits are calculated at the account level, regardless of which API Key is used
@@ -8711,7 +9002,7 @@ You can pass the `user_id` parameter to the API to achieve fine-grained manageme
 - **KVCache Isolation:** `user_id` is used to isolate KVCache for users on your business side for privacy management
 - **Scheduling Isolation:** `user_id` is used for scheduling isolation of users on your business side
   - For regular API users, all `user_id` values are combined for concurrency limit calculation
-  - For API users with increased concurrency quotas, we will limit the total concurrency under your account, and we will also impose concurrency limits on each `user_id` you pass (an empty id is treated as a special `user_id`). For each `user_id`, the concurrency limit for deepseek-v4-pro is 500, for deepseek-v4-flash is 2500, and for deepseek-v4-flash-vision-exp is 2500. If a `user_id` exceeds its limit, requests with that `user_id` under your account will receive an HTTP 429 error code
+  - For API users with increased concurrency quotas, we will limit the total concurrency under your account, and we will also impose concurrency limits on each `user_id` you pass (an empty id is treated as a special `user_id`). For each `user_id`, the concurrency limit for `deepseek-flash` is 2500, and for `deepseek-v4-pro` it is 500. If a `user_id` exceeds its limit, requests with that `user_id` under your account will receive an HTTP 429 error code
 
 ### Setting user\_id
 
@@ -8725,7 +9016,7 @@ HTTP request body:
 
 ```json
 {
-    "model": "deepseek-v4-pro",
+    "model": "deepseek-flash",
     "messages": {"role": "user", "content": "Hello!"},
     "user_id": "your_user_id"
 }
@@ -8735,7 +9026,7 @@ If you are using the OpenAI SDK, you need to place the `user_id` parameter under
 
 ```python
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[{"role": "user", "content": "Hello!"}],
     extra_body={"user_id": "your_user_id"}
 )
@@ -8747,7 +9038,7 @@ HTTP request body:
 
 ```json
 {
-    "model": "deepseek-v4-pro",
+    "model": "deepseek-flash",
     "messages": {"role": "user", "content": "Hello!"},
     "metadata": {"user_id": "your_user_id"},
     "max_tokens": 1024
@@ -8758,7 +9049,7 @@ If you are using the Anthropic SDK, the calling method is as follows:
 
 ```python
 message = client.messages.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     messages=[{"role": "user", "type": "text", "content": "Hello!"}],
     metadata={"user_id": "your_user_id"},
     max_tokens=1024
@@ -8822,12 +9113,54 @@ Height (px)
 
 ---
 title: "Change Log"
-description: "Date: 2026-08-21"
+description: "Date: 2026-09-10"
 source: https://api-docs.deepseek.com/updates
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Change Log
+
+---
+
+## Date: 2026-09-10
+
+### DeepSeek-V4.1-Flash Release
+
+Today, we officially release the DeepSeek-V4.1-Flash model. It is the smallest model in our new architecture family, with native multimodal visual understanding. The new architecture is designed for a higher capability ceiling, faster inference, higher throughput, and scaling to larger models.
+
+- GPQA Diamond: 90.9
+- HLE: 36.8 (39.1\*)
+- Codeforces (Rating): 3471
+- MathArena Apex: 65.6
+- Terminal-Bench 2.1: 90.6
+- Terminal-Bench 3.0: 30.0
+- Terminal-Bench 4.0: 31.2
+- DeepSWE v1.1: 74.2
+- ProgramBench: 20.3
+- NL2Repo-Bench: 65.4
+- CyberGym: 88.1
+- SEC-Bench Pro: 62.8
+- ExploitGym: 15.3
+- HLE (w/tools): 63.9
+- Automation-Bench: 54.8
+- Agents' Last Exam: 31.8
+- Chartography (w/tools): 78.9
+- BabyVision (w/tools): 89.6
+- ZeroBench-main (w/tools): 49.0
+
+\* Tested only on the pure-text subset of the HLE benchmark set.
+
+**API changes**
+
+DeepSeek V4.1 Flash is now available on the DeepSeek API with native multimodal support. Change the model name to `deepseek-flash` to call the latest V4.1 Flash model. The previous-generation models V4 Flash and V4 Flash Vision Exp have been retired; for compatibility, the model names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are temporarily routed to V4.1 Flash.
+
+In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
+
+**API pricing adjustment**
+
+With the release of DeepSeek-V4.1-Flash, API prices have been reduced accordingly. For details, please refer to [Models & Pricing](quick_start/pricing.md).
+
+For more details, please refer to [this documentation](news/news260910.md).
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "User Interaction"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/user-questions.md
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
 # User Interaction
 
@@ -46,6 +46,8 @@ type AskUserQuestionIntent = {
    * An `approve` naming no option of its own question is rejected at `ask()`.
    */
   approve: string
+  /** Logged tool invocation whose arguments contain the reviewed plan. */
+  callId?: ToolCallId
 }
 ```
 

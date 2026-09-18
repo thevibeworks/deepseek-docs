@@ -2,7 +2,7 @@
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-08-23
+fetched: 2026-09-18
 ---
 
 # Using the Anthropic API
@@ -40,7 +40,7 @@ import anthropic
 client = anthropic.Anthropic()
 
 message = client.messages.create(
-    model="deepseek-v4-pro",
+    model="deepseek-flash",
     max_tokens=1000,
     system="You are a helpful assistant.",
     messages=[
@@ -58,7 +58,7 @@ message = client.messages.create(
 print(message.content)
 ```
 
-**Note:** When you pass an unsupported model name to DeepSeek's Anthropic API, the API backend will automatically map it to the `deepseek-v4-flash` model.
+**Note:** When you pass an unsupported model name to DeepSeek's Anthropic API, the API backend will automatically map it to the `deepseek-flash` model.
 
 ---
 
@@ -66,8 +66,10 @@ print(message.content)
 
 When you use the Anthropic API, we map the Claude model names you pass in:
 
-- Models starting with claude-opus are mapped to deepseek-v4-pro
-- Models starting with claude-haiku or claude-sonnet are mapped to deepseek-v4-flash
+- Models starting with claude-opus are mapped to `deepseek-v4-pro`
+- Models starting with claude-haiku or claude-sonnet are mapped to `deepseek-flash`
+
+The claude-opus mapping points to `deepseek-v4-pro`, which is billed at the V4 Pro price.
 
 With this mapping, when using the developer mode of the new Claude Desktop APP, you can bypass the APP's model name restrictions by simply changing the base\_url and api\_key to connect to DeepSeek models.
 
@@ -102,7 +104,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | thinking | Supported (`budget_tokens` is ignored) |
 | output\_config | Only `effort` is supported |
 | top\_k | Ignored |
-| top\_p | Fully Supported |
+| top\_p | Only takes effect in thinking mode (with a lower bound of `0.95`); in non-thinking mode it is fixed at `1.0` |
 
 ### Tool Fields
 

@@ -2,7 +2,7 @@
 title: "Lists Models"
 description: "Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
 source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # Lists Models
@@ -75,7 +75,7 @@ The organization that owns the model.
   "object": "list",
   "data": [
     {
-      "id": "deepseek-v4-flash",
+      "id": "deepseek-flash",
       "object": "model",
       "owned_by": "deepseek"
     },

@@ -1,9 +1,9 @@
 ---
-title: "Background Task Runtime"
+title: "Background Job Runtime"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/jobs.md
-fetched: 2026-08-27
+fetched: 2026-09-18
 ---
-# Background Task Runtime
+# Background Job Runtime
 
 English | [中文](jobs.zh.md)
 

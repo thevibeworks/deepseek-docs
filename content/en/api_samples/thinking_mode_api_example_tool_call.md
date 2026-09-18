@@ -1,7 +1,7 @@
 ---
 title: "thinking_mode_api_example_tool_call"
 source: https://api-docs.deepseek.com/api_samples/thinking_mode_api_example_tool_call
-fetched: 2026-08-02
+fetched: 2026-09-18
 ---
 
 # thinking\_mode\_api\_example\_tool\_call
@@ -55,7 +55,7 @@ def run_turn(turn, messages):
     sub_turn = 1
     while True:
         response = client.chat.completions.create(
-            model='deepseek-v4-pro',
+            model='deepseek-flash',
             messages=messages,
             tools=tools,
             reasoning_effort="high",
