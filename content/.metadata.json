@@ -112,7 +112,8 @@
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "title": "DeepSeek-V3-0324 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-09-18"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
@@ -157,7 +158,8 @@
     },
     "content/en/news/news251201.md": {
       "url": "https://api-docs.deepseek.com/news/news251201",
-      "title": "DeepSeek-V3.2 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news251201 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-09-18"
     },
     "content/en/news/news260424.md": {
       "url": "https://api-docs.deepseek.com/news/news260424",
@@ -241,8 +243,7 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-09-18"
+      "title": "Models & Pricing"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
