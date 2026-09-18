@@ -129,7 +129,7 @@ the one client-rendered page; its data is fetched from the site's static
 [`fetch-deepseek-docs.yml`](.github/workflows/fetch-deepseek-docs.yml)
 runs every 6 hours: fetch (dsh from GitHub/npm, then the api-docs site),
 then hand the diff to Claude Code running on
-the **DeepSeek API itself** (`deepseek-v4-flash` via the
+the **DeepSeek API itself** (`deepseek-flash` via the
 Anthropic-compatible endpoint, `anthropic_api_key` = a `DEEPSEEK_API_KEY`
 repo secret). The agent only classifies the change and writes decision
 files; a deterministic bash step publishes -- minor changes commit
