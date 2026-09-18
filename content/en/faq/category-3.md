@@ -2,7 +2,7 @@
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: Chat Issues

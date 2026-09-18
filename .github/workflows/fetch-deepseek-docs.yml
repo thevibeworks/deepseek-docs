@@ -31,6 +31,16 @@ jobs:
       - name: Fetch docs
         run: uv run scripts/fetcher.py
 
+      # The FAQ lives on static.deepseek.com, outside the Docusaurus site the
+      # main fetcher walks, so it is absent from content/.metadata.json and no
+      # amount of green here used to say anything about it. It was imported once
+      # on 2026-08-05 and never refreshed: by 09-09 six of its eight files were
+      # stale, including a whole new answer about rebinding a dead phone number.
+      # A one-shot import inside a 4x-daily mirror is the shape of failure that
+      # emits no signal, so the mirror fetches it like everything else now.
+      - name: Fetch FAQ (static.deepseek.com)
+        run: uv run scripts/faq.py
+
       - name: Detect changes
         id: diff
         run: |

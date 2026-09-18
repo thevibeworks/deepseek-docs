@@ -1,8 +1,8 @@
 ---
 title: "FAQ: 使用引导"
-description: "DeepSeek FAQ, 使用引导 — 11 questions and answers."
+description: "DeepSeek FAQ, 使用引导 — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/2
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: 使用引导
@@ -86,14 +86,3 @@ fetched: 2026-08-05
 重要提示：账号注销后，其下的所有对话记录将被永久清空。若您在开放平台账户中尚有未消费的余额，将被视为自愿放弃，请您谨慎操作。
 
 若未找到注销入口，请将 APP 升级至最新版本。
-
-## 我该如何变更已停用的手机号？
-
-当您需要修改绑定的手机号，但原号码已无法正常使用时，可以参照以下指引：
-
-- 若原手机号仍可接收短信：您可以直接前往「设置」→「账号管理」页面，自助完成手机号变更。
-- 若原手机号已停机或无法使用：您需要填写「[账号改绑/解绑申请](https://trtgsjkv6r.feishu.cn/share/base/form/shrcnCPab0B7pIL30A5JHeho9le)」表单。为了保护您的账号安全，我们需要核对您的身份信息，以确认您是该账号的所有者。请您根据申请表指引，提供相应资料进行验证。
-
-我们会在收到申请后尽快为您处理。大部分请求的审核用时为 7 个工作日，审核结果将通过您预留的电子邮箱通知，请注意查收。
-
-感谢您的理解与配合。

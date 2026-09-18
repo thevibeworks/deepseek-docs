@@ -1,8 +1,8 @@
 ---
 title: "FAQ: API"
-description: "DeepSeek FAQ, API — 15 questions and answers."
+description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-08-05
+fetched: 2026-09-09
 ---
 
 # FAQ: API
@@ -96,6 +96,14 @@ The change will not affect your account balance or current usage.
 ## Can an Enterprise Verified Account be changed to a Personal Account?
 
 An Enterprise Verified Account cannot be changed to a Personal Account or transferred to a different enterprise.
+
+## How can an enterprise-verified account update its verified company name？
+
+If your company name has changed through an official business registration update, you can update it on the Platform:
+
+[Personal Information](https://platform.deepseek.com/profile) → Real-Name Verification → View Details → Sync Latest Business Registration
+
+- After the update, you can continue making corporate bank transfers from accounts under either the new or former company name. However, invoices can only be issued under the new company name.
 
 ## Why does the API keep returning empty lines?
 
