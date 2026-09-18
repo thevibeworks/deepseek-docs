@@ -75,23 +75,23 @@ jobs:
       # because its blast radius is nil -- every side effect (commit, push,
       # PR) lives in the deterministic Publish step below. Runs Claude Code
       # on the DeepSeek API via the Anthropic-compatible endpoint.
-      - name: Agent triage (deepseek-v4-flash)
+      - name: Agent triage (deepseek-flash)
         if: steps.diff.outputs.newsworthy == 'true'
         uses: anthropics/claude-code-action@v1.0.168
         env:
           ANTHROPIC_BASE_URL: https://api.deepseek.com/anthropic
-          ANTHROPIC_MODEL: deepseek-v4-flash
-          ANTHROPIC_DEFAULT_OPUS_MODEL: deepseek-v4-flash
-          ANTHROPIC_DEFAULT_SONNET_MODEL: deepseek-v4-flash
-          ANTHROPIC_DEFAULT_HAIKU_MODEL: deepseek-v4-flash
-          ANTHROPIC_SMALL_FAST_MODEL: deepseek-v4-flash
-          CLAUDE_CODE_SUBAGENT_MODEL: deepseek-v4-flash
+          ANTHROPIC_MODEL: deepseek-flash
+          ANTHROPIC_DEFAULT_OPUS_MODEL: deepseek-flash
+          ANTHROPIC_DEFAULT_SONNET_MODEL: deepseek-flash
+          ANTHROPIC_DEFAULT_HAIKU_MODEL: deepseek-flash
+          ANTHROPIC_SMALL_FAST_MODEL: deepseek-flash
+          CLAUDE_CODE_SUBAGENT_MODEL: deepseek-flash
         with:
           anthropic_api_key: ${{ secrets.DEEPSEEK_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           show_full_output: true
           claude_args: |
-            --model deepseek-v4-flash
+            --model deepseek-flash
             --dangerously-skip-permissions
           prompt: |
             You are the docs editor for this DeepSeek API docs mirror. The
@@ -151,7 +151,12 @@ jobs:
 
           # iPhone push via Bark (same pattern as claude-code-docs). Changed
           # pages are captured from the dirty tree before anything commits.
-          PAGES=$(git status --porcelain content/ | awk '{print $NF}' | head -12)
+          # awk truncates, not head: head exits after 12 lines, awk takes
+          # SIGPIPE on its next flush, and pipefail turns that into exit 141.
+          # Harmless on a small diff, fatal once the listing outgrows one
+          # buffer -- the V4.1 release (2026-09-10) did, and every run failed
+          # here for a week while the backlog it could not publish grew.
+          PAGES=$(git status --porcelain content/ | awk 'NR <= 12 {print $NF}')
           notify() {  # $1 = link target (commit or PR)
             # Bookkeeping commits get no push. The mirror stays honest in
             # git; the phone only rings when a document actually changed.

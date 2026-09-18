@@ -10,7 +10,7 @@ Start from `llms.txt` (curated index of every English page). Key entry
 points:
 
 - `content/en/index.md` - first API call, base URLs, auth
-- `content/en/quick_start/pricing.md` - models (deepseek-v4-flash /
+- `content/en/quick_start/pricing.md` - models (deepseek-flash /
   deepseek-v4-pro), context length, feature matrix, prices
 - `content/en/api/create-chat-completion.md` - full chat/completions schema
 - `content/en/api/create-response.md` - OpenAI Responses API format
