@@ -2,7 +2,7 @@
 title: "FAQ: API相关"
 description: "DeepSeek FAQ, API相关 — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/4
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: API相关
