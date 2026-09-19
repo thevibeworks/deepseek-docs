@@ -2,7 +2,7 @@
 title: "首次调用 API"
 description: "DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配置，您可以使用 OpenAI/Anthropic SDK 来访问 DeepSeek API，或使用与 OpenAI/Anthropic API 兼容的软件。"
 source: https://api-docs.deepseek.com/zh-cn/
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # 首次调用 API
@@ -14,11 +14,9 @@ DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配�
 | base\_url (OpenAI) | `https://api.deepseek.com` |
 | base\_url (Anthropic) | `https://api.deepseek.com/anthropic` |
 | api\_key | 申请一个 [API key](https://platform.deepseek.com/api_keys) |
-| model | `deepseek-flash`(1) `deepseek-v4-pro`(2) |
+| model | `deepseek-flash`(1) `deepseek-v4-pro` |
 
 (1) 模型名请使用 `deepseek-flash`。旧模型名 `deepseek-v4-flash`、`deepseek-v4-flash-vision-exp` 仍可调用，但对应模型已下线，请求将由 DeepSeek-V4.1-Flash 模型提供服务，并按 Flash 价格计费。
-
-(2) 为响应广大用户的需求，我们决定在 2026 年 9 月 14 日之后继续提供 DeepSeek V4 Pro 的 API 调用服务，计费方式保持不变；如有变动，我们将另行通知。感谢您的理解与支持！
 
 ## 接入 Agent 工具
 

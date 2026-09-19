@@ -7,7 +7,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # Chat Completions API
@@ -360,7 +360,7 @@ We generally recommend altering this or `top_p` but not both. Has no effect in t
 
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top\_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
-The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
 **toolsobject[]nullable**
 
@@ -1528,7 +1528,7 @@ Loading...
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # Responses API
@@ -1778,7 +1778,7 @@ What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
 
 **Default value:** `1`
 
-An alternative to sampling with temperature, called nucleus sampling. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+An alternative to sampling with temperature, called nucleus sampling. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
 **textobjectnullable**
 
@@ -3084,7 +3084,7 @@ tool_calls=None
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: Login Issues
@@ -3154,7 +3154,7 @@ If you believe this is an error, please contact us by filling out the「[Account
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: User Guide
@@ -3227,7 +3227,7 @@ If you cannot find this option, please upgrade your App to the latest version.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: Chat Issues
@@ -3289,7 +3289,7 @@ Check if file uploads are restricted within your local network (LAN).
 title: "FAQ: API"
 description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: API
@@ -4501,7 +4501,7 @@ Token usage is returned in `usage`:
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # Thinking Mode
@@ -4545,7 +4545,7 @@ response = client.chat.completions.create(
 
 Thinking mode does not support the `temperature`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
 
-`top_p` takes effect in thinking mode, but with a lower bound of `0.95`: values below `0.95` are raised to `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
+`top_p` only takes effect in thinking mode, where the effective range is `0.95`–`1.0`: values below `0.95` are treated as `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
 
 In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
@@ -5417,7 +5417,7 @@ For field semantics, restrictions (images in `system` / `assistant` messages are
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # Your First API Call
@@ -5429,11 +5429,9 @@ The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifyi
 | base\_url (OpenAI) | `https://api.deepseek.com` |
 | base\_url (Anthropic) | `https://api.deepseek.com/anthropic` |
 | api\_key | apply for an [API key](https://platform.deepseek.com/api_keys) |
-| model | `deepseek-flash`(1) `deepseek-v4-pro`(2) |
+| model | `deepseek-flash`(1) `deepseek-v4-pro` |
 
 (1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
-
-(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
 
 ## Integrate with Agent Tools
 
@@ -8913,7 +8911,7 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # Models & Pricing
@@ -8926,7 +8924,7 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 
 |  |  |  |  |  |
 | --- | --- | --- | --- | --- |
-| MODEL | | | deepseek-flash(1) | deepseek-v4-pro(2) |
+| MODEL | | | deepseek-flash(1) | deepseek-v4-pro |
 | BASE URL (OpenAI Format) | | | <https://api.deepseek.com> | |
 | BASE URL (Anthropic Format) | | | <https://api.deepseek.com/anthropic> | |
 | MODEL VERSION | | | DeepSeek-V4.1-Flash | DeepSeek-V4-Pro-0813 |
@@ -8940,21 +8938,19 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 | [Chat Prefix Completion（Beta）](../guides/chat_prefix_completion.md) | | ✓ | ✓ |
 | [FIM Completion（Beta）](../guides/fim_completion.md) | | Non-thinking mode only | Non-thinking mode only |
 | [Vision](../guides/vision.md) | | ✓ | Not supported |
-| PRICING(3) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
+| PRICING(2) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
 | PEAK | $0.006 | $0.044 |
 | 1M INPUT TOKENS (CACHE MISS) | OFF-PEAK | $0.15 | $0.66 |
 | PEAK | $0.3 | $1.32 |
 | 1M OUTPUT TOKENS | OFF-PEAK | $0.6 | $1.98 |
 | PEAK | $1.2 | $3.96 |
-| Concurrency Limit(4) | | | 2500 | 500 |
+| Concurrency Limit(3) | | | 2500 | 500 |
 
 (1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
 
-(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
+(2) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays. All other hours are off-peak, including weekends and Chinese public holidays in full.
 
-(3) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday (all other hours are off-peak).
-
-(4) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
+(3) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
 
 ---
 

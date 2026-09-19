@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # Responses API
@@ -252,7 +252,7 @@ oneOf
 
 **Default value:** `1`
 
-作为调节采样温度的替代方案，即核采样。该参数在思考模式下生效，但小于 0.95 的值会被抬升至 0.95；在非思考模式下恒为 1.0，传入的值会被忽略。
+用于调节输出的随机性，可替代 `temperature`。该参数仅在思考模式下生效，有效取值范围为 0.95–1.0，低于 0.95 的取值会按 0.95 处理；在非思考模式下恒为 1.0，传入的值会被忽略。
 
 **textobjectnullable**
 
