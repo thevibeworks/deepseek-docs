@@ -2,7 +2,7 @@
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # FIM Completion API (Beta)
@@ -46,7 +46,9 @@ The maximum value for `logprobs` is 20.
 
 The maximum number of tokens that can be generated in the completion.
 
-**stopobjectnullable**
+**stop** string | string[]
+
+nullable
 
 Up to 16 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
 
@@ -71,7 +73,11 @@ string
 
 Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
 
-**stream\_optionsobjectnullable**
+**stream\_options**
+
+object
+
+nullable
 
 Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
@@ -132,7 +138,11 @@ OK
 
 A unique identifier for the completion.
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 The list of completion choices the model generated for the input prompt.
 
@@ -150,7 +160,13 @@ or `aborted` if the generation was interrupted.
 
 **index** integerrequired
 
-**logprobsobjectnullablerequired**
+**logprobs**
+
+object
+
+nullable
+
+required
 
 **text\_offset** integer[]
 
@@ -182,7 +198,9 @@ This fingerprint represents the backend configuration that the model runs with.
 
 The object type, which is always "text\_completion"
 
-**usageobject**
+**usage**
+
+object
 
 Usage statistics for the completion request.
 
@@ -194,7 +212,11 @@ Number of tokens in the generated completion.
 
 Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
 
-**prompt\_tokens\_detailsobjectrequired**
+**prompt\_tokens\_details**
+
+object
+
+required
 
 Breakdown of tokens used in the prompt.
 
@@ -214,7 +236,9 @@ Number of tokens in the prompt that misses the context cache.
 
 Total number of tokens used in the request (prompt + completion).
 
-**completion\_tokens\_detailsobject**
+**completion\_tokens\_details**
+
+object
 
 Breakdown of tokens used in a completion.
 

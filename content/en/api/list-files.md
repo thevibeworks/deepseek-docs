@@ -2,7 +2,7 @@
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
 source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-08-23
+fetched: 2026-09-26
 ---
 
 # List Files
@@ -65,7 +65,11 @@ OK, returns a list of `file object`.
 
 The object type, which is always `list`.
 
-**dataobject[]required**
+**data**
+
+object[]
+
+required
 
 The list of file objects.
 

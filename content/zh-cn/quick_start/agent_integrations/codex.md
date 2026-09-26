@@ -2,7 +2,7 @@
 title: "接入 Codex"
 description: "Codex 是 OpenAI 推出的 AI 编程助手，通过 Responses API 与模型交互，DeepSeek API 原生支持该格式。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # 接入 Codex
@@ -35,10 +35,10 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup.ps1 | iex
 
 1. **备份现有配置**：将 `~/.codex/config.toml` 备份到 `~/.codex/backup-deepseek/`，随时可以还原。
 2. **写入模型目录 `~/.codex/models.json`**：向 Codex 声明 DeepSeek 模型的元数据（上下文窗口长度、支持的推理强度档位、工具调用格式等），使 Codex 能像使用内置模型一样使用 DeepSeek 模型。
-3. **修改 `~/.codex/config.toml`**：只改写必要的字段（见下文[字段说明](#configtoml-%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E)），并新增 `[model_providers.deepseek]` 配置段；你原有的 MCP 服务器、项目信任级别等配置全部保留。若存在与 DeepSeek 配置冲突的字段，脚本会删除它们，并逐条打印删除原因。
+3. **修改 `~/.codex/config.toml`**：只改写必要的字段（见下文[字段说明](#configtoml-%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E)），并新增 `[model_providers.deepseek]` 配置段，在 `[desktop]` 配置段中写入 `enabled-reasoning-efforts`（原有 `[desktop]` 段中的其他设置保留）；你原有的 MCP 服务器、项目信任级别等配置全部保留。若存在与 DeepSeek 配置冲突的字段，脚本会删除它们，并逐条打印删除原因。
 4. **校验**：写入前校验 `config.toml` / `models.json` 语法合法；校验失败则中止，不修改任何文件。
 
-再次运行脚本，可以重新写入配置（菜单第 1 项），或恢复到安装前的默认配置（菜单第 9 项）。如果此前用旧版本脚本装过 `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` 这几个条目，重新运行脚本会将它们一并清理，只保留 `deepseek-flash` 和 `deepseek-v4-pro`。
+再次运行脚本，可以重新写入配置（菜单第 1 / 2 项），或恢复到安装前的默认配置（菜单第 9 项）。重新运行菜单第 1 / 2 项，还会补齐新版脚本新增的配置项（如 `show_raw_agent_reasoning`、推理强度档位），其他配置不受影响。如果此前用旧版本脚本装过 `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` 这几个条目，重新运行脚本会将它们一并清理，只保留 `deepseek-flash` 和 `deepseek-v4-pro`。
 
 ### 方式二：手动编辑配置文件
 
@@ -197,6 +197,7 @@ preferred_auth_method = "apikey"
 forced_login_method = "api"
 model_reasoning_effort = "high"
 web_search = "disabled"
+show_raw_agent_reasoning = true
 model_catalog_json = "~/.codex/models.json"
 
 [model_providers.deepseek]
@@ -204,7 +205,12 @@ name = "deepseek"
 base_url = "https://api.deepseek.com/"
 wire_api = "responses"
 experimental_bearer_token = "<你的 DeepSeek API Key>"
+
+[desktop]
+enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 ```
+
+如果 `config.toml` 中已有 `[desktop]` 配置段，请把 `enabled-reasoning-efforts` 加到该段里，不要再新建一个 `[desktop]`——重复的配置段会导致文件不合法。
 
 ### config.toml 字段说明
 
@@ -215,11 +221,13 @@ experimental_bearer_token = "<你的 DeepSeek API Key>"
 | `preferred_auth_method`、`forced_login_method` | 使用 API Key 认证，跳过 ChatGPT 账号登录 |
 | `model_reasoning_effort` | 推理强度。值越高，模型思考越深入，回答质量越高，耗时也越长 |
 | `web_search` | 内置联网搜索，DeepSeek 模型下禁用 |
+| `show_raw_agent_reasoning` | 显示模型的原始思考过程。仅在 Codex CLI 中有效，按 `Ctrl + T` 后展示思考过程 |
 | `model_catalog_json` | 自定义模型目录文件（`models.json`）的路径，Codex 从中读取模型元数据 |
 | `[model_providers.deepseek]` 中的 `name` | 模型提供方的显示名称 |
 | `[model_providers.deepseek]` 中的 `base_url` | DeepSeek API 的接口地址 |
 | `[model_providers.deepseek]` 中的 `wire_api` | 与模型通信使用的协议，`"responses"` 表示 [Responses API](../../guides/responses_api.md) |
 | `[model_providers.deepseek]` 中的 `experimental_bearer_token` | 你的 API Key，直接写在配置文件里 |
+| `[desktop]` 中的 `enabled-reasoning-efforts` | ChatGPT 桌面端可选的推理强度档位 |
 
 ## 2. 开始使用
 

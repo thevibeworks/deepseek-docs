@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Chat Completions API
@@ -19,7 +19,11 @@ POST /chat/completions
 
 **Bodyrequired**
 
-**messagesobject[]required**
+**messages**
+
+object[]
+
+required
 
 **Possible values:** `>= 1`
 
@@ -52,7 +56,9 @@ system 消息的内容。
 
 **[User message]**
 
-**contentobjectrequired**
+**content** string | object[]
+
+required
 
 user 消息的内容。可以是字符串，也可以是内容块数组（可携带图片）。详见[图像理解指南](../guides/vision.md)。
 
@@ -95,7 +101,11 @@ oneOf
 
 内容块的类型，此场景下为 `image_url`。
 
-**image\_urlobjectrequired**
+**image\_url**
+
+object
+
+required
 
 **url** stringrequired
 
@@ -173,7 +183,9 @@ assistant 消息的内容。
 
 该消息的发起角色，其值为 `tool`。
 
-**contentobjectrequired**
+**content** string | object[]
+
+required
 
 tool 消息的内容。可以是字符串，也可以是内容块数组（可以携带图片）。详见 [Vision 指南](../guides/vision.md)。
 
@@ -216,7 +228,11 @@ oneOf
 
 内容块的类型，此场景下为 `image_url`。
 
-**image\_urlobjectrequired**
+**image\_url**
+
+object
+
+required
 
 **url** stringrequired
 
@@ -262,7 +278,11 @@ oneOf
 
 使用的模型的 ID。请使用 `deepseek-flash` 或 `deepseek-v4-pro`。
 
-**thinkingobjectnullable**
+**thinking**
+
+object
+
+nullable
 
 控制思考模式与非思考模式的转换
 
@@ -284,13 +304,17 @@ oneOf
 
 限制一次请求中模型生成 completion 的最大 token 数。取值范围为 1 到 384K（393216）。未设置时，非思考模式默认 8K，思考模式默认 64K（`reasoning_effort` 为 `max` 时为 128K）。输入 token 和输出 token 的总长度受模型的上下文长度的限制。详见[模型 & 价格](../quick_start/pricing.md)。
 
-**response\_formatobjectnullable**
+**response\_format**
+
+object
+
+nullable
 
 一个 object，指定模型必须输出的格式。
 
 设置为 { "type": "json\_object" } 以启用 JSON 模式，该模式保证模型生成的消息是有效的 JSON。
 
-**注意:** 使用 JSON 模式时，你还必须通过系统或用户消息指示模型生成 JSON。否则，模型可能会生成不断的空白字符，直到生成达到令牌限制，从而导致请求长时间运行并显得“卡住”。此外，如果 finish\_reason="length"，这表示生成超过了 max\_tokens 或对话超过了最大上下文长度，消息内容可能会被部分截断。
+**注意:** 使用 JSON 模式时，你还必须通过系统或用户消息指示模型生成 JSON。否则，模型可能会生成不断的空白字符，直到生成达到 token 限制，从而导致请求长时间运行并显得“卡住”。此外，如果 finish\_reason="length"，这表示生成超过了 max\_tokens 或对话超过了最大上下文长度，消息内容可能会被部分截断。
 
 **type** string
 
@@ -300,20 +324,22 @@ oneOf
 
 Must be one of `text` or `json_object`.
 
-**stopobjectnullable**
+**stop** string | string[]
+
+nullable
 
 一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。
 
 oneOf
 
-- MOD1
-- MOD2
+- Single stop sequence
+- Stop sequence list
 
-**[MOD1]**
+**[Single stop sequence]**
 
 string
 
-**[MOD2]**
+**[Stop sequence list]**
 
 - Array [
 
@@ -325,7 +351,11 @@ string
 
 如果设置为 True，将会以 SSE（server-sent events）的形式以流式发送消息增量。消息流以 `data: [DONE]` 结尾。
 
-**stream\_optionsobjectnullable**
+**stream\_options**
+
+object
+
+nullable
 
 流式输出相关选项。必须与 `stream: true` 一起使用；如果 `stream` 未设置为 `true`，API 会返回 `400` 错误。
 
@@ -349,9 +379,13 @@ string
 
 **Default value:** `1`
 
-作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 取值必须大于 0 且不超过 1。我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。该参数在思考模式下生效，但小于 0.95 的值会被抬升至 0.95；在非思考模式下恒为 1.0，传入的值会被忽略。
+作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 取值必须大于 0 且不超过 1。我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。该参数仅在思考模式下生效，有效取值范围为 0.95–1.0，低于 0.95 的取值会按 0.95 处理；在非思考模式下恒为 1.0，传入的值会被忽略。
 
-**toolsobject[]nullable**
+**tools**
+
+object[]
+
+nullable
 
 模型可能会调用的 tool 的列表。目前，仅支持 function 作为工具。使用此参数来提供以 JSON 作为输入参数的 function 列表。tool 名称必须唯一。
 
@@ -363,7 +397,11 @@ string
 
 tool 的类型。目前仅支持 function。
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 **description** string
 
@@ -373,7 +411,9 @@ function 的功能描述，供模型理解何时以及如何调用该 function�
 
 要调用的 function 名称。必须由 a-z、A-Z、0-9 字符组成，或包含下划线和连字符，最大长度为 128 个字符。
 
-**parametersobject**
+**parameters**
+
+object
 
 function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls 指南](../guides/tool_calls.md)获取示例，并参阅[JSON Schema 参考](https://json-schema.org/understanding-json-schema/)了解有关格式的文档。省略 `parameters` 会定义一个参数列表为空的 function。
 
@@ -389,7 +429,9 @@ function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls �
 
 - ]
 
-**tool\_choiceobjectnullable**
+**tool\_choice** string | object
+
+nullable
 
 控制模型调用 tool 的行为。
 
@@ -424,7 +466,11 @@ string
 
 tool 的类型。目前，仅支持 `function`。
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 **name** stringrequired
 
@@ -478,7 +524,11 @@ OK, 返回一个 `chat completion` 对象。
 
 该对话的唯一标识符。
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 模型生成的 completion 的选择列表。
 
@@ -506,7 +556,11 @@ OK, 返回一个 `chat completion` 对象。
 
 该 completion 在模型生成的 completion 的选择列表中的索引。
 
-**messageobjectrequired**
+**message**
+
+object
+
+required
 
 模型生成的 completion 消息。
 
@@ -518,7 +572,9 @@ OK, 返回一个 `chat completion` 对象。
 
 仅适用于思考模式。内容为 assistant 消息中在最终答案之前的推理内容。
 
-**tool\_callsobject[]**
+**tool\_calls**
+
+object[]
 
 模型生成的 tool 调用，例如 function 调用。
 
@@ -534,7 +590,11 @@ tool 调用的 ID。
 
 tool 的类型。目前仅支持 `function`。
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 模型调用的 function。
 
@@ -554,11 +614,23 @@ tool 的类型。目前仅支持 `function`。
 
 生成这条消息的角色。
 
-**logprobsobjectnullablerequired**
+**logprobs**
+
+object
+
+nullable
+
+required
 
 该 choice 的对数概率信息。
 
-**contentobject[]nullablerequired**
+**content**
+
+object[]
+
+nullable
+
+required
 
 一个包含输出 token 对数概率信息的列表。
 
@@ -576,7 +648,11 @@ tool 的类型。目前仅支持 `function`。
 
 一个包含该 token UTF-8 字节表示的整数列表。一般在一个 UTF-8 字符被拆分成多个 token 来表示时有用。如果 token 没有对应的字节表示，则该值为 `null`。
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 一个包含在该输出位置上，输出概率 top N 的 token 的列表，以及它们的对数概率。在罕见情况下，返回的 token 数量可能少于请求参数中指定的 `top_logprobs` 值。
 
@@ -598,7 +674,11 @@ tool 的类型。目前仅支持 `function`。
 
 - ]
 
-**reasoning\_contentobject[]nullable**
+**reasoning\_content**
+
+object[]
+
+nullable
 
 一个包含输出 token 对数概率信息的列表。
 
@@ -616,7 +696,11 @@ tool 的类型。目前仅支持 `function`。
 
 一个包含该 token UTF-8 字节表示的整数列表。一般在一个 UTF-8 字符被拆分成多个 token 来表示时有用。如果 token 没有对应的字节表示，则该值为 `null`。
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 一个包含在该输出位置上，输出概率 top N 的 token 的列表，以及它们的对数概率。在罕见情况下，返回的 token 数量可能少于请求参数中指定的 `top_logprobs` 值。
 
@@ -658,7 +742,9 @@ This fingerprint represents the backend configuration that the model runs with.
 
 对象的类型, 其值为 `chat.completion`。
 
-**usageobject**
+**usage**
+
+object
 
 该对话补全请求的用量信息。
 
@@ -670,7 +756,11 @@ This fingerprint represents the backend configuration that the model runs with.
 
 用户 prompt 所包含的 token 数。该值等于 `prompt_cache_hit_tokens + prompt_cache_miss_tokens`
 
-**prompt\_tokens\_detailsobjectrequired**
+**prompt\_tokens\_details**
+
+object
+
+required
 
 prompt tokens 的详细信息。
 
@@ -690,7 +780,9 @@ prompt tokens 的详细信息。
 
 该请求中，所有 token 的数量（prompt + completion）。
 
-**completion\_tokens\_detailsobject**
+**completion\_tokens\_details**
+
+object
 
 completion tokens 的详细信息。
 
@@ -833,13 +925,21 @@ OK, 返回包含一系列 `chat completion chunk` 对象的流式输出。
 
 该对话的唯一标识符。
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 模型生成的 completion 的选择列表。
 
 - Array [
 
-**deltaobjectrequired**
+**delta**
+
+object
+
+required
 
 流式返回的一个 completion 增量。
 
@@ -857,7 +957,9 @@ completion 增量的内容。
 
 产生这条消息的角色。
 
-**tool\_callsobject[]**
+**tool\_calls**
+
+object[]
 
 模型生成的 tool 调用，例如 function 调用。每个 tool 调用的第一个 chunk 携带 `id`、`type` 和 `function` 字段，后续 chunk 只携带 function 参数。
 
@@ -875,7 +977,9 @@ tool 的 ID。
 
 tool 的类型。目前仅支持 `function`。
 
-**functionobject**
+**function**
+
+object
 
 **name** string
 
@@ -887,11 +991,21 @@ tool 的类型。目前仅支持 `function`。
 
 - ]
 
-**logprobsobjectnullable**
+**logprobs**
+
+object
+
+nullable
 
 该 choice 的对数概率信息。
 
-**contentobject[]nullablerequired**
+**content**
+
+object[]
+
+nullable
+
+required
 
 一个包含输出 token 对数概率信息的列表。
 
@@ -909,7 +1023,11 @@ tool 的类型。目前仅支持 `function`。
 
 一个包含该 token UTF-8 字节表示的整数列表。一般在一个 UTF-8 字符被拆分成多个 token 来表示时有用。如果 token 没有对应的字节表示，则该值为 `null`。
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 一个包含在该输出位置上，输出概率 top N 的 token 的列表，以及它们的对数概率。在罕见情况下，返回的 token 数量可能少于请求参数中指定的 `top_logprobs` 值。
 
@@ -931,7 +1049,11 @@ tool 的类型。目前仅支持 `function`。
 
 - ]
 
-**reasoning\_contentobject[]nullable**
+**reasoning\_content**
+
+object[]
+
+nullable
 
 一个包含输出 token 对数概率信息的列表。
 
@@ -949,7 +1071,11 @@ tool 的类型。目前仅支持 `function`。
 
 一个包含该 token UTF-8 字节表示的整数列表。一般在一个 UTF-8 字符被拆分成多个 token 来表示时有用。如果 token 没有对应的字节表示，则该值为 `null`。
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 一个包含在该输出位置上，输出概率 top N 的 token 的列表，以及它们的对数概率。在罕见情况下，返回的 token 数量可能少于请求参数中指定的 `top_logprobs` 值。
 

@@ -2,7 +2,7 @@
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-09-19
+fetched: 2026-09-26
 ---
 
 # FAQ: User Guide

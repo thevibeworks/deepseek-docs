@@ -7,7 +7,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Chat Completions API
@@ -24,7 +24,11 @@ Creates a model response for the given chat conversation.
 
 **Bodyrequired**
 
-**messagesobject[]required**
+**messages**
+
+object[]
+
+required
 
 **Possible values:** `>= 1`
 
@@ -57,7 +61,9 @@ An optional name for the participant. Provides the model information to differen
 
 **[User message]**
 
-**contentobjectrequired**
+**content** string | object[]
+
+required
 
 The contents of the user message. Either a string, or an array of content parts (for image input). See the [Vision guide](../guides/vision.md) for details.
 
@@ -100,7 +106,11 @@ The text content.
 
 The type of the content part, in this case `image_url`.
 
-**image\_urlobjectrequired**
+**image\_url**
+
+object
+
+required
 
 **url** stringrequired
 
@@ -177,7 +187,9 @@ You must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 The role of the messages author, in this case `tool`.
 
-**contentobjectrequired**
+**content** string | object[]
+
+required
 
 The contents of the tool message. Either a string, or an array of content parts (for image input). See the [Vision guide](../guides/vision.md) for details.
 
@@ -220,7 +232,11 @@ The text content.
 
 The type of the content part, in this case `image_url`.
 
-**image\_urlobjectrequired**
+**image\_url**
+
+object
+
+required
 
 **url** stringrequired
 
@@ -266,7 +282,11 @@ Tool call that this message is responding to.
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
-**thinkingobjectnullable**
+**thinking**
+
+object
+
+nullable
 
 Controls the switch between thinking and non-thinking mode.
 
@@ -292,7 +312,11 @@ The total length of input tokens and generated tokens is limited by the model's 
 
 The value must be between 1 and 384K (393216). When not set, the default is 8K in non-thinking mode, 64K in thinking mode (128K with `reasoning_effort` set to `max`). Please refer to the [Models & Pricing](../quick_start/pricing.md) page for details.
 
-**response\_formatobjectnullable**
+**response\_format**
+
+object
+
+nullable
 
 An object specifying the format that the model must output.
 Setting to { "type": "json\_object" } enables JSON Output, which guarantees the message the model generates is valid JSON.
@@ -307,20 +331,22 @@ Setting to { "type": "json\_object" } enables JSON Output, which guarantees the 
 
 Must be one of `text` or `json_object`.
 
-**stopobjectnullable**
+**stop** string | string[]
+
+nullable
 
 Up to 16 sequences where the API will stop generating further tokens.
 
 oneOf
 
-- MOD1
-- MOD2
+- Single stop sequence
+- Stop sequence list
 
-**[MOD1]**
+**[Single stop sequence]**
 
 string
 
-**[MOD2]**
+**[Stop sequence list]**
 
 - Array [
 
@@ -332,7 +358,11 @@ string
 
 If set, partial message deltas will be sent. Tokens will be sent as data-only server-sent events (SSE) as they become available, with the stream terminated by a `data: [DONE]` message.
 
-**stream\_optionsobjectnullable**
+**stream\_options**
+
+object
+
+nullable
 
 Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
@@ -360,9 +390,13 @@ We generally recommend altering this or `top_p` but not both. Has no effect in t
 
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top\_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
-The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
-**toolsobject[]nullable**
+**tools**
+
+object[]
+
+nullable
 
 A list of tools the model may call. Currently, only functions are supported as a tool.
 Use this to provide a list of functions the model may generate JSON inputs for. Tool names must be unique.
@@ -375,7 +409,11 @@ Use this to provide a list of functions the model may generate JSON inputs for. 
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 **description** string
 
@@ -385,7 +423,9 @@ A description of what the function does, used by the model to choose when and ho
 
 The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 128.
 
-**parametersobject**
+**parameters**
+
+object
 
 The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
 
@@ -405,7 +445,9 @@ If set to true, the API will use strict-mode for the tool calls to ensure the ou
 
 - ]
 
-**tool\_choiceobjectnullable**
+**tool\_choice** string | object
+
+nullable
 
 Controls which (if any) tool is called by the model.
 
@@ -440,7 +482,11 @@ string
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 **name** stringrequired
 
@@ -494,7 +540,11 @@ OK, returns a `chat completion object`
 
 A unique identifier for the chat completion.
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 A list of chat completion choices.
 
@@ -515,7 +565,11 @@ or `aborted` if the generation was interrupted.
 
 The index of the choice in the list of choices.
 
-**messageobjectrequired**
+**message**
+
+object
+
+required
 
 A chat completion message generated by the model.
 
@@ -527,7 +581,9 @@ The contents of the message.
 
 For thinking mode only. The reasoning contents of the assistant message, before the final answer.
 
-**tool\_callsobject[]**
+**tool\_calls**
+
+object[]
 
 The tool calls generated by the model.
 
@@ -543,7 +599,11 @@ The ID of the tool call.
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 The function that the model called.
 
@@ -563,11 +623,23 @@ The arguments to call the function with, as generated by the model in JSON forma
 
 The role of the author of this message.
 
-**logprobsobjectnullablerequired**
+**logprobs**
+
+object
+
+nullable
+
+required
 
 Log probability information for the choice.
 
-**contentobject[]nullablerequired**
+**content**
+
+object[]
+
+nullable
+
+required
 
 A list of message content tokens with log probability information.
 
@@ -585,7 +657,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -607,7 +683,11 @@ A list of integers representing the UTF-8 bytes representation of the token. Use
 
 - ]
 
-**reasoning\_contentobject[]nullable**
+**reasoning\_content**
+
+object[]
+
+nullable
 
 A list of message content tokens with log probability information.
 
@@ -625,7 +705,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -667,7 +751,9 @@ This fingerprint represents the backend configuration that the model runs with.
 
 The object type, which is always `chat.completion`.
 
-**usageobject**
+**usage**
+
+object
 
 Usage statistics for the completion request.
 
@@ -679,7 +765,11 @@ Number of tokens in the generated completion.
 
 Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
 
-**prompt\_tokens\_detailsobjectrequired**
+**prompt\_tokens\_details**
+
+object
+
+required
 
 Breakdown of tokens used in the prompt.
 
@@ -699,7 +789,9 @@ Number of tokens in the prompt that misses the context cache.
 
 Total number of tokens used in the request (prompt + completion).
 
-**completion\_tokens\_detailsobject**
+**completion\_tokens\_details**
+
+object
 
 Breakdown of tokens used in a completion.
 
@@ -842,13 +934,21 @@ OK, returns a streamed sequence of `chat completion chunk` objects
 
 A unique identifier for the chat completion. Each chunk has the same ID.
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 A list of chat completion choices.
 
 - Array [
 
-**deltaobjectrequired**
+**delta**
+
+object
+
+required
 
 A chat completion delta generated by streamed model responses.
 
@@ -866,7 +966,9 @@ For thinking mode only. The reasoning contents of the assistant message, before 
 
 The role of the author of this message.
 
-**tool\_callsobject[]**
+**tool\_calls**
+
+object[]
 
 The tool calls generated by the model, such as function calls. The first chunk of each tool call carries the `id`, `type` and `function` fields; subsequent chunks only carry the function arguments.
 
@@ -884,7 +986,9 @@ The ID of the tool call.
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobject**
+**function**
+
+object
 
 **name** string
 
@@ -896,11 +1000,21 @@ The arguments to call the function with, as generated by the model in JSON forma
 
 - ]
 
-**logprobsobjectnullable**
+**logprobs**
+
+object
+
+nullable
 
 Log probability information for the choice.
 
-**contentobject[]nullablerequired**
+**content**
+
+object[]
+
+nullable
+
+required
 
 A list of message content tokens with log probability information.
 
@@ -918,7 +1032,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -940,7 +1058,11 @@ A list of integers representing the UTF-8 bytes representation of the token. Use
 
 - ]
 
-**reasoning\_contentobject[]nullable**
+**reasoning\_content**
+
+object[]
+
+nullable
 
 A list of message content tokens with log probability information.
 
@@ -958,7 +1080,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -1128,7 +1254,7 @@ Loading...
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # FIM Completion API (Beta)
@@ -1172,7 +1298,9 @@ The maximum value for `logprobs` is 20.
 
 The maximum number of tokens that can be generated in the completion.
 
-**stopobjectnullable**
+**stop** string | string[]
+
+nullable
 
 Up to 16 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
 
@@ -1197,7 +1325,11 @@ string
 
 Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
 
-**stream\_optionsobjectnullable**
+**stream\_options**
+
+object
+
+nullable
 
 Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
@@ -1258,7 +1390,11 @@ OK
 
 A unique identifier for the completion.
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 The list of completion choices the model generated for the input prompt.
 
@@ -1276,7 +1412,13 @@ or `aborted` if the generation was interrupted.
 
 **index** integerrequired
 
-**logprobsobjectnullablerequired**
+**logprobs**
+
+object
+
+nullable
+
+required
 
 **text\_offset** integer[]
 
@@ -1308,7 +1450,9 @@ This fingerprint represents the backend configuration that the model runs with.
 
 The object type, which is always "text\_completion"
 
-**usageobject**
+**usage**
+
+object
 
 Usage statistics for the completion request.
 
@@ -1320,7 +1464,11 @@ Number of tokens in the generated completion.
 
 Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
 
-**prompt\_tokens\_detailsobjectrequired**
+**prompt\_tokens\_details**
+
+object
+
+required
 
 Breakdown of tokens used in the prompt.
 
@@ -1340,7 +1488,9 @@ Number of tokens in the prompt that misses the context cache.
 
 Total number of tokens used in the request (prompt + completion).
 
-**completion\_tokens\_detailsobject**
+**completion\_tokens\_details**
+
+object
 
 Breakdown of tokens used in a completion.
 
@@ -1528,7 +1678,7 @@ Loading...
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Responses API
@@ -1553,7 +1703,9 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
-**inputobjectnullable**
+**input** string | object[]
+
+nullable
 
 The input to the model. Either a plain string (treated as a single `user` message), or a list of input items.
 
@@ -1586,7 +1738,7 @@ The type of the input item. For `message` items, this field can be omitted if `r
 
 For `message` items. The role of the message author. `developer` is treated as `user`.
 
-**contentobject**
+**content** string | object[]
 
 For `message` items, the message content, either a plain string or a list of `input_text` / `output_text` / `input_image` content parts. For `reasoning` items, a list of `reasoning_text` content parts.
 
@@ -1669,7 +1821,7 @@ For `function_call` items. The name of the function to call.
 
 For `function_call` items. The arguments to call the function with, in JSON format.
 
-**outputobject**
+**output** string | object[]
 
 For `function_call_output` / `custom_tool_call_output` items. The output of the tool call, either a plain string or a list of `input_text` / `input_image` content parts.
 
@@ -1746,7 +1898,11 @@ The chain-of-thought text content.
 
 A system-level instruction, inserted as the first system message of the model's context.
 
-**reasoningobjectnullable**
+**reasoning**
+
+object
+
+nullable
 
 Configuration of the thinking mode.
 
@@ -1778,13 +1934,19 @@ What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
 
 **Default value:** `1`
 
-An alternative to sampling with temperature, called nucleus sampling. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+An alternative to sampling with temperature, called nucleus sampling. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
-**textobjectnullable**
+**text**
+
+object
+
+nullable
 
 Configuration of the text output.
 
-**formatobject**
+**format**
+
+object
 
 The output format. `{"type": "text"}` (default) for plain text; `{"type": "json_object"}` for JSON mode; `{"type": "json_schema", "name": ..., "schema": ...}` for structured output conforming to the given JSON Schema.
 
@@ -1802,7 +1964,11 @@ The name of the schema. Required when `type` is `json_schema`.
 
 The JSON Schema that the output must conform to. Required when `type` is `json_schema`.
 
-**toolsobject[]nullable**
+**tools**
+
+object[]
+
+nullable
 
 A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. Built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
 
@@ -1822,7 +1988,9 @@ For `function` tools. The name of the function. Must be non-empty, at most 128 c
 
 For `function` tools. A description of what the function does, used by the model to choose when and how to call the function.
 
-**parametersobject**
+**parameters**
+
+object
 
 The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
 
@@ -1836,7 +2004,9 @@ Omitting `parameters` defines a function with an empty parameter list.
 
 - ]
 
-**tool\_choiceobjectnullable**
+**tool\_choice** string | object
+
+nullable
 
 Controls which (if any) tool is called by the model.
 
@@ -1922,7 +2092,11 @@ The status of the response.
 
 The error object when the response failed, with `code` and `message` fields.
 
-**incomplete\_detailsobjectnullable**
+**incomplete\_details**
+
+object
+
+nullable
 
 The details about why the response is incomplete. The `reason` field can be `max_output_tokens` or `content_filter`.
 
@@ -1934,7 +2108,11 @@ The details about why the response is incomplete. The `reason` field can be `max
 
 The model used for the response.
 
-**outputobject[]required**
+**output**
+
+object[]
+
+required
 
 The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
@@ -1962,7 +2140,9 @@ The status of the output item.
 
 For `message` items. Always `assistant`.
 
-**contentobject[]**
+**content**
+
+object[]
 
 For `message` items, a list of `output_text` content parts. For `reasoning` items, a list of `reasoning_text` content parts carrying the chain-of-thought in plain text.
 
@@ -1990,7 +2170,9 @@ For `function_call` items. The arguments to call the function with, as generated
 
 - ]
 
-**usageobject**
+**usage**
+
+object
 
 Token usage statistics for the response.
 
@@ -1998,7 +2180,9 @@ Token usage statistics for the response.
 
 Number of input tokens.
 
-**input\_tokens\_detailsobject**
+**input\_tokens\_details**
+
+object
 
 Breakdown of the input tokens.
 
@@ -2010,7 +2194,9 @@ Number of input tokens that hit the context cache. See [Context Caching](../guid
 
 Number of output tokens.
 
-**output\_tokens\_detailsobject**
+**output\_tokens\_details**
+
+object
 
 Breakdown of the output tokens.
 
@@ -2289,7 +2475,7 @@ Loading...
 title: "Get User Balance"
 description: "Get user current balance"
 source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-08-02
+fetched: 2026-09-26
 ---
 
 # Get User Balance
@@ -2320,7 +2506,9 @@ OK, returns user balance info.
 
 Whether the user's balance is sufficient for API calls.
 
-**balance\_infosobject[]**
+**balance\_infos**
+
+object[]
 
 - Array [
 
@@ -2385,7 +2573,7 @@ Loading...
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
 source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-08-23
+fetched: 2026-09-26
 ---
 
 # List Files
@@ -2448,7 +2636,11 @@ OK, returns a list of `file object`.
 
 The object type, which is always `list`.
 
-**dataobject[]required**
+**data**
+
+object[]
+
+required
 
 The list of file objects.
 
@@ -2550,9 +2742,9 @@ Loading...
 
 ---
 title: "Lists Models"
-description: "Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
+description: "Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output modalities, supported effort levels, and per-protocol API capabilities. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
 source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Lists Models
@@ -2561,7 +2753,7 @@ fetched: 2026-09-18
 GET /models
 ```
 
-Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](../quick_start/pricing.md) for our currently supported models.
+Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output modalities, supported effort levels, and per-protocol API capabilities. Check [Models & Pricing](../quick_start/pricing.md) for our currently supported models.
 
 ## Responses
 
@@ -2583,7 +2775,15 @@ OK, returns A list of models
 
 **Possible values:** [`list`]
 
-**dataModel[]required**
+The object type, which is always `list`.
+
+**data**
+
+object[]
+
+required
+
+The list of model objects.
 
 - Array [
 
@@ -2601,6 +2801,65 @@ The object type, which is always "model".
 
 The organization that owns the model.
 
+**name** string
+
+The display name of the model, for use in model pickers and model discovery tools.
+
+**context\_window** integer
+
+The total token capacity of the context window, counting both input and output tokens.
+
+**max\_output\_tokens** integer
+
+The maximum number of output tokens the server allows in a single response, i.e. the maximum accepted value of `max_tokens`.
+
+**input\_modalities** string[]
+
+**Possible values:** [`text`, `image`]
+
+The input types the model accepts.
+
+**output\_modalities** string[]
+
+**Possible values:** [`text`]
+
+The media types the model can generate.
+
+**effort**
+
+object
+
+The effort levels available when thinking mode is enabled.
+
+**supported\_levels** string[]required
+
+The effort levels the model supports when thinking mode is enabled, in the recommended display order. These are the values accepted by the `reasoning_effort` parameter; `none`, which turns thinking mode off, is not included.
+
+**default\_level** string
+
+The effort level the server uses when thinking mode is enabled and the request does not specify one. Always one of `supported_levels`. Only present when the server defines a default for the model.
+
+**api\_capabilities**
+
+object
+
+Model behavior declared per API protocol.
+
+**anthropic\_messages**
+
+object
+
+Capabilities that apply when the model is used through the [Anthropic Messages API](../guides/anthropic_api.md).
+
+**system\_prompt\_update** stringrequired
+
+**Possible values:** [`leading-only`, `in-history`]
+
+How the model picks up an updated system prompt during a conversation.
+
+- `leading-only`: only the system prompt at the start of the conversation takes effect. To change the system prompt, modify that leading system prompt; system messages appearing later in the history are not treated as system prompt updates.
+- `in-history`: a `system` message may be appended to the conversation history. The latest `system` message in the history provides the complete effective system prompt and replaces all earlier ones.
+
 - ]
 
 **[Example (from schema)]**
@@ -2612,7 +2871,27 @@ The organization that owns the model.
     {
       "id": "string",
       "object": "model",
-      "owned_by": "string"
+      "owned_by": "string",
+      "name": "string",
+      "context_window": 0,
+      "max_output_tokens": 0,
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "effort": {
+        "supported_levels": [
+          "string"
+        ],
+        "default_level": "string"
+      },
+      "api_capabilities": {
+        "anthropic_messages": {
+          "system_prompt_update": "leading-only"
+        }
+      }
     }
   ]
 }
@@ -2627,12 +2906,40 @@ The organization that owns the model.
     {
       "id": "deepseek-flash",
       "object": "model",
-      "owned_by": "deepseek"
+      "owned_by": "deepseek",
+      "name": "DeepSeek-V4.1-Flash",
+      "context_window": 1048576,
+      "max_output_tokens": 393216,
+      "input_modalities": ["text", "image"],
+      "output_modalities": ["text"],
+      "effort": {
+        "supported_levels": ["low", "high", "max"],
+        "default_level": "high"
+      },
+      "api_capabilities": {
+        "anthropic_messages": {
+          "system_prompt_update": "in-history"
+        }
+      }
     },
     {
       "id": "deepseek-v4-pro",
       "object": "model",
-      "owned_by": "deepseek"
+      "owned_by": "deepseek",
+      "name": "DeepSeek-V4-Pro",
+      "context_window": 1048576,
+      "max_output_tokens": 393216,
+      "input_modalities": ["text"],
+      "output_modalities": ["text"],
+      "effort": {
+        "supported_levels": ["low", "high", "max"],
+        "default_level": "high"
+      },
+      "api_capabilities": {
+        "anthropic_messages": {
+          "system_prompt_update": "leading-only"
+        }
+      }
     }
   ]
 }
@@ -3084,7 +3391,7 @@ tool_calls=None
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: Login Issues
@@ -3154,7 +3461,7 @@ If you believe this is an error, please contact us by filling out the「[Account
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: User Guide
@@ -3227,7 +3534,7 @@ If you cannot find this option, please upgrade your App to the latest version.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: Chat Issues
@@ -3289,7 +3596,7 @@ Check if file uploads are restricted within your local network (LAN).
 title: "FAQ: API"
 description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-09-18
+fetched: 2026-09-19
 ---
 
 # FAQ: API
@@ -4501,7 +4808,7 @@ Token usage is returned in `usage`:
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Thinking Mode
@@ -4545,7 +4852,7 @@ response = client.chat.completions.create(
 
 Thinking mode does not support the `temperature`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
 
-`top_p` takes effect in thinking mode, but with a lower bound of `0.95`: values below `0.95` are raised to `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
+`top_p` only takes effect in thinking mode, where the effective range is `0.95`–`1.0`: values below `0.95` are treated as `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
 
 In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
@@ -5417,7 +5724,7 @@ For field semantics, restrictions (images in `system` / `assistant` messages are
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Your First API Call
@@ -5429,11 +5736,9 @@ The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifyi
 | base\_url (OpenAI) | `https://api.deepseek.com` |
 | base\_url (Anthropic) | `https://api.deepseek.com/anthropic` |
 | api\_key | apply for an [API key](https://platform.deepseek.com/api_keys) |
-| model | `deepseek-flash`(1) `deepseek-v4-pro`(2) |
+| model | `deepseek-flash`(1) `deepseek-v4-pro` |
 
 (1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
-
-(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
 
 ## Integrate with Agent Tools
 
@@ -7428,7 +7733,7 @@ With this mapping, when using the developer mode of the new Claude Desktop APP, 
 title: "Integrate with Codex"
 description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Integrate with Codex
@@ -7461,10 +7766,10 @@ The script performs the following steps:
 
 1. **Back up your existing configuration**: `~/.codex/config.toml` is backed up to `~/.codex/backup-deepseek/`, so you can restore it at any time.
 2. **Write the model catalog `~/.codex/models.json`**: this declares the metadata of DeepSeek models to Codex (context window size, supported reasoning effort levels, tool call formats, etc.), so that Codex can use DeepSeek models just like its built-in models.
-3. **Modify `~/.codex/config.toml`**: only the necessary fields are rewritten (see the [field reference](#configtoml-field-reference) below), and a `[model_providers.deepseek]` section is added; your existing settings such as MCP servers and project trust levels are all preserved. If any existing fields conflict with the DeepSeek configuration, the script removes them and prints the reason for each removal.
+3. **Modify `~/.codex/config.toml`**: only the necessary fields are rewritten (see the [field reference](#configtoml-field-reference) below), a `[model_providers.deepseek]` section is added, and `enabled-reasoning-efforts` is written into the `[desktop]` section (other settings in an existing `[desktop]` section are kept); your existing settings such as MCP servers and project trust levels are all preserved. If any existing fields conflict with the DeepSeek configuration, the script removes them and prints the reason for each removal.
 4. **Validate**: the script validates the syntax of `config.toml` / `models.json` before writing; if validation fails, it aborts without modifying any file.
 
-Run the script again at any time to rewrite the configuration (menu option 1), or to restore it to its pre-installation state (menu option 9). If an older version of the script had installed the `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` entries, re-running the script removes them and leaves only `deepseek-flash` and `deepseek-v4-pro`.
+Run the script again at any time to rewrite the configuration (menu option 1 or 2), or to restore it to its pre-installation state (menu option 9). Re-running menu option 1 or 2 also adds any settings introduced by newer versions of the script (such as `show_raw_agent_reasoning` and the reasoning effort levels), leaving the rest of your configuration untouched. If an older version of the script had installed the `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` entries, re-running the script removes them and leaves only `deepseek-flash` and `deepseek-v4-pro`.
 
 ### Option 2: Edit the Configuration File Manually
 
@@ -7623,6 +7928,7 @@ preferred_auth_method = "apikey"
 forced_login_method = "api"
 model_reasoning_effort = "high"
 web_search = "disabled"
+show_raw_agent_reasoning = true
 model_catalog_json = "~/.codex/models.json"
 
 [model_providers.deepseek]
@@ -7630,7 +7936,12 @@ name = "deepseek"
 base_url = "https://api.deepseek.com/"
 wire_api = "responses"
 experimental_bearer_token = "<your DeepSeek API Key>"
+
+[desktop]
+enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 ```
+
+If `config.toml` already has a `[desktop]` section, add `enabled-reasoning-efforts` to that section instead of creating a second `[desktop]` — a duplicate section makes the file invalid.
 
 ### config.toml Field Reference
 
@@ -7641,11 +7952,13 @@ experimental_bearer_token = "<your DeepSeek API Key>"
 | `preferred_auth_method`, `forced_login_method` | Authenticate with an API Key, skipping the ChatGPT account login |
 | `model_reasoning_effort` | Reasoning effort. Higher values make the model think more deeply, producing better answers at the cost of longer response time |
 | `web_search` | Built-in web search, disabled for the DeepSeek models |
+| `show_raw_agent_reasoning` | Show the model's raw reasoning (thinking) content. Only takes effect in Codex CLI: press `Ctrl + T` to view the thinking process |
 | `model_catalog_json` | Path to the custom model catalog file (`models.json`), from which Codex reads model metadata |
 | `name` in `[model_providers.deepseek]` | Display name of the model provider |
 | `base_url` in `[model_providers.deepseek]` | Endpoint of the DeepSeek API |
 | `wire_api` in `[model_providers.deepseek]` | The protocol used to communicate with the model; `"responses"` means the [Responses API](../../guides/responses_api.md) |
 | `experimental_bearer_token` in `[model_providers.deepseek]` | Your API Key, stored directly in the configuration file |
+| `enabled-reasoning-efforts` in `[desktop]` | Reasoning effort levels available in the ChatGPT desktop app |
 
 ## 2. Get Started
 
@@ -8913,7 +9226,7 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Models & Pricing
@@ -8926,7 +9239,7 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 
 |  |  |  |  |  |
 | --- | --- | --- | --- | --- |
-| MODEL | | | deepseek-flash(1) | deepseek-v4-pro(2) |
+| MODEL | | | deepseek-flash(1) | deepseek-v4-pro |
 | BASE URL (OpenAI Format) | | | <https://api.deepseek.com> | |
 | BASE URL (Anthropic Format) | | | <https://api.deepseek.com/anthropic> | |
 | MODEL VERSION | | | DeepSeek-V4.1-Flash | DeepSeek-V4-Pro-0813 |
@@ -8940,21 +9253,19 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 | [Chat Prefix Completion（Beta）](../guides/chat_prefix_completion.md) | | ✓ | ✓ |
 | [FIM Completion（Beta）](../guides/fim_completion.md) | | Non-thinking mode only | Non-thinking mode only |
 | [Vision](../guides/vision.md) | | ✓ | Not supported |
-| PRICING(3) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
+| PRICING(2) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
 | PEAK | $0.006 | $0.044 |
 | 1M INPUT TOKENS (CACHE MISS) | OFF-PEAK | $0.15 | $0.66 |
 | PEAK | $0.3 | $1.32 |
 | 1M OUTPUT TOKENS | OFF-PEAK | $0.6 | $1.98 |
 | PEAK | $1.2 | $3.96 |
-| Concurrency Limit(4) | | | 2500 | 500 |
+| Concurrency Limit(3) | | | 2500 | 500 |
 
 (1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
 
-(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
+(2) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays. All other hours are off-peak, including weekends and Chinese public holidays in full.
 
-(3) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday (all other hours are off-peak).
-
-(4) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
+(3) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
 
 ---
 

@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Chat Completions API
@@ -19,7 +19,11 @@ Creates a model response for the given chat conversation.
 
 **Bodyrequired**
 
-**messagesobject[]required**
+**messages**
+
+object[]
+
+required
 
 **Possible values:** `>= 1`
 
@@ -52,7 +56,9 @@ An optional name for the participant. Provides the model information to differen
 
 **[User message]**
 
-**contentobjectrequired**
+**content** string | object[]
+
+required
 
 The contents of the user message. Either a string, or an array of content parts (for image input). See the [Vision guide](../guides/vision.md) for details.
 
@@ -95,7 +101,11 @@ The text content.
 
 The type of the content part, in this case `image_url`.
 
-**image\_urlobjectrequired**
+**image\_url**
+
+object
+
+required
 
 **url** stringrequired
 
@@ -172,7 +182,9 @@ You must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 The role of the messages author, in this case `tool`.
 
-**contentobjectrequired**
+**content** string | object[]
+
+required
 
 The contents of the tool message. Either a string, or an array of content parts (for image input). See the [Vision guide](../guides/vision.md) for details.
 
@@ -215,7 +227,11 @@ The text content.
 
 The type of the content part, in this case `image_url`.
 
-**image\_urlobjectrequired**
+**image\_url**
+
+object
+
+required
 
 **url** stringrequired
 
@@ -261,7 +277,11 @@ Tool call that this message is responding to.
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
-**thinkingobjectnullable**
+**thinking**
+
+object
+
+nullable
 
 Controls the switch between thinking and non-thinking mode.
 
@@ -287,7 +307,11 @@ The total length of input tokens and generated tokens is limited by the model's 
 
 The value must be between 1 and 384K (393216). When not set, the default is 8K in non-thinking mode, 64K in thinking mode (128K with `reasoning_effort` set to `max`). Please refer to the [Models & Pricing](../quick_start/pricing.md) page for details.
 
-**response\_formatobjectnullable**
+**response\_format**
+
+object
+
+nullable
 
 An object specifying the format that the model must output.
 Setting to { "type": "json\_object" } enables JSON Output, which guarantees the message the model generates is valid JSON.
@@ -302,20 +326,22 @@ Setting to { "type": "json\_object" } enables JSON Output, which guarantees the 
 
 Must be one of `text` or `json_object`.
 
-**stopobjectnullable**
+**stop** string | string[]
+
+nullable
 
 Up to 16 sequences where the API will stop generating further tokens.
 
 oneOf
 
-- MOD1
-- MOD2
+- Single stop sequence
+- Stop sequence list
 
-**[MOD1]**
+**[Single stop sequence]**
 
 string
 
-**[MOD2]**
+**[Stop sequence list]**
 
 - Array [
 
@@ -327,7 +353,11 @@ string
 
 If set, partial message deltas will be sent. Tokens will be sent as data-only server-sent events (SSE) as they become available, with the stream terminated by a `data: [DONE]` message.
 
-**stream\_optionsobjectnullable**
+**stream\_options**
+
+object
+
+nullable
 
 Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
@@ -355,9 +385,13 @@ We generally recommend altering this or `top_p` but not both. Has no effect in t
 
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top\_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
-The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It takes effect in thinking mode, but values below 0.95 are raised to 0.95; in non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
 
-**toolsobject[]nullable**
+**tools**
+
+object[]
+
+nullable
 
 A list of tools the model may call. Currently, only functions are supported as a tool.
 Use this to provide a list of functions the model may generate JSON inputs for. Tool names must be unique.
@@ -370,7 +404,11 @@ Use this to provide a list of functions the model may generate JSON inputs for. 
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 **description** string
 
@@ -380,7 +418,9 @@ A description of what the function does, used by the model to choose when and ho
 
 The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 128.
 
-**parametersobject**
+**parameters**
+
+object
 
 The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
 
@@ -400,7 +440,9 @@ If set to true, the API will use strict-mode for the tool calls to ensure the ou
 
 - ]
 
-**tool\_choiceobjectnullable**
+**tool\_choice** string | object
+
+nullable
 
 Controls which (if any) tool is called by the model.
 
@@ -435,7 +477,11 @@ string
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 **name** stringrequired
 
@@ -489,7 +535,11 @@ OK, returns a `chat completion object`
 
 A unique identifier for the chat completion.
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 A list of chat completion choices.
 
@@ -510,7 +560,11 @@ or `aborted` if the generation was interrupted.
 
 The index of the choice in the list of choices.
 
-**messageobjectrequired**
+**message**
+
+object
+
+required
 
 A chat completion message generated by the model.
 
@@ -522,7 +576,9 @@ The contents of the message.
 
 For thinking mode only. The reasoning contents of the assistant message, before the final answer.
 
-**tool\_callsobject[]**
+**tool\_calls**
+
+object[]
 
 The tool calls generated by the model.
 
@@ -538,7 +594,11 @@ The ID of the tool call.
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobjectrequired**
+**function**
+
+object
+
+required
 
 The function that the model called.
 
@@ -558,11 +618,23 @@ The arguments to call the function with, as generated by the model in JSON forma
 
 The role of the author of this message.
 
-**logprobsobjectnullablerequired**
+**logprobs**
+
+object
+
+nullable
+
+required
 
 Log probability information for the choice.
 
-**contentobject[]nullablerequired**
+**content**
+
+object[]
+
+nullable
+
+required
 
 A list of message content tokens with log probability information.
 
@@ -580,7 +652,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -602,7 +678,11 @@ A list of integers representing the UTF-8 bytes representation of the token. Use
 
 - ]
 
-**reasoning\_contentobject[]nullable**
+**reasoning\_content**
+
+object[]
+
+nullable
 
 A list of message content tokens with log probability information.
 
@@ -620,7 +700,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -662,7 +746,9 @@ This fingerprint represents the backend configuration that the model runs with.
 
 The object type, which is always `chat.completion`.
 
-**usageobject**
+**usage**
+
+object
 
 Usage statistics for the completion request.
 
@@ -674,7 +760,11 @@ Number of tokens in the generated completion.
 
 Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
 
-**prompt\_tokens\_detailsobjectrequired**
+**prompt\_tokens\_details**
+
+object
+
+required
 
 Breakdown of tokens used in the prompt.
 
@@ -694,7 +784,9 @@ Number of tokens in the prompt that misses the context cache.
 
 Total number of tokens used in the request (prompt + completion).
 
-**completion\_tokens\_detailsobject**
+**completion\_tokens\_details**
+
+object
 
 Breakdown of tokens used in a completion.
 
@@ -837,13 +929,21 @@ OK, returns a streamed sequence of `chat completion chunk` objects
 
 A unique identifier for the chat completion. Each chunk has the same ID.
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 A list of chat completion choices.
 
 - Array [
 
-**deltaobjectrequired**
+**delta**
+
+object
+
+required
 
 A chat completion delta generated by streamed model responses.
 
@@ -861,7 +961,9 @@ For thinking mode only. The reasoning contents of the assistant message, before 
 
 The role of the author of this message.
 
-**tool\_callsobject[]**
+**tool\_calls**
+
+object[]
 
 The tool calls generated by the model, such as function calls. The first chunk of each tool call carries the `id`, `type` and `function` fields; subsequent chunks only carry the function arguments.
 
@@ -879,7 +981,9 @@ The ID of the tool call.
 
 The type of the tool. Currently, only `function` is supported.
 
-**functionobject**
+**function**
+
+object
 
 **name** string
 
@@ -891,11 +995,21 @@ The arguments to call the function with, as generated by the model in JSON forma
 
 - ]
 
-**logprobsobjectnullable**
+**logprobs**
+
+object
+
+nullable
 
 Log probability information for the choice.
 
-**contentobject[]nullablerequired**
+**content**
+
+object[]
+
+nullable
+
+required
 
 A list of message content tokens with log probability information.
 
@@ -913,7 +1027,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 
@@ -935,7 +1053,11 @@ A list of integers representing the UTF-8 bytes representation of the token. Use
 
 - ]
 
-**reasoning\_contentobject[]nullable**
+**reasoning\_content**
+
+object[]
+
+nullable
 
 A list of message content tokens with log probability information.
 
@@ -953,7 +1075,11 @@ The log probability of this token, if it is within the top 20 most likely tokens
 
 A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
 
-**top\_logprobsobject[]required**
+**top\_logprobs**
+
+object[]
+
+required
 
 List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
 

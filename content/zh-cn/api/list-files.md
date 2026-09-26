@@ -2,7 +2,7 @@
 title: "列出文件"
 description: "返回属于该用户的文件列表，使用游标分页。"
 source: https://api-docs.deepseek.com/zh-cn/api/list-files
-fetched: 2026-08-23
+fetched: 2026-09-26
 ---
 
 # 列出文件
@@ -65,7 +65,11 @@ OK, 返回 `file object` 列表。
 
 对象的类型，其值为 `list`。
 
-**dataobject[]required**
+**data**
+
+object[]
+
+required
 
 文件对象列表。
 

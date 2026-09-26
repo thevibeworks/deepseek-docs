@@ -2,7 +2,7 @@
 title: "Get User Balance"
 description: "Get user current balance"
 source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-08-02
+fetched: 2026-09-26
 ---
 
 # Get User Balance
@@ -33,7 +33,9 @@ OK, returns user balance info.
 
 Whether the user's balance is sufficient for API calls.
 
-**balance\_infosobject[]**
+**balance\_infos**
+
+object[]
 
 - Array [
 

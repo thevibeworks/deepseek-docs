@@ -2,7 +2,7 @@
 title: "FIM 补全 API（Beta）"
 description: "FIM (Fill In the Middle) 补全 API。<br/>用户需要设置 `base_url='https://api.deepseek.com/beta'` 来使用此功能。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-completion
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # FIM 补全 API（Beta）
@@ -46,7 +46,9 @@ logprobs 的最大值是 20。
 
 最大生成 token 数量。
 
-**stopobjectnullable**
+**stop** string | string[]
+
+nullable
 
 一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。
 
@@ -71,7 +73,11 @@ string
 
 如果设置为 True，将会以 SSE（server-sent events）的形式以流式发送消息增量。消息流以 `data: [DONE]` 结尾。
 
-**stream\_optionsobjectnullable**
+**stream\_options**
+
+object
+
+nullable
 
 流式输出相关选项。必须与 `stream: true` 一起使用；如果 `stream` 未设置为 `true`，API 会返回 `400` 错误。
 
@@ -128,7 +134,11 @@ OK
 
 补全响应的 ID。
 
-**choicesobject[]required**
+**choices**
+
+object[]
+
+required
 
 模型生成的补全内容的选择列表。
 
@@ -152,7 +162,13 @@ OK
 
 **index** integerrequired
 
-**logprobsobjectnullablerequired**
+**logprobs**
+
+object
+
+nullable
+
+required
 
 **text\_offset** integer[]
 
@@ -184,7 +200,9 @@ OK
 
 object 的类型，一定为"text\_completion"
 
-**usageobject**
+**usage**
+
+object
 
 该对话补全请求的用量信息。
 
@@ -196,7 +214,11 @@ object 的类型，一定为"text\_completion"
 
 用户 prompt 所包含的 token 数。该值等于 `prompt_cache_hit_tokens + prompt_cache_miss_tokens`
 
-**prompt\_tokens\_detailsobjectrequired**
+**prompt\_tokens\_details**
+
+object
+
+required
 
 prompt tokens 的详细信息。
 
@@ -216,7 +238,9 @@ prompt tokens 的详细信息。
 
 该请求中，所有 token 的数量（prompt + completion）。
 
-**completion\_tokens\_detailsobject**
+**completion\_tokens\_details**
+
+object
 
 completion tokens 的详细信息。
 

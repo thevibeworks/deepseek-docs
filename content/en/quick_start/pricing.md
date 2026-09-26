@@ -2,7 +2,7 @@
 title: "Models & Pricing"
 description: "The prices listed below are in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We will bill based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Models & Pricing
@@ -15,7 +15,7 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 
 |  |  |  |  |  |
 | --- | --- | --- | --- | --- |
-| MODEL | | | deepseek-flash(1) | deepseek-v4-pro(2) |
+| MODEL | | | deepseek-flash(1) | deepseek-v4-pro |
 | BASE URL (OpenAI Format) | | | <https://api.deepseek.com> | |
 | BASE URL (Anthropic Format) | | | <https://api.deepseek.com/anthropic> | |
 | MODEL VERSION | | | DeepSeek-V4.1-Flash | DeepSeek-V4-Pro-0813 |
@@ -29,21 +29,19 @@ The prices listed below are in units of per 1M tokens. A token, the smallest uni
 | [Chat Prefix Completion（Beta）](../guides/chat_prefix_completion.md) | | ✓ | ✓ |
 | [FIM Completion（Beta）](../guides/fim_completion.md) | | Non-thinking mode only | Non-thinking mode only |
 | [Vision](../guides/vision.md) | | ✓ | Not supported |
-| PRICING(3) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
+| PRICING(2) | 1M INPUT TOKENS (CACHE HIT) | OFF-PEAK | $0.003 | $0.022 |
 | PEAK | $0.006 | $0.044 |
 | 1M INPUT TOKENS (CACHE MISS) | OFF-PEAK | $0.15 | $0.66 |
 | PEAK | $0.3 | $1.32 |
 | 1M OUTPUT TOKENS | OFF-PEAK | $0.6 | $1.98 |
 | PEAK | $1.2 | $3.96 |
-| Concurrency Limit(4) | | | 2500 | 500 |
+| Concurrency Limit(3) | | | 2500 | 500 |
 
 (1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
 
-(2) In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!
+(2) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays. All other hours are off-peak, including weekends and Chinese public holidays in full.
 
-(3) Off-peak rates are half of the peak rates. Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday (all other hours are off-peak).
-
-(4) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
+(3) For more details on concurrency limits, please refer to [Rate Limit & Isolation](rate_limit.md).
 
 ---
 

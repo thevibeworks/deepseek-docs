@@ -2,7 +2,7 @@
 title: "FAQ: 登录问题"
 description: "DeepSeek FAQ, 登录问题 — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/1
-fetched: 2026-09-19
+fetched: 2026-09-26
 ---
 
 # FAQ: 登录问题
