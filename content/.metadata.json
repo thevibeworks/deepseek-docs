@@ -112,8 +112,7 @@
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-09-18"
+      "title": "DeepSeek-V3-0324 Release"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
@@ -158,7 +157,8 @@
     },
     "content/en/news/news251201.md": {
       "url": "https://api-docs.deepseek.com/news/news251201",
-      "title": "DeepSeek-V3.2 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news251201 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-09-26"
     },
     "content/en/news/news260424.md": {
       "url": "https://api-docs.deepseek.com/news/news260424",
@@ -242,8 +242,7 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-09-19"
+      "title": "Models & Pricing"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
@@ -781,7 +780,7 @@
     },
     "content/en/dsh/docs/subsystems/schedule.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/schedule.md",
-      "title": "Session-local Schedule"
+      "title": "Host-wide Schedule"
     },
     "content/en/dsh/docs/subsystems/scope.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/scope.md",
@@ -813,7 +812,7 @@
     },
     "content/en/dsh/docs/subsystems/settings.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/settings.md",
-      "title": "User Settings"
+      "title": "Plugin Configuration Forms"
     },
     "content/en/dsh/docs/subsystems/shell.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/shell.md",
@@ -1017,7 +1016,7 @@
     },
     "content/en/dsh/docs/cookbook/adding-a-settings-card.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-settings-card.md",
-      "title": "Cookbook: adding a settings card"
+      "title": "Cookbook: live configuration forms"
     },
     "content/en/dsh/docs/subsystems/agent-team.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/agent-team.md",
@@ -1061,7 +1060,7 @@
     },
     "content/en/dsh/docs/user/guide/schedule.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/schedule.md",
-      "title": "Schedule session-local reminders"
+      "title": "Schedule reminders"
     },
     "content/en/dsh/docs/cookbook/adding-a-remote-api.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-remote-api.md",
@@ -1282,8 +1281,36 @@
     "content/zh-cn/quick_start/agent_integrations/qoder.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/qoder",
       "title": "接入 Qoder"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-09-16-session-format-v4.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-16-session-format-v4.md",
+      "title": "2026-09-16-session-format-v4"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-09-18-schedule-optional-title.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-18-schedule-optional-title.md",
+      "title": "2026-09-18-schedule-optional-title"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-09-20-unknown-child-catalog.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-20-unknown-child-catalog.md",
+      "title": "2026-09-20-unknown-child-catalog"
+    },
+    "content/en/dsh/docs/persistence-changes/historical-formats/v3.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/historical-formats/v3.md",
+      "title": "Session V3 persistence format"
+    },
+    "content/en/dsh/docs/subsystems/product-telemetry.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/product-telemetry.md",
+      "title": "Product telemetry"
+    },
+    "content/en/dsh/docs/subsystems/voice-input.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/voice-input.md",
+      "title": "Voice input"
+    },
+    "content/en/dsh/docs/ui-radius.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/ui-radius.md",
+      "title": "DSH unified corner-radius standard"
     }
   },
-  "updated": "2026-09-18",
+  "updated": "2026-09-26",
   "site": "https://api-docs.deepseek.com"
 }

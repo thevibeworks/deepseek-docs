@@ -1,7 +1,7 @@
 ---
 title: "Cookbook: adding a Remote API"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-remote-api.md
-fetched: 2026-09-02
+fetched: 2026-09-26
 ---
 # Cookbook: adding a Remote API
 
@@ -102,8 +102,8 @@ export async function rename(noteId: string, title: string): Promise<void> {
     "./typert": { "types": "./lib/typert.host.d.ts", "default": "./lib/typert.host.js" },
     "./remote": { "types": "./lib/typert.remote-client.d.ts", "default": "./lib/typert.remote-client.js" }
   },
-  "peerDependencies": { "@deepseek-ai/dsh-typert-protocol": "workspace:^" },
-  "devDependencies": { "@deepseek-ai/dsh-typert-protocol": "workspace:^" }
+  "peerDependencies": { "@deepseek-ai/dsh-typert-protocol": "workspace:*" },
+  "devDependencies": { "@deepseek-ai/dsh-typert-protocol": "workspace:*" }
 }
 ```
 

@@ -27,7 +27,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Delete File](content/en/api/delete-file.md): Deletes a file.
 - [Get User Balance](content/en/api/get-user-balance.md): Get user current balance
 - [List Files](content/en/api/list-files.md): Returns a list of files that belong to the user, with cursor-based pagination.
-- [Lists Models](content/en/api/list-models.md): Lists the currently available models, and provides basic information about each one such as the owner and availability. Check [Models & Pricing](/quick_sta...
+- [Lists Models](content/en/api/list-models.md): Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output ...
 - [Retrieve File](content/en/api/retrieve-file.md): Returns information about a specific file.
 
 ## Guides
@@ -109,7 +109,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Cookbook: adding a workspace package](content/en/dsh/docs/cookbook/adding-a-package.md)
 - [Cookbook: adding a Remote API](content/en/dsh/docs/cookbook/adding-a-remote-api.md)
 - [Cookbook: adding a Session log format version](content/en/dsh/docs/cookbook/adding-a-session-format-version.md)
-- [Cookbook: adding a settings card](content/en/dsh/docs/cookbook/adding-a-settings-card.md)
+- [Cookbook: live configuration forms](content/en/dsh/docs/cookbook/adding-a-settings-card.md)
 - [Tool authoring reference](content/en/dsh/docs/cookbook/adding-a-tool.md)
 - [Cookbook: adding a vendored package](content/en/dsh/docs/cookbook/adding-a-vendored-package.md)
 - [Cookbook: adding an LLM adapter](content/en/dsh/docs/cookbook/adding-an-llm-adapter.md)
@@ -149,11 +149,15 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [2026-09-12-auto-review-error-metadata](content/en/dsh/docs/persistence-changes/2026-09-12-auto-review-error-metadata.md)
 - [2026-09-14-image-offload](content/en/dsh/docs/persistence-changes/2026-09-14-image-offload.md)
 - [2026-09-14-workspace-changes-event](content/en/dsh/docs/persistence-changes/2026-09-14-workspace-changes-event.md)
+- [2026-09-16-session-format-v4](content/en/dsh/docs/persistence-changes/2026-09-16-session-format-v4.md)
+- [2026-09-18-schedule-optional-title](content/en/dsh/docs/persistence-changes/2026-09-18-schedule-optional-title.md)
+- [2026-09-20-unknown-child-catalog](content/en/dsh/docs/persistence-changes/2026-09-20-unknown-child-catalog.md)
 - [Persistence-type change records](content/en/dsh/docs/persistence-changes/README.md)
 - [Session persistence formats](content/en/dsh/docs/persistence-changes/historical-formats/README.md)
 - [Session V0 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v0.md)
 - [Session V1 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v1.md)
 - [Session V2 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v2.md)
+- [Session V3 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v3.md)
 - [Persistence changes across DSH prereleases](content/en/dsh/docs/persistence-changes/releases/README.md)
 - [Persistence release: dsh-v0.0.1-rc.1](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.1.md)
 - [Persistence release: dsh-v0.0.1-rc.2](content/en/dsh/docs/persistence-changes/releases/dsh-v0.0.1-rc.2.md)
@@ -216,9 +220,10 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Permission Presets](content/en/dsh/docs/subsystems/permission-presets.md)
 - [Session Persistence](content/en/dsh/docs/subsystems/persistence.md)
 - [Plan Mode](content/en/dsh/docs/subsystems/plan.md)
+- [Product telemetry](content/en/dsh/docs/subsystems/product-telemetry.md)
 - [PTC runtime](content/en/dsh/docs/subsystems/ptc-runtime.md)
 - [Process Sandbox](content/en/dsh/docs/subsystems/sandbox.md)
-- [Session-local Schedule](content/en/dsh/docs/subsystems/schedule.md)
+- [Host-wide Schedule](content/en/dsh/docs/subsystems/schedule.md)
 - [Scoped Registration](content/en/dsh/docs/subsystems/scope.md)
 - [Session Projections](content/en/dsh/docs/subsystems/session-projection.md)
 - [Session Query](content/en/dsh/docs/subsystems/session-query.md)
@@ -226,7 +231,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [SessionTelemetryBackend](content/en/dsh/docs/subsystems/session-telemetry.md)
 - [Session Titles](content/en/dsh/docs/subsystems/session-title.md)
 - [Sessions](content/en/dsh/docs/subsystems/session.md)
-- [User Settings](content/en/dsh/docs/subsystems/settings.md)
+- [Plugin Configuration Forms](content/en/dsh/docs/subsystems/settings.md)
 - [Shell Executor](content/en/dsh/docs/subsystems/shell.md)
 - [Right Sidebar](content/en/dsh/docs/subsystems/sidebar-right.md)
 - [Skills](content/en/dsh/docs/subsystems/skills.md)
@@ -243,6 +248,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Tools](content/en/dsh/docs/subsystems/tools.md)
 - [Typert remote calls](content/en/dsh/docs/subsystems/typert.md)
 - [User Interaction](content/en/dsh/docs/subsystems/user-questions.md)
+- [Voice input](content/en/dsh/docs/subsystems/voice-input.md)
 - [Web Client architecture](content/en/dsh/docs/subsystems/web-client.md)
 - [HTTP Server](content/en/dsh/docs/subsystems/web-server.md)
 - [Web Access](content/en/dsh/docs/subsystems/web.md)
@@ -252,6 +258,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Testing policy](content/en/dsh/docs/testing.md)
 - [Tool Schema Catalog](content/en/dsh/docs/tool-catalog.md)
 - [Tool Execution Pipeline](content/en/dsh/docs/tool-execution-pipeline.md)
+- [DSH unified corner-radius standard](content/en/dsh/docs/ui-radius.md)
 - [Plugin configuration](content/en/dsh/docs/user/develop/basic/config.md)
 - [Your first plugin](content/en/dsh/docs/user/develop/basic/index.md)
 - [Package and install a plugin](content/en/dsh/docs/user/develop/basic/publish.md)
@@ -268,7 +275,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Run DSH behind a network proxy](content/en/dsh/docs/user/guide/network-proxy.md)
 - [Configure models](content/en/dsh/docs/user/guide/providers.md)
 - [Get started with the Python SDK](content/en/dsh/docs/user/guide/python-sdk.md)
-- [Schedule session-local reminders](content/en/dsh/docs/user/guide/schedule.md)
+- [Schedule reminders](content/en/dsh/docs/user/guide/schedule.md)
 - [DeepSeek Harness](content/en/dsh/docs/user/index.md)
 - [Web UI style reference](content/en/dsh/docs/web-styling.md)
 - [DeepSeek Harness](content/en/dsh/index.md)

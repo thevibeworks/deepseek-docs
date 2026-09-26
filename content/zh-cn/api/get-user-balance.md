@@ -2,7 +2,7 @@
 title: "查询余额"
 description: "查询账号余额"
 source: https://api-docs.deepseek.com/zh-cn/api/get-user-balance
-fetched: 2026-08-02
+fetched: 2026-09-26
 ---
 
 # 查询余额
@@ -33,7 +33,9 @@ OK, 返回用户余额详情
 
 当前账户是否有余额可供 API 调用
 
-**balance\_infosobject[]**
+**balance\_infos**
+
+object[]
 
 - Array [
 

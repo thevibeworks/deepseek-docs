@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-09-18
+fetched: 2026-09-26
 ---
 
 # Responses API
@@ -27,7 +27,9 @@ POST /responses
 
 使用的模型的 ID。请使用 `deepseek-flash` 或 `deepseek-v4-pro`。
 
-**inputobjectnullable**
+**input** string | object[]
+
+nullable
 
 模型的输入。既可以传纯字符串（视作一条 `user` 消息），也可以传输入 item 列表。
 
@@ -60,7 +62,7 @@ string
 
 用于 `message` item。消息作者的角色。`developer` 视同 `user`。
 
-**contentobject**
+**content** string | object[]
 
 用于 `message` item 时为消息内容，可以是纯字符串或 `input_text` / `output_text` / `input_image` 内容块列表。用于 `reasoning` item 时为 `reasoning_text` 内容块列表。
 
@@ -143,7 +145,7 @@ oneOf
 
 用于 `function_call` item。调用函数的入参，格式为 JSON。
 
-**outputobject**
+**output** string | object[]
 
 用于 `function_call_output` / `custom_tool_call_output` item。工具调用的结果，可以是纯字符串或 `input_text` / `input_image` 内容块列表。
 
@@ -220,7 +222,11 @@ oneOf
 
 系统级指令，作为模型上下文中的第一条 system 消息。
 
-**reasoningobjectnullable**
+**reasoning**
+
+object
+
+nullable
 
 思考模式配置。
 
@@ -252,13 +258,19 @@ oneOf
 
 **Default value:** `1`
 
-作为调节采样温度的替代方案，即核采样。该参数在思考模式下生效，但小于 0.95 的值会被抬升至 0.95；在非思考模式下恒为 1.0，传入的值会被忽略。
+用于调节输出的随机性，可替代 `temperature`。该参数仅在思考模式下生效，有效取值范围为 0.95–1.0，低于 0.95 的取值会按 0.95 处理；在非思考模式下恒为 1.0，传入的值会被忽略。
 
-**textobjectnullable**
+**text**
+
+object
+
+nullable
 
 文本输出配置。
 
-**formatobject**
+**format**
+
+object
 
 输出格式。`{"type": "text"}`（默认）为纯文本输出；`{"type": "json_object"}` 为 JSON 模式；`{"type": "json_schema", "name": ..., "schema": ...}` 为结构化输出，输出符合给定的 JSON Schema。
 
@@ -276,7 +288,11 @@ schema 的名称。`type` 为 `json_schema` 时必填。
 
 输出必须符合的 JSON Schema。`type` 为 `json_schema` 时必填。
 
-**toolsobject[]nullable**
+**tools**
+
+object[]
+
+nullable
 
 模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
 
@@ -296,7 +312,9 @@ schema 的名称。`type` 为 `json_schema` 时必填。
 
 用于 `function` 工具。函数功能的描述，供模型理解何时以及如何调用该函数。
 
-**parametersobject**
+**parameters**
+
+object
 
 function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls 指南](../guides/tool_calls.md)获取示例，并参阅[JSON Schema 参考](https://json-schema.org/understanding-json-schema/)了解有关格式的文档。省略 `parameters` 会定义一个参数列表为空的 function。
 
@@ -306,7 +324,9 @@ function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls �
 
 - ]
 
-**tool\_choiceobjectnullable**
+**tool\_choice** string | object
+
+nullable
 
 控制模型调用工具的行为。
 
@@ -392,7 +412,11 @@ object 的类型，其值恒为 `response`。
 
 响应失败时的错误对象，包含 `code` 和 `message` 字段。
 
-**incomplete\_detailsobjectnullable**
+**incomplete\_details**
+
+object
+
+nullable
 
 响应不完整的原因详情。`reason` 字段可能为 `max_output_tokens` 或 `content_filter`。
 
@@ -404,7 +428,11 @@ object 的类型，其值恒为 `response`。
 
 生成该响应的模型。
 
-**outputobject[]required**
+**output**
+
+object[]
+
+required
 
 模型生成的输出 item 列表。思考模式下，思维链以 `reasoning` item 的形式在 `message` item 之前返回。函数调用以 `function_call` item 返回。
 
@@ -432,7 +460,9 @@ object 的类型，其值恒为 `response`。
 
 用于 `message` item。其值恒为 `assistant`。
 
-**contentobject[]**
+**content**
+
+object[]
 
 用于 `message` item 时为 `output_text` 内容块列表。用于 `reasoning` item 时为 `reasoning_text` 内容块列表，以明文承载思维链内容。
 
@@ -460,7 +490,9 @@ object 的类型，其值恒为 `response`。
 
 - ]
 
-**usageobject**
+**usage**
+
+object
 
 该响应的 token 用量统计信息。
 
@@ -468,7 +500,9 @@ object 的类型，其值恒为 `response`。
 
 输入 token 数。
 
-**input\_tokens\_detailsobject**
+**input\_tokens\_details**
+
+object
 
 输入 token 的细分信息。
 
@@ -480,7 +514,9 @@ object 的类型，其值恒为 `response`。
 
 输出 token 数。
 
-**output\_tokens\_detailsobject**
+**output\_tokens\_details**
+
+object
 
 输出 token 的细分信息。
 
