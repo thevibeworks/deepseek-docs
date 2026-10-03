@@ -1,7 +1,7 @@
 ---
 title: "Use the Web UI"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/index.md
-fetched: 2026-08-26
+fetched: 2026-10-03
 ---
 # Use the Web UI
 
@@ -31,5 +31,6 @@ The agent can read and edit workspace files, run commands, delegate work, and ma
 
 - [Configure models](./providers.md)
 - [Use the Python SDK](./python-sdk.md)
+- [Publish the Web UI behind a reverse proxy](./public-deployments.md)
 - [Use other CLI modes](../../../apps/cli/README.md)
 - [Develop a plugin](../develop/basic/index.md)

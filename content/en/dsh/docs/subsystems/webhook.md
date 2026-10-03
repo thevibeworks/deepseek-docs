@@ -1,13 +1,13 @@
 ---
 title: "Webhook runtime"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/webhook.md
-fetched: 2026-09-18
+fetched: 2026-10-03
 ---
 # Webhook runtime
 
 English | [中文](webhook.zh.md)
 
-The Webhook subsystem turns authenticated external deliveries into optional ordinary root Sessions. Provider adapters own authentication and generic JSON intake; trusted programmatic rules own conditions and external calls; `ctx.webhookRuntime` owns callback lifetime plus Workspace-backed Session creation. The [implemented decision](../../.agents/notes/implemented/feature/2026-08-22-fire-and-forget-webhook-sessions.md) records why the runtime keeps no delivery or completion state.
+The Webhook subsystem turns authenticated external deliveries into optional ordinary root Sessions. Provider adapters own authentication and generic JSON intake; trusted programmatic rules own conditions and external calls; `ctx.webhookRuntime` owns callback lifetime plus Workspace-backed Session creation. The [historical implemented decision](../../.agents/notes/archived/feature/2026-08-22-fire-and-forget-webhook-sessions.md) records why the runtime keeps no delivery or completion state.
 
 ## Shared values
 
