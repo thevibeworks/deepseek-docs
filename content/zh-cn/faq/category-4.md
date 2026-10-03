@@ -2,7 +2,7 @@
 title: "FAQ: API相关"
 description: "DeepSeek FAQ, API相关 — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/4
-fetched: 2026-09-29
+fetched: 2026-10-03
 ---
 
 # FAQ: API相关
@@ -46,7 +46,7 @@ fetched: 2026-09-29
 
 票面信息：
 
-开票主体为杭州深度求索人工智能基础技术研究有限公司；票面项目名称为信息技术服务*技术服务费；税率为6%。
+开票主体为杭州深度求索人工智能基础技术研究有限公司；票面项目名称为生产生活服务*技术服务费；税率为6%。
 
 ## 开票是否能增加使用明细
 

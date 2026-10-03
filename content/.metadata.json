@@ -131,8 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-09-18"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -744,10 +743,6 @@
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/goal.md",
       "title": "Same-session goals"
     },
-    "content/en/dsh/docs/subsystems/invariants.md": {
-      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/invariants.md",
-      "title": "Runtime Invariants"
-    },
     "content/en/dsh/docs/subsystems/jobs.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/jobs.md",
       "title": "Background Job Runtime"
@@ -1311,8 +1306,44 @@
     "content/en/dsh/docs/ui-radius.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/ui-radius.md",
       "title": "DSH unified corner-radius standard"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-09-21-user-question-reply.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-21-user-question-reply.md",
+      "title": "2026-09-21-user-question-reply"
+    },
+    "content/en/dsh/docs/subsystems/claude-code-mods.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/claude-code-mods.md",
+      "title": "Claude Code mods: compatibility"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.1.7-rc.2/schedule-optional-bundle/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.1.7-rc.2/schedule-optional-bundle/guide.md",
+      "title": "Schedule moves into the Automation tasks optional bundle"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.1.7-rc.2/transcript-view-legacy-normal/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.1.7-rc.2/transcript-view-legacy-normal/guide.md",
+      "title": "Legacy `normal` work details display as Detailed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.0-rc.2/account-sign-in-errors/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.0-rc.2/account-sign-in-errors/guide.md",
+      "title": "Account sign-in error codes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.0-rc.2/remove-runtime-invariants/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.0-rc.2/remove-runtime-invariants/guide.md",
+      "title": "Runtime invariant plugins are removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.0-rc.2/schedule-bundle-retired/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.0-rc.2/schedule-bundle-retired/guide.md",
+      "title": "Automation tasks bundle removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.0-rc.2/subpath-plugin-display-manifest/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.0-rc.2/subpath-plugin-display-manifest/guide.md",
+      "title": "Subpath plugins read `<subpath>/icon` instead of `<subpath>/package.json`"
+    },
+    "content/en/dsh/docs/user/guide/public-deployments.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/public-deployments.md",
+      "title": "Publish the Web UI behind a reverse proxy"
     }
   },
-  "updated": "2026-09-29",
+  "updated": "2026-10-03",
   "site": "https://api-docs.deepseek.com"
 }

@@ -1,13 +1,13 @@
 ---
 title: "Human Commands"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/commands.md
-fetched: 2026-09-18
+fetched: 2026-10-03
 ---
 # Human Commands
 
 English | [中文](commands.zh.md)
 
-The human-command registry service from [`dsh-commands`](../../packages/interaction/commands). Interactive adapters use it to discover and directly execute plugin-owned commands for an exact agent without creating a model message. The [command Agent Note](../../.agents/notes/implemented/feature/2026-07-19-plugin-command-registration.md) owns dispatch and lifecycle rationale; the [package README](../../packages/interaction/commands/README.md) owns composition and limitations.
+The human-command registry service from [`dsh-commands`](../../packages/interaction/commands). Interactive adapters use it to discover and directly execute plugin-owned commands for an exact agent without creating a model message. The [historical command Agent Note](../../.agents/notes/archived/feature/2026-07-19-plugin-command-registration.md) records dispatch and lifecycle rationale; the [package README](../../packages/interaction/commands/README.md) owns composition and limitations.
 
 Source: [`packages/interaction/commands/src/index.ts`](../../packages/interaction/commands/src/index.ts)
 
