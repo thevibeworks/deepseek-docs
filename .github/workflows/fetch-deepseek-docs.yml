@@ -116,7 +116,10 @@ jobs:
             - dsh breaking changes (content/en/dsh/): deleted or renamed
               pages, plugin manifest/API format changes, new npm releases
               (dsh/npm.md) -- dsh is a developer preview that breaks
-              things without migration paths
+              things without migration paths. `upgrade-guide/vX/` is named
+              for the release you upgrade FROM ("In vX, ... The next
+              release removes ..."); name the release that ships the
+              change, from dsh/npm.md, never X.
 
             **minor** (archive freshness -- committed straight to main):
             - Wording, typos, formatting, link fixes
