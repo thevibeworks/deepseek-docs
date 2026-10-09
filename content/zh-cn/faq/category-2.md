@@ -2,7 +2,7 @@
 title: "FAQ: 使用引导"
 description: "DeepSeek FAQ, 使用引导 — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/2
-fetched: 2026-10-08
+fetched: 2026-10-09
 ---
 
 # FAQ: 使用引导
