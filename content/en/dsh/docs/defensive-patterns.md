@@ -1,7 +1,7 @@
 ---
 title: "Defensive patterns"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/defensive-patterns.md
-fetched: 2026-08-13
+fetched: 2026-10-10
 ---
 # Defensive patterns
 
@@ -27,7 +27,7 @@ A teardown that issues kills/aborts but returns before the work stops leaves orp
 
 ## Contain callback exceptions in the dispatcher
 
-A user-supplied listener that throws must not reject the promise it runs inside or starve the listeners after it. Wrap the dispatch loop in try/catch and log; one bad subscriber never breaks core lifecycle.
+Catch and report each listener's exception without rejecting the dispatch promise or starving later listeners. The listener's owner must handle state it mutates under the [error-handling rules](../.agents/skills/dsh-error-handling/SKILL.md#catch-recover-or-stop); catching alone does not restore state.
 
 ## Never hand untrusted output the ambient environment or predictable paths
 

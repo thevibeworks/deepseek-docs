@@ -1,7 +1,7 @@
 ---
 title: "Persistence release: dsh-v0.1.1-rc.1"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/releases/dsh-v0.1.1-rc.1.md
-fetched: 2026-09-18
+fetched: 2026-10-10
 ---
 # Persistence release: dsh-v0.1.1-rc.1
 
@@ -59,11 +59,11 @@ changes:
 
 <!-- persistence-release-changes:start -->
 
-Detected 1 changed root and 1 structural difference. The minimum below is calculated using current rules for comparison only; it does not assert historical compliance, migration correctness, or runtime compatibility.
+Detected 1 changed root and 1 structural difference. The review requirement below is calculated using current rules for comparison only; it does not assert historical compliance, migration correctness, or runtime compatibility.
 
-| Path | Change | Current minimum |
+| Path | Change | Review requirement |
 |---|---|---|
-| `event:permission/preset.data.origin` | `optional-property-added` | `same-version` |
+| `event:permission/preset.data.origin` | `optional-property-added` | `not-required` |
 
 <!-- persistence-release-changes:end -->
 
