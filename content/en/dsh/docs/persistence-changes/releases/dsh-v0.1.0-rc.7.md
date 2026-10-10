@@ -1,7 +1,7 @@
 ---
 title: "Persistence release: dsh-v0.1.0-rc.7"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/releases/dsh-v0.1.0-rc.7.md
-fetched: 2026-09-18
+fetched: 2026-10-10
 ---
 # Persistence release: dsh-v0.1.0-rc.7
 
@@ -59,11 +59,11 @@ changes:
 
 <!-- persistence-release-changes:start -->
 
-Detected 1 changed root and 1 structural difference. The minimum below is calculated using current rules for comparison only; it does not assert historical compliance, migration correctness, or runtime compatibility.
+Detected 1 changed root and 1 structural difference. The review requirement below is calculated using current rules for comparison only; it does not assert historical compliance, migration correctness, or runtime compatibility.
 
-| Path | Change | Current minimum |
+| Path | Change | Review requirement |
 |---|---|---|
-| `event:assistant/chunk.data.chunk.replayState` | `type-changed` | `version-bump` |
+| `event:assistant/chunk.data.chunk.replayState` | `type-changed` | `review-required` |
 
 <!-- persistence-release-changes:end -->
 

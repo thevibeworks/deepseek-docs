@@ -1,7 +1,7 @@
 ---
 title: "Session Query"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-query.md
-fetched: 2026-09-02
+fetched: 2026-10-10
 ---
 # Session Query
 
@@ -29,6 +29,8 @@ interface SessionRecord {
   live: boolean
   /** Whether the active persistence backend currently lists the id, including a created-but-unmaterialized session it already observes. */
   persisted: boolean
+  /** Current for live Sessions; otherwise the persistence format status when reported. */
+  formatStatus?: 'current' | 'migration-required'
 }
 ```
 

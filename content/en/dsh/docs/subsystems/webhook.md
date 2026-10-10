@@ -1,7 +1,7 @@
 ---
 title: "Webhook runtime"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/webhook.md
-fetched: 2026-10-05
+fetched: 2026-10-10
 ---
 # Webhook runtime
 
@@ -71,5 +71,5 @@ register<K extends string>(rule: WebhookRule<K>): () => Promise<void>
 dispatch<K extends string>(delivery: VerifiedWebhookDelivery<K>): void
 ```
 
-Source: [`packages/webhook/webhook/src/index.ts`](../../packages/webhook/webhook/src/index.ts)
+Source: [`packages/experimental/webhook/src/index.ts`](../../packages/experimental/webhook/src/index.ts)
 <!-- END GENERATED cordis-surface -->

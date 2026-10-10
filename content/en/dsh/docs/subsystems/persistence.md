@@ -1,7 +1,7 @@
 ---
 title: "Session Persistence"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/persistence.md
-fetched: 2026-10-05
+fetched: 2026-10-10
 ---
 # Session Persistence
 
@@ -316,6 +316,8 @@ type SessionPersistenceRevision = Branded<'SessionPersistenceRevision'>
 interface SessionPersistenceSnapshot {
   /** Detached metadata for one stored session. */
   readonly header: SessionHeader
+  /** Header-only format classification; absent without versioned artifact metadata. */
+  readonly formatStatus?: 'current' | 'migration-required'
   /** Opaque change token; see {@link SessionPersistence.stat}. */
   readonly revision: SessionPersistenceRevision
   /** Logical event count, when the backend can provide it cheaply from metadata; otherwise absent. */

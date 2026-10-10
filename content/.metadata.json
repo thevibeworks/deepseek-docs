@@ -358,8 +358,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-09"
+      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -827,7 +826,7 @@
     },
     "content/en/dsh/docs/subsystems/subagent.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subagent.md",
-      "title": "Subagent"
+      "title": "Subagents"
     },
     "content/en/dsh/docs/subsystems/subprocess.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subprocess.md",
@@ -1344,8 +1343,128 @@
     "content/en/dsh/docs/user/guide/public-deployments.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/public-deployments.md",
       "title": "Publish the Web UI behind a reverse proxy"
+    },
+    "content/en/dsh/docs/cli-help.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cli-help.md",
+      "title": "dsh CLI help"
+    },
+    "content/en/dsh/docs/experimental-persistence-catalog.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/experimental-persistence-catalog.md",
+      "title": "Experimental Plugin Record Catalog"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-09-13-working-directory.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-13-working-directory.md",
+      "title": "2026-09-13-working-directory"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-09-19-external-subagent-catalog.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-19-external-subagent-catalog.md",
+      "title": "2026-09-19-external-subagent-catalog"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-05-ptc-operation-metadata.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-05-ptc-operation-metadata.md",
+      "title": "2026-10-05-ptc-operation-metadata"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-05-working-directory-attribution.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-05-working-directory-attribution.md",
+      "title": "2026-10-05-working-directory-attribution"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-07-title-reasoning-effort.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-07-title-reasoning-effort.md",
+      "title": "2026-10-07-title-reasoning-effort"
+    },
+    "content/en/dsh/docs/subsystems/translation.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/translation.md",
+      "title": "Text translation"
+    },
+    "content/en/dsh/docs/subsystems/working-directory.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/working-directory.md",
+      "title": "Working Directory"
+    },
+    "content/en/dsh/docs/subsystems/worktrees.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/worktrees.md",
+      "title": "Git Worktrees"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.0-rc.2/bundled-python-tests/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.0-rc.2/bundled-python-tests/guide.md",
+      "title": "NumPy and pandas upstream tests require a separate environment"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/deepseek-model-discovery/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/deepseek-model-discovery/guide.md",
+      "title": "DeepSeek API-key model visibility"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/desktop-test-auth-popup/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/desktop-test-auth-popup/guide.md",
+      "title": "Enable test update-policy authentication dialogs locally"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/experimental-package-composition/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/experimental-package-composition/guide.md",
+      "title": "Explicit installation and composition for optional capabilities"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/instruction-home-override/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/instruction-home-override/guide.md",
+      "title": "Instruction loading resolves one harness home"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/mock-messages-events/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/mock-messages-events/guide.md",
+      "title": "Read named events from the Messages mock server"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/native-subagent-bundle-tools/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/native-subagent-bundle-tools/guide.md",
+      "title": "Native subagent bundles include global tools"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/new-session-generations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/new-session-generations/guide.md",
+      "title": "Start a fresh Agent with New Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/plugin-option-placement/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/plugin-option-placement/guide.md",
+      "title": "`dsh plugin` option placement"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/python-optional-resources/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/python-optional-resources/guide.md",
+      "title": "Download optional Python runtime resources explicitly"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/python-ptc-sandbox/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/python-ptc-sandbox/guide.md",
+      "title": "Python PTC applies the shared file sandbox"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/session-title-adapters/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/session-title-adapters/guide.md",
+      "title": "Prepare custom title routes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/session-title-provider-strategy/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/session-title-provider-strategy/guide.md",
+      "title": "Migrate session-title providers"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/ssh-helper-launch/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/ssh-helper-launch/guide.md",
+      "title": "SSH helper and PTC launch configuration"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/subagent-activations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/subagent-activations/guide.md",
+      "title": "Migrate delegation to managed subagent activations"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/team-direct-inbox/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/team-direct-inbox/guide.md",
+      "title": "Agent Teams messages use target inboxes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/terminal-command-labels/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/terminal-command-labels/guide.md",
+      "title": "Terminal command labels"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/tool-presentation-mode/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/tool-presentation-mode/guide.md",
+      "title": "Select native or PTC tool presentation"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/web-listener-trust-config/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/web-listener-trust-config/guide.md",
+      "title": "Web listener and trust configuration moves to `webStartup`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.1/working-directory/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/working-directory/guide.md",
+      "title": "Migrate working-directory configuration and tool presentation"
     }
   },
-  "updated": "2026-10-05",
+  "updated": "2026-10-10",
   "site": "https://api-docs.deepseek.com"
 }
