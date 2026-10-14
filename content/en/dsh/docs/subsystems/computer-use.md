@@ -1,13 +1,16 @@
 ---
 title: "Computer use"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/computer-use.md
-fetched: 2026-09-18
+fetched: 2026-10-14
 ---
 # Computer use
 
 English | [中文](computer-use.zh.md)
 
 Computer use lets a model observe and operate the local desktop through a configured provider. The shared DSH capability is called **computer use**; **Cua Driver** names the upstream implementation.
+
+
+The [`macOS CUA provider`](../../packages/experimental/cua-macos/README.md) uses the [shared CUA objects and executor](../../packages/experimental/cua/README.md), which enforce application consent through User Questions and profile configuration.
 
 ## Choose a provider
 

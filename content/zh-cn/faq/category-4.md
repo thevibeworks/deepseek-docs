@@ -2,7 +2,7 @@
 title: "FAQ: API相关"
 description: "DeepSeek FAQ, API相关 — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/4
-fetched: 2026-10-09
+fetched: 2026-10-14
 ---
 
 # FAQ: API相关
@@ -11,6 +11,7 @@ fetched: 2026-10-09
 
 - 在线充值：完成实名认证后，您可以在[「充值」](https://platform.deepseek.com/top_up)页面使用支付宝/微信进行在线充值。您可以在[「账单」](https://platform.deepseek.com/transactions)页面查询充值结果。
 - 对公汇款：对公汇款仅支持企业用户（暂时仅对 +86 手机号注册用户开放）。完成企业实名认证后，可获取专属汇款账号，向专属汇款账号进行打款。为保证汇款顺利进行，**请确保汇款方开户名称与开放平台实名认证名称一致**。我方银行账户到账后，汇款金额将在 10 分钟- 1 小时左右自动转入您的开放平台账户，如未及时收到，请联系我们。
+- 如需下载加盖公章的对公汇款收款银行信息，可按以下方式操作：进入充值页，选择「对公汇款」，在页面下方提示处点击「专属账号说明下载」。
 
 ## 充值余额金额不对
 

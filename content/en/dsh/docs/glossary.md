@@ -1,7 +1,7 @@
 ---
 title: "Glossary"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/glossary.md
-fetched: 2026-09-18
+fetched: 2026-10-14
 ---
 # Glossary
 
@@ -42,6 +42,7 @@ Domain vocabulary for DeepSeek Harness uses one canonical term per concept. Term
 - **turn** — one drain of admitted input in a session, ending after the model and its tools stop or a terminal policy intervenes. <a id="turn"></a>
 - **step** — one model request plus the tool executions caused by its response; a turn contains zero or more steps. <a id="step"></a>
 - **round** — an outer policy iteration containing a turn, such as a [goal round](#goal-round) or one fresh-agent Ralph attempt. Round counters belong to that policy and do not count every turn in a session. <a id="round"></a>
+- **exchange** — consecutive [turns](#turn) from a turn whose first [step](#step) admits human input until the next such turn; turns woken by notices, such as settled subagents, goal rounds, or schedules, stay in the preceding exchange. Chat's next-message folding keeps the latest exchange expanded. <a id="exchange"></a>
 
 ## Ralph
 

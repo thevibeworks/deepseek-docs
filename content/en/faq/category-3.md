@@ -2,17 +2,22 @@
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-10-09
+fetched: 2026-10-14
 ---
 
 # FAQ: Chat Issues
 
-## Why did the image upload fail?
+## Why did the file upload fail?
 
-- Unsupported image format.
-- No extractable text in the image.
-- Exceeded maximum upload limit.
-- The image contains content that violates terms.
+Possible reasons include:
+
+- The file format is not supported.
+- Your network connection is unavailable or unstable.
+- The file size or total number of files exceeds the upload limit.
+- The file could not be parsed, for example, because it is corrupted.
+- The file contains content that violates terms.
+
+Please review the above and try again. If the issue persists, contact customer support.
 
 ## Can I recover deleted chats?
 
