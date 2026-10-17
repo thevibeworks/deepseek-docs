@@ -312,7 +312,7 @@ async def fetch_prompt_library(session, url: str, out: Path, results: dict):
 
 
 async def fetch_page(session, sem, url: str, out: Path, results: dict,
-                     locale: str, page_paths: set[str]):
+                     locale: str, page_paths: set[str], gap: bool = False):
     rel = url_to_relpath(url, locale)
     if rel == "prompt-library.md":
         async with sem:
@@ -334,6 +334,13 @@ async def fetch_page(session, sem, url: str, out: Path, results: dict,
             results[str(out.relative_to(ROOT))] = {
                 "url": url, "title": meta["title"], "changed": changed}
             print(f"  {'ok ' if changed else '== '} {out.relative_to(ROOT)}")
+        except FallbackPageError:
+            if not gap:
+                raise
+            # A sitemap-gap probe this locale does not serve: nothing to
+            # mirror and nothing for the manifest, or every page one locale
+            # lacks would sit there as a permanent error.
+            print(f"  --  {url}: listed in another locale only")
         except Exception as e:  # noqa: BLE001 - report and continue
             results[str(out.relative_to(ROOT))] = {"url": url, "error": str(e)}
             print(f"  ERR {url}: {e}", file=sys.stderr)
@@ -345,20 +352,35 @@ async def run_fetch(locales: list[str], incremental: bool) -> dict:
     timeout = aiohttp.ClientTimeout(total=60)
     async with aiohttp.ClientSession(
             timeout=timeout, headers={"User-Agent": UA}) as session:
+        # Upstream's per-locale sitemaps disagree: on 2026-10-17 the en
+        # sitemap listed api/fetch but not api/search or guides/search, which
+        # the en site serves and its own pricing page links. So each locale
+        # also probes the pages another locale's sitemap lists; a probe the
+        # locale does not serve comes back as the fallback shell and is
+        # dropped without a manifest entry.
+        listed = {}
+        for locale in LOCALES:
+            sitemap = f"{SITE}{LOCALES[locale]}/sitemap.xml"
+            urls = sitemap_urls(await fetch_text(session, sitemap))
+            listed[locale] = {url_to_relpath(u, locale): u for u in urls}
+            if locale in locales:
+                print(f"[{locale}] {len(urls)} pages from {sitemap}")
         for locale in locales:
             prefix = LOCALES[locale]
-            sitemap = f"{SITE}{prefix}/sitemap.xml"
-            urls = sitemap_urls(await fetch_text(session, sitemap))
-            print(f"[{locale}] {len(urls)} pages from {sitemap}")
-            page_paths = {url_to_relpath(u, locale)[:-3] for u in urls}
+            pages = listed[locale]
+            gaps = sorted({rel for other, rels in listed.items() if other != locale
+                           for rel in rels} - pages.keys())
+            if gaps:
+                print(f"[{locale}] {len(gaps)} listed only in another locale's sitemap; probing")
+            page_paths = {rel[:-3] for rel in pages} | {rel[:-3] for rel in gaps}
             tasks = []
-            for url in urls:
-                rel = url_to_relpath(url, locale)
+            for rel, url, gap in ([(r, u, False) for r, u in pages.items()]
+                                  + [(r, f"{SITE}{prefix}/{r[:-3]}", True) for r in gaps]):
                 out = CONTENT / locale / rel
                 if incremental and out.exists():
                     continue
                 tasks.append(fetch_page(session, sem, url, out, results,
-                                        locale, page_paths))
+                                        locale, page_paths, gap))
             await asyncio.gather(*tasks)
     return results
 
