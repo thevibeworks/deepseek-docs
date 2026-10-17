@@ -1,7 +1,7 @@
 ---
 title: "npm: @deepseek-ai/dsh"
 source: https://www.npmjs.com/package/@deepseek-ai/dsh
-fetched: 2026-10-14
+fetched: 2026-10-17
 ---
 # npm: @deepseek-ai/dsh
 
@@ -12,14 +12,18 @@ npm install -g @deepseek-ai/dsh
 ```
 
 - **latest**: `0.2.0-rc.2`
-- **alpha**: `0.2.1-alpha.3`
-- **next**: `0.2.0-rc.2`
+- **alpha**: `0.2.1-alpha.5`
+- **next**: `0.2.1-rc.2`
 - **license**: MIT
 - **bin**: `dsh`
 - **homepage**: https://github.com/deepseek-ai/deepseek-harness#readme
 
 ## Versions
 
+- `0.2.1-rc.2` -- 2026-10-17
+- `0.2.1-rc.1` -- 2026-10-17
+- `0.2.1-alpha.5` -- 2026-10-16
+- `0.2.1-alpha.4` -- 2026-10-15
 - `0.2.1-alpha.3` -- 2026-10-14
 - `0.2.1-alpha.2` -- 2026-10-09
 - `0.2.1-alpha.1` -- 2026-10-03

@@ -2,7 +2,7 @@
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Using the Responses API
@@ -55,12 +55,13 @@ The full list of events:
 | --- | --- |
 | `response.created` | The first event; the response has been created with status `in_progress` |
 | `response.in_progress` | The response is being generated |
-| `response.output_item.added` / `response.output_item.done` | An output item (`reasoning` / `message` / `function_call` / `custom_tool_call`) starts / completes |
+| `response.output_item.added` / `response.output_item.done` | An output item (`reasoning` / `message` / `function_call` / `custom_tool_call` / `web_search_call` / `tool_search_call`) starts / completes |
 | `response.content_part.added` / `response.content_part.done` | A content part within an output item starts / completes |
 | `response.reasoning_text.delta` / `response.reasoning_text.done` | Incremental chain-of-thought text / the full chain-of-thought text |
 | `response.output_text.delta` / `response.output_text.done` | Incremental output text / the full output text |
 | `response.function_call_arguments.delta` / `response.function_call_arguments.done` | Incremental function call arguments / the full arguments |
 | `response.custom_tool_call_input.delta` / `response.custom_tool_call_input.done` | Incremental custom tool call (`apply_patch`) input / the full input |
+| `response.web_search_call.in_progress` / `response.web_search_call.searching` / `response.web_search_call.completed` | A server-side `web_search` call starts / is running / completes (`deepseek-v4-pro` only) |
 | `response.completed` | The final event when the response completes normally, carrying the full `response` object including `usage` |
 | `response.incomplete` | The final event when the response is truncated (e.g. reaching `max_output_tokens`), carrying the full `response` object |
 | `response.failed` | The final event when the response fails, carrying the full `response` object with `error` details |
@@ -81,7 +82,7 @@ response = client.responses.create(
                 {"type": "input_text", "text": "What is in this image?"},
                 {"type": "input_image", "image_url": "https://example.com/image.jpg", "detail": "low"},
             ],
-        }
+        },
     ],
 )
 print(response.output_text)
@@ -120,15 +121,15 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 
 | Parameter | Support Status |
 | --- | --- |
-| `model` | Supported. `deepseek-flash`, see [Models & Pricing](../quick_start/pricing.md) |
+| `model` | Supported. `deepseek-flash` and `deepseek-v4-pro`, see [Models & Pricing](../quick_start/pricing.md) |
 | `input` | Supported. String or input item list; at least one of `input` and `instructions` is required |
 | `instructions` | Supported. Inserted as the first system message |
 | `stream` | Supported |
 | `temperature` | Supported (range [0.0, 2.0]; no effect in thinking mode) |
-| `top_p` | Supported (takes effect in thinking mode, with a lower bound of `0.95`; in non-thinking mode it is fixed at `1.0`) |
+| `top_p` | Supported; behavior depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tools are present, otherwise `1.0`); takes effect in non-thinking mode |
 | `max_output_tokens` | Supported |
 | `top_logprobs` | Supported (range [0, 20]) |
-| `tools` | Partially supported. `function` supported; other types ignored, see the Tools table below |
+| `tools` | Partially supported. `function` supported; `web_search` supported with `deepseek-v4-pro`; other types ignored, see the Tools table below |
 | `tool_choice` | Supported. `none` / `auto` / `required` / a specific tool (`{"type": "function", "name": ...}`) |
 | `reasoning` | Partially supported. `effort` supported; `summary` accepted but no summary is generated |
 | `text` | Partially supported. `format` fully supported; `verbosity` accepted but has no effect |
@@ -162,7 +163,7 @@ Unsupported parameters are **silently ignored** and do not cause errors, so exis
 | `custom_tool_call` / `custom_tool_call_output` | Supported (for the `apply_patch` custom tool, with `call_id` pairing validation). `input_image` parts in the `output` are processed as real images |
 | Other types | Ignored |
 
-Note: `web_search_call` items passed back in `input` — for example, search results produced by an earlier request with an older model — are still restored and concatenated into the context.
+Note: `web_search_call` items returned by a previous response can be passed back in `input`; their search results are restored and concatenated into the context.
 
 ### Tools
 
@@ -170,7 +171,8 @@ Note: `web_search_call` items passed back in `input` — for example, search res
 | --- | --- |
 | `function` | Supported |
 | `custom` | Only `{"type": "custom", "name": "apply_patch"}` is supported (for Codex compatibility); other names return a `400` error |
-| `web_search` / `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
+| `web_search` | Supported with `deepseek-v4-pro`. The API runs the search on the server, adds the results to the context, and continues the response. Ignored with `deepseek-flash` |
+| `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
 
 ### Response Fields
 

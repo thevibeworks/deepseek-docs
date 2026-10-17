@@ -2,7 +2,7 @@
 title: "Integrate with Claude Code"
 description: "Claude Code is an AI coding assistant that runs in the terminal."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Integrate with Claude Code
@@ -109,7 +109,7 @@ claude
 
 ## Using Web Search in Claude Code
 
-The DeepSeek API natively supports the Web Search feature in Claude Code. When using Claude Code, if the model determines that your question requires a web search, it will invoke the Web Search tool and perform the search through the API provided by DeepSeek. Because invoking the Web Search tool generates additional LLM API requests to summarize the retrieved search content, additional model token costs will be incurred.
+The DeepSeek API natively supports the Web Search feature in Claude Code. When using Claude Code, if the model determines that your question requires a web search, it will invoke the Web Search tool and perform the search through the API provided by DeepSeek. Because invoking the Web Search tool generates additional LLM API requests to summarize the retrieved search content, additional model token costs will be incurred. The search requests themselves are also subject to [Search API billing](../../guides/search.md#billing).
 
 The following image shows an example of triggering the Web Search feature in Claude Code, where the user's question (Help me to search for best Rust tutorials) triggered the Web Search tool:
 

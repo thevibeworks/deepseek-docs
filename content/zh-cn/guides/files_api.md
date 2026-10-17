@@ -2,7 +2,7 @@
 title: "Files API"
 description: "Files API 让你上传图片，之后通过 file_id 引用。推荐在以下场景使用："
 source: https://api-docs.deepseek.com/zh-cn/guides/files_api
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Files API
@@ -163,13 +163,13 @@ response = client.chat.completions.create(
                 {"type": "text", "text": "这张图片里有什么？"},
                 {"type": "file", "file_id": "file-api-xxxxxxxxxxxxxxxx"},
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
 ```
 
-文件归属于你的 API key，可被任一 API 家族引用。注意：通过 Anthropic 兼容 `/messages` 端点引用文件时需携带 `anthropic-beta: files-api-2025-04-14` 请求头。
+文件归属于你的账号：同一账号下的所有 API key 共享文件，且可被任一 API 家族引用。注意：通过 Anthropic 兼容 `/messages` 端点引用文件时需携带 `anthropic-beta: files-api-2025-04-14` 请求头。
 
 与内联（base64）图片不同，通过 `file_id` 引用的文件不受 32 MiB 单图限制，请求中单张最大 64 MiB。
 
@@ -245,7 +245,7 @@ curl "https://api.deepseek.com/anthropic/v1/files?limit=20" \
 | --- | --- |
 | 支持的格式 | JPEG、PNG、GIF、WebP |
 | 单个上传文件最大大小 | 64 MiB |
-| 文件名最大长度 | 512 个字符 |
+| 文件名最大长度 | 512 字节 |
 | 单用户最大存储空间 | 25 GiB |
 | 单用户最大存储文件数 | 10000 |
 | 文件有效期范围 | 1 小时到 30 天，或不传 `expires_after` 永久有效 |

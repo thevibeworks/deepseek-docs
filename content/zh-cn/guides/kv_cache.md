@@ -2,7 +2,7 @@
 title: "上下文硬盘缓存"
 description: "DeepSeek API 上下文硬盘缓存技术对所有用户默认开启，用户无需修改代码即可享用。"
 source: https://api-docs.deepseek.com/zh-cn/guides/kv_cache
-fetched: 2026-08-23
+fetched: 2026-10-17
 ---
 
 # 上下文硬盘缓存
@@ -31,7 +31,7 @@ DeepSeek API 上下文硬盘缓存技术对所有用户默认开启，用户无�
 
 **第一次请求**
 
-```json
+```text
 messages: [
     {"role": "system", "content": "你是一位乐于助人的助手"},
     {"role": "user", "content": "中国的首都是哪里？"}
@@ -40,7 +40,7 @@ messages: [
 
 **第二次请求**
 
-```json
+```text
 messages: [
     {"role": "system", "content": "你是一位乐于助人的助手"},
     {"role": "user", "content": "中国的首都是哪里？"},
@@ -55,27 +55,27 @@ messages: [
 
 **第一次请求**
 
-```json
+```text
 messages: [
-    {"role": "system", "content": "你是一位资深的财报分析师..."}
+    {"role": "system", "content": "你是一位资深的财报分析师..."},
     {"role": "user", "content": "<财报内容>\n\n请总结一下这份财报的关键信息。"}
 ]
 ```
 
 **第二次请求**
 
-```json
+```text
 messages: [
-    {"role": "system", "content": "你是一位资深的财报分析师..."}
+    {"role": "system", "content": "你是一位资深的财报分析师..."},
     {"role": "user", "content": "<财报内容>\n\n请分析一下这份财报的盈利情况。"}
 ]
 ```
 
 **第三次请求**
 
-```json
+```text
 messages: [
-    {"role": "system", "content": "你是一位资深的财报分析师..."}
+    {"role": "system", "content": "你是一位资深的财报分析师..."},
     {"role": "user", "content": "<财报内容>\n\n请分析一下公司收入与支出占比。"}
 ]
 ```

@@ -2,7 +2,7 @@
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # Thinking Mode
@@ -38,7 +38,7 @@ response = client.chat.completions.create(
   model="deepseek-flash",
   # ...
   reasoning_effort="high",
-  extra_body={"thinking": {"type": "enabled"}}
+  extra_body={"thinking": {"type": "enabled"}},
 )
 ```
 
@@ -46,7 +46,10 @@ response = client.chat.completions.create(
 
 Thinking mode does not support the `temperature`, `presence_penalty`, or `frequency_penalty` parameters. Please note that, for compatibility with existing software, setting these parameters will not trigger an error but will also have no effect.
 
-`top_p` only takes effect in thinking mode, where the effective range is `0.95`–`1.0`: values below `0.95` are treated as `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
+`top_p` behavior depends on the model:
+
+- `deepseek-flash`: only takes effect in thinking mode, where the effective range is `0.95`–`1.0`; values below `0.95` are treated as `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
+- `deepseek-v4-pro`: in thinking mode your value is ignored (fixed at `0.95` when `tools` is present, otherwise `1.0`); in non-thinking mode it takes effect.
 
 In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
@@ -74,7 +77,7 @@ messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 
@@ -88,7 +91,7 @@ messages.append({'role': 'user', 'content': "How many Rs are there in the word '
 response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 # ...
@@ -106,7 +109,7 @@ response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
     stream=True,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 
@@ -127,7 +130,7 @@ response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
     stream=True,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 # ...
@@ -159,7 +162,7 @@ tools = [
             "name": "get_date",
             "description": "Get the current date",
             "parameters": { "type": "object", "properties": {} },
-        }
+        },
     },
     {
         "type": "function",
@@ -172,9 +175,9 @@ tools = [
                     "location": { "type": "string", "description": "The city name" },
                     "date": { "type": "string", "description": "The date in format YYYY-mm-dd" },
                 },
-                "required": ["location", "date"]
+                "required": ["location", "date"],
             },
-        }
+        },
     },
 ]
 
@@ -187,7 +190,7 @@ def get_weather_mock(location, date):
 
 TOOL_CALL_MAP = {
     "get_date": get_date_mock,
-    "get_weather": get_weather_mock
+    "get_weather": get_weather_mock,
 }
 
 def run_turn(turn, messages):
@@ -229,7 +232,7 @@ client = OpenAI(
 turn = 1
 messages = [{
     "role": "user",
-    "content": "How's the weather in Hangzhou Tomorrow"
+    "content": "How's the weather in Hangzhou Tomorrow",
 }]
 run_turn(turn, messages)
 
@@ -237,7 +240,7 @@ run_turn(turn, messages)
 turn = 2
 messages.append({
     "role": "user",
-    "content": "How's the weather in Guangzhou Tomorrow"
+    "content": "How's the weather in Guangzhou Tomorrow",
 })
 run_turn(turn, messages)
 ```
@@ -263,7 +266,7 @@ Additionally, in the Turn 2 request, we still pass the `reasoning_content` gener
 
 The sample output of this code is as follows:
 
-```bash
+```text
 Turn 1.1
 reasoning_content="The user is asking about the weather in Hangzhou tomorrow. I need to get tomorrow's date first, then call the weather function."
 content="Let me check tomorrow's weather in Hangzhou for you. First, let me get tomorrow's date."

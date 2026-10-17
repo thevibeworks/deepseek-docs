@@ -2,7 +2,7 @@
 title: "图像理解"
 description: "deepseek-flash 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。旧模型名 deepseek-v4-flash-vision-exp 仍可调用，但该模型已下线，其请求同样由最新的 Flash 模型承接。"
 source: https://api-docs.deepseek.com/zh-cn/guides/vision
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # 图像理解
@@ -44,7 +44,7 @@ response = client.chat.completions.create(
                     "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
                 },
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
@@ -85,7 +85,7 @@ response = client.chat.completions.create(
                     "image_url": {"url": "https://example.com/image.jpg"},
                 },
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
@@ -107,7 +107,7 @@ response = client.chat.completions.create(
                 {"type": "text", "text": "这张图片里有什么？"},
                 {"type": "file", "file_id": "file-api-xxxxxxxxxxxxxxxx"},
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
@@ -221,7 +221,7 @@ message = client.messages.create(
                     },
                 },
             ],
-        }
+        },
     ],
 )
 print(message.content)
@@ -251,7 +251,7 @@ response = client.responses.create(
                 {"type": "input_text", "text": "这张图片里有什么？"},
                 {"type": "input_image", "image_url": "https://example.com/image.jpg", "detail": "low"},
             ],
-        }
+        },
     ],
 )
 print(response.output_text)

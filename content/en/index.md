@@ -2,7 +2,7 @@
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # Your First API Call
@@ -16,7 +16,7 @@ The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifyi
 | api\_key | apply for an [API key](https://platform.deepseek.com/api_keys) |
 | model | `deepseek-flash`(1) `deepseek-v4-pro` |
 
-(1) Use `deepseek-flash` as the model name. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.
+(1) Use `deepseek-flash` as the model name. It is now served by DeepSeek-V4.1-Flash-1017, and the calling method remains unchanged. The legacy names `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` are still accepted, but the corresponding models have been retired; their requests are served by DeepSeek-V4.1-Flash-1017 and billed at the Flash price.
 
 ## Integrate with Agent Tools
 
@@ -59,7 +59,8 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key=os.environ.get('DEEPSEEK_API_KEY'),
-    base_url="https://api.deepseek.com")
+    base_url="https://api.deepseek.com",
+)
 
 response = client.chat.completions.create(
     model="deepseek-flash",
@@ -69,7 +70,7 @@ response = client.chat.completions.create(
     ],
     stream=False,
     reasoning_effort="high",
-    extra_body={"thinking": {"type": "enabled"}}
+    extra_body={"thinking": {"type": "enabled"}},
 )
 
 print(response.choices[0].message.content)

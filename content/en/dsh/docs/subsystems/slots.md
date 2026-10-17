@@ -1,7 +1,7 @@
 ---
 title: "Web Client Slots"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/slots.md
-fetched: 2026-10-14
+fetched: 2026-10-17
 ---
 # Web Client Slots
 
@@ -166,6 +166,7 @@ Factory: conversation.content [ConversationContent]
 │  ├─ conversation.input.permission
 │  ├─ conversation.input.plan
 │  ├─ conversation.input.model
+│  │  └─ conversation.input.model.label
 │  ├─ conversation.input.overlay
 │  ├─ conversation.composer.dock
 │  ├─ conversation.input.left

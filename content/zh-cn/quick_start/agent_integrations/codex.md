@@ -2,7 +2,7 @@
 title: "接入 Codex"
 description: "Codex 是 OpenAI 推出的 AI 编程助手，通过 Responses API 与模型交互，DeepSeek API 原生支持该格式。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # 接入 Codex
@@ -39,6 +39,8 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup.ps1 | iex
 4. **校验**：写入前校验 `config.toml` / `models.json` 语法合法；校验失败则中止，不修改任何文件。
 
 再次运行脚本，可以重新写入配置（菜单第 1 / 2 项），或恢复到安装前的默认配置（菜单第 9 项）。重新运行菜单第 1 / 2 项，还会补齐新版脚本新增的配置项（如 `show_raw_agent_reasoning`、推理强度档位），其他配置不受影响。如果此前用旧版本脚本装过 `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` 这几个条目，重新运行脚本会将它们一并清理，只保留 `deepseek-flash` 和 `deepseek-v4-pro`。
+
+内置联网搜索仅支持 `deepseek-v4-pro`，一键脚本默认将其禁用。开启方法见下文[联网搜索](#%E8%81%94%E7%BD%91%E6%90%9C%E7%B4%A2)。
 
 ### 方式二：手动编辑配置文件
 
@@ -220,7 +222,7 @@ enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 | `model_provider` | 使用的模型提供方，对应下方 `[model_providers.<id>]` 配置段的 id |
 | `preferred_auth_method`、`forced_login_method` | 使用 API Key 认证，跳过 ChatGPT 账号登录 |
 | `model_reasoning_effort` | 推理强度。值越高，模型思考越深入，回答质量越高，耗时也越长 |
-| `web_search` | 内置联网搜索，DeepSeek 模型下禁用 |
+| `web_search` | Codex 内置的联网搜索。仅 `deepseek-v4-pro` 支持，设为 `"live"` 即可启用 |
 | `show_raw_agent_reasoning` | 显示模型的原始思考过程。仅在 Codex CLI 中有效，按 `Ctrl + T` 后展示思考过程 |
 | `model_catalog_json` | 自定义模型目录文件（`models.json`）的路径，Codex 从中读取模型元数据 |
 | `[model_providers.deepseek]` 中的 `name` | 模型提供方的显示名称 |
@@ -228,6 +230,19 @@ enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 | `[model_providers.deepseek]` 中的 `wire_api` | 与模型通信使用的协议，`"responses"` 表示 [Responses API](../../guides/responses_api.md) |
 | `[model_providers.deepseek]` 中的 `experimental_bearer_token` | 你的 API Key，直接写在配置文件里 |
 | `[desktop]` 中的 `enabled-reasoning-efforts` | ChatGPT 桌面端可选的推理强度档位 |
+
+### 联网搜索
+
+Codex 内置的联网搜索仅在使用 `deepseek-v4-pro` 时可用。一键脚本会写入 `web_search = "disabled"`；如需使用联网搜索，请在运行脚本后将该字段改为 `"live"`。上方示例配置默认使用 `deepseek-flash`，因此同样禁用了联网搜索。
+
+如需启用联网搜索，请切换到 `deepseek-v4-pro`，并在 `~/.codex/config.toml` 中将 `web_search` 设为 `"live"`：
+
+```toml
+model = "deepseek-v4-pro"
+web_search = "live"
+```
+
+保存后重启 Codex。搜索由 DeepSeek 在服务端执行，请求按 Search 接口的[计费规则](../../guides/search.md)计费。
 
 ## 2. 开始使用
 
