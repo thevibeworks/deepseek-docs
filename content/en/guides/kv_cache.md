@@ -2,7 +2,7 @@
 title: "Context Caching"
 description: "The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code."
 source: https://api-docs.deepseek.com/guides/kv_cache
-fetched: 2026-08-02
+fetched: 2026-10-17
 ---
 
 # Context Caching
@@ -31,7 +31,7 @@ Example 2: A user's first-round request is `A + B`, and the second-round request
 
 **First Request**
 
-```json
+```text
 messages: [
     {"role": "system", "content": "You are a helpful assistant"},
     {"role": "user", "content": "What is the capital of China?"}
@@ -40,7 +40,7 @@ messages: [
 
 **Second Request**
 
-```json
+```text
 messages: [
     {"role": "system", "content": "You are a helpful assistant"},
     {"role": "user", "content": "What is the capital of China?"},
@@ -55,27 +55,27 @@ In this example, the second request can fully reuse the **cache prefix unit** fr
 
 **First Request**
 
-```json
+```text
 messages: [
-    {"role": "system", "content": "You are an experienced financial report analyst..."}
+    {"role": "system", "content": "You are an experienced financial report analyst..."},
     {"role": "user", "content": "<financial report content>\n\nPlease summarize the key information of this financial report."}
 ]
 ```
 
 **Second Request**
 
-```json
+```text
 messages: [
-    {"role": "system", "content": "You are an experienced financial report analyst..."}
+    {"role": "system", "content": "You are an experienced financial report analyst..."},
     {"role": "user", "content": "<financial report content>\n\nPlease analyze the profitability of this financial report."}
 ]
 ```
 
 **Third Request**
 
-```json
+```text
 messages: [
-    {"role": "system", "content": "You are an experienced financial report analyst..."}
+    {"role": "system", "content": "You are an experienced financial report analyst..."},
     {"role": "user", "content": "<financial report content>\n\nPlease analyze the ratio of the company's revenue to expenses."}
 ]
 ```

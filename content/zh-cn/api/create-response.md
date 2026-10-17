@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # Responses API
@@ -33,7 +33,7 @@ nullable
 
 模型的输入。既可以传纯字符串（视作一条 `user` 消息），也可以传输入 item 列表。
 
-支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`system` / `assistant` 消息中的图片将返回 `400` 错误。文件输入不支持。
+支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`system` / `assistant` 消息中的图片将返回 `400` 错误。文件输入不支持。
 
 `input` 与 `instructions` 至少传一个。
 
@@ -52,9 +52,9 @@ string
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`]
+**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
 
-输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。`custom_tool_call` / `custom_tool_call_output` item 配合 `apply_patch` custom 工具使用。
+输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。`custom_tool_call` / `custom_tool_call_output` item 配合 `apply_patch` custom 工具使用。`web_search_call` item 用于还原上一次服务端搜索的结果。
 
 **role** string
 
@@ -294,19 +294,19 @@ object[]
 
 nullable
 
-模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
+模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。支持 `function` 工具；`web_search` 在 `deepseek-v4-pro` 下支持，其余内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** [`function`, `custom`, `web_search`]
 
-工具的类型。
+工具的类型：`function`、`custom`（仅 `apply_patch`）或 `web_search`（仅 `deepseek-v4-pro`）。
 
 **name** string
 
-用于 `function` 工具。函数的名称。必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。
+用于 `function` / `custom` 工具。工具的名称。对于函数工具，必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。对于 custom 工具，必须为 `apply_patch`。
 
 **description** string
 
@@ -440,9 +440,9 @@ required
 
 **type** string
 
-**Possible values:** [`message`, `reasoning`, `function_call`]
+**Possible values:** [`message`, `reasoning`, `function_call`, `custom_tool_call`, `web_search_call`, `tool_search_call`]
 
-输出 item 的类型。
+输出 item 的类型：`message` / `reasoning` / `function_call` / `custom_tool_call` / `web_search_call` / `tool_search_call`。
 
 **id** string
 
@@ -478,11 +478,11 @@ object[]
 
 **call\_id** string
 
-用于 `function_call` item。将函数调用结果回传给 API 时使用的标识符。
+用于 `function_call` / `custom_tool_call` / `tool_search_call` item。将工具结果回传给 API 时使用的标识符。
 
 **name** string
 
-用于 `function_call` item。要调用的函数的名称。
+用于 `function_call` / `custom_tool_call` item。要调用的函数或 custom 工具的名称。
 
 **arguments** string
 

@@ -2,7 +2,7 @@
 title: "接入 Claude Code"
 description: "Claude Code 是一个运行在终端内的 AI 编程助手。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # 接入 Claude Code
@@ -109,7 +109,7 @@ claude
 
 ## 使用 Claude Code 的 Web Search 功能
 
-DeepSeek API 原生支持 Claude Code 中的 Web Search 功能。在使用 Claude Code 的过程中，如果模型判断您的问题需要通过搜索功能才能满足，模型会调用 Web Search 工具，并通过 DeepSeek 提供的 API 进行搜索。因为调用 Web Search 工具会产生额外的大模型 API 请求来对获取到的搜索内容进行总结，因此会产生额外的模型 Token 费用。
+DeepSeek API 原生支持 Claude Code 中的 Web Search 功能。在使用 Claude Code 的过程中，如果模型判断您的问题需要通过搜索功能才能满足，模型会调用 Web Search 工具，并通过 DeepSeek 提供的 API 进行搜索。因为调用 Web Search 工具会产生额外的大模型 API 请求来对获取到的搜索内容进行总结，因此会产生额外的模型 Token 费用。搜索请求本身还会按 [Search API 计费规则](../../guides/search.md) 计费。
 
 下图展示了在 Claude Code 中触发 Web Search 功能的示例，用户的提问（Help me to search for best Rust tutorials）触发了 Web Search 工具的调用：
 

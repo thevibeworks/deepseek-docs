@@ -1,11 +1,43 @@
 ---
 title: "更新日志"
-description: "时间: 2026-09-10"
+description: "时间: 2026-10-17"
 source: https://api-docs.deepseek.com/zh-cn/updates
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # 更新日志
+
+---
+
+## 时间: 2026-10-17
+
+### 开放自研搜索 API
+
+DeepSeek 网页端与 API 端的搜索能力均由自研 DeepSeek 搜索引擎提供底层支持，稳定处理每天来自全球各地的数亿次搜索请求。DeepSeek 搜索是 AI 原生的通用搜索引擎，索引了全球千亿级网页，支持多语言搜索，实时返回高相关、高权威、高时效的优质结果。针对 SEO 作弊、GEO 操纵和低质 AIGC，我们通过严格的识别机制进行过滤，确保向用户与 LLM 呈现权威可信的信息。使用方式请参考[网页搜索与抓取指南](guides/search.md)。
+
+### DeepSeek-V4.1-Flash-1017 更新
+
+DeepSeek V4.1 Flash 已升级至 DeepSeek-V4.1-Flash-1017，官方网页端与 APP 模型也已同步更新至新版本。API 调用方式与价格保持不变，仍使用 `deepseek-flash` 即可访问最新模型。
+
+**性能–费用的帕累托改进**
+
+相比上一版本的 DeepSeek V4.1，新模型在各基准测试中取得了显著提升：
+
+- HLE (w/o tools): 42.6 (44.0\*)
+- Terminal-Bench 4.0: 42.3
+- DeepSWE v1.1: 77.0
+- ProgramBench: 29.1
+- NL2Repo-Bench: 68.2
+- Automation-Bench v1.0.6: 60.5
+- Agents' Last Exam: 35.4
+- Apex Bench v1.1: 72.1
+- Chartography (w/tools): 83.0
+- BabyVision (w/tools): 92.5
+- ZeroBench-main (w/tools): 51.0
+
+\* 表示仅在 HLE 评测集的纯文本子集上进行了测试；Terminal-Bench 4.0 使用 Claude Code 框架测试，DeepSWE 使用 Mini-SWE-V2 框架测试；ZeroBench-main 使用 Pass@5 评测。
+
+在提升性能的同时，我们还缩短了模型的任务运行时间与输出长度，让用户能够以更低成本、更快速度完成任务，在多个 Harness 下达到新的性能-费用帕累托最优。我们特别针对 DeepSeek Harness、腾讯 CodeBuddy、WorkBuddy 等平台框架进行了优化。请升级至 DeepSeek Harness 0.2.1-rc.1 及以上版本，以获得适配新版模型的最佳体验。
 
 ---
 

@@ -2,7 +2,7 @@
 title: "思考模式"
 description: "DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先输出一段思维链内容，以提升最终答案的准确性。"
 source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # 思考模式
@@ -38,7 +38,7 @@ response = client.chat.completions.create(
   model="deepseek-flash",
   # ...
   reasoning_effort="high",
-  extra_body={"thinking": {"type": "enabled"}}
+  extra_body={"thinking": {"type": "enabled"}},
 )
 ```
 
@@ -46,7 +46,10 @@ response = client.chat.completions.create(
 
 思考模式不支持 `temperature`、`presence_penalty`、`frequency_penalty` 参数。请注意，为了兼容已有软件，设置参数不会报错，但也不会生效。
 
-`top_p` 仅在思考模式下生效，有效取值范围为 `0.95`–`1.0`，低于 `0.95` 的取值会按 `0.95` 处理。在非思考模式下，该参数恒为 `1.0`，传入的值会被忽略。
+`top_p` 的行为因模型而异：
+
+- `deepseek-flash`：仅在思考模式下生效，有效取值范围为 `0.95`–`1.0`，低于 `0.95` 的取值会按 `0.95` 处理。在非思考模式下，该参数恒为 `1.0`，传入的值会被忽略。
+- `deepseek-v4-pro`：思考模式下会忽略传入值（携带 `tools` 时固定为 `0.95`，否则为 `1.0`）；非思考模式下生效。
 
 在思考模式下，思维链内容通过 `reasoning_content` 参数返回，与 `content` 同级。在后续轮次的请求中，`reasoning_content` 是否需要回传、是否会被拼接进上下文，取决于请求是否携带 `tools` 参数：
 
@@ -74,7 +77,7 @@ messages = [{"role": "user", "content": "9.11 and 9.8, which is greater?"}]
 response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 
@@ -88,7 +91,7 @@ messages.append({'role': 'user', 'content': "How many Rs are there in the word '
 response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 # ...
@@ -106,7 +109,7 @@ response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
     stream=True,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 
@@ -127,7 +130,7 @@ response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
     stream=True,
-    reasoning_effort="high"
+    reasoning_effort="high",
     extra_body={"thinking": {"type": "enabled"}},
 )
 # ...
@@ -159,7 +162,7 @@ tools = [
             "name": "get_date",
             "description": "Get the current date",
             "parameters": { "type": "object", "properties": {} },
-        }
+        },
     },
     {
         "type": "function",
@@ -172,9 +175,9 @@ tools = [
                     "location": { "type": "string", "description": "The city name" },
                     "date": { "type": "string", "description": "The date in format YYYY-mm-dd" },
                 },
-                "required": ["location", "date"]
+                "required": ["location", "date"],
             },
-        }
+        },
     },
 ]
 
@@ -187,7 +190,7 @@ def get_weather_mock(location, date):
 
 TOOL_CALL_MAP = {
     "get_date": get_date_mock,
-    "get_weather": get_weather_mock
+    "get_weather": get_weather_mock,
 }
 
 def run_turn(turn, messages):
@@ -229,7 +232,7 @@ client = OpenAI(
 turn = 1
 messages = [{
     "role": "user",
-    "content": "How's the weather in Hangzhou Tomorrow"
+    "content": "How's the weather in Hangzhou Tomorrow",
 }]
 run_turn(turn, messages)
 
@@ -237,7 +240,7 @@ run_turn(turn, messages)
 turn = 2
 messages.append({
     "role": "user",
-    "content": "How's the weather in Guangzhou Tomorrow"
+    "content": "How's the weather in Guangzhou Tomorrow",
 })
 run_turn(turn, messages)
 ```
@@ -263,7 +266,7 @@ messages.append({
 
 该代码的样例输出如下：
 
-```bash
+```text
 Turn 1.1
 reasoning_content="The user is asking about the weather in Hangzhou tomorrow. I need to get tomorrow's date first, then call the weather function."
 content="Let me check tomorrow's weather in Hangzhou for you. First, let me get tomorrow's date."

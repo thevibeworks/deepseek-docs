@@ -2,7 +2,7 @@
 title: "使用 Responses API"
 description: "为了满足大家对 Codex 的需求，我们的 API 新增了对 Responses API 格式的支持，其 base_url 为 https://api.deepseek.com。"
 source: https://api-docs.deepseek.com/zh-cn/guides/responses_api
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # 使用 Responses API
@@ -55,12 +55,13 @@ for event in stream:
 | --- | --- |
 | `response.created` | 首个事件；响应已创建，状态为 `in_progress` |
 | `response.in_progress` | 响应正在生成中 |
-| `response.output_item.added` / `response.output_item.done` | 一个输出 item（`reasoning` / `message` / `function_call` / `custom_tool_call`）开始 / 完成 |
+| `response.output_item.added` / `response.output_item.done` | 一个输出 item（`reasoning` / `message` / `function_call` / `custom_tool_call` / `web_search_call` / `tool_search_call`）开始 / 完成 |
 | `response.content_part.added` / `response.content_part.done` | 输出 item 中的一个内容块开始 / 完成 |
 | `response.reasoning_text.delta` / `response.reasoning_text.done` | 思维链文本增量 / 完整思维链文本 |
 | `response.output_text.delta` / `response.output_text.done` | 输出文本增量 / 完整输出文本 |
 | `response.function_call_arguments.delta` / `response.function_call_arguments.done` | Function 调用参数增量 / 完整参数 |
 | `response.custom_tool_call_input.delta` / `response.custom_tool_call_input.done` | Custom 工具调用（`apply_patch`）输入增量 / 完整输入 |
+| `response.web_search_call.in_progress` / `response.web_search_call.searching` / `response.web_search_call.completed` | 服务端 `web_search` 调用开始 / 搜索中 / 完成（仅 `deepseek-v4-pro`） |
 | `response.completed` | 响应正常完成时的最后一个事件，携带包含 `usage` 的完整 `response` 对象 |
 | `response.incomplete` | 响应被截断（如达到 `max_output_tokens`）时的最后一个事件，携带完整 `response` 对象 |
 | `response.failed` | 响应失败时的最后一个事件，携带含 `error` 详情的完整 `response` 对象 |
@@ -81,7 +82,7 @@ response = client.responses.create(
                 {"type": "input_text", "text": "这张图片里有什么？"},
                 {"type": "input_image", "image_url": "https://example.com/image.jpg", "detail": "low"},
             ],
-        }
+        },
     ],
 )
 print(response.output_text)
@@ -120,15 +121,15 @@ input=[
 
 | 参数 | 支持情况 |
 | --- | --- |
-| `model` | 支持。`deepseek-flash`，见[模型 & 价格](../quick_start/pricing.md) |
+| `model` | 支持。`deepseek-flash` 和 `deepseek-v4-pro`，见[模型 & 价格](../quick_start/pricing.md) |
 | `input` | 支持。字符串或输入 item 列表；`input` 与 `instructions` 至少传一个 |
 | `instructions` | 支持。作为第一条 system 消息 |
 | `stream` | 支持 |
 | `temperature` | 支持（范围 [0.0, 2.0]；思考模式下不生效） |
-| `top_p` | 支持（思考模式下生效，下限为 `0.95`；非思考模式下恒为 `1.0`） |
+| `top_p` | 支持；行为因模型而异： `deepseek-flash`：思考模式下生效（下限 `0.95`），非思考模式下恒为 `1.0`。 `deepseek-v4-pro`：思考模式下忽略传入值（有工具时固定为 `0.95`，否则为 `1.0`），非思考模式下生效 |
 | `max_output_tokens` | 支持 |
 | `top_logprobs` | 支持（范围 [0, 20]） |
-| `tools` | 部分支持。`function` 支持；其他类型忽略，见下方 Tools 表 |
+| `tools` | 部分支持。`function` 支持；`web_search` 在 `deepseek-v4-pro` 下支持；其他类型忽略，见下方 Tools 表 |
 | `tool_choice` | 支持。`none` / `auto` / `required` / 指定某个工具（`{"type": "function", "name": ...}`） |
 | `reasoning` | 部分支持。`effort` 支持；`summary` 可传入但不生成摘要 |
 | `text` | 部分支持。`format` 完整支持；`verbosity` 可传入但不生效 |
@@ -162,7 +163,7 @@ input=[
 | `custom_tool_call` / `custom_tool_call_output` | 支持（配合 `apply_patch` custom 工具使用，含 `call_id` 配对校验）。`output` 中的 `input_image` 内容块会作为真实图片处理 |
 | 其他类型 | 忽略 |
 
-注：`input` 中回传的 `web_search_call` item（例如旧模型此前请求产生的搜索结果）仍会被还原并拼接进上下文。
+注：上一次响应返回的 `web_search_call` item 可以回传到 `input`，接口会还原对应的搜索结果并拼接到上下文中。
 
 ### Tools
 
@@ -170,7 +171,8 @@ input=[
 | --- | --- |
 | `function` | 支持 |
 | `custom` | 仅支持 `{"type": "custom", "name": "apply_patch"}`（用于 Codex 兼容）；其他名称返回 `400` 错误 |
-| `web_search` / `file_search` / `code_interpreter` / `computer_use` / `mcp` 等内置工具 | 忽略 |
+| `web_search` | `deepseek-v4-pro` 支持。接口会在服务端执行搜索，将结果加入上下文并继续生成响应；`deepseek-flash` 下忽略 |
+| `file_search` / `code_interpreter` / `computer_use` / `mcp` 等内置工具 | 忽略 |
 
 ### 响应字段
 

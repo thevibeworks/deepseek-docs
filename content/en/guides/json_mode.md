@@ -2,7 +2,7 @@
 title: "JSON Output"
 description: "In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing."
 source: https://api-docs.deepseek.com/guides/json_mode
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # JSON Output
@@ -55,8 +55,8 @@ response = client.chat.completions.create(
     model="deepseek-flash",
     messages=messages,
     response_format={
-        'type': 'json_object'
-    }
+        'type': 'json_object',
+    },
 )
 
 print(json.loads(response.choices[0].message.content))

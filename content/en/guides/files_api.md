@@ -2,7 +2,7 @@
 title: "Files API"
 description: "The Files API lets you upload images and reference them later by file_id. It is the recommended way to:"
 source: https://api-docs.deepseek.com/guides/files_api
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Files API
@@ -163,13 +163,13 @@ response = client.chat.completions.create(
                 {"type": "text", "text": "What is in this image?"},
                 {"type": "file", "file_id": "file-api-xxxxxxxxxxxxxxxx"},
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
 ```
 
-Files belong to your API key and can be referenced from either API family. Note that referencing a file from the Anthropic-compatible `/messages` endpoint requires the `anthropic-beta: files-api-2025-04-14` header.
+Files belong to your account: all API keys under the same account share them, and they can be referenced from either API family. Note that referencing a file from the Anthropic-compatible `/messages` endpoint requires the `anthropic-beta: files-api-2025-04-14` header.
 
 Unlike inline (base64) images, files referenced via `file_id` are not subject to the 32 MiB per-image limit — a `file_id` image may be up to 64 MiB in a request.
 
@@ -245,7 +245,7 @@ Deleting a file returns `{ "id": "...", "type": "file_deleted" }`.
 | --- | --- |
 | Supported formats | JPEG, PNG, GIF, WebP |
 | Max upload file size | 64 MiB |
-| Max filename length | 512 characters |
+| Max filename length | 512 bytes |
 | Max storage per user | 25 GiB |
 | Max number of stored files per user | 10000 |
 | File expiration range | 1 hour to 30 days, or permanent (omit `expires_after`) |

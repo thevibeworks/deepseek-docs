@@ -2,7 +2,7 @@
 title: "Chat Prefix Completion (Beta)"
 description: "The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the message."
 source: https://api-docs.deepseek.com/guides/chat_prefix_completion
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Chat Prefix Completion (Beta)
@@ -28,7 +28,7 @@ client = OpenAI(
 
 messages = [
     {"role": "user", "content": "Please write quick sort code"},
-    {"role": "assistant", "content": "```python\n", "prefix": True}
+    {"role": "assistant", "content": "```python\n", "prefix": True},
 ]
 response = client.chat.completions.create(
     model="deepseek-flash",

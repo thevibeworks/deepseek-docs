@@ -2,7 +2,7 @@
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Using the Anthropic API
@@ -58,7 +58,7 @@ message = client.messages.create(
 print(message.content)
 ```
 
-**Note:** When you pass an unsupported model name to DeepSeek's Anthropic API, the API backend will automatically map it to the `deepseek-flash` model.
+**Note:** Unsupported model names that start with `claude` are still accepted: `claude-opus*` names are mapped to `deepseek-v4-pro`, and other `claude*` names are mapped to `deepseek-flash`. Unsupported model names that do not start with `claude` return a `400` error.
 
 ---
 
@@ -83,7 +83,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 
 | Field | Support Status |
 | --- | --- |
-| anthropic-beta | Ignored for `/messages`; required (`files-api-2025-04-14`) for Files API endpoints — see [Files API](files_api.md#anthropic-compatible-files-api) |
+| anthropic-beta | Ignored for `/messages`, except that an image with `source.type` of `file` requires `files-api-2025-04-14`; required for Files API endpoints — see [Files API](files_api.md#anthropic-compatible-files-api) |
 | anthropic-version | Ignored |
 | x-api-key | Fully Supported |
 
@@ -104,7 +104,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | thinking | Supported (`budget_tokens` is ignored) |
 | output\_config | Only `effort` is supported |
 | top\_k | Ignored |
-| top\_p | Only takes effect in thinking mode (with a lower bound of `0.95`); in non-thinking mode it is fixed at `1.0` |
+| top\_p | Depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tools are present, otherwise `1.0`); takes effect in non-thinking mode |
 
 ### Tool Fields
 

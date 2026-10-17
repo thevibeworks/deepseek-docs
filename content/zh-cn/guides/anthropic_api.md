@@ -2,7 +2,7 @@
 title: "使用 Anthropic API"
 description: "为了满足大家对 Anthropic API 生态的使用需求，我们的 API 新增了对 Anthropic API 格式的支持，其 base_url 为 https://api.deepseek.com/anthropic。"
 source: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # 使用 Anthropic API
@@ -58,7 +58,7 @@ message = client.messages.create(
 print(message.content)
 ```
 
-**注意**：当您给 DeepSeek 的 Anthropic API 传入不支持的模型名时，API 后端会自动将其映射到 `deepseek-flash` 模型。
+**注意**：以 `claude` 开头的不支持的模型名仍会被接受：`claude-opus*` 会映射到 `deepseek-v4-pro`，其它 `claude*` 模型名会映射到 `deepseek-flash`。不以 `claude` 开头的未知模型名会返回 `400` 错误。
 
 ---
 
@@ -83,7 +83,7 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 
 | 字段 | 支持情况 |
 | --- | --- |
-| anthropic-beta | `/messages` 忽略；Files API 端点必须携带（`files-api-2025-04-14`）——见 [Files API](files_api.md#anthropic-compatible-files-api) |
+| anthropic-beta | `/messages` 忽略；但 `source.type` 为 `file` 的图片必须携带（`files-api-2025-04-14`）；Files API 端点必须携带——见 [Files API](files_api.md#anthropic-compatible-files-api) |
 | anthropic-version | 忽略 |
 | x-api-key | 完全支持 |
 
@@ -104,7 +104,7 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | thinking | 支持（`budget_tokens` 被忽略） |
 | output\_config | 仅支持 `effort` |
 | top\_k | 忽略 |
-| top\_p | 仅思考模式下生效（下限为 `0.95`）；非思考模式下恒为 `1.0` |
+| top\_p | 因模型而异： `deepseek-flash`：思考模式下生效（下限 `0.95`），非思考模式下恒为 `1.0`。 `deepseek-v4-pro`：思考模式下忽略传入值（有工具时固定为 `0.95`，否则为 `1.0`），非思考模式下生效 |
 
 ### Tool 字段
 

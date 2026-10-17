@@ -2,7 +2,7 @@
 title: "FIM Completion (Beta)"
 description: "In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is commonly used for content completion、code completion."
 source: https://api-docs.deepseek.com/guides/fim_completion
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # FIM Completion (Beta)
@@ -30,7 +30,7 @@ response = client.completions.create(
     model="deepseek-flash",
     prompt="def fib(a):",
     suffix="    return fib(a-1) + fib(a-2)",
-    max_tokens=128
+    max_tokens=128,
 )
 print(response.choices[0].text)
 ```

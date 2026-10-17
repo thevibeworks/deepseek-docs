@@ -2,7 +2,7 @@
 title: "Tool Calls"
 description: "Tool Calls 让模型能够调用外部工具，来增强自身能力。"
 source: https://api-docs.deepseek.com/zh-cn/guides/tool_calls
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Tool Calls
@@ -26,7 +26,8 @@ def send_messages(messages):
     response = client.chat.completions.create(
         model="deepseek-flash",
         messages=messages,
-        tools=tools
+        tools=tools,
+        extra_body={"thinking": {"type": "disabled"}},
     )
     return response.choices[0].message
 
@@ -47,11 +48,11 @@ tools = [
                     "location": {
                         "type": "string",
                         "description": "The city and state, e.g. San Francisco, CA",
-                    }
+                    },
                 },
-                "required": ["location"]
+                "required": ["location"],
             },
-        }
+        },
     },
 ]
 
@@ -117,7 +118,7 @@ print(f"Model>\t {message.content}")
             "properties": {
                 "location": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA",
+                    "description": "The city and state, e.g. San Francisco, CA"
                 }
             },
             "required": ["location"],

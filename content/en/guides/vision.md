@@ -2,7 +2,7 @@
 title: "Vision"
 description: "The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name deepseek-v4-flash-vision-exp is still accepted, but the model has been retired and its requests are served by the latest Flash model as well."
 source: https://api-docs.deepseek.com/guides/vision
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Vision
@@ -44,7 +44,7 @@ response = client.chat.completions.create(
                     "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
                 },
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
@@ -85,7 +85,7 @@ response = client.chat.completions.create(
                     "image_url": {"url": "https://example.com/image.jpg"},
                 },
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
@@ -107,7 +107,7 @@ response = client.chat.completions.create(
                 {"type": "text", "text": "What is in this image?"},
                 {"type": "file", "file_id": "file-api-xxxxxxxxxxxxxxxx"},
             ],
-        }
+        },
     ],
 )
 print(response.choices[0].message.content)
@@ -221,7 +221,7 @@ message = client.messages.create(
                     },
                 },
             ],
-        }
+        },
     ],
 )
 print(message.content)
@@ -251,7 +251,7 @@ response = client.responses.create(
                 {"type": "input_text", "text": "What is in this image?"},
                 {"type": "input_image", "image_url": "https://example.com/image.jpg", "detail": "low"},
             ],
-        }
+        },
     ],
 )
 print(response.output_text)

@@ -2,7 +2,7 @@
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
 source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-09-18
+fetched: 2026-10-17
 ---
 
 # Rate Limit & Isolation
@@ -47,7 +47,7 @@ HTTP request body:
 ```json
 {
     "model": "deepseek-flash",
-    "messages": {"role": "user", "content": "Hello!"},
+    "messages": [{"role": "user", "content": "Hello!"}],
     "user_id": "your_user_id"
 }
 ```
@@ -58,7 +58,7 @@ If you are using the OpenAI SDK, you need to place the `user_id` parameter under
 response = client.chat.completions.create(
     model="deepseek-flash",
     messages=[{"role": "user", "content": "Hello!"}],
-    extra_body={"user_id": "your_user_id"}
+    extra_body={"user_id": "your_user_id"},
 )
 ```
 
@@ -69,7 +69,7 @@ HTTP request body:
 ```json
 {
     "model": "deepseek-flash",
-    "messages": {"role": "user", "content": "Hello!"},
+    "messages": [{"role": "user", "content": "Hello!"}],
     "metadata": {"user_id": "your_user_id"},
     "max_tokens": 1024
 }
@@ -82,7 +82,7 @@ message = client.messages.create(
     model="deepseek-flash",
     messages=[{"role": "user", "type": "text", "content": "Hello!"}],
     metadata={"user_id": "your_user_id"},
-    max_tokens=1024
+    max_tokens=1024,
 )
 ```
 

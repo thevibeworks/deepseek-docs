@@ -2,7 +2,7 @@
 title: "Integrate with Codex"
 description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # Integrate with Codex
@@ -39,6 +39,8 @@ The script performs the following steps:
 4. **Validate**: the script validates the syntax of `config.toml` / `models.json` before writing; if validation fails, it aborts without modifying any file.
 
 Run the script again at any time to rewrite the configuration (menu option 1 or 2), or to restore it to its pre-installation state (menu option 9). Re-running menu option 1 or 2 also adds any settings introduced by newer versions of the script (such as `show_raw_agent_reasoning` and the reasoning effort levels), leaving the rest of your configuration untouched. If an older version of the script had installed the `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` entries, re-running the script removes them and leaves only `deepseek-flash` and `deepseek-v4-pro`.
+
+Built-in web search is disabled by the setup script and is available only with `deepseek-v4-pro`. See [Web Search](#web-search) to enable it.
 
 ### Option 2: Edit the Configuration File Manually
 
@@ -220,7 +222,7 @@ If `config.toml` already has a `[desktop]` section, add `enabled-reasoning-effor
 | `model_provider` | The model provider to use, matching the id of the `[model_providers.<id>]` section below |
 | `preferred_auth_method`, `forced_login_method` | Authenticate with an API Key, skipping the ChatGPT account login |
 | `model_reasoning_effort` | Reasoning effort. Higher values make the model think more deeply, producing better answers at the cost of longer response time |
-| `web_search` | Built-in web search, disabled for the DeepSeek models |
+| `web_search` | Codex's built-in web search. Available only with `deepseek-v4-pro`; set to `"live"` to enable it |
 | `show_raw_agent_reasoning` | Show the model's raw reasoning (thinking) content. Only takes effect in Codex CLI: press `Ctrl + T` to view the thinking process |
 | `model_catalog_json` | Path to the custom model catalog file (`models.json`), from which Codex reads model metadata |
 | `name` in `[model_providers.deepseek]` | Display name of the model provider |
@@ -228,6 +230,19 @@ If `config.toml` already has a `[desktop]` section, add `enabled-reasoning-effor
 | `wire_api` in `[model_providers.deepseek]` | The protocol used to communicate with the model; `"responses"` means the [Responses API](../../guides/responses_api.md) |
 | `experimental_bearer_token` in `[model_providers.deepseek]` | Your API Key, stored directly in the configuration file |
 | `enabled-reasoning-efforts` in `[desktop]` | Reasoning effort levels available in the ChatGPT desktop app |
+
+### Web Search
+
+Codex's built-in web search is available only when Codex uses `deepseek-v4-pro`. The setup script writes `web_search = "disabled"`; change this field to `"live"` after running the script if you want to use web search. The example configuration above also disables web search because it uses `deepseek-flash`.
+
+To enable web search, switch to `deepseek-v4-pro` and set `web_search` to `"live"` in `~/.codex/config.toml`:
+
+```toml
+model = "deepseek-v4-pro"
+web_search = "live"
+```
+
+Restart Codex after saving the change. DeepSeek executes the searches on the server, and the requests are billed at [Search API pricing](../../guides/search.md#billing).
 
 ## 2. Get Started
 

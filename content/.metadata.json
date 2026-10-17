@@ -148,8 +148,7 @@
     },
     "content/en/news/news250821.md": {
       "url": "https://api-docs.deepseek.com/news/news250821",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250821 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-15"
+      "title": "DeepSeek-V3.1 Release"
     },
     "content/en/news/news250115.md": {
       "url": "https://api-docs.deepseek.com/news/news250115",
@@ -157,8 +156,7 @@
     },
     "content/en/news/news251201.md": {
       "url": "https://api-docs.deepseek.com/news/news251201",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news251201 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-08"
+      "title": "DeepSeek-V3.2 Release"
     },
     "content/en/news/news260424.md": {
       "url": "https://api-docs.deepseek.com/news/news260424",
@@ -359,8 +357,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-15"
+      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -1553,8 +1550,56 @@
     "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.2/stored-credentials-precedence/guide.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.2/stored-credentials-precedence/guide.md",
       "title": "A stored key takes precedence over an exported variable"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-13-deepseek-search-thinking.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-13-deepseek-search-thinking.md",
+      "title": "2026-10-13-deepseek-search-thinking"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.3/plugin-engines-dsh/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.3/plugin-engines-dsh/guide.md",
+      "title": "Plugin compatibility reads `engines.dsh` first"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.4/account-notification-fields/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.4/account-notification-fields/guide.md",
+      "title": "Update account notification consumers"
+    },
+    "content/en/dsh/docs/user/guide/plugin-market.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/plugin-market.md",
+      "title": "Plugin markets"
+    },
+    "content/en/api/fetch.md": {
+      "url": "https://api-docs.deepseek.com/api/fetch",
+      "title": "Fetch"
+    },
+    "content/en/news/news261017.md": {
+      "url": "https://api-docs.deepseek.com/news/news261017",
+      "title": "DeepSeek-V4.1-Flash-1017: Wish-Driven Programming Made Real"
+    },
+    "content/en/guides/search.md": {
+      "url": "https://api-docs.deepseek.com/guides/search",
+      "title": "Search & Fetch"
+    },
+    "content/en/api/search.md": {
+      "url": "https://api-docs.deepseek.com/api/search",
+      "title": "Search"
+    },
+    "content/zh-cn/api/fetch.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/fetch",
+      "title": "网页抓取"
+    },
+    "content/zh-cn/api/search.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/search",
+      "title": "网页搜索"
+    },
+    "content/zh-cn/guides/search.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/search",
+      "title": "网页搜索与抓取"
+    },
+    "content/zh-cn/news/news261017.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news261017",
+      "title": "DeepSeek V4.1 Flash 新版本：许愿式编程一键成真"
     }
   },
-  "updated": "2026-10-14",
+  "updated": "2026-10-17",
   "site": "https://api-docs.deepseek.com"
 }

@@ -2,7 +2,7 @@
 title: "首次调用 API"
 description: "DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配置，您可以使用 OpenAI/Anthropic SDK 来访问 DeepSeek API，或使用与 OpenAI/Anthropic API 兼容的软件。"
 source: https://api-docs.deepseek.com/zh-cn/
-fetched: 2026-09-29
+fetched: 2026-10-17
 ---
 
 # 首次调用 API
@@ -16,7 +16,7 @@ DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配�
 | api\_key | 申请一个 [API key](https://platform.deepseek.com/api_keys) |
 | model | `deepseek-flash`(1) `deepseek-v4-pro` |
 
-(1) 模型名请使用 `deepseek-flash`。旧模型名 `deepseek-v4-flash`、`deepseek-v4-flash-vision-exp` 仍可调用，但对应模型已下线，请求将由 DeepSeek-V4.1-Flash 模型提供服务，并按 Flash 价格计费。
+(1) 模型名请使用 `deepseek-flash`。该模型现已升级为 DeepSeek-V4.1-Flash-1017，调用方式保持不变。旧模型名 `deepseek-v4-flash`、`deepseek-v4-flash-vision-exp` 仍可调用，但对应模型已下线，请求由 DeepSeek-V4.1-Flash-1017 模型提供服务，并按 Flash 价格计费。
 
 ## 接入 Agent 工具
 
@@ -59,7 +59,8 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key=os.environ.get('DEEPSEEK_API_KEY'),
-    base_url="https://api.deepseek.com")
+    base_url="https://api.deepseek.com",
+)
 
 response = client.chat.completions.create(
     model="deepseek-flash",
@@ -69,7 +70,7 @@ response = client.chat.completions.create(
     ],
     stream=False,
     reasoning_effort="high",
-    extra_body={"thinking": {"type": "enabled"}}
+    extra_body={"thinking": {"type": "enabled"}},
 )
 
 print(response.choices[0].message.content)
