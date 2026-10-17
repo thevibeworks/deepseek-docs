@@ -334,14 +334,15 @@ async def fetch_page(session, sem, url: str, out: Path, results: dict,
             results[str(out.relative_to(ROOT))] = {
                 "url": url, "title": meta["title"], "changed": changed}
             print(f"  {'ok ' if changed else '== '} {out.relative_to(ROOT)}")
-        except FallbackPageError:
-            if not gap:
-                raise
-            # A sitemap-gap probe this locale does not serve: nothing to
-            # mirror and nothing for the manifest, or every page one locale
-            # lacks would sit there as a permanent error.
-            print(f"  --  {url}: listed in another locale only")
         except Exception as e:  # noqa: BLE001 - report and continue
+            if gap and isinstance(e, FallbackPageError):
+                # A sitemap-gap probe this locale does not serve: nothing to
+                # mirror and nothing for the manifest, or every page one
+                # locale lacks would sit there as a permanent error. (A
+                # `raise` from its own `except` clause would skip this
+                # handler and end the run: 2026-10-17, news250120.)
+                print(f"  --  {url}: listed in another locale only")
+                return
             results[str(out.relative_to(ROOT))] = {"url": url, "error": str(e)}
             print(f"  ERR {url}: {e}", file=sys.stderr)
 
