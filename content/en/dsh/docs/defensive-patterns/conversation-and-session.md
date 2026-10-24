@@ -1,7 +1,7 @@
 ---
 title: "Conversation and Session rules"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/defensive-patterns/conversation-and-session.md
-fetched: 2026-10-14
+fetched: 2026-10-24
 ---
 # Conversation and Session rules
 
@@ -29,7 +29,7 @@ function PlanChip({ useProjection }: PlanChipProps) {
 }
 
 // The computation is a registered unit; the registry drives it and publishes changes.
-const planDefinition: ProjectionDefinition<'plan'> = {
+const planDefinition: ProjectionDefinition<'plan', typeof emptyPlan> = {
   key: 'plan',
   stateVersion: 1,
   init: () => emptyPlan,

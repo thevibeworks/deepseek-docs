@@ -2,7 +2,7 @@
 title: "网页搜索"
 description: "按 query 搜索网页，返回结构化的结果列表。支持的搜索语法、错误处理和计费说明请参考[网页搜索与抓取指南](/zh-cn/guides/search)。"
 source: https://api-docs.deepseek.com/zh-cn/api/search
-fetched: 2026-10-17
+fetched: 2026-10-24
 ---
 
 # 网页搜索
@@ -133,7 +133,7 @@ required
       "content": "string",
       "site_name": "string",
       "site_icon": "string",
-      "date": "2026-10-17T09:00:12.122Z",
+      "date": "2026-10-19T05:41:50.168Z",
       "authority": 0
     }
   ]

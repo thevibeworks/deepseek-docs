@@ -1,7 +1,7 @@
 ---
 title: "Remote and API rules"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/defensive-patterns/remote-and-api.md
-fetched: 2026-10-14
+fetched: 2026-10-24
 ---
 # Remote and API rules
 
@@ -98,16 +98,18 @@ The owning package decides and registers its unit, and the controller only reads
 
 ```ts ignore-check
 // packages/workspace/<feature>/src/index.ts: the rule lives with the feature it serves.
-ctx.sessionProjections.register({
+export const durablePageProjectionDefinition = {
   key: 'durablePage',
   stateSchema: durablePageState,
   init: () => ({ durable: false }),
   apply: applyDurablePage,
   stateVersion: 1,
-})
+}
+await ctx.sessionProjections.register(durablePageProjectionDefinition)
 
 // packages/api/session-controller: generic orchestration reads the projected value.
-const { durable } = ctx.sessionProjections.stateOf(session, 'durablePage')
+const durablePage = await ctx.sessionProjections.register(durablePageProjectionDefinition)
+const { durable } = durablePage.stateOf(session)
 ```
 
 The wrong version decides the rule inside the shared layer:

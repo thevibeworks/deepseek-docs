@@ -1,7 +1,7 @@
 ---
 title: "Subagents"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subagent.md
-fetched: 2026-10-14
+fetched: 2026-10-24
 ---
 # Subagents
 
@@ -409,15 +409,7 @@ Generated from source by `scripts/gen-cordis-catalog.ts` (verified fresh by `pnp
 
 ### `ctx.subagentModelSelection` — `SubagentModelSelectionConfig`
 
-Singleton settings owner read when delegation tools are composed for a Session.
-
-```ts cordis-catalog
-/**
- * Read a detached selection preference for the next eligible Session composition.
- * @returns the enabled state and exact allowed routes.
- */
-current(): SubagentModelSelectionSettings
-```
+Host settings owner that records Session authorization before the first model request.
 
 Source: [`packages/subagent/tool-subagent/src/model-selection-settings.ts`](../../packages/subagent/tool-subagent/src/model-selection-settings.ts)
 

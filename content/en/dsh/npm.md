@@ -1,7 +1,7 @@
 ---
 title: "npm: @deepseek-ai/dsh"
 source: https://www.npmjs.com/package/@deepseek-ai/dsh
-fetched: 2026-10-17
+fetched: 2026-10-24
 ---
 # npm: @deepseek-ai/dsh
 
@@ -11,15 +11,16 @@ dsh CLI: profile launch, plugin management, and configuration inspection
 npm install -g @deepseek-ai/dsh
 ```
 
-- **latest**: `0.2.0-rc.2`
+- **latest**: `0.2.1-rc.2`
 - **alpha**: `0.2.1-alpha.5`
-- **next**: `0.2.1-rc.2`
+- **next**: `0.2.1-rc.3`
 - **license**: MIT
 - **bin**: `dsh`
 - **homepage**: https://github.com/deepseek-ai/deepseek-harness#readme
 
 ## Versions
 
+- `0.2.1-rc.3` -- 2026-10-23
 - `0.2.1-rc.2` -- 2026-10-17
 - `0.2.1-rc.1` -- 2026-10-17
 - `0.2.1-alpha.5` -- 2026-10-16

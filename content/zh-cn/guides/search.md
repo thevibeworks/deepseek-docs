@@ -2,7 +2,7 @@
 title: "网页搜索与抓取"
 description: "Search 接口和 Fetch 接口为 Agent 与 RAG 应用提供实时网页内容："
 source: https://api-docs.deepseek.com/zh-cn/guides/search
-fetched: 2026-10-17
+fetched: 2026-10-24
 ---
 
 # 网页搜索与抓取
@@ -255,7 +255,7 @@ Search 和 Fetch 按请求次数计费，不按 token 或返回结果条数计�
 
 | API | QPS 限制 |
 | --- | --- |
-| Search | 5 |
-| Fetch | 5 |
+| Search | 100 |
+| Fetch | 25 |
 
 QPS（每秒请求数）限制按账号粒度计算，与使用哪个 API Key 无关，并与模型并发限制相互独立。超过账号级 QPS 限制的请求会收到 HTTP 429 错误码。除了账号级限制，Fetch 还针对目标域名有 QPS 限制，超过该限制也会收到 HTTP 429 错误码。
