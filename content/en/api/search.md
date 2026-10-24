@@ -2,7 +2,7 @@
 title: "Search"
 description: "Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, error handling, and billing."
 source: https://api-docs.deepseek.com/api/search
-fetched: 2026-10-17
+fetched: 2026-10-24
 ---
 
 # Search
@@ -133,7 +133,7 @@ The authority tier of the page, 0 to 4 (`-1` means unknown). Values of 3 or abov
       "content": "string",
       "site_name": "string",
       "site_icon": "string",
-      "date": "2026-10-17T09:00:12.045Z",
+      "date": "2026-10-19T05:41:50.090Z",
       "authority": 0
     }
   ]

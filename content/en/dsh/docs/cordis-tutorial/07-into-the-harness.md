@@ -1,7 +1,7 @@
 ---
 title: "7. Into the harness"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-tutorial/07-into-the-harness.md
-fetched: 2026-09-02
+fetched: 2026-10-24
 ---
 # 7. Into the harness
 
@@ -42,12 +42,13 @@ export function apply(ctx: Context) {
   // the model. ToolCallId brands the correlation id a provider would issue.
   void (async () => {
     const result = await ctx.tools.execute({
-      callId: brandString<ToolCallId>('demo-1'),
-      name: 'greet',
-      arguments: { name: 'Cordis' },
+      calls: [{
+        type: 'tool-call', id: brandString<ToolCallId>('demo-1'),
+        name: 'greet', arguments: JSON.stringify({ name: 'Cordis' }),
+      }],
       signal: new AbortController().signal,
     })
-    console.log('tool replied:', JSON.stringify(result.content))
+    console.log('tool replied:', JSON.stringify(result.results[0]?.result.content))
   })()
 }
 ```
