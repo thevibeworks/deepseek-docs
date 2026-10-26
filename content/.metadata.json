@@ -481,7 +481,8 @@
     },
     "content/zh-cn/quick_start/agent_integrations/opencode.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode",
-      "title": "接入 OpenCode"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-10-26"
     },
     "content/zh-cn/index.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/",
