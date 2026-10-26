@@ -118,8 +118,14 @@ jobs:
               (dsh/npm.md) -- dsh is a developer preview that breaks
               things without migration paths. `upgrade-guide/vX/` is named
               for the release you upgrade FROM ("In vX, ... The next
-              release removes ..."); name the release that ships the
-              change, from dsh/npm.md, never X.
+              release removes ..."), never the release that ships it.
+              The mirror tracks master, and releases are cut from
+              branches: 0.2.1-rc.3 carried 1 of the 23 guides master had
+              gained since rc.2. Say a release ships a change only when
+              the "Upgrade guides by release" section of dsh/npm.md does
+              not list the guide under that release's dist-tag; when it
+              is listed under every dist-tag, write "on master, in no
+              published release yet".
 
             **minor** (archive freshness -- committed straight to main):
             - Wording, typos, formatting, link fixes

@@ -19,7 +19,11 @@ Sources (both fetched from the network, pinned to the default branch):
 - registry.npmjs.org/@deepseek-ai/dsh -- the package publishes no
   readme (as of rc.6), so npm.md renders the packument metadata:
   dist-tags, latest version, version history. A new release shows up
-  as a diff on that page.
+  as a diff on that page. npm.md also lists the upgrade guides on the
+  default branch that a dist-tag's git tag does not carry: the docs
+  describe master, and a newer npm version is not proof a change
+  shipped (0.2.1-rc.3 was cut 6 commits after rc.2 and carried 1 of
+  the 23 guides master had gained since).
 
 Content is kept verbatim except two deterministic touches: upstream
 YAML frontmatter (VitePress layout metadata) is dropped in favor of
@@ -82,6 +86,23 @@ def list_doc_paths(client: httpx.Client, branch: str) -> list[str]:
         or (p.startswith("docs/") and p.endswith(".md") and not p.endswith(".zh.md")))
 
 
+GUIDE = re.compile(r"^docs/upgrade-guide/([^/]+/[^/]+)/guide\.md$")
+
+
+def guides_in(paths: list[str]) -> set[str]:
+    """`<from-release>/<slug>` for every upgrade guide among repo paths."""
+    return {m.group(1) for p in paths if (m := GUIDE.match(p))}
+
+
+def tag_guides(client: httpx.Client, version: str) -> set[str]:
+    """Upgrade guides in the git tag a published version was cut from."""
+    tree = get_json(
+        client, f"{API}/repos/{REPO}/git/trees/dsh-v{version}?recursive=1", gh_headers())
+    if tree.get("truncated"):
+        raise SystemExit(f"git tree of dsh-v{version} truncated")
+    return guides_in([t["path"] for t in tree["tree"] if t["type"] == "blob"])
+
+
 def repo_path_to_rel(path: str) -> str:
     """Map an upstream repo path to a path under content/en/dsh/."""
     return "index.md" if path == "README.md" else path
@@ -127,7 +148,27 @@ def render_doc(raw: str, repo_path: str, branch: str) -> str:
     return render_page(body, title, source)
 
 
-def render_npm(pkg: dict) -> str:
+def render_guides_by_release(master: set[str], shipped: dict[str, tuple[str, set[str]]],
+                             branch: str) -> list[str]:
+    """Which upgrade guides on the default branch each dist-tag carries."""
+    lines = ["", "## Upgrade guides by release", "",
+             f"Upgrade guides on `{branch}` that are missing from a dist-tag's git tag",
+             "(`dsh-v<version>`). A guide's directory names the release you upgrade FROM,",
+             "not the release that carries it; a guide listed here was not in that",
+             "release's tree. Read the source at the tag before saying the release ships",
+             "or lacks the change itself.", ""]
+    for tag, (ver, guides) in sorted(shipped.items()):
+        missing = sorted(master - guides)
+        if not missing:
+            lines.append(f"- **{tag}** (`{ver}`): carries every guide on `{branch}`.")
+            continue
+        lines.append(f"- **{tag}** (`{ver}`): {len(missing)} of {len(master)} guides on "
+                     f"`{branch}` are not in it:")
+        lines += [f"  - `{g}`" for g in missing]
+    return lines
+
+
+def render_npm(pkg: dict, guides: list[str] | None = None) -> str:
     latest = pkg["dist-tags"]["latest"]
     v = pkg["versions"][latest]
     times = pkg.get("time", {})
@@ -149,10 +190,9 @@ def render_npm(pkg: dict) -> str:
         f"- **license**: {v.get('license', 'unknown')}",
         f"- **bin**: {', '.join(f'`{b}`' for b in (v.get('bin') or {}))}",
         f"- **homepage**: {v.get('homepage', '')}",
-        "",
-        "## Versions",
-        "",
     ]
+    lines += guides or []
+    lines += ["", "## Versions", ""]
     published = [(ver, times[ver][:10]) for ver in pkg["versions"] if ver in times]
     for ver, day in sorted(published, key=lambda p: (p[1], p[0]), reverse=True):
         lines.append(f"- `{ver}` -- {day}")
@@ -221,7 +261,10 @@ def main() -> int:
             pages[rel] = (render_doc(resp.text, repo_path, branch),
                           f"https://github.com/{REPO}/blob/{branch}/{repo_path}")
         pkg = get_json(client, f"https://registry.npmjs.org/{NPM_PACKAGE}")
-        pages["npm.md"] = (render_npm(pkg),
+        shipped = {tag: (ver, tag_guides(client, ver))
+                   for tag, ver in pkg["dist-tags"].items()}
+        guides = render_guides_by_release(guides_in(doc_paths), shipped, branch)
+        pages["npm.md"] = (render_npm(pkg, guides),
                            f"https://www.npmjs.com/package/{NPM_PACKAGE}")
 
     expected = {OUT / rel for rel in pages}
