@@ -2,7 +2,7 @@
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
 source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-10-17
+fetched: 2026-10-26
 ---
 
 # Search & Fetch
@@ -255,7 +255,7 @@ For each account, Search and Fetch are limited independently, and traffic to one
 
 | API | QPS Limit |
 | --- | --- |
-| Search | 5 |
-| Fetch | 5 |
+| Search | 100 |
+| Fetch | 25 |
 
 The QPS (requests per second) limits are calculated at the account level, regardless of which API key is used, and are separate from the model concurrency limits. Requests above the account-level QPS limit receive HTTP 429. In addition to the account-level limit, Fetch is also subject to a per-domain QPS limit, and requests above that limit also receive HTTP 429.

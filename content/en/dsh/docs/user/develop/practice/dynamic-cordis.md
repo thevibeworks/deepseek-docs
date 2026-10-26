@@ -1,13 +1,13 @@
 ---
 title: "Configure persistent plugins from a prompt"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/practice/dynamic-cordis.md
-fetched: 2026-09-18
+fetched: 2026-10-26
 ---
 # Configure persistent plugins from a prompt
 
 English | [中文](dynamic-cordis.zh.md)
 
-Creator mode provides [Plugin Manager](../../../../packages/boot/plugin-manager/README.md) and read-only [runtime inspection](../../../../packages/extensions/tool-cordis/README.md). Plugin configuration belongs to the current profile, affects its sessions, and survives process restarts.
+Standard and Creator modes provide [Plugin Manager](../../../../packages/boot/plugin-manager/README.md); Creator mode adds read-only [runtime inspection](../../../../packages/extensions/tool-cordis/README.md). Plugin configuration belongs to the current profile, affects its sessions, and survives process restarts.
 
 ## Connect an MCP server
 

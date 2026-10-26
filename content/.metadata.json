@@ -107,11 +107,13 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "title": "🚀 Introducing DeepSeek-V3"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-10-26"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "title": "DeepSeek-V3-0324 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-10-26"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
@@ -240,11 +242,13 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "title": "Models & Pricing"
+      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-10-26"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
-      "title": "Change Log"
+      "error": "served fallback shell for https://api-docs.deepseek.com/updates (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-10-26"
     },
     "content/en/quick_start/rate_limit.md": {
       "url": "https://api-docs.deepseek.com/quick_start/rate_limit",
@@ -357,8 +361,7 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-19"
+      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -1346,7 +1349,7 @@
     },
     "content/en/dsh/docs/cookbook/adding-a-plugin-preview.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-plugin-preview.md",
-      "title": "Cookbook: Add a built-in plugin feature preview"
+      "title": "Cookbook: Add a plugin feature preview"
     },
     "content/en/dsh/docs/defensive-patterns/README.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/defensive-patterns/README.md",
@@ -1566,7 +1569,7 @@
     },
     "content/en/dsh/docs/user/guide/plugin-market.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/plugin-market.md",
-      "title": "Plugin markets"
+      "title": "Plugin indexes"
     },
     "content/en/api/fetch.md": {
       "url": "https://api-docs.deepseek.com/api/fetch",
@@ -1599,8 +1602,132 @@
     "content/zh-cn/news/news261017.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news261017",
       "title": "DeepSeek V4.1 Flash 新版本：许愿式编程一键成真"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-22-action-card-status.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-22-action-card-status.md",
+      "title": "2026-10-22-action-card-status"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.2/cordis-timer-wrappers/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.2/cordis-timer-wrappers/guide.md",
+      "title": "Timer wrapper return types and disposal"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.2/plugin-manager-view-fields/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.2/plugin-manager-view-fields/guide.md",
+      "title": "`viewProfilePackage` takes the fields it prints"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.4/model-switch-compaction/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.4/model-switch-compaction/guide.md",
+      "title": "Model switches check destination context pressure"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-alpha.4/session-model-selection/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.4/session-model-selection/guide.md",
+      "title": "Session model selection applies at the next step"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.1/agent-instructions-chain-budgets/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.1/agent-instructions-chain-budgets/guide.md",
+      "title": "Size `maxBytes` of `@deepseek-ai/dsh-agent-instructions` per instruction chain"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.1/subagent-control-tools/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.1/subagent-control-tools/guide.md",
+      "title": "Update subagent model selection and control tools"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/approval-projection-dependency/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/approval-projection-dependency/guide.md",
+      "title": "Approval requires the Projection registry"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/auto-review-shutdown/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/auto-review-shutdown/guide.md",
+      "title": "Reopen Auto review Sessions after shutdown"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/auto-review-user-sources/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/auto-review-user-sources/guide.md",
+      "title": "Auto review recognizes user-sourced instructions"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/built-in-japanese/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/built-in-japanese/guide.md",
+      "title": "Built-in languages replace duplicate language packs"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/conditional-tools/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/conditional-tools/guide.md",
+      "title": "Declare conditional tools through step admission"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/cua-preset-scope/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/cua-preset-scope/guide.md",
+      "title": "CUA defaults to PTC session scopes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/cua-relative-coordinates/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/cua-relative-coordinates/guide.md",
+      "title": "CUA relative coordinates use 0–999"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/file-drag-callbacks/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/file-drag-callbacks/guide.md",
+      "title": "Supply file preparation callbacks to image views"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/headless-policy-composition/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/headless-policy-composition/guide.md",
+      "title": "Configure policy when replacing headless startup"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/new-session-blank-reuse/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/new-session-blank-reuse/guide.md",
+      "title": "New Session returns to its blank Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/node-24/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/node-24/guide.md",
+      "title": "Node.js 24 is required"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/official-bundle-lists/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/official-bundle-lists/guide.md",
+      "title": "Import bundle lists from `@deepseek-ai/dsh-official-bundles`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/persistent-terminal-controls/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/persistent-terminal-controls/guide.md",
+      "title": "Manage persistent terminals through profile configuration"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/pi-ai-default-capacities/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/pi-ai-default-capacities/guide.md",
+      "title": "pi-ai default model capacities"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/pi-ai-model-catalog/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/pi-ai-model-catalog/guide.md",
+      "title": "pi-ai 1.3.0 model catalog changes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/pi-ai-protocol-replay/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/pi-ai-protocol-replay/guide.md",
+      "title": "pi-ai 1.3.0 protocol and replay changes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/sdk-desktop-context/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/sdk-desktop-context/guide.md",
+      "title": "SDK desktop tools and context"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/sdk-minimal-checkpoints/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/sdk-minimal-checkpoints/guide.md",
+      "title": "SDK-minimal requires durable checkpoints"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/session-projection-handles/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/session-projection-handles/guide.md",
+      "title": "Session projection registration handles"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/session-store-writes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/session-store-writes/guide.md",
+      "title": "Store-owned Session writes follow publication"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/tool-executor-plugins/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/tool-executor-plugins/guide.md",
+      "title": "Mount a tool executor"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/web-fetch-private-destinations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/web-fetch-private-destinations/guide.md",
+      "title": "`web_fetch` reaches private destinations"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/webserver-index-peer/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/webserver-index-peer/guide.md",
+      "title": "WebServer index rendering takes a Peer"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/independent-session-forks/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/independent-session-forks/guide.md",
+      "title": "Ordinary forks are independent Sessions"
     }
   },
-  "updated": "2026-10-17",
+  "updated": "2026-10-26",
   "site": "https://api-docs.deepseek.com"
 }

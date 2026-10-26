@@ -3131,7 +3131,7 @@ Loading...
 title: "Search"
 description: "Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, error handling, and billing."
 source: https://api-docs.deepseek.com/api/search
-fetched: 2026-10-17
+fetched: 2026-10-26
 ---
 
 # Search
@@ -3262,7 +3262,7 @@ The authority tier of the page, 0 to 4 (`-1` means unknown). Values of 3 or abov
       "content": "string",
       "site_name": "string",
       "site_icon": "string",
-      "date": "2026-10-17T09:00:12.045Z",
+      "date": "2026-10-19T05:41:50.090Z",
       "authority": 0
     }
   ]
@@ -3633,7 +3633,7 @@ tool_calls=None
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-10-18
+fetched: 2026-10-19
 ---
 
 # FAQ: Login Issues
@@ -3703,7 +3703,7 @@ If you believe this is an error, please contact us by filling out the「[Account
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-10-18
+fetched: 2026-10-19
 ---
 
 # FAQ: User Guide
@@ -3776,7 +3776,7 @@ If you cannot find this option, please upgrade your App to the latest version.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-10-18
+fetched: 2026-10-19
 ---
 
 # FAQ: Chat Issues
@@ -3843,7 +3843,7 @@ Check if file uploads are restricted within your local network (LAN).
 title: "FAQ: API"
 description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-10-18
+fetched: 2026-10-19
 ---
 
 # FAQ: API
@@ -5057,7 +5057,7 @@ Token usage is returned in `usage`:
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
 source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-10-17
+fetched: 2026-10-26
 ---
 
 # Search & Fetch
@@ -5310,8 +5310,8 @@ For each account, Search and Fetch are limited independently, and traffic to one
 
 | API | QPS Limit |
 | --- | --- |
-| Search | 5 |
-| Fetch | 5 |
+| Search | 100 |
+| Fetch | 25 |
 
 The QPS (requests per second) limits are calculated at the account level, regardless of which API key is used, and are separate from the model concurrency limits. Requests above the account-level QPS limit receive HTTP 429. In addition to the account-level limit, Fetch is also subject to a per-domain QPS limit, and requests above that limit also receive HTTP 429.
 
