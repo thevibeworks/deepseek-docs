@@ -1,7 +1,7 @@
 ---
 title: "Bilingual documentation"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/i18n/README.md
-fetched: 2026-10-05
+fetched: 2026-10-26
 ---
 # Bilingual documentation
 
@@ -51,6 +51,8 @@ The gate's limit, stated plainly: **a green gate means the pair was confirmed co
 ## Scope and exclusions
 
 **Scope**: the root `CONTRIBUTING.md`, `BRAND_GUIDELINES.md`, and `SAFETY.md` documents, every non-vendor README, and every active document under `.agents/notes/**`, `docs/**`, and `python/**`. README matching is case-insensitive on the basename and covers future directories without another manifest edit. Dependency and ignored build-output trees and the frozen `.agents/notes/archived/` tree are discovery exclusions, not evolving translation source.
+
+**Outside scope**: a bundle's detail documents under `packages/<group>/<package>/docs/`, which locale `meta.detail` names for the plugin page. The page shows the file for the active UI language, so these documents carry no in-document language switcher and no consistency record; [`verify-md-links`](../../scripts/verify-md-links.ts) and [`verify-md-wrap`](../../scripts/verify-md-wrap.ts) still check both languages, and review keeps them in step.
 
 Generated English references and graphs participate in pairing when a reviewed Chinese counterpart is available. A generator puts its generated data in generated regions and writes each region into both pages, so regeneration never requires a manual Chinese update or a new record; only the prose outside the regions is translated and recorded. Freshness and pairing gates enforce their respective invariants independently.
 
