@@ -94,10 +94,16 @@ def guides_in(paths: list[str]) -> set[str]:
     return {m.group(1) for p in paths if (m := GUIDE.match(p))}
 
 
-def tag_guides(client: httpx.Client, version: str) -> set[str]:
-    """Upgrade guides in the git tag a published version was cut from."""
-    tree = get_json(
-        client, f"{API}/repos/{REPO}/git/trees/dsh-v{version}?recursive=1", gh_headers())
+def tag_guides(client: httpx.Client, version: str) -> set[str] | None:
+    """Upgrade guides in the git tag a published version was cut from, or None
+    while that tag does not exist: npm publishes before the tag is pushed
+    (0.2.1-rc.4 reached npm 2026-10-26T15:28Z with no tag for hours)."""
+    resp = client.get(f"{API}/repos/{REPO}/git/trees/dsh-v{version}?recursive=1",
+                      headers=gh_headers())
+    if resp.status_code == 404:
+        return None
+    resp.raise_for_status()
+    tree = resp.json()
     if tree.get("truncated"):
         raise SystemExit(f"git tree of dsh-v{version} truncated")
     return guides_in([t["path"] for t in tree["tree"] if t["type"] == "blob"])
@@ -148,7 +154,8 @@ def render_doc(raw: str, repo_path: str, branch: str) -> str:
     return render_page(body, title, source)
 
 
-def render_guides_by_release(master: set[str], shipped: dict[str, tuple[str, set[str]]],
+def render_guides_by_release(master: set[str],
+                             shipped: dict[str, tuple[str, set[str] | None]],
                              branch: str) -> list[str]:
     """Which upgrade guides on the default branch each dist-tag carries."""
     lines = ["", "## Upgrade guides by release", "",
@@ -158,6 +165,10 @@ def render_guides_by_release(master: set[str], shipped: dict[str, tuple[str, set
              "release's tree. Read the source at the tag before saying the release ships",
              "or lacks the change itself.", ""]
     for tag, (ver, guides) in sorted(shipped.items()):
+        if guides is None:
+            lines.append(f"- **{tag}** (`{ver}`): no git tag `dsh-v{ver}` yet, so what "
+                         "it carries is unknown.")
+            continue
         missing = sorted(master - guides)
         if not missing:
             lines.append(f"- **{tag}** (`{ver}`): carries every guide on `{branch}`.")

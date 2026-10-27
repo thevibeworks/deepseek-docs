@@ -125,7 +125,8 @@ jobs:
               the "Upgrade guides by release" section of dsh/npm.md does
               not list the guide under that release's dist-tag; when it
               is listed under every dist-tag, write "on master, in no
-              published release yet".
+              published release yet". A dist-tag marked "no git tag yet"
+              is unknown, never evidence either way: name it as unknown.
 
             **minor** (archive freshness -- committed straight to main):
             - Wording, typos, formatting, link fixes
