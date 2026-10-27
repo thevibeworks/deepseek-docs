@@ -1,7 +1,7 @@
 ---
 title: "npm: @deepseek-ai/dsh"
 source: https://www.npmjs.com/package/@deepseek-ai/dsh
-fetched: 2026-10-26
+fetched: 2026-10-27
 ---
 # npm: @deepseek-ai/dsh
 
@@ -13,7 +13,7 @@ npm install -g @deepseek-ai/dsh
 
 - **latest**: `0.2.1-rc.2`
 - **alpha**: `0.2.1-alpha.5`
-- **next**: `0.2.1-rc.3`
+- **next**: `0.2.1-rc.4`
 - **license**: MIT
 - **bin**: `dsh`
 - **homepage**: https://github.com/deepseek-ai/deepseek-harness#readme
@@ -88,39 +88,11 @@ or lacks the change itself.
   - `v0.2.1-rc.2/web-fetch-private-destinations`
   - `v0.2.1-rc.2/webserver-index-peer`
   - `v0.2.1-rc.3/independent-session-forks`
-- **next** (`0.2.1-rc.3`): 29 of 72 guides on `master` are not in it:
-  - `v0.2.1-alpha.2/cordis-timer-wrappers`
-  - `v0.2.1-alpha.2/plugin-manager-view-fields`
-  - `v0.2.1-alpha.4/model-switch-compaction`
-  - `v0.2.1-alpha.4/session-model-selection`
-  - `v0.2.1-rc.1/agent-instructions-chain-budgets`
-  - `v0.2.1-rc.1/subagent-control-tools`
-  - `v0.2.1-rc.2/approval-projection-dependency`
-  - `v0.2.1-rc.2/auto-review-shutdown`
-  - `v0.2.1-rc.2/auto-review-user-sources`
-  - `v0.2.1-rc.2/built-in-japanese`
-  - `v0.2.1-rc.2/conditional-tools`
-  - `v0.2.1-rc.2/cua-preset-scope`
-  - `v0.2.1-rc.2/cua-relative-coordinates`
-  - `v0.2.1-rc.2/file-drag-callbacks`
-  - `v0.2.1-rc.2/headless-policy-composition`
-  - `v0.2.1-rc.2/node-24`
-  - `v0.2.1-rc.2/official-bundle-lists`
-  - `v0.2.1-rc.2/persistent-terminal-controls`
-  - `v0.2.1-rc.2/pi-ai-default-capacities`
-  - `v0.2.1-rc.2/pi-ai-model-catalog`
-  - `v0.2.1-rc.2/pi-ai-protocol-replay`
-  - `v0.2.1-rc.2/sdk-desktop-context`
-  - `v0.2.1-rc.2/sdk-minimal-checkpoints`
-  - `v0.2.1-rc.2/session-projection-handles`
-  - `v0.2.1-rc.2/session-store-writes`
-  - `v0.2.1-rc.2/tool-executor-plugins`
-  - `v0.2.1-rc.2/web-fetch-private-destinations`
-  - `v0.2.1-rc.2/webserver-index-peer`
-  - `v0.2.1-rc.3/independent-session-forks`
+- **next** (`0.2.1-rc.4`): no git tag `dsh-v0.2.1-rc.4` yet, so what it carries is unknown.
 
 ## Versions
 
+- `0.2.1-rc.4` -- 2026-10-26
 - `0.2.1-rc.3` -- 2026-10-23
 - `0.2.1-rc.2` -- 2026-10-17
 - `0.2.1-rc.1` -- 2026-10-17
