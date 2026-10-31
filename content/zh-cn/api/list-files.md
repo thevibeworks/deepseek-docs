@@ -2,10 +2,12 @@
 title: "列出文件"
 description: "返回属于该用户的文件列表，使用游标分页。"
 source: https://api-docs.deepseek.com/zh-cn/api/list-files
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # 列出文件
+
+[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/list-files.md "在新标签页打开 Markdown")
 
 ```
 GET /files
@@ -31,15 +33,15 @@ GET /files
 
 **order** string
 
-**Possible values:** [`asc`, `desc`]
-
 **Default value:** `asc`
+
+**Possible values:** `asc`, `desc`
 
 按创建时间排序：`asc` 升序，`desc` 降序。
 
 **purpose** string
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 只返回指定用途的文件，仅支持 `user_data`。
 
@@ -52,7 +54,6 @@ OK, 返回 `file object` 列表。
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -61,7 +62,7 @@ OK, 返回 `file object` 列表。
 
 **object** stringrequired
 
-**Possible values:** [`list`]
+**Possible values:** `list`
 
 对象的类型，其值为 `list`。
 
@@ -73,6 +74,8 @@ required
 
 文件对象列表。
 
+描述一个已上传到 Files API 的文件。
+
 - Array [
 
 **id** stringrequired
@@ -81,7 +84,7 @@ required
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 对象的类型，其值为 `file`。
 
@@ -99,7 +102,7 @@ required
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 文件的用途。
 
@@ -120,28 +123,6 @@ required
 **has\_more** booleanrequired
 
 是否还有更多文件。
-
-**[Example (from schema)]**
-
-```json
-{
-  "object": "list",
-  "data": [
-    {
-      "id": "string",
-      "object": "file",
-      "bytes": 0,
-      "created_at": 0,
-      "filename": "string",
-      "purpose": "user_data",
-      "expires_at": 0
-    }
-  ],
-  "first_id": "string",
-  "last_id": "string",
-  "has_more": true
-}
-```
 
 **[Example]**
 

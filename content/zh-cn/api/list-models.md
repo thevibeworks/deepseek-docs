@@ -2,10 +2,12 @@
 title: "获取模型列表"
 description: "列出当前可用的模型，并提供各模型的元数据：展示名称、上下文窗口、输出上限、支持的输入/输出模态、支持的推理强度（effort）档位，以及按 API 协议声明的能力。请前往[模型 & 价格](/zh-cn/quick_start/pricing)查看当前支持的模型列表"
 source: https://api-docs.deepseek.com/zh-cn/api/list-models
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # 获取模型列表
+
+[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/list-models.md "在新标签页打开 Markdown")
 
 ```
 GET /models
@@ -22,7 +24,6 @@ OK, 返回模型列表
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -31,7 +32,7 @@ OK, 返回模型列表
 
 **object** stringrequired
 
-**Possible values:** [`list`]
+**Possible values:** `list`
 
 对象的类型，其值为 `list`。
 
@@ -43,6 +44,8 @@ required
 
 模型对象列表。
 
+描述一个可通过 API 使用的 DeepSeek 模型。除标识字段外，每个模型还带有机器可读的能力与限制元数据；当某项信息对该模型不可用时，对应的元数据字段可能缺省。
+
 - Array [
 
 **id** stringrequired
@@ -51,7 +54,7 @@ required
 
 **object** stringrequired
 
-**Possible values:** [`model`]
+**Possible values:** `model`
 
 对象的类型，其值为 `model`。
 
@@ -73,13 +76,13 @@ required
 
 **input\_modalities** string[]
 
-**Possible values:** [`text`, `image`]
+**Possible values:** `text`, `image`
 
 模型接受的输入类型。
 
 **output\_modalities** string[]
 
-**Possible values:** [`text`]
+**Possible values:** `text`
 
 模型可生成的媒体类型。
 
@@ -111,7 +114,7 @@ object
 
 **system\_prompt\_update** stringrequired
 
-**Possible values:** [`leading-only`, `in-history`]
+**Possible values:** `leading-only`, `in-history`
 
 对话过程中更新 system 提示词时，模型采用新提示词的方式。
 
@@ -119,41 +122,6 @@ object
 - `in-history`：可以在对话历史中追加 `system` 消息。历史中最新的一条 `system` 消息提供完整的有效提示词，并替代此前的所有 system 提示词。
 
 - ]
-
-**[Example (from schema)]**
-
-```json
-{
-  "object": "list",
-  "data": [
-    {
-      "id": "string",
-      "object": "model",
-      "owned_by": "string",
-      "name": "string",
-      "context_window": 0,
-      "max_output_tokens": 0,
-      "input_modalities": [
-        "text"
-      ],
-      "output_modalities": [
-        "text"
-      ],
-      "effort": {
-        "supported_levels": [
-          "string"
-        ],
-        "default_level": "string"
-      },
-      "api_capabilities": {
-        "anthropic_messages": {
-          "system_prompt_update": "leading-only"
-        }
-      }
-    }
-  ]
-}
-```
 
 **[Example]**
 

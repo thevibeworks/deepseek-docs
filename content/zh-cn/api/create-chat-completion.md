@@ -2,10 +2,12 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # Chat Completions API
+
+[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/create-chat-completion.md "在新标签页打开 Markdown")
 
 ```
 POST /chat/completions
@@ -25,7 +27,7 @@ object[]
 
 required
 
-**Possible values:** `>= 1`
+**最少元素数：** `1`
 
 对话的消息列表。
 
@@ -46,7 +48,7 @@ system 消息的内容。
 
 **role** stringrequired
 
-**Possible values:** [`system`]
+**Possible values:** `system`
 
 该消息的发起角色，其值为 `system`。
 
@@ -73,6 +75,8 @@ string
 
 **[Tool message]**
 
+**最少元素数：** `1`
+
 - Array [
 
 oneOf
@@ -85,7 +89,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`text`]
+**Possible values:** `text`
 
 内容块的类型，此场景下为 `text`。
 
@@ -97,7 +101,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`image_url`]
+**Possible values:** `image_url`
 
 内容块的类型，此场景下为 `image_url`。
 
@@ -113,15 +117,17 @@ required
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。
 
 **[Text content part]**
 
+`file_id` 与 `file_data` 必须二选一：两者都不传返回 `400` 错误（"file must have a file\_id or file\_data"）；两者都传返回 `400` 错误（"file cannot have both file\_id and file\_data"）。
+
 **type** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 内容块的类型，此场景下为 `file`。
 
@@ -141,7 +147,7 @@ required
 
 **role** stringrequired
 
-**Possible values:** [`user`]
+**Possible values:** `user`
 
 该消息的发起角色，其值为 `user`。
 
@@ -157,7 +163,7 @@ assistant 消息的内容。
 
 **role** stringrequired
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 该消息的发起角色，其值为 `assistant`。
 
@@ -167,7 +173,7 @@ assistant 消息的内容。
 
 **prefix** bool
 
-(Beta) 设置此参数为 true，来强制模型在其回答中以此 `assistant` 消息中提供的前缀内容开始。
+(Beta) 设置此参数为 `true`，来强制模型在其回答中以此 `assistant` 消息中提供的前缀内容开始。
 
 您必须设置 `base_url="https://api.deepseek.com/beta"` 来使用此功能。
 
@@ -179,7 +185,7 @@ assistant 消息的内容。
 
 **role** stringrequired
 
-**Possible values:** [`tool`]
+**Possible values:** `tool`
 
 该消息的发起角色，其值为 `tool`。
 
@@ -200,6 +206,8 @@ string
 
 **[Array of content parts]**
 
+**最少元素数：** `1`
+
 - Array [
 
 oneOf
@@ -212,7 +220,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`text`]
+**Possible values:** `text`
 
 内容块的类型，此场景下为 `text`。
 
@@ -224,7 +232,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`image_url`]
+**Possible values:** `image_url`
 
 内容块的类型，此场景下为 `image_url`。
 
@@ -240,15 +248,17 @@ required
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。
 
 **[File content part]**
 
+`file_id` 与 `file_data` 必须二选一：两者都不传返回 `400` 错误（"file must have a file\_id or file\_data"）；两者都传返回 `400` 错误（"file cannot have both file\_id and file\_data"）。
+
 **type** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 内容块的类型，此场景下为 `file`。
 
@@ -274,7 +284,7 @@ required
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
+**Possible values:** `deepseek-flash`, `deepseek-v4-pro`
 
 使用的模型的 ID。请使用 `deepseek-flash` 或 `deepseek-v4-pro`。
 
@@ -284,19 +294,17 @@ object
 
 nullable
 
-控制思考模式与非思考模式的转换
+控制思考模式与非思考模式的转换。省略 `thinking` 或传 `null` 时，模式由 `reasoning_effort` 决定；如果 `reasoning_effort` 也未提供，则默认开启思考模式。提供此对象时，`type` 必填，其模式设置优先于 `reasoning_effort`。
 
-**type** string
+**type** stringrequired
 
-**Possible values:** [`enabled`, `disabled`]
-
-**Default value:** `enabled`
+**Possible values:** `enabled`, `disabled`
 
 如果设为 `enabled`，则使用思考模式。如果设为 `disabled`，则使用非思考模式
 
 **reasoning\_effort** string
 
-**Possible values:** [`none`, `low`, `high`, `max`]
+**Possible values:** `none`, `low`, `high`, `max`
 
 控制思考模式开关与思考强度。`none` 关闭思考模式；`low` / `high` / `max` 开启思考模式。默认强度为 `high`。出于兼容考虑，`minimal` 映射为 `low`，`medium` / `xhigh` 映射为 `high`。
 
@@ -310,23 +318,23 @@ object
 
 nullable
 
-一个 object，指定模型必须输出的格式。
+一个 object，指定模型必须输出的格式。省略或传 `null` 时使用普通文本；提供此对象时，`type` 必填。
 
 设置为 { "type": "json\_object" } 以启用 JSON 模式，该模式保证模型生成的消息是有效的 JSON。
 
-**注意:** 使用 JSON 模式时，你还必须通过系统或用户消息指示模型生成 JSON。否则，模型可能会生成不断的空白字符，直到生成达到 token 限制，从而导致请求长时间运行并显得“卡住”。此外，如果 finish\_reason="length"，这表示生成超过了 max\_tokens 或对话超过了最大上下文长度，消息内容可能会被部分截断。
+**注意:** 使用 JSON 模式时，你还必须通过系统或用户消息指示模型生成 JSON。如果模型的输出无法被识别为 JSON，API 会将其中的非 JSON 内容替换为空格（`U+0020`），因此返回的消息内容可能仅包含空格（看起来为空，此时 finish\_reason 仍可能是 stop）。此外，如果 finish\_reason="length"，这表示生成超过了 max\_tokens 或对话超过了最大上下文长度，消息内容可能会被部分截断。
 
-**type** string
+**type** stringrequired
 
-**Possible values:** [`text`, `json_object`]
+**Possible values:** `text`, `json_object`
 
-**Default value:** `text`
-
-Must be one of `text` or `json_object`.
+必须是 `text` 或 `json_object`。
 
 **stop** string | string[]
 
 nullable
+
+**Default value:** `null`
 
 一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。
 
@@ -341,6 +349,10 @@ string
 
 **[Stop sequence list]**
 
+**最少元素数：** `1`
+
+**最多元素数：** `16`
+
 - Array [
 
 string
@@ -349,13 +361,17 @@ string
 
 **stream** booleannullable
 
-如果设置为 True，将会以 SSE（server-sent events）的形式以流式发送消息增量。消息流以 `data: [DONE]` 结尾。
+**Default value:** `false`
+
+如果设置为 `true`，将会以 SSE（server-sent events）的形式以流式发送消息增量。消息流以 `data: [DONE]` 结尾。
 
 **stream\_options**
 
 object
 
 nullable
+
+**Default value:** `null`
 
 流式输出相关选项。必须与 `stream: true` 一起使用；如果 `stream` 未设置为 `true`，API 会返回 `400` 错误。
 
@@ -367,7 +383,7 @@ nullable
 
 **temperature** numbernullable
 
-**Possible values:** `<= 2`
+**Possible values:** `>= 0` and `<= 2`
 
 **Default value:** `1`
 
@@ -375,11 +391,12 @@ nullable
 
 **top\_p** numbernullable
 
-**Possible values:** `<= 1`
+**Possible values:** `> 0` and `<= 1`
 
-**Default value:** `1`
+作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。取值必须大于 0 且不超过 1。我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。实际生效值取决于模型和模式：
 
-作为调节采样温度的替代方案，模型会考虑前 `top_p` 概率的 token 的结果。所以 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑。 取值必须大于 0 且不超过 1。我们通常建议修改这个值或者更改 `temperature`，但不建议同时对两者进行修改。该参数仅在思考模式下生效，有效取值范围为 0.95–1.0，低于 0.95 的取值会按 0.95 处理；在非思考模式下恒为 1.0，传入的值会被忽略。
+- `deepseek-flash`：思考模式下默认值为 1.0，低于 0.95 的取值会按 0.95 处理；非思考模式下恒为 1.0，传入的值会被忽略。
+- `deepseek-v4-pro`：思考模式下，启用工具调用时恒为 0.95，否则恒为 1.0，传入的值会被忽略。即使提供了 `tools`，将 `tool_choice` 设为 `none` 也会关闭工具调用。非思考模式下使用传入的值，默认值为 1.0。
 
 **tools**
 
@@ -393,7 +410,7 @@ nullable
 
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 tool 的类型。目前仅支持 function。
 
@@ -417,15 +434,13 @@ object
 
 function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls 指南](../guides/tool_calls.md)获取示例，并参阅[JSON Schema 参考](https://json-schema.org/understanding-json-schema/)了解有关格式的文档。省略 `parameters` 会定义一个参数列表为空的 function。
 
-**property name\*** any
-
-function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls 指南](../guides/tool_calls.md)获取示例，并参阅[JSON Schema 参考](https://json-schema.org/understanding-json-schema/)了解有关格式的文档。省略 `parameters` 会定义一个参数列表为空的 function。
+**property name\*** anynullable
 
 **strict** boolean
 
 **Default value:** `false`
 
-如果设置为 true，API 将在函数调用中使用 strict 模式，以确保输出始终符合函数的 JSON schema 定义。该功能为 Beta 功能，详细使用方式请参阅[Tool Calls 指南](../guides/tool_calls.md)
+如果设置为 `true`，API 将在函数调用中使用 strict 模式，以确保输出始终符合函数的 JSON schema 定义。该功能为 Beta 功能，详细使用方式请参阅[Tool Calls 指南](../guides/tool_calls.md)
 
 - ]
 
@@ -456,13 +471,15 @@ oneOf
 
 string
 
-**Possible values:** [`none`, `auto`, `required`]
+**Possible values:** `none`, `auto`, `required`
 
 **[ChatCompletionNamedToolChoice]**
 
+指定模型应使用的 tool。用于强制模型调用特定 function。
+
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 tool 的类型。目前，仅支持 `function`。
 
@@ -478,28 +495,32 @@ required
 
 **logprobs** booleannullable
 
-是否返回所输出 token 的对数概率。如果为 true，则在 `message` 的 `content` 中返回每个输出 token 的对数概率。
+**Default value:** `false`
+
+是否返回所输出 token 的对数概率。如果为 `true`，则在 `message` 的 `content` 中返回每个输出 token 的对数概率。
 
 **top\_logprobs** integernullable
 
-**Possible values:** `<= 20`
+**Possible values:** `>= 0` and `<= 20`
 
-一个介于 0 到 20 之间的整数 N，指定每个输出位置返回输出概率 top N 的 token，且返回这些 token 的对数概率。指定此参数时，logprobs 必须为 true。
+**Default value:** `null`
+
+一个介于 0 到 20 之间的整数 N，指定每个输出位置返回输出概率 top N 的 token，且返回这些 token 的对数概率。指定此参数时，logprobs 必须为 `true`。
 
 **user\_id** nullable
 
-您自定义的 user\_id，可选字符集为 [a-zA-Z0-9\-\_]，最大长度为 512。请不要在 user\_id 中包含用户隐私信息。
+您自定义的 user\_id。建议仅使用英文字母、数字、下划线（`_`）和连字符（`-`）。UTF-8 编码后不得超过 512 字节。请不要在 user\_id 中包含用户隐私信息。
 
 - user\_id 可用于区分您业务侧的用户身份，以帮助我们进行内容安全处理。
 - user\_id 可用于 KVCache 缓存隔离，以进行隐私管理。
 - user\_id 可用于我们对您业务侧用户进行调度隔离。
 - 关于 user\_id 参数更详细的描述，请参考[限速与隔离](../quick_start/rate_limit.md)
 
-**frequency\_penalty** deprecated
+**frequency\_penalty** nullabledeprecated
 
 该参数已不再支持。传入该参数将不会产生任何效果。
 
-**presence\_penalty** deprecated
+**presence\_penalty** nullabledeprecated
 
 该参数已不再支持。传入该参数将不会产生任何效果。
 
@@ -513,7 +534,6 @@ OK, 返回一个 `chat completion` 对象。
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -536,7 +556,7 @@ required
 
 **finish\_reason** stringrequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
+**Possible values:** `stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`
 
 模型停止生成 token 的原因。
 
@@ -586,7 +606,7 @@ tool 调用的 ID。
 
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 tool 的类型。目前仅支持 `function`。
 
@@ -610,7 +630,7 @@ required
 
 **role** stringrequired
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 生成这条消息的角色。
 
@@ -738,7 +758,7 @@ This fingerprint represents the backend configuration that the model runs with.
 
 **object** stringrequired
 
-**Possible values:** [`chat.completion`]
+**Possible values:** `chat.completion`
 
 对象的类型, 其值为 `chat.completion`。
 
@@ -790,120 +810,36 @@ completion tokens 的详细信息。
 
 推理模型所产生的思维链 token 数量
 
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "choices": [
-    {
-      "finish_reason": "stop",
-      "index": 0,
-      "message": {
-        "content": "string",
-        "reasoning_content": "string",
-        "tool_calls": [
-          {
-            "id": "string",
-            "type": "function",
-            "function": {
-              "name": "string",
-              "arguments": "string"
-            }
-          }
-        ],
-        "role": "assistant"
-      },
-      "logprobs": {
-        "content": [
-          {
-            "token": "string",
-            "logprob": 0,
-            "bytes": [
-              0
-            ],
-            "top_logprobs": [
-              {
-                "token": "string",
-                "logprob": 0,
-                "bytes": [
-                  0
-                ]
-              }
-            ]
-          }
-        ],
-        "reasoning_content": [
-          {
-            "token": "string",
-            "logprob": 0,
-            "bytes": [
-              0
-            ],
-            "top_logprobs": [
-              {
-                "token": "string",
-                "logprob": 0,
-                "bytes": [
-                  0
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
-  ],
-  "created": 0,
-  "model": "string",
-  "system_fingerprint": "string",
-  "object": "chat.completion",
-  "usage": {
-    "completion_tokens": 0,
-    "prompt_tokens": 0,
-    "prompt_tokens_details": {
-      "cached_tokens": 0
-    },
-    "prompt_cache_hit_tokens": 0,
-    "prompt_cache_miss_tokens": 0,
-    "total_tokens": 0,
-    "completion_tokens_details": {
-      "reasoning_tokens": 0
-    }
-  }
-}
-```
-
 **[Example]**
 
 ```json
 {
-  "id": "930c60df-bf64-41c9-a88e-3ec75f81e00e",
+  "id": "88beaa90-17fd-45fc-939c-2ef75e2d913c",
+  "object": "chat.completion",
+  "created": 1793084842,
+  "model": "deepseek-flash",
   "choices": [
     {
-      "finish_reason": "stop",
       "index": 0,
       "message": {
-        "content": "Hello! How can I help you today?",
-        "role": "assistant"
+        "role": "assistant",
+        "content": "Hello! 👋 How can I help you today?"
       },
-      "logprobs": null
+      "logprobs": null,
+      "finish_reason": "stop"
     }
   ],
-  "created": 1705651092,
-  "model": "deepseek-flash",
-  "object": "chat.completion",
-  "system_fingerprint": "fp_7a09fdf9c2",
   "usage": {
-    "completion_tokens": 10,
-    "prompt_tokens": 16,
-    "total_tokens": 26,
+    "prompt_tokens": 7,
+    "completion_tokens": 11,
+    "total_tokens": 18,
     "prompt_tokens_details": {
       "cached_tokens": 0
     },
     "prompt_cache_hit_tokens": 0,
-    "prompt_cache_miss_tokens": 16
-  }
+    "prompt_cache_miss_tokens": 7
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
 }
 ```
 
@@ -912,12 +848,13 @@ OK, 返回包含一系列 `chat completion chunk` 对象的流式输出。
 **[text/event-stream]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
 
 **Schema**
+
+基于提供的输入，由模型返回的对话补全响应的流式输出。
 
 - Array [
 
@@ -953,7 +890,7 @@ completion 增量的内容。
 
 **role** string
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 产生这条消息的角色。
 
@@ -973,7 +910,7 @@ tool 的 ID。
 
 **type** string
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 tool 的类型。目前仅支持 `function`。
 
@@ -1099,7 +1036,7 @@ required
 
 **finish\_reason** stringnullablerequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
+**Possible values:** `stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`
 
 模型停止生成 token 的原因。
 
@@ -1135,110 +1072,38 @@ This fingerprint represents the backend configuration that the model runs with.
 
 **object** stringrequired
 
-**Possible values:** [`chat.completion.chunk`]
+**Possible values:** `chat.completion.chunk`
 
 对象的类型, 其值为 `chat.completion.chunk`。
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-[
-  {
-    "id": "string",
-    "choices": [
-      {
-        "delta": {
-          "content": "string",
-          "reasoning_content": "string",
-          "role": "assistant",
-          "tool_calls": [
-            {
-              "index": 0,
-              "id": "string",
-              "type": "function",
-              "function": {
-                "name": "string",
-                "arguments": "string"
-              }
-            }
-          ]
-        },
-        "logprobs": {
-          "content": [
-            {
-              "token": "string",
-              "logprob": 0,
-              "bytes": [
-                0
-              ],
-              "top_logprobs": [
-                {
-                  "token": "string",
-                  "logprob": 0,
-                  "bytes": [
-                    0
-                  ]
-                }
-              ]
-            }
-          ],
-          "reasoning_content": [
-            {
-              "token": "string",
-              "logprob": 0,
-              "bytes": [
-                0
-              ],
-              "top_logprobs": [
-                {
-                  "token": "string",
-                  "logprob": 0,
-                  "bytes": [
-                    0
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "finish_reason": "stop",
-        "index": 0
-      }
-    ],
-    "created": 0,
-    "model": "string",
-    "system_fingerprint": "string",
-    "object": "chat.completion.chunk"
-  }
-]
-```
-
 **[Example]**
 
 ```shell
-data: {"id": "1f633d8bfc032625086f14113c411638", "choices": [{"index": 0, "delta": {"content": "", "role": "assistant"}, "finish_reason": null, "logprobs": null}], "created": 1718345013, "model": "deepseek-flash", "system_fingerprint": "fp_a49d71b8a1", "object": "chat.completion.chunk"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"role":"assistant","content":""},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "Hello", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":"Hello"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "!", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":"!"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " How", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" 👋"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " can", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" How"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " I", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" can"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " assist", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" I"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " you", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" help"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " today", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" you"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "?", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" today"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "", "role": null}, "finish_reason": "stop", "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1", "usage": {"completion_tokens": 9, "prompt_tokens": 17, "total_tokens": 26, "prompt_tokens_details": {"cached_tokens": 0}, "prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 17}}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":"?"},"logprobs":null,"finish_reason":null}],"usage":null}
+
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":""},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":7,"completion_tokens":11,"total_tokens":18,"prompt_tokens_details":{"cached_tokens":0},"prompt_cache_hit_tokens":0,"prompt_cache_miss_tokens":7}}
 
 data: [DONE]
 ```

@@ -2,7 +2,7 @@
 title: "限速与隔离"
 description: "并发限速"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # 限速与隔离
@@ -36,7 +36,7 @@ fetched: 2026-10-17
 
 ### user\_id 设置方法
 
-`user_id` 参数需为满足正则表达式 `[a-zA-Z0-9\-_]+` 的字符串，最大长度为 512。请不要在 `user_id` 中包含用户隐私信息。
+`user_id` 参数为字符串。建议仅使用英文字母、数字、下划线（`_`）和连字符（`-`）。UTF-8 编码后不得超过 512 字节。请不要在 `user_id` 中包含用户隐私信息。
 
 您可以通过以下方式，设置 `user_id` 参数：
 

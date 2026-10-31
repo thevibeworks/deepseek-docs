@@ -2,7 +2,7 @@
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Using the Responses API
@@ -126,7 +126,7 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 | `instructions` | Supported. Inserted as the first system message |
 | `stream` | Supported |
 | `temperature` | Supported (range [0.0, 2.0]; no effect in thinking mode) |
-| `top_p` | Supported; behavior depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tools are present, otherwise `1.0`); takes effect in non-thinking mode |
+| `top_p` | Supported; behavior depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); takes effect in non-thinking mode. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided |
 | `max_output_tokens` | Supported |
 | `top_logprobs` | Supported (range [0, 20]) |
 | `tools` | Partially supported. `function` supported; `web_search` supported with `deepseek-v4-pro`; other types ignored, see the Tools table below |
@@ -182,3 +182,46 @@ Token usage is returned in `usage`:
 
 - `input_tokens`: number of input tokens, where `input_tokens_details.cached_tokens` is the number of tokens hitting the [context cache](kv_cache.md)
 - `output_tokens`: number of output tokens, where `output_tokens_details.reasoning_tokens` is the number of chain-of-thought tokens
+
+#### Server Tool Usage
+
+When server-side web tools complete successfully, `usage.server_tool_use` reports their usage for the entire response:
+
+| Field | Meaning |
+| --- | --- |
+| `tool_search` | Number of successful web search queries. A search call containing multiple queries can contribute more than one to this count |
+| `tool_fetch` | Number of successful web page reads, including opening a page and finding text within a page |
+
+These values count tool operations, not tokens. `tool_search` counts web searches; it does not count client-side tool discovery represented by `tool_search_call` output items. Failed operations are not counted, and searches returning no results do not increase `tool_search`. If both counts are zero, the entire `server_tool_use` field is omitted. When the field is present, both counts are included, even if one is zero.
+
+The `web_search_call` items in `output` describe individual server-side operations; `usage.server_tool_use` contains the aggregate counts. For streaming requests, read these counts from `response.usage` in the final `response.completed`, `response.incomplete`, or `response.failed` event. They are not sent as a separate usage event, and `usage` is `null` in the initial response events.
+
+For example, this request enables web search with `deepseek-v4-pro`. Omitting `tool_choice` uses the default automatic selection:
+
+```json
+{
+  "model": "deepseek-v4-pro",
+  "max_output_tokens": 256,
+  "reasoning": {"effort": "none"},
+  "tools": [{"type": "web_search"}],
+  "input": "Use the web search tool once to search for Python official website. Then reply with only the official site URL."
+}
+```
+
+The following usage excerpt shows one successful search and no page reads. Token and tool counts can vary between requests:
+
+```json
+{
+  "usage": {
+    "input_tokens": 3475,
+    "input_tokens_details": {"cached_tokens": 512},
+    "output_tokens": 54,
+    "output_tokens_details": {"reasoning_tokens": 0},
+    "total_tokens": 3529,
+    "server_tool_use": {
+      "tool_search": 1,
+      "tool_fetch": 0
+    }
+  }
+}
+```

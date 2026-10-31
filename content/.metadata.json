@@ -107,13 +107,11 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-26"
+      "title": "🚀 Introducing DeepSeek-V3"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250325 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-26"
+      "title": "DeepSeek-V3-0324 Release"
     },
     "content/en/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/news/news0725",
@@ -133,8 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-18"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -242,13 +239,11 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-26"
+      "title": "Models & Pricing"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
-      "error": "served fallback shell for https://api-docs.deepseek.com/updates (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-26"
+      "title": "Change Log"
     },
     "content/en/quick_start/rate_limit.md": {
       "url": "https://api-docs.deepseek.com/quick_start/rate_limit",
@@ -361,7 +356,8 @@
     },
     "content/zh-cn/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
-      "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/news/news250120 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-10-31"
     },
     "content/zh-cn/news/news0725.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
@@ -481,8 +477,7 @@
     },
     "content/zh-cn/quick_start/agent_integrations/opencode.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode",
-      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-10-26"
+      "title": "接入 OpenCode"
     },
     "content/zh-cn/index.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/",
@@ -1727,8 +1722,108 @@
     "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/independent-session-forks/guide.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/independent-session-forks/guide.md",
       "title": "Ordinary forks are independent Sessions"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-13-liveshare-share-viewer-principal.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-13-liveshare-share-viewer-principal.md",
+      "title": "2026-10-13-liveshare-share-viewer-principal"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-25-skill-catalog-incomplete.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-25-skill-catalog-incomplete.md",
+      "title": "2026-10-25-skill-catalog-incomplete"
+    },
+    "content/en/dsh/docs/subsystems/forge.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/forge.md",
+      "title": "Forges"
+    },
+    "content/en/dsh/docs/subsystems/liveshare.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/liveshare.md",
+      "title": "LiveShare"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/context-menu-services/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/context-menu-services/guide.md",
+      "title": "Context menu services in custom Client compositions"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/cua-consent-storage/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/cua-consent-storage/guide.md",
+      "title": "Computer Use consent storage"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/model-badge-package-removal/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/model-badge-package-removal/guide.md",
+      "title": "The `ui-deepseek-model-label-1017` package is removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/ptc-script-format/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/ptc-script-format/guide.md",
+      "title": "Handle Script programs and explicit state retention"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/attachment-read-access/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/attachment-read-access/guide.md",
+      "title": "Image read requests carry the complete attachment reference"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/computer-use-helper-permissions/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/computer-use-helper-permissions/guide.md",
+      "title": "Authorize the Computer Use helper"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/cua-bundle-id-consent/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/cua-bundle-id-consent/guide.md",
+      "title": "macOS Computer Use application identity"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/generated-worktree-names/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/generated-worktree-names/guide.md",
+      "title": "Update consumers of generated worktree names"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/ptc-caller-cancellation/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/ptc-caller-cancellation/guide.md",
+      "title": "PTC caller cancellation uses the standard tool error code"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/session-follow-activation/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/session-follow-activation/guide.md",
+      "title": "Request activation when following a Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/web-file-downloads/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/web-file-downloads/guide.md",
+      "title": "File downloads on Web"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.4/model-listing-refresh/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.4/model-listing-refresh/guide.md",
+      "title": "Model listings refresh automatically"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.4/reasoning-body-props/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.4/reasoning-body-props/guide.md",
+      "title": "Reasoning Body Slot text fields"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/context-menu-target/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/context-menu-target/guide.md",
+      "title": "Context menu types and icons"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/forge-git-permissions/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/forge-git-permissions/guide.md",
+      "title": "Forge Git query permissions and content conversion"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/llm-request-purpose-declarations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/llm-request-purpose-declarations/guide.md",
+      "title": "Declare auxiliary LLM request purposes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/schedule-agent-tools/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/schedule-agent-tools/guide.md",
+      "title": "Schedule tools manage every Host task by RRULE and target"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/schedule-remote-host-tasks/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/schedule-remote-host-tasks/guide.md",
+      "title": "Schedule uses one Host-wide management API"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/sdk-run-commands/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/sdk-run-commands/guide.md",
+      "title": "SDK run accepts native commands"
+    },
+    "content/en/api/create-message.md": {
+      "url": "https://api-docs.deepseek.com/api/create-message",
+      "title": "Messages API"
+    },
+    "content/zh-cn/api/create-message.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-message",
+      "title": "Messages API"
     }
   },
-  "updated": "2026-10-27",
+  "updated": "2026-10-31",
   "site": "https://api-docs.deepseek.com"
 }

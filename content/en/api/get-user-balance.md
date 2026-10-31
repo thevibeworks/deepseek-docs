@@ -2,10 +2,12 @@
 title: "Get User Balance"
 description: "Get user current balance"
 source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # Get User Balance
+
+[Open Markdown](https://api-docs.deepseek.com/api/get-user-balance.md "Open Markdown in a new tab")
 
 ```
 GET /user/balance
@@ -22,7 +24,6 @@ OK, returns user balance info.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -41,7 +42,7 @@ object[]
 
 **currency** string
 
-**Possible values:** [`CNY`, `USD`]
+**Possible values:** `CNY`, `USD`
 
 The currency of the balance.
 
@@ -58,22 +59,6 @@ The total not expired granted balance.
 The total topped-up balance.
 
 - ]
-
-**[Example (from schema)]**
-
-```json
-{
-  "is_available": true,
-  "balance_infos": [
-    {
-      "currency": "CNY",
-      "total_balance": "110.00",
-      "granted_balance": "10.00",
-      "topped_up_balance": "100.00"
-    }
-  ]
-}
-```
 
 **[Example]**
 

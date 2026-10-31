@@ -2,10 +2,12 @@
 title: "网页搜索"
 description: "按 query 搜索网页，返回结构化的结果列表。支持的搜索语法、错误处理和计费说明请参考[网页搜索与抓取指南](/zh-cn/guides/search)。"
 source: https://api-docs.deepseek.com/zh-cn/api/search
-fetched: 2026-10-26
+fetched: 2026-10-31
 ---
 
 # 网页搜索
+
+[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/search.md "在新标签页打开 Markdown")
 
 ```
 POST /v1/tools/search
@@ -21,7 +23,9 @@ POST /v1/tools/search
 
 **query** stringrequired
 
-**Possible values:** `non-empty` and `<= 128 characters`
+**最少字符数：** `1`
+
+**最多字符数：** `128`
 
 搜索词。支持 `site:`、`-site:`、引号等搜索语法。必须为 1～128 个 Unicode 字符，且不能全为空白。
 
@@ -35,15 +39,21 @@ POST /v1/tools/search
 
 **ori\_question** stringnullable
 
-**Possible values:** `non-empty` and `<= 128 characters`
+**最少字符数：** `1`
+
+**最多字符数：** `128`
 
 触发搜索的用户原始问题，1～128 个字符。提供该字段有助于更好地理解搜索意图；传 `null` 视为未提供。
 
 **localization** string
 
+**Default value:** `""`
+
 用于优先返回本地化搜索结果的 IP 地址，默认为空字符串。
 
 **need\_content** boolean
+
+**Default value:** `false`
 
 是否在 `content` 中返回网页正文。默认为 `false`；为 `false` 时，`content` 恒为空字符串。
 
@@ -56,7 +66,6 @@ OK, 返回搜索结果。
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -75,7 +84,7 @@ required
 
 **rerank\_score** floatrequired
 
-**Possible values:** `<= 3`
+**Possible values:** `>= 0` and `<= 3`
 
 排序分数，0～3 分，综合考虑相关性、权威性、时效性等维度。大于等于 1.5 分为优质结果。
 
@@ -119,27 +128,6 @@ required
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-{
-  "results": [
-    {
-      "rerank_score": 0,
-      "title": "string",
-      "url": "string",
-      "snippet": "string",
-      "summary": "string",
-      "content": "string",
-      "site_name": "string",
-      "site_icon": "string",
-      "date": "2026-10-19T05:41:50.168Z",
-      "authority": 0
-    }
-  ]
-}
-```
-
 **[Example]**
 
 ```json
@@ -151,7 +139,7 @@ required
       "url": "https://example.com/deepseek-v4",
       "snippet": "DeepSeek V4 is now available, with tool calling and long-context support.",
       "summary": "DeepSeek has released the V4 model. The release adds improved tool calling and long-context support for agent workflows.",
-      "content": "DeepSeek V4 is now generally available...",
+      "content": "",
       "site_name": "Example News",
       "site_icon": "https://example.com/favicon.ico",
       "date": "2026-06-01T00:00:00+00:00",

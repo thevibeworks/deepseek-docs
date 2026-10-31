@@ -2,10 +2,12 @@
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Responses API
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-response.md "Open Markdown in a new tab")
 
 ```
 POST /responses
@@ -23,7 +25,7 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
+**Possible values:** `deepseek-flash`, `deepseek-v4-pro`
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
@@ -48,17 +50,19 @@ string
 
 **[Input item list]**
 
+An input item. Supported types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. `reasoning` and `function_call` items are automatically merged into the adjacent assistant message by the server. A `web_search_call` item returned by a previous response can be passed back to restore its search results into the context. Please refer to the [Responses API Guide](../guides/responses_api.md#multi-turn-conversation) for the pass-back rules in multi-turn conversations.
+
 - Array [
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
+**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`
 
 The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool. `web_search_call` items restore the search results of a previous server-side search.
 
 **role** string
 
-**Possible values:** [`user`, `assistant`, `system`, `developer`]
+**Possible values:** `user`, `assistant`, `system`, `developer`
 
 For `message` items. The role of the message author. `developer` is treated as `user`.
 
@@ -89,7 +93,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`input_text`, `output_text`]
+**Possible values:** `input_text`, `output_text`
 
 The type of the content part.
 
@@ -99,9 +103,11 @@ The text content.
 
 **[Image content part]**
 
+An image content part. Processed as a real image. Allowed only in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error ("Image in system message is unsupported" / "Image in assistant message is unsupported").
+
 **type** stringrequired
 
-**Possible values:** [`input_image`]
+**Possible values:** `input_image`
 
 The type of the content part, in this case `input_image`.
 
@@ -111,7 +117,7 @@ The image source, either an `http(s)` URL of the image (max 8192 characters) or 
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image. Ignored when `file_id` is set.
 
@@ -123,7 +129,7 @@ The ID of an image file uploaded via the [Files API](../guides/files_api.md), of
 
 **type** stringrequired
 
-**Possible values:** [`reasoning_text`]
+**Possible values:** `reasoning_text`
 
 The type of the content part, in this case `reasoning_text`.
 
@@ -172,7 +178,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`input_text`, `output_text`]
+**Possible values:** `input_text`, `output_text`
 
 The type of the content part.
 
@@ -182,9 +188,11 @@ The text content.
 
 **[Image content part]**
 
+An image content part. Processed as a real image. Allowed only in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error ("Image in system message is unsupported" / "Image in assistant message is unsupported").
+
 **type** stringrequired
 
-**Possible values:** [`input_image`]
+**Possible values:** `input_image`
 
 The type of the content part, in this case `input_image`.
 
@@ -194,7 +202,7 @@ The image source, either an `http(s)` URL of the image (max 8192 characters) or 
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image. Ignored when `file_id` is set.
 
@@ -206,7 +214,7 @@ The ID of an image file uploaded via the [Files API](../guides/files_api.md), of
 
 **type** stringrequired
 
-**Possible values:** [`reasoning_text`]
+**Possible values:** `reasoning_text`
 
 The type of the content part, in this case `reasoning_text`.
 
@@ -232,7 +240,7 @@ Configuration of the thinking mode.
 
 **effort** string
 
-**Possible values:** [`none`, `low`, `high`, `max`]
+**Possible values:** `none`, `low`, `high`, `max`
 
 Controls the thinking mode toggle and the thinking effort. `none` disables thinking mode; `low` / `high` / `max` enable thinking mode. If not set, the model's default thinking behavior is used (enabled by default). For compatibility with existing software, `minimal` is accepted and mapped to `low`, and `medium` / `xhigh` are accepted and mapped to `high`.
 
@@ -242,11 +250,13 @@ An upper bound for the number of tokens that can be generated in the response, i
 
 **stream** booleannullable
 
+**Default value:** `false`
+
 If set to `true`, the response is streamed as semantic server-sent events. The final event is `response.completed` / `response.incomplete` / `response.failed` (there is no `data: [DONE]` message). Please refer to the [Responses API Guide](../guides/responses_api.md#streaming) for the full event list.
 
 **temperature** numbernullable
 
-**Possible values:** `<= 2`
+**Possible values:** `>= 0` and `<= 2`
 
 **Default value:** `1`
 
@@ -254,11 +264,12 @@ What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
 
 **top\_p** numbernullable
 
-**Possible values:** `<= 1`
+**Possible values:** `>= 0` and `<= 1`
 
-**Default value:** `1`
+An alternative to sampling with temperature, called nucleus sampling. The effective value depends on the model and mode:
 
-An alternative to sampling with temperature, called nucleus sampling. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+- `deepseek-flash`: In thinking mode, the default is 1.0 and values below 0.95 are treated as 0.95. In non-thinking mode, it is fixed at 1.0 and the value you pass is ignored.
+- `deepseek-v4-pro`: In thinking mode, it is fixed at 0.95 when tool calling is enabled, or 1.0 otherwise; the value you pass is ignored. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided. In non-thinking mode, the value you pass is used, with a default of 1.0.
 
 **text**
 
@@ -274,11 +285,11 @@ object
 
 The output format. `{"type": "text"}` (default) for plain text; `{"type": "json_object"}` for JSON mode; `{"type": "json_schema", "name": ..., "schema": ...}` for structured output conforming to the given JSON Schema.
 
-**type** string
+If `text` is omitted or `null`, or `format` is omitted, plain text is used. When a `format` object is provided, `type` is required.
 
-**Possible values:** [`text`, `json_object`, `json_schema`]
+**type** stringrequired
 
-**Default value:** `text`
+**Possible values:** `text`, `json_object`, `json_schema`
 
 **name** string
 
@@ -296,11 +307,13 @@ nullable
 
 A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
 
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`.
+
 - Array [
 
 **type** stringrequired
 
-**Possible values:** [`function`, `custom`, `web_search`]
+**Possible values:** `function`, `custom`, `web_search`
 
 The type of the tool: `function`, `custom` (only `apply_patch`), or `web_search` (`deepseek-v4-pro` only).
 
@@ -320,11 +333,7 @@ The parameters the functions accepts, described as a JSON Schema object. See the
 
 Omitting `parameters` defines a function with an empty parameter list.
 
-**property name\*** any
-
-The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
-
-Omitting `parameters` defines a function with an empty parameter list.
+**property name\*** anynullable
 
 - ]
 
@@ -351,13 +360,15 @@ oneOf
 
 string
 
-**Possible values:** [`none`, `auto`, `required`]
+**Possible values:** `none`, `auto`, `required`
 
 **[Named tool choice]**
 
+Forces the model to call the specified tool. `name` is required when `type` is `function`.
+
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 **name** string
 
@@ -365,13 +376,15 @@ The name of the function to call. Required when `type` is `function`.
 
 **top\_logprobs** integernullable
 
-**Possible values:** `<= 20`
+**Possible values:** `>= 0` and `<= 20`
+
+**Default value:** `null`
 
 An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability.
 
 **user** stringnullable
 
-A custom end-user identifier, with allowed character set [a-zA-Z0-9\-\_] and a maximum length of 512. Do not include user privacy information.
+A custom end-user identifier. We recommend using only ASCII letters, digits, underscores (`_`), and hyphens (`-`). The UTF-8 encoded value must not exceed 512 bytes. Do not include user privacy information.
 
 - It can be used to distinguish user identities on your side to help us with content safety review, for KVCache isolation, and for scheduling isolation. For more details, please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md)
 
@@ -385,7 +398,6 @@ OK, returns a `response` object
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -398,7 +410,7 @@ A unique identifier for the response.
 
 **object** stringrequired
 
-**Possible values:** [`response`]
+**Possible values:** `response`
 
 The object type, which is always `response`.
 
@@ -408,7 +420,7 @@ The Unix timestamp (in seconds) of when the response was created.
 
 **status** stringrequired
 
-**Possible values:** [`in_progress`, `completed`, `incomplete`, `failed`]
+**Possible values:** `in_progress`, `completed`, `incomplete`, `failed`
 
 The status of the response.
 
@@ -426,7 +438,7 @@ The details about why the response is incomplete. The `reason` field can be `max
 
 **reason** string
 
-**Possible values:** [`max_output_tokens`, `content_filter`]
+**Possible values:** `max_output_tokens`, `content_filter`
 
 **model** stringrequired
 
@@ -440,11 +452,13 @@ required
 
 The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
+An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent tool searches.
+
 - Array [
 
 **type** string
 
-**Possible values:** [`message`, `reasoning`, `function_call`, `custom_tool_call`, `web_search_call`, `tool_search_call`]
+**Possible values:** `message`, `reasoning`, `function_call`, `custom_tool_call`, `web_search_call`, `tool_search_call`
 
 The type of the output item: `message` / `reasoning` / `function_call` / `custom_tool_call` / `web_search_call` / `tool_search_call`.
 
@@ -454,13 +468,13 @@ The unique ID of the output item.
 
 **status** string
 
-**Possible values:** [`in_progress`, `completed`, `incomplete`]
+**Possible values:** `in_progress`, `completed`, `incomplete`
 
 The status of the output item.
 
 **role** string
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 For `message` items. Always `assistant`.
 
@@ -474,7 +488,7 @@ For `message` items, a list of `output_text` content parts. For `reasoning` item
 
 **type** string
 
-**Possible values:** [`output_text`, `reasoning_text`]
+**Possible values:** `output_text`, `reasoning_text`
 
 **text** string
 
@@ -498,7 +512,9 @@ For `function_call` items. The arguments to call the function with, as generated
 
 object
 
-Token usage statistics for the response.
+nullable
+
+Token and server-tool usage statistics for the response. Null in initial streaming events; read usage from the final response.
 
 **input\_tokens** integerrequired
 
@@ -532,98 +548,97 @@ Number of reasoning (chain-of-thought) tokens generated by the model.
 
 Total number of tokens used in the request (input + output).
 
-**[Example (from schema)]**
+**server\_tool\_use**
 
-```json
-{
-  "id": "string",
-  "object": "response",
-  "created_at": 0,
-  "status": "in_progress",
-  "error": {},
-  "incomplete_details": {
-    "reason": "max_output_tokens"
-  },
-  "model": "string",
-  "output": [
-    {
-      "type": "message",
-      "id": "string",
-      "status": "in_progress",
-      "role": "assistant",
-      "content": [
-        {
-          "type": "output_text",
-          "text": "string"
-        }
-      ],
-      "call_id": "string",
-      "name": "string",
-      "arguments": "string"
-    }
-  ],
-  "usage": {
-    "input_tokens": 0,
-    "input_tokens_details": {
-      "cached_tokens": 0
-    },
-    "output_tokens": 0,
-    "output_tokens_details": {
-      "reasoning_tokens": 0
-    },
-    "total_tokens": 0
-  }
-}
-```
+object
+
+Successful server-side web search and page-fetch counts, separate from token usage. Present only when tool\_search or tool\_fetch is greater than zero; otherwise omitted. Both fields are present when this object is returned. In streaming responses, read response.usage from the terminal response.completed, response.incomplete, or response.failed event. These are cumulative counts, not deltas. See [Server tool usage](../guides/responses_api.md#server-tool-usage).
+
+**tool\_search** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful web search queries. A search with multiple queries can add more than one; failed queries and queries with no results are not counted. This field can be used as a basis for billing.
+
+**tool\_fetch** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. This field can be used as a basis for billing.
 
 **[Example]**
 
 ```json
 {
-  "id": "24778070-1c36-4ae0-a4bd-870afc7fc13e",
+  "id": "387b53c1-7ad2-4259-9298-61b139f5bd20",
   "object": "response",
-  "created_at": 1753000000,
+  "created_at": 1793084842,
   "status": "completed",
+  "background": false,
+  "completed_at": 1793084843,
+  "content_filters": null,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32,
+  "max_tool_calls": null,
   "model": "deepseek-flash",
+  "moderation": null,
   "output": [
     {
-      "type": "reasoning",
-      "id": "rs_1",
-      "status": "completed",
-      "content": [
-        {
-          "type": "reasoning_text",
-          "text": "The user greets me. I should reply politely."
-        }
-      ],
-      "summary": []
-    },
-    {
       "type": "message",
-      "id": "msg_1",
+      "id": "4e706f35-6ea2-468a-bd19-a9c1adc54726",
       "status": "completed",
-      "role": "assistant",
       "content": [
         {
           "type": "output_text",
-          "text": "Hello! How can I help you today?",
-          "annotations": []
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! 👋 How can I help you today?"
         }
-      ]
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
     }
   ],
-  "usage": {
-    "input_tokens": 22,
-    "input_tokens_details": { "cached_tokens": 0 },
-    "output_tokens": 29,
-    "output_tokens_details": { "reasoning_tokens": 27 },
-    "total_tokens": 51
-  },
-  "store": false,
   "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
   "previous_response_id": null,
-  "error": null,
-  "incomplete_details": null
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": null
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 1.0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 7,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 11,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 18
+  },
+  "user": null,
+  "metadata": {}
 }
 ```
 
@@ -632,7 +647,6 @@ OK, returns a streamed sequence of semantic server-sent events. Each event has a
 **[text/event-stream]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -645,34 +659,62 @@ object
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-[
-  {}
-]
-```
-
 **[Example]**
 
 ```shell
 event: response.created
-data: {"type": "response.created", "sequence_number": 0, "response": {"id": "...", "object": "response", "status": "in_progress", ...}}
+data: {"type":"response.created","response":{"id":"19460ef2-58da-46c5-9510-9e7b04c47e4a","object":"response","created_at":1793084908,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":32,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":null,"service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":null},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":0}
+
+event: response.in_progress
+data: {"type":"response.in_progress","response":{"id":"19460ef2-58da-46c5-9510-9e7b04c47e4a","object":"response","created_at":1793084908,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":32,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":null,"service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":null},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":1}
 
 event: response.output_item.added
-data: {"type": "response.output_item.added", "sequence_number": 2, "output_index": 0, "item": {"type": "reasoning", ...}}
+data: {"type":"response.output_item.added","item":{"type":"message","id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","status":"in_progress","content":[],"phase":"final_answer","role":"assistant"},"output_index":0,"sequence_number":2}
 
-event: response.reasoning_text.delta
-data: {"type": "response.reasoning_text.delta", "sequence_number": 4, "item_id": "rs_1", "output_index": 0, "content_index": 0, "delta": "The user"}
-
-event: response.output_item.added
-data: {"type": "response.output_item.added", "sequence_number": 9, "output_index": 1, "item": {"type": "message", "role": "assistant", ...}}
+event: response.content_part.added
+data: {"type":"response.content_part.added","content_index":0,"item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","output_index":0,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":""},"sequence_number":3}
 
 event: response.output_text.delta
-data: {"type": "response.output_text.delta", "sequence_number": 11, "item_id": "msg_1", "output_index": 1, "content_index": 0, "delta": "Hello"}
+data: {"type":"response.output_text.delta","content_index":0,"delta":"Hello","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":4}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":"!","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":5}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" 👋","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":6}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" How","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":7}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" can","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":8}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" I","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":9}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" help","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":10}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" you","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":11}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" today","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":12}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":"?","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":13}
+
+event: response.output_text.done
+data: {"type":"response.output_text.done","content_index":0,"item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":14,"text":"Hello! 👋 How can I help you today?"}
+
+event: response.content_part.done
+data: {"type":"response.content_part.done","content_index":0,"item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","output_index":0,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":"Hello! 👋 How can I help you today?"},"sequence_number":15}
+
+event: response.output_item.done
+data: {"type":"response.output_item.done","item":{"type":"message","id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"Hello! 👋 How can I help you today?"}],"phase":"final_answer","role":"assistant"},"output_index":0,"sequence_number":16}
 
 event: response.completed
-data: {"type": "response.completed", "sequence_number": 20, "response": {"id": "...", "object": "response", "status": "completed", "usage": {...}, ...}}
+data: {"type":"response.completed","response":{"id":"19460ef2-58da-46c5-9510-9e7b04c47e4a","object":"response","created_at":1793084908,"status":"completed","background":false,"completed_at":1793084909,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":32,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[{"type":"message","id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"Hello! 👋 How can I help you today?"}],"phase":"final_answer","role":"assistant"}],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":null,"service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":null},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":{"input_tokens":7,"input_tokens_details":{"cached_tokens":0},"output_tokens":11,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":18},"user":null,"metadata":{}},"sequence_number":17}
 ```
 
 Loading...

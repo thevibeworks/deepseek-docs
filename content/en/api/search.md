@@ -2,10 +2,12 @@
 title: "Search"
 description: "Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, error handling, and billing."
 source: https://api-docs.deepseek.com/api/search
-fetched: 2026-10-26
+fetched: 2026-10-31
 ---
 
 # Search
+
+[Open Markdown](https://api-docs.deepseek.com/api/search.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/search
@@ -21,7 +23,9 @@ Search the web for a query and return a ranked list of structured results. See t
 
 **query** stringrequired
 
-**Possible values:** `non-empty` and `<= 128 characters`
+**Minimum characters:** `1`
+
+**Maximum characters:** `128`
 
 The search query. Supports operators such as `site:`, `-site:`, and quoted phrases. Must contain 1 to 128 Unicode characters and cannot be all whitespace.
 
@@ -35,15 +39,21 @@ The number of results to return, between 1 and 50. Defaults to 10.
 
 **ori\_question** stringnullable
 
-**Possible values:** `non-empty` and `<= 128 characters`
+**Minimum characters:** `1`
+
+**Maximum characters:** `128`
 
 The user's original question that triggered the search, between 1 and 128 characters. Providing it can improve query understanding. `null` is treated as not provided.
 
 **localization** string
 
+**Default value:** `""`
+
 An optional IP address used to localize search results. Defaults to an empty string.
 
 **need\_content** boolean
+
+**Default value:** `false`
 
 Whether to return page content in `content`. Defaults to `false`; when `false`, `content` is always an empty string.
 
@@ -56,7 +66,6 @@ OK, returns the search results.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -75,7 +84,7 @@ The search results. Empty when the query matches no results.
 
 **rerank\_score** floatrequired
 
-**Possible values:** `<= 3`
+**Possible values:** `>= 0` and `<= 3`
 
 A relevance score from 0 to 3 that combines signals such as relevance, authority, and freshness. Scores of 1.5 or above are considered high-quality results.
 
@@ -119,27 +128,6 @@ The authority tier of the page, 0 to 4 (`-1` means unknown). Values of 3 or abov
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-{
-  "results": [
-    {
-      "rerank_score": 0,
-      "title": "string",
-      "url": "string",
-      "snippet": "string",
-      "summary": "string",
-      "content": "string",
-      "site_name": "string",
-      "site_icon": "string",
-      "date": "2026-10-19T05:41:50.090Z",
-      "authority": 0
-    }
-  ]
-}
-```
-
 **[Example]**
 
 ```json
@@ -151,7 +139,7 @@ The authority tier of the page, 0 to 4 (`-1` means unknown). Values of 3 or abov
       "url": "https://example.com/deepseek-v4",
       "snippet": "DeepSeek V4 is now available, with tool calling and long-context support.",
       "summary": "DeepSeek has released the V4 model. The release adds improved tool calling and long-context support for agent workflows.",
-      "content": "DeepSeek V4 is now generally available...",
+      "content": "",
       "site_name": "Example News",
       "site_icon": "https://example.com/favicon.ico",
       "date": "2026-06-01T00:00:00+00:00",

@@ -2,7 +2,7 @@
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Your First API Call
@@ -31,6 +31,8 @@ See the [Agent Integrations Guide](quick_start/agent_integrations/claude_code.md
 Once you have obtained an API key, you can access the DeepSeek model using the following example scripts in the OpenAI API format. This is a non-stream example, you can set the `stream` parameter to `true` to get stream response.
 
 For examples using the Anthropic API format, please refer to [Anthropic API](guides/anthropic_api.md).
+
+Before running these examples, set the `DEEPSEEK_API_KEY` environment variable in your terminal to your API key.
 
 **[curl]**
 
