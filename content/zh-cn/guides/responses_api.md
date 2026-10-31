@@ -2,7 +2,7 @@
 title: "使用 Responses API"
 description: "为了满足大家对 Codex 的需求，我们的 API 新增了对 Responses API 格式的支持，其 base_url 为 https://api.deepseek.com。"
 source: https://api-docs.deepseek.com/zh-cn/guides/responses_api
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # 使用 Responses API
@@ -126,7 +126,7 @@ input=[
 | `instructions` | 支持。作为第一条 system 消息 |
 | `stream` | 支持 |
 | `temperature` | 支持（范围 [0.0, 2.0]；思考模式下不生效） |
-| `top_p` | 支持；行为因模型而异： `deepseek-flash`：思考模式下生效（下限 `0.95`），非思考模式下恒为 `1.0`。 `deepseek-v4-pro`：思考模式下忽略传入值（有工具时固定为 `0.95`，否则为 `1.0`），非思考模式下生效 |
+| `top_p` | 支持；行为因模型而异： `deepseek-flash`：思考模式下生效（下限 `0.95`），非思考模式下恒为 `1.0`。 `deepseek-v4-pro`：思考模式下忽略传入值（启用工具调用时固定为 `0.95`，否则为 `1.0`），非思考模式下生效。即使提供了 `tools`，将 `tool_choice` 设为 `none` 也会关闭工具调用 |
 | `max_output_tokens` | 支持 |
 | `top_logprobs` | 支持（范围 [0, 20]） |
 | `tools` | 部分支持。`function` 支持；`web_search` 在 `deepseek-v4-pro` 下支持；其他类型忽略，见下方 Tools 表 |
@@ -182,3 +182,46 @@ Token 用量在 `usage` 中返回：
 
 - `input_tokens`：输入 token 数，其中 `input_tokens_details.cached_tokens` 为命中[上下文缓存](kv_cache.md)的 token 数
 - `output_tokens`：输出 token 数，其中 `output_tokens_details.reasoning_tokens` 为思维链 token 数
+
+#### 服务端工具用量
+
+服务端网页工具执行成功时，`usage.server_tool_use` 返回整个响应的工具用量：
+
+| 字段 | 含义 |
+| --- | --- |
+| `tool_search` | 成功的网页搜索查询次数。一次搜索调用包含多个查询时，可能计为多次 |
+| `tool_fetch` | 成功的网页读取次数，包括打开网页和在网页内查找文本 |
+
+这些值统计工具操作次数，不是 token 数。`tool_search` 统计网页搜索，不统计 `tool_search_call` 输出项所表示的客户端工具发现操作。失败操作不计入，搜索没有结果时也不增加 `tool_search`。如果两项计数均为零，整个 `server_tool_use` 字段会被省略；字段出现时，两项计数都会返回，包括值为零的项。
+
+`output` 中的 `web_search_call` 项描述单次服务端操作，`usage.server_tool_use` 则提供汇总计数。流式请求应从最终 `response.completed`、`response.incomplete` 或 `response.failed` 事件的 `response.usage` 中读取这些计数；接口不会单独发送工具用量事件，初始响应事件中的 `usage` 为 `null`。
+
+例如，以下请求为 `deepseek-v4-pro` 启用网页搜索。省略 `tool_choice` 时使用默认的自动选择方式：
+
+```json
+{
+  "model": "deepseek-v4-pro",
+  "max_output_tokens": 256,
+  "reasoning": {"effort": "none"},
+  "tools": [{"type": "web_search"}],
+  "input": "Use the web search tool once to search for Python official website. Then reply with only the official site URL."
+}
+```
+
+以下用量摘录表示成功搜索一次，未读取网页。不同请求的 token 数和工具次数可能不同：
+
+```json
+{
+  "usage": {
+    "input_tokens": 3475,
+    "input_tokens_details": {"cached_tokens": 512},
+    "output_tokens": 54,
+    "output_tokens_details": {"reasoning_tokens": 0},
+    "total_tokens": 3529,
+    "server_tool_use": {
+      "tool_search": 1,
+      "tool_fetch": 0
+    }
+  }
+}
+```

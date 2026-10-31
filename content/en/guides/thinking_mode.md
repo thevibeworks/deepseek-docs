@@ -2,7 +2,7 @@
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Thinking Mode
@@ -49,7 +49,7 @@ Thinking mode does not support the `temperature`, `presence_penalty`, or `freque
 `top_p` behavior depends on the model:
 
 - `deepseek-flash`: only takes effect in thinking mode, where the effective range is `0.95`–`1.0`; values below `0.95` are treated as `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
-- `deepseek-v4-pro`: in thinking mode your value is ignored (fixed at `0.95` when `tools` is present, otherwise `1.0`); in non-thinking mode it takes effect.
+- `deepseek-v4-pro`: in thinking mode your value is ignored (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); in non-thinking mode it takes effect. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided.
 
 In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 

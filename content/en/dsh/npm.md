@@ -1,7 +1,7 @@
 ---
 title: "npm: @deepseek-ai/dsh"
 source: https://www.npmjs.com/package/@deepseek-ai/dsh
-fetched: 2026-10-27
+fetched: 2026-10-31
 ---
 # npm: @deepseek-ai/dsh
 
@@ -11,9 +11,9 @@ dsh CLI: profile launch, plugin management, and configuration inspection
 npm install -g @deepseek-ai/dsh
 ```
 
-- **latest**: `0.2.1-rc.2`
-- **alpha**: `0.2.1-alpha.5`
-- **next**: `0.2.1-rc.4`
+- **latest**: `0.2.1-rc.5`
+- **alpha**: `0.2.2-alpha.2`
+- **next**: `0.2.1-rc.5`
 - **license**: MIT
 - **bin**: `dsh`
 - **homepage**: https://github.com/deepseek-ai/deepseek-harness#readme
@@ -26,7 +26,18 @@ not the release that carries it; a guide listed here was not in that
 release's tree. Read the source at the tag before saying the release ships
 or lacks the change itself.
 
-- **alpha** (`0.2.1-alpha.5`): 30 of 72 guides on `master` are not in it:
+- **alpha** (`0.2.2-alpha.2`): 10 of 91 guides on `master` are not in it:
+  - `v0.2.1-rc.2/context-menu-services`
+  - `v0.2.1-rc.3/computer-use-helper-permissions`
+  - `v0.2.1-rc.3/web-file-downloads`
+  - `v0.2.1-rc.4/reasoning-body-props`
+  - `v0.2.2-alpha.2/context-menu-target`
+  - `v0.2.2-alpha.2/forge-git-permissions`
+  - `v0.2.2-alpha.2/llm-request-purpose-declarations`
+  - `v0.2.2-alpha.2/schedule-agent-tools`
+  - `v0.2.2-alpha.2/schedule-remote-host-tasks`
+  - `v0.2.2-alpha.2/sdk-run-commands`
+- **latest** (`0.2.1-rc.5`): 47 of 91 guides on `master` are not in it:
   - `v0.2.1-alpha.2/cordis-timer-wrappers`
   - `v0.2.1-alpha.2/plugin-manager-view-fields`
   - `v0.2.1-alpha.4/model-switch-compaction`
@@ -38,17 +49,20 @@ or lacks the change itself.
   - `v0.2.1-rc.2/auto-review-user-sources`
   - `v0.2.1-rc.2/built-in-japanese`
   - `v0.2.1-rc.2/conditional-tools`
+  - `v0.2.1-rc.2/context-menu-services`
+  - `v0.2.1-rc.2/cua-consent-storage`
   - `v0.2.1-rc.2/cua-preset-scope`
   - `v0.2.1-rc.2/cua-relative-coordinates`
   - `v0.2.1-rc.2/file-drag-callbacks`
   - `v0.2.1-rc.2/headless-policy-composition`
-  - `v0.2.1-rc.2/new-session-blank-reuse`
+  - `v0.2.1-rc.2/model-badge-package-removal`
   - `v0.2.1-rc.2/node-24`
   - `v0.2.1-rc.2/official-bundle-lists`
   - `v0.2.1-rc.2/persistent-terminal-controls`
   - `v0.2.1-rc.2/pi-ai-default-capacities`
   - `v0.2.1-rc.2/pi-ai-model-catalog`
   - `v0.2.1-rc.2/pi-ai-protocol-replay`
+  - `v0.2.1-rc.2/ptc-script-format`
   - `v0.2.1-rc.2/sdk-desktop-context`
   - `v0.2.1-rc.2/sdk-minimal-checkpoints`
   - `v0.2.1-rc.2/session-projection-handles`
@@ -56,8 +70,22 @@ or lacks the change itself.
   - `v0.2.1-rc.2/tool-executor-plugins`
   - `v0.2.1-rc.2/web-fetch-private-destinations`
   - `v0.2.1-rc.2/webserver-index-peer`
+  - `v0.2.1-rc.3/attachment-read-access`
+  - `v0.2.1-rc.3/computer-use-helper-permissions`
+  - `v0.2.1-rc.3/cua-bundle-id-consent`
+  - `v0.2.1-rc.3/generated-worktree-names`
   - `v0.2.1-rc.3/independent-session-forks`
-- **latest** (`0.2.1-rc.2`): 30 of 72 guides on `master` are not in it:
+  - `v0.2.1-rc.3/ptc-caller-cancellation`
+  - `v0.2.1-rc.3/session-follow-activation`
+  - `v0.2.1-rc.3/web-file-downloads`
+  - `v0.2.1-rc.4/model-listing-refresh`
+  - `v0.2.2-alpha.2/context-menu-target`
+  - `v0.2.2-alpha.2/forge-git-permissions`
+  - `v0.2.2-alpha.2/llm-request-purpose-declarations`
+  - `v0.2.2-alpha.2/schedule-agent-tools`
+  - `v0.2.2-alpha.2/schedule-remote-host-tasks`
+  - `v0.2.2-alpha.2/sdk-run-commands`
+- **next** (`0.2.1-rc.5`): 47 of 91 guides on `master` are not in it:
   - `v0.2.1-alpha.2/cordis-timer-wrappers`
   - `v0.2.1-alpha.2/plugin-manager-view-fields`
   - `v0.2.1-alpha.4/model-switch-compaction`
@@ -69,17 +97,20 @@ or lacks the change itself.
   - `v0.2.1-rc.2/auto-review-user-sources`
   - `v0.2.1-rc.2/built-in-japanese`
   - `v0.2.1-rc.2/conditional-tools`
+  - `v0.2.1-rc.2/context-menu-services`
+  - `v0.2.1-rc.2/cua-consent-storage`
   - `v0.2.1-rc.2/cua-preset-scope`
   - `v0.2.1-rc.2/cua-relative-coordinates`
   - `v0.2.1-rc.2/file-drag-callbacks`
   - `v0.2.1-rc.2/headless-policy-composition`
-  - `v0.2.1-rc.2/new-session-blank-reuse`
+  - `v0.2.1-rc.2/model-badge-package-removal`
   - `v0.2.1-rc.2/node-24`
   - `v0.2.1-rc.2/official-bundle-lists`
   - `v0.2.1-rc.2/persistent-terminal-controls`
   - `v0.2.1-rc.2/pi-ai-default-capacities`
   - `v0.2.1-rc.2/pi-ai-model-catalog`
   - `v0.2.1-rc.2/pi-ai-protocol-replay`
+  - `v0.2.1-rc.2/ptc-script-format`
   - `v0.2.1-rc.2/sdk-desktop-context`
   - `v0.2.1-rc.2/sdk-minimal-checkpoints`
   - `v0.2.1-rc.2/session-projection-handles`
@@ -87,11 +118,26 @@ or lacks the change itself.
   - `v0.2.1-rc.2/tool-executor-plugins`
   - `v0.2.1-rc.2/web-fetch-private-destinations`
   - `v0.2.1-rc.2/webserver-index-peer`
+  - `v0.2.1-rc.3/attachment-read-access`
+  - `v0.2.1-rc.3/computer-use-helper-permissions`
+  - `v0.2.1-rc.3/cua-bundle-id-consent`
+  - `v0.2.1-rc.3/generated-worktree-names`
   - `v0.2.1-rc.3/independent-session-forks`
-- **next** (`0.2.1-rc.4`): no git tag `dsh-v0.2.1-rc.4` yet, so what it carries is unknown.
+  - `v0.2.1-rc.3/ptc-caller-cancellation`
+  - `v0.2.1-rc.3/session-follow-activation`
+  - `v0.2.1-rc.3/web-file-downloads`
+  - `v0.2.1-rc.4/model-listing-refresh`
+  - `v0.2.2-alpha.2/context-menu-target`
+  - `v0.2.2-alpha.2/forge-git-permissions`
+  - `v0.2.2-alpha.2/llm-request-purpose-declarations`
+  - `v0.2.2-alpha.2/schedule-agent-tools`
+  - `v0.2.2-alpha.2/schedule-remote-host-tasks`
+  - `v0.2.2-alpha.2/sdk-run-commands`
 
 ## Versions
 
+- `0.2.1-rc.5` -- 2026-10-29
+- `0.2.2-alpha.2` -- 2026-10-27
 - `0.2.1-rc.4` -- 2026-10-26
 - `0.2.1-rc.3` -- 2026-10-23
 - `0.2.1-rc.2` -- 2026-10-17

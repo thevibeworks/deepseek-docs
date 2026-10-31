@@ -2,10 +2,12 @@
 title: "Upload File"
 description: "Upload an image file that can later be referenced by its `file_id` in chat completion requests."
 source: https://api-docs.deepseek.com/api/create-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # Upload File
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-file.md "Open Markdown in a new tab")
 
 ```
 POST /files
@@ -27,13 +29,13 @@ The image file to upload. Supported formats: JPEG, PNG, GIF, and WebP. Maximum f
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the uploaded file. Must be `user_data`.
 
 **expires\_after[anchor]** string
 
-**Possible values:** [`created_at`]
+**Possible values:** `created_at`
 
 The anchor for the expiration. Must be `created_at` if provided, and is required together with `expires_after[seconds]`.
 
@@ -52,7 +54,6 @@ OK, returns the uploaded `file object`.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -65,7 +66,7 @@ The file identifier, of the form `file-api-...`, which can be referenced in chat
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
@@ -83,27 +84,13 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the file.
 
 **expires\_at** integer
 
 The Unix timestamp (in seconds) of when the file expires. Only present when an expiration was set at upload time.
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "bytes": 0,
-  "created_at": 0,
-  "filename": "string",
-  "purpose": "user_data",
-  "expires_at": 0
-}
-```
 
 **[Example]**
 

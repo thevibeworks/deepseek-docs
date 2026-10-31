@@ -7,10 +7,12 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # Chat Completions API
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-chat-completion.md "Open Markdown in a new tab")
 
 ```
 POST /chat/completions
@@ -30,7 +32,7 @@ object[]
 
 required
 
-**Possible values:** `>= 1`
+**Minimum items:** `1`
 
 A list of messages comprising the conversation so far.
 
@@ -51,7 +53,7 @@ The contents of the system message.
 
 **role** stringrequired
 
-**Possible values:** [`system`]
+**Possible values:** `system`
 
 The role of the messages author, in this case `system`.
 
@@ -78,6 +80,8 @@ string
 
 **[Tool message]**
 
+**Minimum items:** `1`
+
 - Array [
 
 oneOf
@@ -90,7 +94,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`text`]
+**Possible values:** `text`
 
 The type of the content part, in this case `text`.
 
@@ -102,7 +106,7 @@ The text content.
 
 **type** stringrequired
 
-**Possible values:** [`image_url`]
+**Possible values:** `image_url`
 
 The type of the content part, in this case `image_url`.
 
@@ -118,15 +122,17 @@ Either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded d
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image.
 
 **[Text content part]**
 
+Exactly one of `file_id` and `file_data` is required: passing neither returns a `400` error ("file must have a file\_id or file\_data"); passing both returns a `400` error ("file cannot have both file\_id and file\_data").
+
 **type** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The type of the content part, in this case `file`.
 
@@ -146,7 +152,7 @@ An optional filename. Only valid together with `file_data`.
 
 **role** stringrequired
 
-**Possible values:** [`user`]
+**Possible values:** `user`
 
 The role of the messages author, in this case `user`.
 
@@ -162,7 +168,7 @@ The contents of the assistant message.
 
 **role** stringrequired
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 The role of the messages author, in this case `assistant`.
 
@@ -183,7 +189,7 @@ You must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 **role** stringrequired
 
-**Possible values:** [`tool`]
+**Possible values:** `tool`
 
 The role of the messages author, in this case `tool`.
 
@@ -204,6 +210,8 @@ string
 
 **[Array of content parts]**
 
+**Minimum items:** `1`
+
 - Array [
 
 oneOf
@@ -216,7 +224,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`text`]
+**Possible values:** `text`
 
 The type of the content part, in this case `text`.
 
@@ -228,7 +236,7 @@ The text content.
 
 **type** stringrequired
 
-**Possible values:** [`image_url`]
+**Possible values:** `image_url`
 
 The type of the content part, in this case `image_url`.
 
@@ -244,15 +252,17 @@ Either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded d
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image.
 
 **[File content part]**
 
+Exactly one of `file_id` and `file_data` is required: passing neither returns a `400` error ("file must have a file\_id or file\_data"); passing both returns a `400` error ("file cannot have both file\_id and file\_data").
+
 **type** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The type of the content part, in this case `file`.
 
@@ -278,7 +288,7 @@ Tool call that this message is responding to.
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
+**Possible values:** `deepseek-flash`, `deepseek-v4-pro`
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
@@ -288,19 +298,17 @@ object
 
 nullable
 
-Controls the switch between thinking and non-thinking mode.
+Controls the switch between thinking and non-thinking mode. When `thinking` is omitted or `null`, the mode follows `reasoning_effort`; if `reasoning_effort` is also omitted, thinking is enabled. When this object is provided, `type` is required and takes precedence over `reasoning_effort` for selecting the mode.
 
-**type** string
+**type** stringrequired
 
-**Possible values:** [`enabled`, `disabled`]
-
-**Default value:** `enabled`
+**Possible values:** `enabled`, `disabled`
 
 If set to `enabled`, then use thinking mode. If set to `disabled`, then use non-thinking model.
 
 **reasoning\_effort** string
 
-**Possible values:** [`none`, `low`, `high`, `max`]
+**Possible values:** `none`, `low`, `high`, `max`
 
 Controls the thinking mode toggle and the thinking effort. `none` disables thinking mode; `low` / `high` / `max` enable thinking mode. The default effort is `high`. For compatibility with existing software, `minimal` is accepted and mapped to `low`, and `medium` / `xhigh` are accepted and mapped to `high`.
 
@@ -318,22 +326,22 @@ object
 
 nullable
 
-An object specifying the format that the model must output.
+An object specifying the format that the model must output. If omitted or `null`, plain text is used. When this object is provided, `type` is required.
 Setting to { "type": "json\_object" } enables JSON Output, which guarantees the message the model generates is valid JSON.
 
-**Important:** When using JSON Output, you must also instruct the model to produce JSON yourself via a system or user message. Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request. Also note that the message content may be partially cut off if finish\_reason="length", which indicates the generation exceeded max\_tokens or the conversation exceeded the max context length.
+**Important:** When using JSON Output, you must also instruct the model to produce JSON yourself via a system or user message. If the model's output cannot be recognized as JSON, the API replaces the non-JSON content with spaces (`U+0020`). As a result, the message content may contain only spaces (appearing empty), even when `finish_reason` is `stop`. Also note that the message content may be partially cut off if finish\_reason="length", which indicates the generation exceeded max\_tokens or the conversation exceeded the max context length.
 
-**type** string
+**type** stringrequired
 
-**Possible values:** [`text`, `json_object`]
-
-**Default value:** `text`
+**Possible values:** `text`, `json_object`
 
 Must be one of `text` or `json_object`.
 
 **stop** string | string[]
 
 nullable
+
+**Default value:** `null`
 
 Up to 16 sequences where the API will stop generating further tokens.
 
@@ -348,6 +356,10 @@ string
 
 **[Stop sequence list]**
 
+**Minimum items:** `1`
+
+**Maximum items:** `16`
+
 - Array [
 
 string
@@ -356,6 +368,8 @@ string
 
 **stream** booleannullable
 
+**Default value:** `false`
+
 If set, partial message deltas will be sent. Tokens will be sent as data-only server-sent events (SSE) as they become available, with the stream terminated by a `data: [DONE]` message.
 
 **stream\_options**
@@ -363,6 +377,8 @@ If set, partial message deltas will be sent. Tokens will be sent as data-only se
 object
 
 nullable
+
+**Default value:** `null`
 
 Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
@@ -374,7 +390,7 @@ Either way, the last chunk before the `data: [DONE]` message carries the token u
 
 **temperature** numbernullable
 
-**Possible values:** `<= 2`
+**Possible values:** `>= 0` and `<= 2`
 
 **Default value:** `1`
 
@@ -384,13 +400,14 @@ We generally recommend altering this or `top_p` but not both. Has no effect in t
 
 **top\_p** numbernullable
 
-**Possible values:** `<= 1`
-
-**Default value:** `1`
+**Possible values:** `> 0` and `<= 1`
 
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top\_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
-The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both. The effective value depends on the model and mode:
+
+- `deepseek-flash`: In thinking mode, the default is 1.0 and values below 0.95 are treated as 0.95. In non-thinking mode, it is fixed at 1.0 and the value you pass is ignored.
+- `deepseek-v4-pro`: In thinking mode, it is fixed at 0.95 when tool calling is enabled, or 1.0 otherwise; the value you pass is ignored. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided. In non-thinking mode, the value you pass is used, with a default of 1.0.
 
 **tools**
 
@@ -405,7 +422,7 @@ Use this to provide a list of functions the model may generate JSON inputs for. 
 
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 The type of the tool. Currently, only `function` is supported.
 
@@ -431,17 +448,13 @@ The parameters the functions accepts, described as a JSON Schema object. See the
 
 Omitting `parameters` defines a function with an empty parameter list.
 
-**property name\*** any
-
-The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
-
-Omitting `parameters` defines a function with an empty parameter list.
+**property name\*** anynullable
 
 **strict** boolean
 
 **Default value:** `false`
 
-If set to true, the API will use strict-mode for the tool calls to ensure the output always complies with the function's JSON schema. This is a Beta feature, for more details please refer to [Tool Calls Guide](../guides/tool_calls.md)
+If set to `true`, the API will use strict-mode for the tool calls to ensure the output always complies with the function's JSON schema. This is a Beta feature, for more details please refer to [Tool Calls Guide](../guides/tool_calls.md)
 
 - ]
 
@@ -472,13 +485,15 @@ oneOf
 
 string
 
-**Possible values:** [`none`, `auto`, `required`]
+**Possible values:** `none`, `auto`, `required`
 
 **[ChatCompletionNamedToolChoice]**
 
+Specifies a tool the model should use. Use to force the model to call a specific function.
+
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 The type of the tool. Currently, only `function` is supported.
 
@@ -494,28 +509,32 @@ The name of the function to call.
 
 **logprobs** booleannullable
 
-Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`.
+**Default value:** `false`
+
+Whether to return log probabilities of the output tokens or not. If `true`, returns the log probabilities of each output token returned in the `content` of `message`.
 
 **top\_logprobs** integernullable
 
-**Possible values:** `<= 20`
+**Possible values:** `>= 0` and `<= 20`
+
+**Default value:** `null`
 
 An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
 
 **user\_id** nullable
 
-A custom user\_id. Allowed character set is [a-zA-Z0-9\-\_], with a maximum length of 512. Do not include user privacy information in the user\_id.
+A custom user\_id. We recommend using only ASCII letters, digits, underscores (`_`), and hyphens (`-`). The UTF-8 encoded value must not exceed 512 bytes. Do not include user privacy information in the user\_id.
 
 - user\_id can be used to distinguish user identities on your side to help us with content safety review.
 - user\_id can be used for KVCache isolation for privacy management.
 - user\_id can be used for scheduling isolation of users on your business side.
 - For more details on the user\_id parameter, please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md)
 
-**frequency\_penalty** deprecated
+**frequency\_penalty** nullabledeprecated
 
 This parameter is no longer supported. It will not take effect if you pass it to the API.
 
-**presence\_penalty** deprecated
+**presence\_penalty** nullabledeprecated
 
 This parameter is no longer supported. It will not take effect if you pass it to the API.
 
@@ -529,7 +548,6 @@ OK, returns a `chat completion object`
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -552,7 +570,7 @@ A list of chat completion choices.
 
 **finish\_reason** stringrequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
+**Possible values:** `stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`
 
 The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
@@ -595,7 +613,7 @@ The ID of the tool call.
 
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 The type of the tool. Currently, only `function` is supported.
 
@@ -619,7 +637,7 @@ The arguments to call the function with, as generated by the model in JSON forma
 
 **role** stringrequired
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 The role of the author of this message.
 
@@ -747,7 +765,7 @@ This fingerprint represents the backend configuration that the model runs with.
 
 **object** stringrequired
 
-**Possible values:** [`chat.completion`]
+**Possible values:** `chat.completion`
 
 The object type, which is always `chat.completion`.
 
@@ -799,120 +817,36 @@ Breakdown of tokens used in a completion.
 
 Tokens generated by the model for reasoning.
 
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "choices": [
-    {
-      "finish_reason": "stop",
-      "index": 0,
-      "message": {
-        "content": "string",
-        "reasoning_content": "string",
-        "tool_calls": [
-          {
-            "id": "string",
-            "type": "function",
-            "function": {
-              "name": "string",
-              "arguments": "string"
-            }
-          }
-        ],
-        "role": "assistant"
-      },
-      "logprobs": {
-        "content": [
-          {
-            "token": "string",
-            "logprob": 0,
-            "bytes": [
-              0
-            ],
-            "top_logprobs": [
-              {
-                "token": "string",
-                "logprob": 0,
-                "bytes": [
-                  0
-                ]
-              }
-            ]
-          }
-        ],
-        "reasoning_content": [
-          {
-            "token": "string",
-            "logprob": 0,
-            "bytes": [
-              0
-            ],
-            "top_logprobs": [
-              {
-                "token": "string",
-                "logprob": 0,
-                "bytes": [
-                  0
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
-  ],
-  "created": 0,
-  "model": "string",
-  "system_fingerprint": "string",
-  "object": "chat.completion",
-  "usage": {
-    "completion_tokens": 0,
-    "prompt_tokens": 0,
-    "prompt_tokens_details": {
-      "cached_tokens": 0
-    },
-    "prompt_cache_hit_tokens": 0,
-    "prompt_cache_miss_tokens": 0,
-    "total_tokens": 0,
-    "completion_tokens_details": {
-      "reasoning_tokens": 0
-    }
-  }
-}
-```
-
 **[Example]**
 
 ```json
 {
-  "id": "930c60df-bf64-41c9-a88e-3ec75f81e00e",
+  "id": "88beaa90-17fd-45fc-939c-2ef75e2d913c",
+  "object": "chat.completion",
+  "created": 1793084842,
+  "model": "deepseek-flash",
   "choices": [
     {
-      "finish_reason": "stop",
       "index": 0,
       "message": {
-        "content": "Hello! How can I help you today?",
-        "role": "assistant"
+        "role": "assistant",
+        "content": "Hello! 👋 How can I help you today?"
       },
-      "logprobs": null
+      "logprobs": null,
+      "finish_reason": "stop"
     }
   ],
-  "created": 1705651092,
-  "model": "deepseek-flash",
-  "object": "chat.completion",
-  "system_fingerprint": "fp_7a09fdf9c2",
   "usage": {
-    "completion_tokens": 10,
-    "prompt_tokens": 16,
-    "total_tokens": 26,
+    "prompt_tokens": 7,
+    "completion_tokens": 11,
+    "total_tokens": 18,
     "prompt_tokens_details": {
       "cached_tokens": 0
     },
     "prompt_cache_hit_tokens": 0,
-    "prompt_cache_miss_tokens": 16
-  }
+    "prompt_cache_miss_tokens": 7
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
 }
 ```
 
@@ -921,12 +855,13 @@ OK, returns a streamed sequence of `chat completion chunk` objects
 **[text/event-stream]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
 
 **Schema**
+
+Represents a streamed chunk of a chat completion response returned by model, based on the provided input.
 
 - Array [
 
@@ -962,7 +897,7 @@ For thinking mode only. The reasoning contents of the assistant message, before 
 
 **role** string
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 The role of the author of this message.
 
@@ -982,7 +917,7 @@ The ID of the tool call.
 
 **type** string
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 The type of the tool. Currently, only `function` is supported.
 
@@ -1108,7 +1043,7 @@ A list of integers representing the UTF-8 bytes representation of the token. Use
 
 **finish\_reason** stringnullablerequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`]
+**Possible values:** `stop`, `length`, `content_filter`, `tool_calls`, `insufficient_system_resource`, `aborted`
 
 The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
@@ -1137,110 +1072,38 @@ This fingerprint represents the backend configuration that the model runs with.
 
 **object** stringrequired
 
-**Possible values:** [`chat.completion.chunk`]
+**Possible values:** `chat.completion.chunk`
 
 The object type, which is always `chat.completion.chunk`.
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-[
-  {
-    "id": "string",
-    "choices": [
-      {
-        "delta": {
-          "content": "string",
-          "reasoning_content": "string",
-          "role": "assistant",
-          "tool_calls": [
-            {
-              "index": 0,
-              "id": "string",
-              "type": "function",
-              "function": {
-                "name": "string",
-                "arguments": "string"
-              }
-            }
-          ]
-        },
-        "logprobs": {
-          "content": [
-            {
-              "token": "string",
-              "logprob": 0,
-              "bytes": [
-                0
-              ],
-              "top_logprobs": [
-                {
-                  "token": "string",
-                  "logprob": 0,
-                  "bytes": [
-                    0
-                  ]
-                }
-              ]
-            }
-          ],
-          "reasoning_content": [
-            {
-              "token": "string",
-              "logprob": 0,
-              "bytes": [
-                0
-              ],
-              "top_logprobs": [
-                {
-                  "token": "string",
-                  "logprob": 0,
-                  "bytes": [
-                    0
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "finish_reason": "stop",
-        "index": 0
-      }
-    ],
-    "created": 0,
-    "model": "string",
-    "system_fingerprint": "string",
-    "object": "chat.completion.chunk"
-  }
-]
-```
-
 **[Example]**
 
 ```shell
-data: {"id": "1f633d8bfc032625086f14113c411638", "choices": [{"index": 0, "delta": {"content": "", "role": "assistant"}, "finish_reason": null, "logprobs": null}], "created": 1718345013, "model": "deepseek-flash", "system_fingerprint": "fp_a49d71b8a1", "object": "chat.completion.chunk"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"role":"assistant","content":""},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "Hello", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":"Hello"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "!", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":"!"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " How", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" 👋"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " can", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" How"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " I", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" can"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " assist", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" I"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " you", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" help"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": " today", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" you"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "?", "role": "assistant"}, "finish_reason": null, "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1"}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":" today"},"logprobs":null,"finish_reason":null}],"usage":null}
 
-data: {"choices": [{"delta": {"content": "", "role": null}, "finish_reason": "stop", "index": 0, "logprobs": null}], "created": 1718345013, "id": "1f633d8bfc032625086f14113c411638", "model": "deepseek-flash", "object": "chat.completion.chunk", "system_fingerprint": "fp_a49d71b8a1", "usage": {"completion_tokens": 9, "prompt_tokens": 17, "total_tokens": 26, "prompt_tokens_details": {"cached_tokens": 0}, "prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 17}}
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":"?"},"logprobs":null,"finish_reason":null}],"usage":null}
+
+data: {"id":"071f229d-daa0-4557-a580-106a22e8df73","object":"chat.completion.chunk","created":1793084907,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","choices":[{"index":0,"delta":{"content":""},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":7,"completion_tokens":11,"total_tokens":18,"prompt_tokens_details":{"cached_tokens":0},"prompt_cache_hit_tokens":0,"prompt_cache_miss_tokens":7}}
 
 data: [DONE]
 ```
@@ -1254,10 +1117,12 @@ Loading...
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # FIM Completion API (Beta)
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-completion.md "Open Markdown in a new tab")
 
 ```
 POST /completions
@@ -1274,7 +1139,7 @@ User must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
+**Possible values:** `deepseek-flash`, `deepseek-v4-pro`
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
@@ -1284,11 +1149,15 @@ The prompt to generate completions for.
 
 **echo** booleannullable
 
+**Default value:** `false`
+
 Echo back the prompt in addition to the completion. Cannot be used together with `suffix` or `logprobs`.
 
 **logprobs** integernullable
 
-**Possible values:** `<= 20`
+**Possible values:** `>= 0` and `<= 20`
+
+**Default value:** `null`
 
 Include the log probabilities on the `logprobs` most likely output tokens, as well the chosen tokens. For example, if `logprobs` is 20, the API will return a list of the 20 most likely tokens. The API will always return the `logprob` of the sampled token, so there may be up to `logprobs+1` elements in the response.
 
@@ -1296,11 +1165,15 @@ The maximum value for `logprobs` is 20.
 
 **max\_tokens** integernullable
 
+**Possible values:** `>= 0`
+
 The maximum number of tokens that can be generated in the completion.
 
 **stop** string | string[]
 
 nullable
+
+**Default value:** `null`
 
 Up to 16 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
 
@@ -1315,6 +1188,10 @@ string
 
 **[MOD2]**
 
+**Minimum items:** `1`
+
+**Maximum items:** `16`
+
 - Array [
 
 string
@@ -1323,6 +1200,8 @@ string
 
 **stream** booleannullable
 
+**Default value:** `false`
+
 Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
 
 **stream\_options**
@@ -1330,6 +1209,8 @@ Whether to stream back partial progress. If set, tokens will be sent as data-onl
 object
 
 nullable
+
+**Default value:** `null`
 
 Options for streaming response. Must be set together with `stream: true`; if `stream` is not set to `true`, the API returns a `400` error.
 
@@ -1341,11 +1222,13 @@ Either way, the last chunk before the `data: [DONE]` message carries the token u
 
 **suffix** stringnullable
 
+**Default value:** `null`
+
 The suffix that comes after a completion of inserted text.
 
 **temperature** numbernullable
 
-**Possible values:** `<= 2`
+**Possible values:** `>= 0` and `<= 2`
 
 **Default value:** `1`
 
@@ -1355,7 +1238,7 @@ We generally recommend altering this or `top_p` but not both.
 
 **top\_p** numbernullable
 
-**Possible values:** `<= 1`
+**Possible values:** `> 0` and `<= 1`
 
 **Default value:** `1`
 
@@ -1363,24 +1246,25 @@ An alternative to sampling with temperature, called nucleus sampling, where the 
 
 The value must be greater than 0 and at most 1. We generally recommend altering this or `temperature` but not both.
 
-**frequency\_penalty** deprecated
+**frequency\_penalty** nullabledeprecated
 
 This parameter is no longer supported. It will not take effect if you pass it to the API.
 
-**presence\_penalty** deprecated
+**presence\_penalty** nullabledeprecated
 
 This parameter is no longer supported. It will not take effect if you pass it to the API.
 
 ## Responses
 
 - 200
+- 200 (Streaming)
 
 OK
 
 **[application/json]**
 
 - Schema
-- Example (from schema)
+- Example
 
 **[Schema]**
 
@@ -1400,9 +1284,9 @@ The list of completion choices the model generated for the input prompt.
 
 - Array [
 
-**finish\_reason** stringrequired
+**finish\_reason** stringnullablerequired
 
-**Possible values:** [`stop`, `length`, `content_filter`, `insufficient_system_resource`, `aborted`]
+**Possible values:** `stop`, `length`, `content_filter`, `insufficient_system_resource`, `aborted`
 
 The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
@@ -1446,7 +1330,7 @@ This fingerprint represents the backend configuration that the model runs with.
 
 **object** stringrequired
 
-**Possible values:** [`text_completion`]
+**Possible values:** `text_completion`
 
 The object type, which is always "text\_completion"
 
@@ -1498,50 +1382,181 @@ Breakdown of tokens used in a completion.
 
 Tokens generated by the model for reasoning.
 
-**[Example (from schema)]**
+**[Example]**
 
 ```json
 {
-  "id": "string",
+  "id": "60f16544-b4f2-4149-9326-79ccc6610d67",
   "choices": [
     {
-      "finish_reason": "stop",
+      "text": "return a + b",
       "index": 0,
-      "logprobs": {
-        "text_offset": [
-          0
-        ],
-        "token_logprobs": [
-          0
-        ],
-        "tokens": [
-          "string"
-        ],
-        "top_logprobs": [
-          {}
-        ]
-      },
-      "text": "string"
+      "logprobs": null,
+      "finish_reason": "stop"
     }
   ],
-  "created": 0,
-  "model": "string",
-  "system_fingerprint": "string",
+  "created": 1793084841,
+  "model": "deepseek-flash",
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
   "object": "text_completion",
   "usage": {
-    "completion_tokens": 0,
-    "prompt_tokens": 0,
+    "prompt_tokens": 12,
+    "completion_tokens": 4,
+    "total_tokens": 16,
     "prompt_tokens_details": {
       "cached_tokens": 0
     },
     "prompt_cache_hit_tokens": 0,
-    "prompt_cache_miss_tokens": 0,
-    "total_tokens": 0,
-    "completion_tokens_details": {
-      "reasoning_tokens": 0
-    }
+    "prompt_cache_miss_tokens": 12
   }
 }
+```
+
+OK, returns completion chunks as server-sent events, followed by `data: [DONE]`.
+
+**[text/event-stream]**
+
+- Schema
+- Example
+
+**[Schema]**
+
+**Schema**
+
+Represents a completion response from the API. Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint).
+
+- Array [
+
+**id** stringrequired
+
+A unique identifier for the completion.
+
+**choices**
+
+object[]
+
+required
+
+The list of completion choices the model generated for the input prompt.
+
+- Array [
+
+**finish\_reason** stringnullablerequired
+
+**Possible values:** `stop`, `length`, `content_filter`, `insufficient_system_resource`, `aborted`
+
+The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
+`length` if the maximum number of tokens specified in the request was reached,
+`content_filter` if content was omitted due to a flag from our content filters,
+`insufficient_system_resource` if the request is interrupted due to insufficient resource of the inference system,
+or `aborted` if the generation was interrupted.
+
+**index** integerrequired
+
+**logprobs**
+
+object
+
+nullable
+
+required
+
+**text\_offset** integer[]
+
+**token\_logprobs** number[]
+
+**tokens** string[]
+
+**top\_logprobs** object[]
+
+**text** stringrequired
+
+- ]
+
+**created** integerrequired
+
+The Unix timestamp (in seconds) of when the completion was created.
+
+**model** stringrequired
+
+The model used for completion.
+
+**system\_fingerprint** string
+
+This fingerprint represents the backend configuration that the model runs with.
+
+**object** stringrequired
+
+**Possible values:** `text_completion`
+
+The object type, which is always "text\_completion"
+
+**usage**
+
+object
+
+Usage statistics for the completion request.
+
+**completion\_tokens** integerrequired
+
+Number of tokens in the generated completion.
+
+**prompt\_tokens** integerrequired
+
+Number of tokens in the prompt. It equals prompt\_cache\_hit\_tokens + prompt\_cache\_miss\_tokens.
+
+**prompt\_tokens\_details**
+
+object
+
+required
+
+Breakdown of tokens used in the prompt.
+
+**cached\_tokens** integer
+
+Number of tokens in the prompt that hit the context cache. Same as `prompt_cache_hit_tokens`.
+
+**prompt\_cache\_hit\_tokens** integerrequired
+
+Number of tokens in the prompt that hits the context cache.
+
+**prompt\_cache\_miss\_tokens** integerrequired
+
+Number of tokens in the prompt that misses the context cache.
+
+**total\_tokens** integerrequired
+
+Total number of tokens used in the request (prompt + completion).
+
+**completion\_tokens\_details**
+
+object
+
+Breakdown of tokens used in a completion.
+
+**reasoning\_tokens** integer
+
+Tokens generated by the model for reasoning.
+
+- ]
+
+**[Example]**
+
+```shell
+data: {"id":"79323126-3e6a-4fb3-8d99-71fb50f801fc","choices":[{"text":"","index":0,"logprobs":null,"finish_reason":null}],"created":1793084906,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","object":"text_completion"}
+
+data: {"id":"79323126-3e6a-4fb3-8d99-71fb50f801fc","choices":[{"text":"return","index":0,"logprobs":null,"finish_reason":null}],"created":1793084906,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","object":"text_completion"}
+
+data: {"id":"79323126-3e6a-4fb3-8d99-71fb50f801fc","choices":[{"text":" a","index":0,"logprobs":null,"finish_reason":null}],"created":1793084906,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","object":"text_completion"}
+
+data: {"id":"79323126-3e6a-4fb3-8d99-71fb50f801fc","choices":[{"text":" +","index":0,"logprobs":null,"finish_reason":null}],"created":1793084906,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","object":"text_completion"}
+
+data: {"id":"79323126-3e6a-4fb3-8d99-71fb50f801fc","choices":[{"text":" b","index":0,"logprobs":null,"finish_reason":null}],"created":1793084906,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","object":"text_completion"}
+
+data: {"id":"79323126-3e6a-4fb3-8d99-71fb50f801fc","choices":[{"text":"","index":0,"logprobs":null,"finish_reason":"stop"}],"created":1793084906,"model":"deepseek-flash","system_fingerprint":"e72d3c7f663d3e1383b00b3884cb4501","object":"text_completion","usage":{"prompt_tokens":12,"completion_tokens":4,"total_tokens":16,"prompt_tokens_details":{"cached_tokens":0},"prompt_cache_hit_tokens":0,"prompt_cache_miss_tokens":12}}
+
+data: [DONE]
 ```
 
 Loading...
@@ -1553,10 +1568,12 @@ Loading...
 title: "Upload File"
 description: "Upload an image file that can later be referenced by its `file_id` in chat completion requests."
 source: https://api-docs.deepseek.com/api/create-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # Upload File
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-file.md "Open Markdown in a new tab")
 
 ```
 POST /files
@@ -1578,13 +1595,13 @@ The image file to upload. Supported formats: JPEG, PNG, GIF, and WebP. Maximum f
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the uploaded file. Must be `user_data`.
 
 **expires\_after[anchor]** string
 
-**Possible values:** [`created_at`]
+**Possible values:** `created_at`
 
 The anchor for the expiration. Must be `created_at` if provided, and is required together with `expires_after[seconds]`.
 
@@ -1603,7 +1620,6 @@ OK, returns the uploaded `file object`.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -1616,7 +1632,7 @@ The file identifier, of the form `file-api-...`, which can be referenced in chat
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
@@ -1634,27 +1650,13 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the file.
 
 **expires\_at** integer
 
 The Unix timestamp (in seconds) of when the file expires. Only present when an expiration was set at upload time.
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "bytes": 0,
-  "created_at": 0,
-  "filename": "string",
-  "purpose": "user_data",
-  "expires_at": 0
-}
-```
 
 **[Example]**
 
@@ -1672,16 +1674,1656 @@ The Unix timestamp (in seconds) of when the file expires. Only present when an e
 Loading...
 
 
+<!-- ===== content/en/api/create-message.md ===== -->
+
+---
+title: "Messages API"
+description: "Creates a model response in the Anthropic Messages API format."
+source: https://api-docs.deepseek.com/api/create-message
+fetched: 2026-10-31
+---
+
+# Messages API
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-message.md "Open Markdown in a new tab")
+
+```
+POST /anthropic/v1/messages
+```
+
+Creates a model response in the Anthropic Messages API format.
+
+Send the conversation history in `messages` on each request. Use `https://api.deepseek.com/anthropic` as the Anthropic SDK's `base_url`; the SDK appends `/v1/messages`. Direct HTTP requests can also use the compatible path `/anthropic/messages`.
+
+Authenticate with either `x-api-key` or `Authorization: Bearer`. If both are supplied, `Authorization` takes precedence. See the [Anthropic API Guide](../guides/anthropic_api.md) for model mappings, tool-result replay, and compatibility details.
+
+Compatibility fields `container`, `mcp_servers`, `service_tier`, and `top_k` are ignored.
+
+## Request
+
+**Header Parameters**
+
+**anthropic-version** string
+
+The Anthropic SDK sends this header automatically; the service currently ignores it.
+
+**Example:** 2023-06-01
+
+**anthropic-beta** string
+
+Include `files-api-2025-04-14` when referencing an uploaded image with `source.type` of `file`. Otherwise not required for this endpoint. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
+
+**Example:** files-api-2025-04-14
+
+**[application/json]**
+
+**Bodyrequired**
+
+**model** stringrequired
+
+ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`. Claude model-name aliases are also accepted: `claude-opus*` maps to `deepseek-v4-pro`, and other `claude*` names map to `deepseek-flash`. See the [Anthropic API Guide](../guides/anthropic_api.md).
+
+**messages**
+
+object[]
+
+required
+
+**Minimum items:** `1`
+
+The conversation history. At least one message is required. This API is stateless: include the messages needed for the current turn in every request. Use the top-level `system` field for the system prompt. When continuing after a tool call, pass back the complete assistant content, including thinking and tool-use blocks, followed by the matching tool results. The service may restore omitted thinking content from tool-call IDs; if recovery is required but fails, the request returns `400`. Preserve the complete content for reliable replay.
+
+- Array [
+
+oneOf
+
+- User message
+- Assistant message
+
+**[User message]**
+
+**role** stringrequired
+
+**Possible values:** `user`
+
+**content** string | object[]
+
+required
+
+oneOf
+
+- Text content
+- User content blocks
+
+**[Assistant message]**
+
+string
+
+**[Text content]**
+
+**Minimum items:** `1`
+
+Place all `tool_result` blocks before text or image blocks when replying to tool calls.
+
+- Array [
+
+oneOf
+
+- Text block
+- Image block
+- Tool-result block
+
+**[User content blocks]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**[Text block]**
+
+Image input is supported by `deepseek-flash` in user messages and tool results. Images in assistant messages are not supported. `deepseek-v4-pro` does not support image input. See the [Vision Guide](../guides/vision.md) for image limits.
+
+**type** stringrequired
+
+**Possible values:** `image`
+
+**source** object
+
+required
+
+oneOf
+
+- Base64 image
+- Image URL
+- Uploaded image file
+
+**[Image block]**
+
+**type** stringrequired
+
+**Possible values:** `base64`
+
+**media\_type** stringrequired
+
+**Possible values:** `image/jpeg`, `image/png`, `image/gif`, `image/webp`
+
+**data** stringrequired
+
+The base64-encoded image bytes, without a data-URL prefix.
+
+**[Tool-result block]**
+
+**type** stringrequired
+
+**Possible values:** `url`
+
+**url** urirequired
+
+An HTTP or HTTPS URL from which the server can download the image.
+
+**[Base64 image]**
+
+Requires the request header `anthropic-beta: files-api-2025-04-14`.
+
+**type** stringrequired
+
+**Possible values:** `file`
+
+**file\_id** stringrequired
+
+The ID of an uploaded image file. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
+
+**[Image URL]**
+
+Only valid in user messages. Return one result for every pending tool-use ID, with no duplicates, before any text or image blocks.
+
+**type** stringrequired
+
+**Possible values:** `tool_result`
+
+**tool\_use\_id** stringrequired
+
+The ID of the corresponding `tool_use` block in the immediately preceding assistant message.
+
+**content** string | object[] | null
+
+nullable
+
+The tool output as a string or a list of text and image blocks. If omitted or `null`, the result is empty.
+
+oneOf
+
+- Text content
+- Tool-result content blocks
+- Null value
+
+**[Uploaded image file]**
+
+string
+
+**[Text content]**
+
+- Array [
+
+oneOf
+
+- Text block
+- Image block
+
+**[Tool-result content blocks]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**[Null value]**
+
+Image input is supported by `deepseek-flash` in user messages and tool results. Images in assistant messages are not supported. `deepseek-v4-pro` does not support image input. See the [Vision Guide](../guides/vision.md) for image limits.
+
+**type** stringrequired
+
+**Possible values:** `image`
+
+**source** object
+
+required
+
+oneOf
+
+- Base64 image
+- Image URL
+- Uploaded image file
+
+**[Text block]**
+
+**type** stringrequired
+
+**Possible values:** `base64`
+
+**media\_type** stringrequired
+
+**Possible values:** `image/jpeg`, `image/png`, `image/gif`, `image/webp`
+
+**data** stringrequired
+
+The base64-encoded image bytes, without a data-URL prefix.
+
+**[Image block]**
+
+**type** stringrequired
+
+**Possible values:** `url`
+
+**url** urirequired
+
+An HTTP or HTTPS URL from which the server can download the image.
+
+**[Base64 image]**
+
+Requires the request header `anthropic-beta: files-api-2025-04-14`.
+
+**type** stringrequired
+
+**Possible values:** `file`
+
+**file\_id** stringrequired
+
+The ID of an uploaded image file. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
+
+- ]
+
+**[Image URL]**
+
+null
+
+**is\_error** booleannullable
+
+Ignored. Include any error details in `content`.
+
+- ]
+
+**[Uploaded image file]**
+
+A previous assistant message. Preserve its content blocks when passing it back, including thinking, tool use, and web search results.
+
+**role** stringrequired
+
+**Possible values:** `assistant`
+
+**content** string | object[]
+
+required
+
+oneOf
+
+- Text content
+- Assistant content blocks
+
+**[Text content]**
+
+string
+
+**[Assistant content blocks]**
+
+**Minimum items:** `1`
+
+- Array [
+
+oneOf
+
+- Text block
+- Thinking block
+- Tool-use block
+- Server-tool-use block
+- Web search result block
+
+**[Text block]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**[Thinking block]**
+
+**type** stringrequired
+
+**Possible values:** `thinking`
+
+**thinking** stringrequired
+
+Thinking content returned by the model. Pass it back unchanged when continuing a tool-call turn in thinking mode.
+
+**signature** stringnullable
+
+The signature returned with the thinking block. Preserve it when passing back the block; the input signature is not validated.
+
+**[Tool-use block]**
+
+Appears in assistant messages. Each tool-use block must have a matching tool-result block in the immediately following user message.
+
+**type** stringrequired
+
+**Possible values:** `tool_use`
+
+**id** stringrequired
+
+The tool-call ID. Pass this ID back as `tool_result.tool_use_id`.
+
+**name** stringrequired
+
+The name of the client tool.
+
+**input** nullablerequired
+
+The JSON arguments supplied to the tool, normally an object matching its `input_schema`.
+
+**[Server-tool-use block]**
+
+Returned when the service runs web search. Its matching `web_search_tool_result` appears in the same assistant message; the client does not run this tool.
+
+**type** stringrequired
+
+**Possible values:** `server_tool_use`
+
+**id** stringrequired
+
+The server-tool-call ID.
+
+**name** stringrequired
+
+**Possible values:** `web_search`
+
+**input** nullablerequired
+
+The server-tool arguments as a JSON value, normally an object such as `{"query":"..."}`. Preserve them when passing back the assistant message.
+
+**caller**
+
+object
+
+Identifies a direct server-tool call.
+
+**type** stringrequired
+
+**Possible values:** `direct`
+
+**[Web search result block]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result`
+
+**tool\_use\_id** stringrequired
+
+The ID of the associated `server_tool_use` block.
+
+**content**
+
+object[]
+
+required
+
+Search results or search-error items. Pass the entire array back unchanged with the assistant message.
+
+- Array [
+
+oneOf
+
+- Web search result
+- Web search error
+
+**[Web search result]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_result`
+
+**title** stringrequired
+
+The title of the result page.
+
+**url** urirequired
+
+The URL of the result page.
+
+**encrypted\_content** stringrequired
+
+Opaque result content. Preserve this value unchanged when passing the result back.
+
+**page\_age** stringnullable
+
+Page-age metadata, when available; may be `null`.
+
+**[Web search error]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `invalid_tool_input`, `unavailable`, `max_uses_exceeded`, `too_many_requests`, `query_too_long`, `request_too_large`
+
+The reason the server-side search failed.
+
+- ]
+
+- ]
+
+- ]
+
+**system** string | object[] | null
+
+nullable
+
+The system prompt. Supports only a string, an array of text blocks, or `null`.
+
+oneOf
+
+- Text content
+- System text blocks
+- Null value
+
+**[Text content]**
+
+string
+
+**[System text blocks]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+- ]
+
+**[Null value]**
+
+null
+
+**max\_tokens** integernullable
+
+**Possible values:** `>= 1`
+
+The requested output token limit, including thinking tokens. This field is optional at the HTTP API level; the Anthropic SDK requires it. The default and effective limit depend on the model, thinking mode, and reasoning effort. Values above the model limit are capped, and the input plus output must fit within the context window. For certain Claude Code or OpenCode main-agent requests in thinking mode, compatibility handling may raise the effective limit above the requested value, within model and context limits. See [Models & Pricing](../quick_start/pricing.md).
+
+**stream** booleannullable
+
+**Default value:** `false`
+
+If `true`, return named server-sent events (SSE), ending with `message_stop`. There is no `data: [DONE]` message. Otherwise, return one complete message object.
+
+**thinking**
+
+object
+
+nullable
+
+Controls thinking mode. An explicit `thinking.type` takes precedence over `output_config.effort` when selecting the mode. When omitted, `effort` determines the mode. If neither is set, thinking is enabled by default for `deepseek-flash` and `deepseek-v4-pro`.
+
+**type** stringrequired
+
+**Possible values:** `enabled`, `disabled`, `adaptive`
+
+`enabled` turns thinking on; `disabled` turns it off. `adaptive` is treated as `enabled`.
+
+**budget\_tokens** integernullable
+
+**Possible values:** `>= 0`
+
+Ignored. This parameter does not set a thinking-token budget.
+
+**output\_config**
+
+object
+
+nullable
+
+Output configuration. Only `effort` is supported; output-format settings such as `format` are ignored.
+
+**effort** stringnullable
+
+**Possible values:** `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `ultra`, `max`, `null`
+
+Controls thinking mode and effort. `none` disables thinking unless `thinking.type` explicitly enables it. `low`, `high`, and `max` enable thinking, with `high` as the default effort. Compatibility aliases: `minimal` maps to `low`, `medium` and `xhigh` both map to `high`, and `ultra` maps to `max`. An explicit `thinking.type` determines whether thinking is enabled.
+
+**tools**
+
+object[]
+
+nullable
+
+Tools available to the model. Supports client-defined tools and the web search server tool. Tool names must be unique. An empty list is treated as no tools. `cache_control` is ignored.
+
+- Array [
+
+oneOf
+
+- Client tool
+- Web search server tool
+
+**[Client tool]**
+
+The application executes this tool after receiving a `tool_use` block and returns a `tool_result` block. Omit `type` for client tools. Providing `type` selects server-tool parsing; unsupported values such as `custom` return `422`. `cache_control` is ignored.
+
+**name** stringrequired
+
+**Minimum characters:** `1`
+
+**Maximum characters:** `128`
+
+**Possible values:** Value must match regular expression `^[a-zA-Z0-9_-]+$`
+
+A unique tool name containing letters, digits, underscores, or hyphens, up to 128 characters.
+
+**description** stringnullable
+
+A description of what the tool does and when to use it.
+
+**input\_schema**
+
+object
+
+required
+
+A valid JSON Schema describing the tool arguments. Its top-level `type` must be `object`.
+
+**property name\*** anynullable
+
+**[Web search server tool]**
+
+The service executes web searches and returns `server_tool_use` and `web_search_tool_result` blocks in the assistant message. Both type values select the same tool.
+
+**type** stringrequired
+
+**Possible values:** `web_search_20250305`, `web_search_20260209`
+
+**name** stringrequired
+
+**Possible values:** `web_search`
+
+**max\_uses** integernullable
+
+**Possible values:** `>= 0`
+
+Maximum searches allowed in this request. The default and service-side cap are normally 5; for Claude Code search-subagent compatibility requests, both are 1. Larger values are capped at the applicable limit. A search beyond this limit returns a `max_uses_exceeded` result.
+
+- ]
+
+**tool\_choice** object | null
+
+nullable
+
+Controls tool selection. Defaults to `auto`. `any` is treated as `auto` and does not force a tool call. Selecting a named client tool requires non-thinking mode. `disable_parallel_tool_use` is ignored.
+
+oneOf
+
+- Automatic tool choice
+- Any tool (automatic)
+- Named tool choice
+- Disable tool calls
+- Null value
+
+**[Automatic tool choice]**
+
+The model decides whether to call a tool. This is the default.
+
+**type** stringrequired
+
+**Possible values:** `auto`
+
+**disable\_parallel\_tool\_use** booleannullable
+
+Ignored; it does not disable parallel tool calls.
+
+**[Any tool (automatic)]**
+
+Treated as `auto`; the model decides whether to call a tool.
+
+**type** stringrequired
+
+**Possible values:** `any`
+
+**disable\_parallel\_tool\_use** booleannullable
+
+Ignored; it does not disable parallel tool calls.
+
+**[Named tool choice]**
+
+Selects the named tool. For a client tool, this forces a call in non-thinking mode; selecting it in thinking mode returns a `400` error. Set `thinking.type` to `disabled` when forcing a client-tool call.
+
+**type** stringrequired
+
+**Possible values:** `tool`
+
+**name** stringrequired
+
+The name of a tool present in `tools`.
+
+**disable\_parallel\_tool\_use** booleannullable
+
+Ignored; it does not disable parallel tool calls.
+
+**[Disable tool calls]**
+
+Disables tool calling, even when `tools` is provided.
+
+**type** stringrequired
+
+**Possible values:** `none`
+
+**[Null value]**
+
+null
+
+**stop\_sequences** string[]nullable
+
+**Minimum characters per item:** `1`
+
+**Maximum items:** `16`
+
+Up to 16 non-empty strings that stop generation. If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
+
+**temperature** numbernullable
+
+**Possible values:** `>= 0` and `<= 2`
+
+**Default value:** `1`
+
+Sampling temperature, between 0 and 2. Higher values produce more varied output. In thinking mode the value is fixed at 1, and the supplied value has no effect. We generally recommend changing either this or `top_p`, rather than both.
+
+**top\_p** numbernullable
+
+**Possible values:** `> 0` and `<= 1`
+
+Nucleus sampling probability, greater than 0 and at most 1. For `deepseek-flash`, thinking mode defaults to 1 and clamps values below 0.95 to 0.95; non-thinking mode always uses 1. For `deepseek-v4-pro`, thinking mode uses 0.95 when tools are enabled and 1 otherwise, ignoring the supplied value; non-thinking mode uses the supplied value, defaulting to 1. Setting `tool_choice` to `{"type":"none"}` disables tool calling.
+
+**metadata**
+
+object
+
+nullable
+
+Request metadata. Only `user_id` is supported; other metadata fields are ignored.
+
+**user\_id** stringnullable
+
+A custom end-user identifier. We recommend using only ASCII letters, digits, underscores (`_`), and hyphens (`-`). The UTF-8 encoded value must not exceed 512 bytes. Do not include personal information. See [Rate Limit & Isolation](../quick_start/rate_limit.md).
+
+## Responses
+
+- 200 (No streaming)
+- 200 (Streaming)
+- 400 (Bad request)
+
+OK, returns a `message` object. Its content may include text, thinking, and tool-use blocks.
+
+**[application/json]**
+
+- Schema
+- Example
+
+**[Schema]**
+
+**Schema**
+
+**id** stringrequired
+
+Unique identifier for this message.
+
+**type** stringrequired
+
+**Possible values:** `message`
+
+**role** stringrequired
+
+**Possible values:** `assistant`
+
+**model** stringrequired
+
+The model identifier supplied in the request. When using a Claude-compatible model name, the response retains that name.
+
+**content**
+
+object[]
+
+required
+
+Generated content blocks. Preserve the full content when adding this assistant turn to the next request.
+
+- Array [
+
+oneOf
+
+- Text block
+- Thinking output
+- Tool-use block
+- Server tool use output
+- Web search result block
+
+**[Example]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**[Text block]**
+
+**type** stringrequired
+
+**Possible values:** `thinking`
+
+**thinking** stringrequired
+
+The generated thinking content. Return this block unchanged when continuing a thinking-mode tool conversation.
+
+**signature** stringrequired
+
+Opaque signature returned with the thinking block; preserve it when replaying the block.
+
+**[Thinking output]**
+
+Appears in assistant messages. Each tool-use block must have a matching tool-result block in the immediately following user message.
+
+**type** stringrequired
+
+**Possible values:** `tool_use`
+
+**id** stringrequired
+
+The tool-call ID. Pass this ID back as `tool_result.tool_use_id`.
+
+**name** stringrequired
+
+The name of the client tool.
+
+**input** nullablerequired
+
+The JSON arguments supplied to the tool, normally an object matching its `input_schema`.
+
+**[Tool-use block]**
+
+Describes a tool call executed by the service. Request-level search counts are reported separately in `usage.server_tool_use`; the client does not execute this call.
+
+**type** stringrequired
+
+**Possible values:** `server_tool_use`
+
+**id** stringrequired
+
+Identifier of the server tool call.
+
+**name** stringrequired
+
+Name of the server tool.
+
+**input** nullablerequired
+
+Arguments supplied to the server tool as a JSON value, normally an object.
+
+**caller**
+
+object
+
+required
+
+**type** stringrequired
+
+**Possible values:** `direct`
+
+**[Server tool use output]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result`
+
+**tool\_use\_id** stringrequired
+
+The ID of the associated `server_tool_use` block.
+
+**content**
+
+object[]
+
+required
+
+Search results or search-error items. Pass the entire array back unchanged with the assistant message.
+
+- Array [
+
+oneOf
+
+- Web search result
+- Web search error
+
+**[Web search result block]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_result`
+
+**title** stringrequired
+
+The title of the result page.
+
+**url** urirequired
+
+The URL of the result page.
+
+**encrypted\_content** stringrequired
+
+Opaque result content. Preserve this value unchanged when passing the result back.
+
+**page\_age** stringnullable
+
+Page-age metadata, when available; may be `null`.
+
+**[Web search result]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `invalid_tool_input`, `unavailable`, `max_uses_exceeded`, `too_many_requests`, `query_too_long`, `request_too_large`
+
+The reason the server-side search failed.
+
+- ]
+
+- ]
+
+**stop\_reason** stringnullablerequired
+
+**Possible values:** `end_turn`, `max_tokens`, `stop_sequence`, `tool_use`, `refusal`, `null`
+
+Why generation stopped: natural completion, output limit, a stop sequence, a client tool call, or content filtering. Null in message\_start.
+
+**stop\_sequence** stringnullablerequired
+
+The matched stop sequence, or null when no stop sequence was matched.
+
+**usage**
+
+object
+
+required
+
+**input\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Input tokens not served from the context cache. Total input tokens equal input\_tokens + cache\_read\_input\_tokens + cache\_creation\_input\_tokens.
+
+**cache\_creation\_input\_tokens** integerrequired
+
+**Possible values:** `0`
+
+Always 0. Anthropic-style cache creation is not used; context caching is automatic.
+
+**cache\_read\_input\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Input tokens served from the context cache.
+
+**output\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Generated output tokens, including thinking tokens when thinking is enabled. In message\_delta this is the cumulative count, not an increment.
+
+**service\_tier** stringrequired
+
+**Possible values:** `standard`
+
+**server\_tool\_use**
+
+object
+
+Server-side web search counts, separate from token usage. Present only when at least one web search was attempted; otherwise omitted. Both fields are present when this object is returned. Read the final message's usage for non-streaming responses or the final message\_delta.usage for streaming responses. These counts are cumulative, not deltas. See [Server tool usage](../guides/anthropic_api.md#server-tool-usage).
+
+**web\_search\_requests** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of server-side web search attempts, including failed attempts and attempts exceeding `max_uses`.
+
+**tool\_search** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+
+**[Web search error]**
+
+```json
+{
+  "id": "e6ef6a63-a078-4f53-a73b-38c8d1d46310",
+  "type": "message",
+  "role": "assistant",
+  "model": "deepseek-flash",
+  "content": [{"type": "text", "text": "Hello!"}],
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "usage": {
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 3,
+    "service_tier": "standard"
+  }
+}
+```
+
+OK, returns SSE events in the order `message_start` → content block events → `message_delta` → `message_stop`. A `ping` event or keep-alive comment may appear between events. There is no `data: [DONE]` message. Accumulate tool input JSON fragments until the content block ends before parsing them. See [Streaming](../guides/anthropic_api.md#streaming).
+
+A connection that closes before `message_stop` is an incomplete response. Errors after streaming has started may terminate the connection without an Anthropic `error` event.
+
+**[text/event-stream]**
+
+- Schema
+- Example
+
+**[Schema]**
+
+**Schema**
+
+Normal message events have an event name matching the JSON type. A normal stream ends with message\_stop. Ping events and keep-alive comments may appear between events; no data: [DONE] is emitted. A timeout may instead return an unnamed data event containing an error object before closing the connection. An interrupted stream without message\_stop is incomplete.
+
+- Array [
+
+oneOf
+
+- message\_start
+- content\_block\_start
+- content\_block\_delta
+- content\_block\_stop
+- message\_delta
+- message\_stop
+- ping
+
+**[Example]**
+
+**type** stringrequired
+
+**Possible values:** `message_start`
+
+**message**
+
+object
+
+required
+
+**id** stringrequired
+
+Unique identifier for this message.
+
+**type** stringrequired
+
+**Possible values:** `message`
+
+**role** stringrequired
+
+**Possible values:** `assistant`
+
+**model** stringrequired
+
+The model identifier supplied in the request. When using a Claude-compatible model name, the response retains that name.
+
+**content**
+
+object[]
+
+required
+
+Generated content blocks. Preserve the full content when adding this assistant turn to the next request.
+
+- Array [
+
+oneOf
+
+- Text block
+- Thinking output
+- Tool-use block
+- Server tool use output
+- Web search result block
+
+**[message\_start]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**[content\_block\_start]**
+
+**type** stringrequired
+
+**Possible values:** `thinking`
+
+**thinking** stringrequired
+
+The generated thinking content. Return this block unchanged when continuing a thinking-mode tool conversation.
+
+**signature** stringrequired
+
+Opaque signature returned with the thinking block; preserve it when replaying the block.
+
+**[content\_block\_delta]**
+
+Appears in assistant messages. Each tool-use block must have a matching tool-result block in the immediately following user message.
+
+**type** stringrequired
+
+**Possible values:** `tool_use`
+
+**id** stringrequired
+
+The tool-call ID. Pass this ID back as `tool_result.tool_use_id`.
+
+**name** stringrequired
+
+The name of the client tool.
+
+**input** nullablerequired
+
+The JSON arguments supplied to the tool, normally an object matching its `input_schema`.
+
+**[content\_block\_stop]**
+
+Describes a tool call executed by the service. Request-level search counts are reported separately in `usage.server_tool_use`; the client does not execute this call.
+
+**type** stringrequired
+
+**Possible values:** `server_tool_use`
+
+**id** stringrequired
+
+Identifier of the server tool call.
+
+**name** stringrequired
+
+Name of the server tool.
+
+**input** nullablerequired
+
+Arguments supplied to the server tool as a JSON value, normally an object.
+
+**caller**
+
+object
+
+required
+
+**type** stringrequired
+
+**Possible values:** `direct`
+
+**[message\_delta]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result`
+
+**tool\_use\_id** stringrequired
+
+The ID of the associated `server_tool_use` block.
+
+**content**
+
+object[]
+
+required
+
+Search results or search-error items. Pass the entire array back unchanged with the assistant message.
+
+- Array [
+
+oneOf
+
+- Web search result
+- Web search error
+
+**[message\_stop]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_result`
+
+**title** stringrequired
+
+The title of the result page.
+
+**url** urirequired
+
+The URL of the result page.
+
+**encrypted\_content** stringrequired
+
+Opaque result content. Preserve this value unchanged when passing the result back.
+
+**page\_age** stringnullable
+
+Page-age metadata, when available; may be `null`.
+
+**[ping]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `invalid_tool_input`, `unavailable`, `max_uses_exceeded`, `too_many_requests`, `query_too_long`, `request_too_large`
+
+The reason the server-side search failed.
+
+- ]
+
+- ]
+
+**stop\_reason** stringnullablerequired
+
+**Possible values:** `end_turn`, `max_tokens`, `stop_sequence`, `tool_use`, `refusal`, `null`
+
+Why generation stopped: natural completion, output limit, a stop sequence, a client tool call, or content filtering. Null in message\_start.
+
+**stop\_sequence** stringnullablerequired
+
+The matched stop sequence, or null when no stop sequence was matched.
+
+**usage**
+
+object
+
+required
+
+**input\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Input tokens not served from the context cache. Total input tokens equal input\_tokens + cache\_read\_input\_tokens + cache\_creation\_input\_tokens.
+
+**cache\_creation\_input\_tokens** integerrequired
+
+**Possible values:** `0`
+
+Always 0. Anthropic-style cache creation is not used; context caching is automatic.
+
+**cache\_read\_input\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Input tokens served from the context cache.
+
+**output\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Generated output tokens, including thinking tokens when thinking is enabled. In message\_delta this is the cumulative count, not an increment.
+
+**service\_tier** stringrequired
+
+**Possible values:** `standard`
+
+**server\_tool\_use**
+
+object
+
+Server-side web search counts, separate from token usage. Present only when at least one web search was attempted; otherwise omitted. Both fields are present when this object is returned. Read the final message's usage for non-streaming responses or the final message\_delta.usage for streaming responses. These counts are cumulative, not deltas. See [Server tool usage](../guides/anthropic_api.md#server-tool-usage).
+
+**web\_search\_requests** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of server-side web search attempts, including failed attempts and attempts exceeding `max_uses`.
+
+**tool\_search** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+
+**[Text block]**
+
+**type** stringrequired
+
+**Possible values:** `content_block_start`
+
+**index** integerrequired
+
+**Possible values:** `>= 0`
+
+Zero-based index of the content block.
+
+**content\_block** object
+
+required
+
+oneOf
+
+- Text block
+- Thinking output
+- Tool-use block
+- Server tool use output
+- Web search result block
+
+**[Thinking output]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**[Tool-use block]**
+
+**type** stringrequired
+
+**Possible values:** `thinking`
+
+**thinking** stringrequired
+
+The generated thinking content. Return this block unchanged when continuing a thinking-mode tool conversation.
+
+**signature** stringrequired
+
+Opaque signature returned with the thinking block; preserve it when replaying the block.
+
+**[Server tool use output]**
+
+Appears in assistant messages. Each tool-use block must have a matching tool-result block in the immediately following user message.
+
+**type** stringrequired
+
+**Possible values:** `tool_use`
+
+**id** stringrequired
+
+The tool-call ID. Pass this ID back as `tool_result.tool_use_id`.
+
+**name** stringrequired
+
+The name of the client tool.
+
+**input** nullablerequired
+
+The JSON arguments supplied to the tool, normally an object matching its `input_schema`.
+
+**[Web search result block]**
+
+Describes a tool call executed by the service. Request-level search counts are reported separately in `usage.server_tool_use`; the client does not execute this call.
+
+**type** stringrequired
+
+**Possible values:** `server_tool_use`
+
+**id** stringrequired
+
+Identifier of the server tool call.
+
+**name** stringrequired
+
+Name of the server tool.
+
+**input** nullablerequired
+
+Arguments supplied to the server tool as a JSON value, normally an object.
+
+**caller**
+
+object
+
+required
+
+**type** stringrequired
+
+**Possible values:** `direct`
+
+**[Web search result]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result`
+
+**tool\_use\_id** stringrequired
+
+The ID of the associated `server_tool_use` block.
+
+**content**
+
+object[]
+
+required
+
+Search results or search-error items. Pass the entire array back unchanged with the assistant message.
+
+- Array [
+
+oneOf
+
+- Web search result
+- Web search error
+
+**[Web search error]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_result`
+
+**title** stringrequired
+
+The title of the result page.
+
+**url** urirequired
+
+The URL of the result page.
+
+**encrypted\_content** stringrequired
+
+Opaque result content. Preserve this value unchanged when passing the result back.
+
+**page\_age** stringnullable
+
+Page-age metadata, when available; may be `null`.
+
+**[Text block]**
+
+**type** stringrequired
+
+**Possible values:** `web_search_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `invalid_tool_input`, `unavailable`, `max_uses_exceeded`, `too_many_requests`, `query_too_long`, `request_too_large`
+
+The reason the server-side search failed.
+
+- ]
+
+**[Thinking output]**
+
+**type** stringrequired
+
+**Possible values:** `content_block_delta`
+
+**index** integerrequired
+
+**Possible values:** `>= 0`
+
+Zero-based index of the content block.
+
+**delta** object
+
+required
+
+oneOf
+
+- Text delta
+- Thinking delta
+- Signature delta
+- Tool input delta
+
+**[Tool-use block]**
+
+**type** stringrequired
+
+**Possible values:** `text_delta`
+
+**text** stringrequired
+
+Append this text to the current text block.
+
+**[Server tool use output]**
+
+**type** stringrequired
+
+**Possible values:** `thinking_delta`
+
+**thinking** stringrequired
+
+Append this text to the current thinking block.
+
+**[Web search result block]**
+
+**type** stringrequired
+
+**Possible values:** `signature_delta`
+
+**signature** stringrequired
+
+Signature for the completed thinking block.
+
+**[Web search result]**
+
+**type** stringrequired
+
+**Possible values:** `input_json_delta`
+
+**partial\_json** stringrequired
+
+A fragment of the tool input JSON. Concatenate all fragments for this block, then parse the JSON after content\_block\_stop.
+
+**[Web search error]**
+
+**type** stringrequired
+
+**Possible values:** `content_block_stop`
+
+**index** integerrequired
+
+**Possible values:** `>= 0`
+
+Zero-based index of the content block.
+
+**[Text delta]**
+
+**type** stringrequired
+
+**Possible values:** `message_delta`
+
+**delta**
+
+object
+
+required
+
+**stop\_reason** stringrequired
+
+**Possible values:** `end_turn`, `max_tokens`, `stop_sequence`, `tool_use`, `refusal`
+
+The final reason generation stopped.
+
+**stop\_sequence** stringnullablerequired
+
+The matched stop sequence, or null when no stop sequence was matched.
+
+**usage**
+
+object
+
+required
+
+**input\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Input tokens not served from the context cache. Total input tokens equal input\_tokens + cache\_read\_input\_tokens + cache\_creation\_input\_tokens.
+
+**cache\_creation\_input\_tokens** integerrequired
+
+**Possible values:** `0`
+
+Always 0. Anthropic-style cache creation is not used; context caching is automatic.
+
+**cache\_read\_input\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Input tokens served from the context cache.
+
+**output\_tokens** integerrequired
+
+**Possible values:** `>= 0`
+
+Generated output tokens, including thinking tokens when thinking is enabled. In message\_delta this is the cumulative count, not an increment.
+
+**service\_tier** stringrequired
+
+**Possible values:** `standard`
+
+**server\_tool\_use**
+
+object
+
+Server-side web search counts, separate from token usage. Present only when at least one web search was attempted; otherwise omitted. Both fields are present when this object is returned. Read the final message's usage for non-streaming responses or the final message\_delta.usage for streaming responses. These counts are cumulative, not deltas. See [Server tool usage](../guides/anthropic_api.md#server-tool-usage).
+
+**web\_search\_requests** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of server-side web search attempts, including failed attempts and attempts exceeding `max_uses`.
+
+**tool\_search** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+
+**[Thinking delta]**
+
+**type** stringrequired
+
+**Possible values:** `message_stop`
+
+**[Signature delta]**
+
+**type** stringrequired
+
+**Possible values:** `ping`
+
+- ]
+
+**[Tool input delta]**
+
+```shell
+event: message_start
+data: {"type":"message_start","message":{"id":"e6ef6a63-a078-4f53-a73b-38c8d1d46310","type":"message","role":"assistant","model":"deepseek-flash","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":12,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":0,"service_tier":"standard"}}}
+
+event: content_block_start
+data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+event: ping
+data: {"type":"ping"}
+
+event: content_block_delta
+data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+event: content_block_stop
+data: {"type":"content_block_stop","index":0}
+
+event: message_delta
+data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"input_tokens":12,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":3,"service_tier":"standard"}}
+
+event: message_stop
+data: {"type":"message_stop"}
+```
+
+Invalid request, for example an empty `messages` array or unpaired tool results. Request errors use the common DeepSeek `{error: {message, type, param, code}}` structure, without the Anthropic top-level `type: "error"` field. See [Error Codes](../quick_start/error_codes.md) for other HTTP errors.
+
+**[application/json]**
+
+- Schema
+- Example
+
+**[Schema]**
+
+**Schema**
+
+**error**
+
+object
+
+required
+
+**code** stringnullablerequired
+
+**message** stringrequired
+
+**param** stringnullablerequired
+
+**type** stringrequired
+
+**[Example]**
+
+```json
+{
+  "error": {
+    "message": "messages: at least one message is required",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_request_error"
+  }
+}
+```
+
+Loading...
+
+
 <!-- ===== content/en/api/create-response.md ===== -->
 
 ---
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Responses API
+
+[Open Markdown](https://api-docs.deepseek.com/api/create-response.md "Open Markdown in a new tab")
 
 ```
 POST /responses
@@ -1699,7 +3341,7 @@ The API is **stateless**: responses and conversations are not stored on the serv
 
 **model** stringrequired
 
-**Possible values:** [`deepseek-flash`, `deepseek-v4-pro`]
+**Possible values:** `deepseek-flash`, `deepseek-v4-pro`
 
 ID of the model to use. Use `deepseek-flash` or `deepseek-v4-pro`.
 
@@ -1724,17 +3366,19 @@ string
 
 **[Input item list]**
 
+An input item. Supported types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. `reasoning` and `function_call` items are automatically merged into the adjacent assistant message by the server. A `web_search_call` item returned by a previous response can be passed back to restore its search results into the context. Please refer to the [Responses API Guide](../guides/responses_api.md#multi-turn-conversation) for the pass-back rules in multi-turn conversations.
+
 - Array [
 
 **type** string
 
-**Possible values:** [`message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`]
+**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`
 
 The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool. `web_search_call` items restore the search results of a previous server-side search.
 
 **role** string
 
-**Possible values:** [`user`, `assistant`, `system`, `developer`]
+**Possible values:** `user`, `assistant`, `system`, `developer`
 
 For `message` items. The role of the message author. `developer` is treated as `user`.
 
@@ -1765,7 +3409,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`input_text`, `output_text`]
+**Possible values:** `input_text`, `output_text`
 
 The type of the content part.
 
@@ -1775,9 +3419,11 @@ The text content.
 
 **[Image content part]**
 
+An image content part. Processed as a real image. Allowed only in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error ("Image in system message is unsupported" / "Image in assistant message is unsupported").
+
 **type** stringrequired
 
-**Possible values:** [`input_image`]
+**Possible values:** `input_image`
 
 The type of the content part, in this case `input_image`.
 
@@ -1787,7 +3433,7 @@ The image source, either an `http(s)` URL of the image (max 8192 characters) or 
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image. Ignored when `file_id` is set.
 
@@ -1799,7 +3445,7 @@ The ID of an image file uploaded via the [Files API](../guides/files_api.md), of
 
 **type** stringrequired
 
-**Possible values:** [`reasoning_text`]
+**Possible values:** `reasoning_text`
 
 The type of the content part, in this case `reasoning_text`.
 
@@ -1848,7 +3494,7 @@ oneOf
 
 **type** stringrequired
 
-**Possible values:** [`input_text`, `output_text`]
+**Possible values:** `input_text`, `output_text`
 
 The type of the content part.
 
@@ -1858,9 +3504,11 @@ The text content.
 
 **[Image content part]**
 
+An image content part. Processed as a real image. Allowed only in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error ("Image in system message is unsupported" / "Image in assistant message is unsupported").
+
 **type** stringrequired
 
-**Possible values:** [`input_image`]
+**Possible values:** `input_image`
 
 The type of the content part, in this case `input_image`.
 
@@ -1870,7 +3518,7 @@ The image source, either an `http(s)` URL of the image (max 8192 characters) or 
 
 **detail** string
 
-**Possible values:** [`low`, `high`, `original`, `auto`]
+**Possible values:** `low`, `high`, `original`, `auto`
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image. Ignored when `file_id` is set.
 
@@ -1882,7 +3530,7 @@ The ID of an image file uploaded via the [Files API](../guides/files_api.md), of
 
 **type** stringrequired
 
-**Possible values:** [`reasoning_text`]
+**Possible values:** `reasoning_text`
 
 The type of the content part, in this case `reasoning_text`.
 
@@ -1908,7 +3556,7 @@ Configuration of the thinking mode.
 
 **effort** string
 
-**Possible values:** [`none`, `low`, `high`, `max`]
+**Possible values:** `none`, `low`, `high`, `max`
 
 Controls the thinking mode toggle and the thinking effort. `none` disables thinking mode; `low` / `high` / `max` enable thinking mode. If not set, the model's default thinking behavior is used (enabled by default). For compatibility with existing software, `minimal` is accepted and mapped to `low`, and `medium` / `xhigh` are accepted and mapped to `high`.
 
@@ -1918,11 +3566,13 @@ An upper bound for the number of tokens that can be generated in the response, i
 
 **stream** booleannullable
 
+**Default value:** `false`
+
 If set to `true`, the response is streamed as semantic server-sent events. The final event is `response.completed` / `response.incomplete` / `response.failed` (there is no `data: [DONE]` message). Please refer to the [Responses API Guide](../guides/responses_api.md#streaming) for the full event list.
 
 **temperature** numbernullable
 
-**Possible values:** `<= 2`
+**Possible values:** `>= 0` and `<= 2`
 
 **Default value:** `1`
 
@@ -1930,11 +3580,12 @@ What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
 
 **top\_p** numbernullable
 
-**Possible values:** `<= 1`
+**Possible values:** `>= 0` and `<= 1`
 
-**Default value:** `1`
+An alternative to sampling with temperature, called nucleus sampling. The effective value depends on the model and mode:
 
-An alternative to sampling with temperature, called nucleus sampling. It only takes effect in thinking mode, where the effective range is 0.95–1.0: values below 0.95 are treated as 0.95. In non-thinking mode it is fixed at 1.0 and the value you pass is ignored.
+- `deepseek-flash`: In thinking mode, the default is 1.0 and values below 0.95 are treated as 0.95. In non-thinking mode, it is fixed at 1.0 and the value you pass is ignored.
+- `deepseek-v4-pro`: In thinking mode, it is fixed at 0.95 when tool calling is enabled, or 1.0 otherwise; the value you pass is ignored. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided. In non-thinking mode, the value you pass is used, with a default of 1.0.
 
 **text**
 
@@ -1950,11 +3601,11 @@ object
 
 The output format. `{"type": "text"}` (default) for plain text; `{"type": "json_object"}` for JSON mode; `{"type": "json_schema", "name": ..., "schema": ...}` for structured output conforming to the given JSON Schema.
 
-**type** string
+If `text` is omitted or `null`, or `format` is omitted, plain text is used. When a `format` object is provided, `type` is required.
 
-**Possible values:** [`text`, `json_object`, `json_schema`]
+**type** stringrequired
 
-**Default value:** `text`
+**Possible values:** `text`, `json_object`, `json_schema`
 
 **name** string
 
@@ -1972,11 +3623,13 @@ nullable
 
 A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
 
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`.
+
 - Array [
 
 **type** stringrequired
 
-**Possible values:** [`function`, `custom`, `web_search`]
+**Possible values:** `function`, `custom`, `web_search`
 
 The type of the tool: `function`, `custom` (only `apply_patch`), or `web_search` (`deepseek-v4-pro` only).
 
@@ -1996,11 +3649,7 @@ The parameters the functions accepts, described as a JSON Schema object. See the
 
 Omitting `parameters` defines a function with an empty parameter list.
 
-**property name\*** any
-
-The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
-
-Omitting `parameters` defines a function with an empty parameter list.
+**property name\*** anynullable
 
 - ]
 
@@ -2027,13 +3676,15 @@ oneOf
 
 string
 
-**Possible values:** [`none`, `auto`, `required`]
+**Possible values:** `none`, `auto`, `required`
 
 **[Named tool choice]**
 
+Forces the model to call the specified tool. `name` is required when `type` is `function`.
+
 **type** stringrequired
 
-**Possible values:** [`function`]
+**Possible values:** `function`
 
 **name** string
 
@@ -2041,13 +3692,15 @@ The name of the function to call. Required when `type` is `function`.
 
 **top\_logprobs** integernullable
 
-**Possible values:** `<= 20`
+**Possible values:** `>= 0` and `<= 20`
+
+**Default value:** `null`
 
 An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability.
 
 **user** stringnullable
 
-A custom end-user identifier, with allowed character set [a-zA-Z0-9\-\_] and a maximum length of 512. Do not include user privacy information.
+A custom end-user identifier. We recommend using only ASCII letters, digits, underscores (`_`), and hyphens (`-`). The UTF-8 encoded value must not exceed 512 bytes. Do not include user privacy information.
 
 - It can be used to distinguish user identities on your side to help us with content safety review, for KVCache isolation, and for scheduling isolation. For more details, please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md)
 
@@ -2061,7 +3714,6 @@ OK, returns a `response` object
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2074,7 +3726,7 @@ A unique identifier for the response.
 
 **object** stringrequired
 
-**Possible values:** [`response`]
+**Possible values:** `response`
 
 The object type, which is always `response`.
 
@@ -2084,7 +3736,7 @@ The Unix timestamp (in seconds) of when the response was created.
 
 **status** stringrequired
 
-**Possible values:** [`in_progress`, `completed`, `incomplete`, `failed`]
+**Possible values:** `in_progress`, `completed`, `incomplete`, `failed`
 
 The status of the response.
 
@@ -2102,7 +3754,7 @@ The details about why the response is incomplete. The `reason` field can be `max
 
 **reason** string
 
-**Possible values:** [`max_output_tokens`, `content_filter`]
+**Possible values:** `max_output_tokens`, `content_filter`
 
 **model** stringrequired
 
@@ -2116,11 +3768,13 @@ required
 
 The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
+An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent tool searches.
+
 - Array [
 
 **type** string
 
-**Possible values:** [`message`, `reasoning`, `function_call`, `custom_tool_call`, `web_search_call`, `tool_search_call`]
+**Possible values:** `message`, `reasoning`, `function_call`, `custom_tool_call`, `web_search_call`, `tool_search_call`
 
 The type of the output item: `message` / `reasoning` / `function_call` / `custom_tool_call` / `web_search_call` / `tool_search_call`.
 
@@ -2130,13 +3784,13 @@ The unique ID of the output item.
 
 **status** string
 
-**Possible values:** [`in_progress`, `completed`, `incomplete`]
+**Possible values:** `in_progress`, `completed`, `incomplete`
 
 The status of the output item.
 
 **role** string
 
-**Possible values:** [`assistant`]
+**Possible values:** `assistant`
 
 For `message` items. Always `assistant`.
 
@@ -2150,7 +3804,7 @@ For `message` items, a list of `output_text` content parts. For `reasoning` item
 
 **type** string
 
-**Possible values:** [`output_text`, `reasoning_text`]
+**Possible values:** `output_text`, `reasoning_text`
 
 **text** string
 
@@ -2174,7 +3828,9 @@ For `function_call` items. The arguments to call the function with, as generated
 
 object
 
-Token usage statistics for the response.
+nullable
+
+Token and server-tool usage statistics for the response. Null in initial streaming events; read usage from the final response.
 
 **input\_tokens** integerrequired
 
@@ -2208,98 +3864,97 @@ Number of reasoning (chain-of-thought) tokens generated by the model.
 
 Total number of tokens used in the request (input + output).
 
-**[Example (from schema)]**
+**server\_tool\_use**
 
-```json
-{
-  "id": "string",
-  "object": "response",
-  "created_at": 0,
-  "status": "in_progress",
-  "error": {},
-  "incomplete_details": {
-    "reason": "max_output_tokens"
-  },
-  "model": "string",
-  "output": [
-    {
-      "type": "message",
-      "id": "string",
-      "status": "in_progress",
-      "role": "assistant",
-      "content": [
-        {
-          "type": "output_text",
-          "text": "string"
-        }
-      ],
-      "call_id": "string",
-      "name": "string",
-      "arguments": "string"
-    }
-  ],
-  "usage": {
-    "input_tokens": 0,
-    "input_tokens_details": {
-      "cached_tokens": 0
-    },
-    "output_tokens": 0,
-    "output_tokens_details": {
-      "reasoning_tokens": 0
-    },
-    "total_tokens": 0
-  }
-}
-```
+object
+
+Successful server-side web search and page-fetch counts, separate from token usage. Present only when tool\_search or tool\_fetch is greater than zero; otherwise omitted. Both fields are present when this object is returned. In streaming responses, read response.usage from the terminal response.completed, response.incomplete, or response.failed event. These are cumulative counts, not deltas. See [Server tool usage](../guides/responses_api.md#server-tool-usage).
+
+**tool\_search** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful web search queries. A search with multiple queries can add more than one; failed queries and queries with no results are not counted. This field can be used as a basis for billing.
+
+**tool\_fetch** integerrequired
+
+**Possible values:** `>= 0`
+
+Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. This field can be used as a basis for billing.
 
 **[Example]**
 
 ```json
 {
-  "id": "24778070-1c36-4ae0-a4bd-870afc7fc13e",
+  "id": "387b53c1-7ad2-4259-9298-61b139f5bd20",
   "object": "response",
-  "created_at": 1753000000,
+  "created_at": 1793084842,
   "status": "completed",
+  "background": false,
+  "completed_at": 1793084843,
+  "content_filters": null,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32,
+  "max_tool_calls": null,
   "model": "deepseek-flash",
+  "moderation": null,
   "output": [
     {
-      "type": "reasoning",
-      "id": "rs_1",
-      "status": "completed",
-      "content": [
-        {
-          "type": "reasoning_text",
-          "text": "The user greets me. I should reply politely."
-        }
-      ],
-      "summary": []
-    },
-    {
       "type": "message",
-      "id": "msg_1",
+      "id": "4e706f35-6ea2-468a-bd19-a9c1adc54726",
       "status": "completed",
-      "role": "assistant",
       "content": [
         {
           "type": "output_text",
-          "text": "Hello! How can I help you today?",
-          "annotations": []
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! 👋 How can I help you today?"
         }
-      ]
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
     }
   ],
-  "usage": {
-    "input_tokens": 22,
-    "input_tokens_details": { "cached_tokens": 0 },
-    "output_tokens": 29,
-    "output_tokens_details": { "reasoning_tokens": 27 },
-    "total_tokens": 51
-  },
-  "store": false,
   "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
   "previous_response_id": null,
-  "error": null,
-  "incomplete_details": null
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": null
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 1.0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 7,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 11,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 18
+  },
+  "user": null,
+  "metadata": {}
 }
 ```
 
@@ -2308,7 +3963,6 @@ OK, returns a streamed sequence of semantic server-sent events. Each event has a
 **[text/event-stream]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2321,34 +3975,62 @@ object
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-[
-  {}
-]
-```
-
 **[Example]**
 
 ```shell
 event: response.created
-data: {"type": "response.created", "sequence_number": 0, "response": {"id": "...", "object": "response", "status": "in_progress", ...}}
+data: {"type":"response.created","response":{"id":"19460ef2-58da-46c5-9510-9e7b04c47e4a","object":"response","created_at":1793084908,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":32,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":null,"service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":null},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":0}
+
+event: response.in_progress
+data: {"type":"response.in_progress","response":{"id":"19460ef2-58da-46c5-9510-9e7b04c47e4a","object":"response","created_at":1793084908,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":32,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":null,"service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":null},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":1}
 
 event: response.output_item.added
-data: {"type": "response.output_item.added", "sequence_number": 2, "output_index": 0, "item": {"type": "reasoning", ...}}
+data: {"type":"response.output_item.added","item":{"type":"message","id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","status":"in_progress","content":[],"phase":"final_answer","role":"assistant"},"output_index":0,"sequence_number":2}
 
-event: response.reasoning_text.delta
-data: {"type": "response.reasoning_text.delta", "sequence_number": 4, "item_id": "rs_1", "output_index": 0, "content_index": 0, "delta": "The user"}
-
-event: response.output_item.added
-data: {"type": "response.output_item.added", "sequence_number": 9, "output_index": 1, "item": {"type": "message", "role": "assistant", ...}}
+event: response.content_part.added
+data: {"type":"response.content_part.added","content_index":0,"item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","output_index":0,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":""},"sequence_number":3}
 
 event: response.output_text.delta
-data: {"type": "response.output_text.delta", "sequence_number": 11, "item_id": "msg_1", "output_index": 1, "content_index": 0, "delta": "Hello"}
+data: {"type":"response.output_text.delta","content_index":0,"delta":"Hello","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":4}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":"!","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":5}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" 👋","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":6}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" How","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":7}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" can","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":8}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" I","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":9}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" help","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":10}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" you","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":11}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" today","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":12}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":"?","item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":13}
+
+event: response.output_text.done
+data: {"type":"response.output_text.done","content_index":0,"item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","logprobs":[],"output_index":0,"sequence_number":14,"text":"Hello! 👋 How can I help you today?"}
+
+event: response.content_part.done
+data: {"type":"response.content_part.done","content_index":0,"item_id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","output_index":0,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":"Hello! 👋 How can I help you today?"},"sequence_number":15}
+
+event: response.output_item.done
+data: {"type":"response.output_item.done","item":{"type":"message","id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"Hello! 👋 How can I help you today?"}],"phase":"final_answer","role":"assistant"},"output_index":0,"sequence_number":16}
 
 event: response.completed
-data: {"type": "response.completed", "sequence_number": 20, "response": {"id": "...", "object": "response", "status": "completed", "usage": {...}, ...}}
+data: {"type":"response.completed","response":{"id":"19460ef2-58da-46c5-9510-9e7b04c47e4a","object":"response","created_at":1793084908,"status":"completed","background":false,"completed_at":1793084909,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":32,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[{"type":"message","id":"7b653eb5-6012-4257-ba1a-4e9dce20bd25","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"Hello! 👋 How can I help you today?"}],"phase":"final_answer","role":"assistant"}],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":null,"service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":null},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":{"input_tokens":7,"input_tokens_details":{"cached_tokens":0},"output_tokens":11,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":18},"user":null,"metadata":{}},"sequence_number":17}
 ```
 
 Loading...
@@ -2397,10 +4079,12 @@ DeepSeek Support: [api-service@deepseek.com](mailto:api-service@deepseek.com)
 title: "Delete File"
 description: "Deletes a file."
 source: https://api-docs.deepseek.com/api/delete-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # Delete File
+
+[Open Markdown](https://api-docs.deepseek.com/api/delete-file.md "Open Markdown in a new tab")
 
 ```
 DELETE /files/:file_id
@@ -2425,7 +4109,6 @@ OK, returns the deletion status.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2438,23 +4121,13 @@ The ID of the deleted file.
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
 **deleted** booleanrequired
 
 Whether the file was successfully deleted.
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "deleted": true
-}
-```
 
 **[Example]**
 
@@ -2475,16 +4148,20 @@ Loading...
 title: "Fetch"
 description: "Fetch a web page and return its title and content as Markdown. See the [Search & Fetch guide](/guides/search) for error handling and billing."
 source: https://api-docs.deepseek.com/api/fetch
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Fetch
+
+[Open Markdown](https://api-docs.deepseek.com/api/fetch.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/fetch
 ```
 
 Fetch a web page and return its title and content as Markdown. See the [Search & Fetch guide](../guides/search.md) for error handling and billing.
+
+The response example shows an excerpt of the page content.
 
 ## Request
 
@@ -2494,7 +4171,9 @@ Fetch a web page and return its title and content as Markdown. See the [Search &
 
 **url** stringrequired
 
-**Possible values:** `non-empty` and `<= 8192 characters`
+**Minimum characters:** `1`
+
+**Maximum characters:** `8192`
 
 The URL to fetch. Must be at most 8192 characters and an HTTP or HTTPS URL with a host. The URL must not contain a username or password.
 
@@ -2507,7 +4186,6 @@ OK, returns the fetched page content.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2522,21 +4200,12 @@ The title of the page. Empty when the title is unavailable.
 
 The fetched page content as Markdown text.
 
-**[Example (from schema)]**
-
-```json
-{
-  "title": "string",
-  "content": "string"
-}
-```
-
 **[Example]**
 
 ```json
 {
-  "title": "Example article",
-  "content": "# Example article\n\nArticle content."
+  "title": "Your First API Call | DeepSeek API Docs",
+  "content": "# Your First API Call\n\nThe DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 }
 ```
 
@@ -2549,10 +4218,12 @@ Loading...
 title: "Get User Balance"
 description: "Get user current balance"
 source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # Get User Balance
+
+[Open Markdown](https://api-docs.deepseek.com/api/get-user-balance.md "Open Markdown in a new tab")
 
 ```
 GET /user/balance
@@ -2569,7 +4240,6 @@ OK, returns user balance info.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2588,7 +4258,7 @@ object[]
 
 **currency** string
 
-**Possible values:** [`CNY`, `USD`]
+**Possible values:** `CNY`, `USD`
 
 The currency of the balance.
 
@@ -2605,22 +4275,6 @@ The total not expired granted balance.
 The total topped-up balance.
 
 - ]
-
-**[Example (from schema)]**
-
-```json
-{
-  "is_available": true,
-  "balance_infos": [
-    {
-      "currency": "CNY",
-      "total_balance": "110.00",
-      "granted_balance": "10.00",
-      "topped_up_balance": "100.00"
-    }
-  ]
-}
-```
 
 **[Example]**
 
@@ -2647,10 +4301,12 @@ Loading...
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
 source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # List Files
+
+[Open Markdown](https://api-docs.deepseek.com/api/list-files.md "Open Markdown in a new tab")
 
 ```
 GET /files
@@ -2676,15 +4332,15 @@ The number of files to return. Must be between 1 and 1000.
 
 **order** string
 
-**Possible values:** [`asc`, `desc`]
-
 **Default value:** `asc`
+
+**Possible values:** `asc`, `desc`
 
 Sort order by creation time. `asc` for ascending, `desc` for descending.
 
 **purpose** string
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 Only return files with the given purpose. Only `user_data` is supported.
 
@@ -2697,7 +4353,6 @@ OK, returns a list of `file object`.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2706,7 +4361,7 @@ OK, returns a list of `file object`.
 
 **object** stringrequired
 
-**Possible values:** [`list`]
+**Possible values:** `list`
 
 The object type, which is always `list`.
 
@@ -2718,6 +4373,8 @@ required
 
 The list of file objects.
 
+Describes a file that has been uploaded to the Files API.
+
 - Array [
 
 **id** stringrequired
@@ -2726,7 +4383,7 @@ The file identifier, of the form `file-api-...`, which can be referenced in chat
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
@@ -2744,7 +4401,7 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the file.
 
@@ -2765,28 +4422,6 @@ The ID of the last file in the list. Useful as a pagination cursor.
 **has\_more** booleanrequired
 
 Whether there are more files beyond this page.
-
-**[Example (from schema)]**
-
-```json
-{
-  "object": "list",
-  "data": [
-    {
-      "id": "string",
-      "object": "file",
-      "bytes": 0,
-      "created_at": 0,
-      "filename": "string",
-      "purpose": "user_data",
-      "expires_at": 0
-    }
-  ],
-  "first_id": "string",
-  "last_id": "string",
-  "has_more": true
-}
-```
 
 **[Example]**
 
@@ -2818,10 +4453,12 @@ Loading...
 title: "Lists Models"
 description: "Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output modalities, supported effort levels, and per-protocol API capabilities. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
 source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # Lists Models
+
+[Open Markdown](https://api-docs.deepseek.com/api/list-models.md "Open Markdown in a new tab")
 
 ```
 GET /models
@@ -2838,7 +4475,6 @@ OK, returns A list of models
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -2847,7 +4483,7 @@ OK, returns A list of models
 
 **object** stringrequired
 
-**Possible values:** [`list`]
+**Possible values:** `list`
 
 The object type, which is always `list`.
 
@@ -2859,6 +4495,8 @@ required
 
 The list of model objects.
 
+Describes a DeepSeek model offering that can be used with the API. Besides the identifier fields, each model carries machine-readable metadata about its capabilities and limits; a metadata field may be omitted when the information is not available for that model.
+
 - Array [
 
 **id** stringrequired
@@ -2867,7 +4505,7 @@ The model identifier, which can be referenced in the API endpoints.
 
 **object** stringrequired
 
-**Possible values:** [`model`]
+**Possible values:** `model`
 
 The object type, which is always "model".
 
@@ -2889,13 +4527,13 @@ The maximum number of output tokens the server allows in a single response, i.e.
 
 **input\_modalities** string[]
 
-**Possible values:** [`text`, `image`]
+**Possible values:** `text`, `image`
 
 The input types the model accepts.
 
 **output\_modalities** string[]
 
-**Possible values:** [`text`]
+**Possible values:** `text`
 
 The media types the model can generate.
 
@@ -2927,7 +4565,7 @@ Capabilities that apply when the model is used through the [Anthropic Messages A
 
 **system\_prompt\_update** stringrequired
 
-**Possible values:** [`leading-only`, `in-history`]
+**Possible values:** `leading-only`, `in-history`
 
 How the model picks up an updated system prompt during a conversation.
 
@@ -2935,41 +4573,6 @@ How the model picks up an updated system prompt during a conversation.
 - `in-history`: a `system` message may be appended to the conversation history. The latest `system` message in the history provides the complete effective system prompt and replaces all earlier ones.
 
 - ]
-
-**[Example (from schema)]**
-
-```json
-{
-  "object": "list",
-  "data": [
-    {
-      "id": "string",
-      "object": "model",
-      "owned_by": "string",
-      "name": "string",
-      "context_window": 0,
-      "max_output_tokens": 0,
-      "input_modalities": [
-        "text"
-      ],
-      "output_modalities": [
-        "text"
-      ],
-      "effort": {
-        "supported_levels": [
-          "string"
-        ],
-        "default_level": "string"
-      },
-      "api_capabilities": {
-        "anthropic_messages": {
-          "system_prompt_update": "leading-only"
-        }
-      }
-    }
-  ]
-}
-```
 
 **[Example]**
 
@@ -3028,10 +4631,12 @@ Loading...
 title: "Retrieve File"
 description: "Returns information about a specific file."
 source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # Retrieve File
+
+[Open Markdown](https://api-docs.deepseek.com/api/retrieve-file.md "Open Markdown in a new tab")
 
 ```
 GET /files/:file_id
@@ -3056,7 +4661,6 @@ OK, returns the `file object`.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -3069,7 +4673,7 @@ The file identifier, of the form `file-api-...`, which can be referenced in chat
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
@@ -3087,27 +4691,13 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the file.
 
 **expires\_at** integer
 
 The Unix timestamp (in seconds) of when the file expires. Only present when an expiration was set at upload time.
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "bytes": 0,
-  "created_at": 0,
-  "filename": "string",
-  "purpose": "user_data",
-  "expires_at": 0
-}
-```
 
 **[Example]**
 
@@ -3131,10 +4721,12 @@ Loading...
 title: "Search"
 description: "Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, error handling, and billing."
 source: https://api-docs.deepseek.com/api/search
-fetched: 2026-10-26
+fetched: 2026-10-31
 ---
 
 # Search
+
+[Open Markdown](https://api-docs.deepseek.com/api/search.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/search
@@ -3150,7 +4742,9 @@ Search the web for a query and return a ranked list of structured results. See t
 
 **query** stringrequired
 
-**Possible values:** `non-empty` and `<= 128 characters`
+**Minimum characters:** `1`
+
+**Maximum characters:** `128`
 
 The search query. Supports operators such as `site:`, `-site:`, and quoted phrases. Must contain 1 to 128 Unicode characters and cannot be all whitespace.
 
@@ -3164,15 +4758,21 @@ The number of results to return, between 1 and 50. Defaults to 10.
 
 **ori\_question** stringnullable
 
-**Possible values:** `non-empty` and `<= 128 characters`
+**Minimum characters:** `1`
+
+**Maximum characters:** `128`
 
 The user's original question that triggered the search, between 1 and 128 characters. Providing it can improve query understanding. `null` is treated as not provided.
 
 **localization** string
 
+**Default value:** `""`
+
 An optional IP address used to localize search results. Defaults to an empty string.
 
 **need\_content** boolean
+
+**Default value:** `false`
 
 Whether to return page content in `content`. Defaults to `false`; when `false`, `content` is always an empty string.
 
@@ -3185,7 +4785,6 @@ OK, returns the search results.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -3204,7 +4803,7 @@ The search results. Empty when the query matches no results.
 
 **rerank\_score** floatrequired
 
-**Possible values:** `<= 3`
+**Possible values:** `>= 0` and `<= 3`
 
 A relevance score from 0 to 3 that combines signals such as relevance, authority, and freshness. Scores of 1.5 or above are considered high-quality results.
 
@@ -3248,27 +4847,6 @@ The authority tier of the page, 0 to 4 (`-1` means unknown). Values of 3 or abov
 
 - ]
 
-**[Example (from schema)]**
-
-```json
-{
-  "results": [
-    {
-      "rerank_score": 0,
-      "title": "string",
-      "url": "string",
-      "snippet": "string",
-      "summary": "string",
-      "content": "string",
-      "site_name": "string",
-      "site_icon": "string",
-      "date": "2026-10-19T05:41:50.090Z",
-      "authority": 0
-    }
-  ]
-}
-```
-
 **[Example]**
 
 ```json
@@ -3280,7 +4858,7 @@ The authority tier of the page, 0 to 4 (`-1` means unknown). Values of 3 or abov
       "url": "https://example.com/deepseek-v4",
       "snippet": "DeepSeek V4 is now available, with tool calling and long-context support.",
       "summary": "DeepSeek has released the V4 model. The release adds improved tool calling and long-context support for agent workflows.",
-      "content": "DeepSeek V4 is now generally available...",
+      "content": "",
       "site_name": "Example News",
       "site_icon": "https://example.com/favicon.ico",
       "date": "2026-06-01T00:00:00+00:00",
@@ -3978,7 +5556,7 @@ If you are not redirected automatically, please visit [FAQ](https://static.deeps
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Using the Anthropic API
@@ -3986,6 +5564,8 @@ fetched: 2026-10-17
 To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the `base_url` being `https://api.deepseek.com/anthropic`.
 
 With simple configuration, you can integrate the capabilities of DeepSeek into the Anthropic API ecosystem.
+
+For request parameters, response fields, and complete HTTP examples, see the [Messages API reference](../api/create-message.md).
 
 ---
 
@@ -4057,18 +5637,21 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 
 ### HTTP Header
 
+Authenticate with either `x-api-key: <API_KEY>` or `Authorization: Bearer <API_KEY>`.
+
 | Field | Support Status |
 | --- | --- |
 | anthropic-beta | Ignored for `/messages`, except that an image with `source.type` of `file` requires `files-api-2025-04-14`; required for Files API endpoints — see [Files API](files_api.md#anthropic-compatible-files-api) |
 | anthropic-version | Ignored |
 | x-api-key | Fully Supported |
+| Authorization | Supports `Bearer <API_KEY>` as an alternative to `x-api-key` |
 
 ### Simple Fields
 
 | Field | Support Status |
 | --- | --- |
 | model | Use DeepSeek Model Instead |
-| max\_tokens | Fully Supported |
+| max\_tokens | Supported. Optional in HTTP requests; the default and effective limit depend on the model, thinking mode, and effort. The Anthropic SDK requires this argument, so SDK examples set it explicitly. See the compatibility exception below |
 | container | Ignored |
 | mcp\_servers | Ignored |
 | metadata | `user_id` is supported, others are ignored Please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md) for more information about `user_id` parameter. |
@@ -4076,15 +5659,19 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | stop\_sequences | Fully Supported |
 | stream | Fully Supported |
 | system | Fully Supported |
-| temperature | Fully Supported (range [0.0 ~ 2.0]) |
-| thinking | Supported (`budget_tokens` is ignored) |
+| temperature | Valid range: [0.0 ~ 2.0]. Takes effect in non-thinking mode; fixed at `1.0` in thinking mode |
+| thinking | Supports `type: "enabled"` and `type: "disabled"`; `adaptive` is treated as `enabled`. `budget_tokens` is ignored |
 | output\_config | Only `effort` is supported |
 | top\_k | Ignored |
-| top\_p | Depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tools are present, otherwise `1.0`); takes effect in non-thinking mode |
+| top\_p | Depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); takes effect in non-thinking mode. Setting `tool_choice` to `{"type": "none"}` disables tool calling even when `tools` is provided |
+
+For certain main-agent requests from Claude Code or OpenCode in thinking mode, compatibility handling can increase the effective `max_tokens` above the requested value. In these cases, this parameter does not provide a strict output-token limit.
 
 ### Tool Fields
 
 #### tools
+
+For client-defined tools, provide `name`, `input_schema`, and an optional `description`, and omit `type`. The `type` field selects a server tool; passing `type: "custom"` for a client tool returns a `422` error.
 
 | Field | Support Status |
 | --- | --- |
@@ -4099,8 +5686,14 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | --- | --- |
 | none | Fully Supported |
 | auto | Supported (`disable_parallel_tool_use` is ignored) |
-| any | Supported (`disable_parallel_tool_use` is ignored) |
-| tool | Supported (`disable_parallel_tool_use` is ignored) |
+| any | Treated as `auto`; does not force a tool call (`disable_parallel_tool_use` is ignored) |
+| tool | Selects a named client tool in non-thinking mode; returns a `400` error in thinking mode (`disable_parallel_tool_use` is ignored) |
+
+#### Returning tool results
+
+For multi-turn conversations, send the conversation history in `messages` on every request. After an assistant message containing client `tool_use` blocks, the immediately following message must have the `user` role and include a `tool_result` for every tool call, with matching `tool_use_id` values. Place all `tool_result` blocks before any text in that user message.
+
+When continuing tool calls in thinking mode, preserve and pass back the assistant's complete `content` array, including `thinking` and tool-use blocks. If thinking content is omitted, the service may recover it using the tool-call IDs; if recovery is required but fails, the request returns a `400` error. Do not rely on automatic recovery.
 
 ### Message Fields
 
@@ -4110,7 +5703,7 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | array, type="text" | text | Fully Supported |
 | cache\_control | Ignored |
 | citations | Ignored |
-| array, type="image" | source | Supported. `source.type` can be base64 (media types: jpeg, png, gif, webp), url, or file (the file variant requires the header `anthropic-beta: files-api-2025-04-14`) |
+| array, type="image" | source | `deepseek-flash` supports images in user messages and `tool_result` content; images in assistant messages return a `400` error. `deepseek-v4-pro` does not process images and replaces them with the text `[Unsupported Image]`. `source.type` can be base64 (media types: image/jpeg, image/png, image/gif, image/webp), url, or file (include the header `anthropic-beta: files-api-2025-04-14` when using file images). |
 | array, type = "document" |  | Not Supported |
 | array, type = "search\_result" |  | Not Supported |
 | array, type = "thinking" |  | Supported |
@@ -4129,6 +5722,66 @@ This section lists the compatibility details of the DeepSeek API with the Anthro
 | array, type = "mcp\_tool\_use" |  | Not Supported |
 | array, type = "mcp\_tool\_result" |  | Not Supported |
 | array, type = "container\_upload" |  | Not Supported |
+
+## Server tool usage
+
+A content block with `type: "server_tool_use"` describes a tool call executed by the service. It contains the call `id`, tool `name`, JSON `input`, and `caller`. For web search, `name` is `web_search`, `input` contains the search `query`, and `caller` is `{"type":"direct"}`. The matching `web_search_tool_result` block uses the same ID in `tool_use_id`. The service runs the search and continues generating the answer; the client does not need to execute the tool or supply a `tool_result`.
+
+`usage.server_tool_use` reports request-level counters for these searches:
+
+| Field | Meaning |
+| --- | --- |
+| `web_search_requests` | Number of attempted server-side web searches, including attempts rejected for exceeding `max_uses`, invalid queries, and failed searches. It can therefore exceed `max_uses`. |
+| `tool_search` | Number of web searches that succeeded and returned at least one result. A failed search or an empty result does not increment this counter. It counts calls, not individual search results. |
+
+The object is omitted when no web search was attempted; declaring a search tool in `tools` does not guarantee that it appears. For a non-streaming response, read `usage.server_tool_use`. For streaming, read the cumulative counters in the final `message_delta.usage.server_tool_use`; the initial `message_start` usage does not contain them.
+
+For example, send this request body to `POST /anthropic/v1/messages` with your DeepSeek API key:
+
+```json
+{
+  "model": "deepseek-v4-pro",
+  "max_tokens": 256,
+  "thinking": {"type": "disabled"},
+  "tools": [
+    {"type": "web_search_20250305", "name": "web_search", "max_uses": 1}
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "Use the web search tool once to search for Python official website. Then reply with only the official site URL."
+    }
+  ]
+}
+```
+
+A successful response to this request contained `server_tool_use`, `web_search_tool_result`, and `text` content blocks, with the following usage. Token counts and search counts can vary between requests.
+
+```json
+{
+  "usage": {
+    "input_tokens": 2912,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 256,
+    "output_tokens": 52,
+    "service_tier": "standard",
+    "server_tool_use": {
+      "web_search_requests": 1,
+      "tool_search": 1
+    }
+  }
+}
+```
+
+## Streaming and token usage
+
+Set `stream` to `true` to receive server-sent events (SSE). A normal response starts with `message_start`, emits `content_block_start`, `content_block_delta`, and `content_block_stop` for its content blocks, then ends with `message_delta` and `message_stop`. `ping` events may appear between these events. The stream does not send `data: [DONE]`.
+
+Normal message events have an SSE `event` name and a JSON `type` field. Keep-alive comments may also appear. If waiting for generation to start times out, the service may send an unnamed `data` frame containing `{"error":{"message":"..."}}`, without an SSE `event` name or a top-level JSON `type`, and then close the connection. A connection that closes before `message_stop` indicates an incomplete response.
+
+Use the final `message_delta.usage` as the request's token usage; do not add it to the initial usage in `message_start`. `input_tokens` excludes cache hits, `cache_read_input_tokens` reports cache hits, and `cache_creation_input_tokens` is currently `0`. The total input token count is `input_tokens + cache_read_input_tokens + cache_creation_input_tokens`.
+
+See the [Messages API reference](../api/create-message.md) for response examples and error handling.
 
 
 <!-- ===== content/en/guides/chat_prefix_completion.md ===== -->
@@ -4620,7 +6273,7 @@ print(response.choices[0].text)
 title: "JSON Output"
 description: "In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing."
 source: https://api-docs.deepseek.com/guides/json_mode
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # JSON Output
@@ -4636,7 +6289,7 @@ To enable JSON Output, users should:
 1. Set the `response_format` parameter to `{'type': 'json_object'}`.
 2. Include the word "json" in the system or user prompt, and provide an example of the desired JSON format to guide the model in outputting valid JSON.
 3. Set the `max_tokens` parameter reasonably to prevent the JSON string from being truncated midway.
-4. **When using the JSON Output feature, the API may occasionally return empty content. We are actively working on optimizing this issue. You can try modifying the prompt to mitigate such problems.**
+4. **When using the JSON Output feature, if the model's output cannot be recognized as JSON, the API replaces the non-JSON content with spaces (`U+0020`). As a result, the returned `content` may contain only spaces (appearing empty, even when `finish_reason` is `stop`). You can try modifying the prompt to mitigate such problems, and handle blank `content` in your code (e.g., retry the request).**
 
 ## Sample Code
 
@@ -4869,7 +6522,7 @@ The `messages` ultimately passed to the API are:
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Using the Responses API
@@ -4993,7 +6646,7 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 | `instructions` | Supported. Inserted as the first system message |
 | `stream` | Supported |
 | `temperature` | Supported (range [0.0, 2.0]; no effect in thinking mode) |
-| `top_p` | Supported; behavior depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tools are present, otherwise `1.0`); takes effect in non-thinking mode |
+| `top_p` | Supported; behavior depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); takes effect in non-thinking mode. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided |
 | `max_output_tokens` | Supported |
 | `top_logprobs` | Supported (range [0, 20]) |
 | `tools` | Partially supported. `function` supported; `web_search` supported with `deepseek-v4-pro`; other types ignored, see the Tools table below |
@@ -5049,6 +6702,49 @@ Token usage is returned in `usage`:
 
 - `input_tokens`: number of input tokens, where `input_tokens_details.cached_tokens` is the number of tokens hitting the [context cache](kv_cache.md)
 - `output_tokens`: number of output tokens, where `output_tokens_details.reasoning_tokens` is the number of chain-of-thought tokens
+
+#### Server Tool Usage
+
+When server-side web tools complete successfully, `usage.server_tool_use` reports their usage for the entire response:
+
+| Field | Meaning |
+| --- | --- |
+| `tool_search` | Number of successful web search queries. A search call containing multiple queries can contribute more than one to this count |
+| `tool_fetch` | Number of successful web page reads, including opening a page and finding text within a page |
+
+These values count tool operations, not tokens. `tool_search` counts web searches; it does not count client-side tool discovery represented by `tool_search_call` output items. Failed operations are not counted, and searches returning no results do not increase `tool_search`. If both counts are zero, the entire `server_tool_use` field is omitted. When the field is present, both counts are included, even if one is zero.
+
+The `web_search_call` items in `output` describe individual server-side operations; `usage.server_tool_use` contains the aggregate counts. For streaming requests, read these counts from `response.usage` in the final `response.completed`, `response.incomplete`, or `response.failed` event. They are not sent as a separate usage event, and `usage` is `null` in the initial response events.
+
+For example, this request enables web search with `deepseek-v4-pro`. Omitting `tool_choice` uses the default automatic selection:
+
+```json
+{
+  "model": "deepseek-v4-pro",
+  "max_output_tokens": 256,
+  "reasoning": {"effort": "none"},
+  "tools": [{"type": "web_search"}],
+  "input": "Use the web search tool once to search for Python official website. Then reply with only the official site URL."
+}
+```
+
+The following usage excerpt shows one successful search and no page reads. Token and tool counts can vary between requests:
+
+```json
+{
+  "usage": {
+    "input_tokens": 3475,
+    "input_tokens_details": {"cached_tokens": 512},
+    "output_tokens": 54,
+    "output_tokens_details": {"reasoning_tokens": 0},
+    "total_tokens": 3529,
+    "server_tool_use": {
+      "tool_search": 1,
+      "tool_fetch": 0
+    }
+  }
+}
+```
 
 
 <!-- ===== content/en/guides/search.md ===== -->
@@ -5322,7 +7018,7 @@ The QPS (requests per second) limits are calculated at the account level, regard
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
 source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Thinking Mode
@@ -5369,7 +7065,7 @@ Thinking mode does not support the `temperature`, `presence_penalty`, or `freque
 `top_p` behavior depends on the model:
 
 - `deepseek-flash`: only takes effect in thinking mode, where the effective range is `0.95`–`1.0`; values below `0.95` are treated as `0.95`. In non-thinking mode it is fixed at `1.0` and your value is ignored.
-- `deepseek-v4-pro`: in thinking mode your value is ignored (fixed at `0.95` when `tools` is present, otherwise `1.0`); in non-thinking mode it takes effect.
+- `deepseek-v4-pro`: in thinking mode your value is ignored (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); in non-thinking mode it takes effect. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided.
 
 In thinking mode, the chain-of-thought content is returned via the `reasoning_content` parameter, at the same level as `content`. In subsequent requests, whether `reasoning_content` should be passed back and whether it will be concatenated into the context depends on whether the request carries the `tools` parameter:
 
@@ -6242,7 +7938,7 @@ For field semantics, restrictions (images in `system` / `assistant` messages are
 title: "Your First API Call"
 description: "The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares compatible with the OpenAI/Anthropic API to access the DeepSeek API."
 source: https://api-docs.deepseek.com/
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Your First API Call
@@ -6271,6 +7967,8 @@ See the [Agent Integrations Guide](quick_start/agent_integrations/claude_code.md
 Once you have obtained an API key, you can access the DeepSeek model using the following example scripts in the OpenAI API format. This is a non-stream example, you can set the `stream` parameter to `true` to get stream response.
 
 For examples using the Anthropic API format, please refer to [Anthropic API](guides/anthropic_api.md).
+
+Before running these examples, set the `DEEPSEEK_API_KEY` environment variable in your terminal to your API key.
 
 **[curl]**
 
@@ -6790,7 +8488,7 @@ fetched: 2026-08-02
 title: "DeepSeek-R1 Release"
 description: "* ⚡ Performance on par with OpenAI-o1"
 source: https://api-docs.deepseek.com/news/news250120
-fetched: 2026-08-02
+fetched: 2026-10-31
 ---
 
 # DeepSeek-R1 Release
@@ -6838,7 +8536,7 @@ fetched: 2026-08-02
 - 💰 $0.14 / million input tokens (cache hit)
 - 💰 $0.55 / million input tokens (cache miss)
 - 💰 $2.19 / million output tokens
-- 📖 API guide: <https://api-docs.deepseek.com/guides/thinking_mode>
+- 📖 API guide: [Thinking Mode guide](../guides/thinking_mode.md)
 
 ![](https://cdn.deepseek.com/api-docs/deepseek_r1_price_en.jpeg)
 
@@ -6876,7 +8574,7 @@ fetched: 2026-08-03
 title: "DeepSeek-R1-0528 Release"
 description: "🚀 DeepSeek-R1-0528 is here!"
 source: https://api-docs.deepseek.com/news/news250528
-fetched: 2026-08-02
+fetched: 2026-10-31
 ---
 
 # DeepSeek-R1-0528 Release
@@ -6893,7 +8591,7 @@ fetched: 2026-08-02
 
 ✅ Try it now: <https://chat.deepseek.com/>
 
-🔌 No change to API usage — docs here: <https://api-docs.deepseek.com/guides/thinking_mode>
+🔌 No change to API usage — docs here: [Thinking Mode guide](../guides/thinking_mode.md)
 
 🔗 Open-source weights: <https://huggingface.co/deepseek-ai/DeepSeek-R1-0528>
 
@@ -6908,7 +8606,7 @@ fetched: 2026-08-02
 title: "DeepSeek-V3.1 Release"
 description: "Introducing DeepSeek-V3.1: our first step toward the agent era! 🚀"
 source: https://api-docs.deepseek.com/news/news250821
-fetched: 2026-08-02
+fetched: 2026-10-31
 ---
 
 # DeepSeek-V3.1 Release
@@ -6928,8 +8626,8 @@ Try it now — toggle Think/Non-Think via the "DeepThink" button: <https://chat.
 - 🔹 deepseek-chat → non-thinking mode
 - 🔹 deepseek-reasoner → thinking mode
 - 🧵 128K context for both
-- 🔌 Anthropic API format supported: <https://api-docs.deepseek.com/guides/anthropic_api>
-- ✅ Strict Function Calling supported in Beta API: <https://api-docs.deepseek.com/guides/tool_calls>
+- 🔌 Anthropic API format supported: [Anthropic API guide](../guides/anthropic_api.md)
+- ✅ Strict Function Calling supported in Beta API: [Tool Calls guide](../guides/tool_calls.md)
 - 🚀 More API resources, smoother API experience
 
 ---
@@ -6961,7 +8659,7 @@ Try it now — toggle Think/Non-Think via the "DeepThink" button: <https://chat.
 
 - 🔹 New pricing starts & off-peak discounts end at Sep 5th, 2025, 16:00 (UTC Time)
 - 🔹 Until then, APIs follow current pricing
-- 📝 Pricing page: <https://api-docs.deepseek.com/quick_start/pricing/>
+- 📝 Pricing page: [Models & Pricing](../quick_start/pricing.md)
 
 ![](https://cdn.deepseek.com/api-docs/v3.1_price_en.jpeg)
 
@@ -7006,7 +8704,7 @@ Thanks to everyone for your feedback. It drives us to keep improving and refinin
 title: "Introducing DeepSeek-V3.2-Exp"
 description: "🚀 Introducing DeepSeek-V3.2-Exp — our latest experimental model!"
 source: https://api-docs.deepseek.com/news/news250929
-fetched: 2026-08-02
+fetched: 2026-10-31
 ---
 
 # Introducing DeepSeek-V3.2-Exp
@@ -7039,7 +8737,7 @@ fetched: 2026-08-02
 
 💰 DeepSeek API prices drop 50%+, effective immediately.
 
-🔹 For comparison testing, V3.1-Terminus remains available via a temporary API until Oct 15th, 2025, 15:59 (UTC Time). Details: <https://api-docs.deepseek.com/guides/comparison_testing>
+🔹 For comparison testing, V3.1-Terminus remains available via a temporary API until Oct 15th, 2025, 15:59 (UTC Time). Details: [Comparison testing guide](https://api-docs.deepseek.com/guides/comparison_testing)
 
 ![](https://api-docs.deepseek.com/img/v3_2_price_en.jpeg)
 
@@ -7060,7 +8758,7 @@ fetched: 2026-08-02
 title: "DeepSeek-V3.2 Release"
 description: "🚀 Launching DeepSeek-V3.2 & DeepSeek-V3.2-Speciale — Reasoning-first models built for agents!"
 source: https://api-docs.deepseek.com/news/news251201
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # DeepSeek-V3.2 Release
@@ -7100,7 +8798,7 @@ fetched: 2026-08-23
 
 - 🔹 V3.2: Same usage pattern as V3.2-Exp.
 - 🔹 V3.2-Speciale: Served via a temporary endpoint: base\_url="<https://api.deepseek.com/v3.2_speciale_expires_on_20251215>". Same pricing as V3.2, no tool calls, available until Dec 15th, 2025, 15:59 (UTC Time).
-- 💡 V3.2 now supports Thinking in Tool-Use — details: <https://api-docs.deepseek.com/guides/thinking_mode>
+- 💡 V3.2 now supports Thinking in Tool-Use — details: [Thinking Mode guide](../guides/thinking_mode.md)
 
 ![](https://api-docs.deepseek.com/img/v3.2_thinking_with_tools_en.jpeg)
 
@@ -7119,7 +8817,7 @@ fetched: 2026-08-23
 title: "DeepSeek V4 Preview Release"
 description: "🚀 DeepSeek-V4 Preview is officially live & open-sourced! Welcome to the era of cost-effective 1M context length."
 source: https://api-docs.deepseek.com/news/news260424
-fetched: 2026-08-02
+fetched: 2026-10-31
 ---
 
 # DeepSeek V4 Preview Release
@@ -7185,7 +8883,7 @@ The figure below showcases a sample PDF generated by DeepSeek-V4-Pro.
 
 🔹 Keep base\_url, just update model to deepseek-v4-pro or deepseek-v4-flash.
 🔹 Supports OpenAI ChatCompletions & Anthropic APIs.
-🔹 Both models support 1M context & dual modes (Thinking / Non-Thinking): <https://api-docs.deepseek.com/guides/thinking_mode>
+🔹 Both models support 1M context & dual modes (Thinking / Non-Thinking): [Thinking Mode guide](../guides/thinking_mode.md)
 
 ⚠️ Note: deepseek-chat & deepseek-reasoner will be fully retired and inaccessible after Jul 24th, 2026, 15:59 (UTC Time). (Currently routing to deepseek-v4-flash non-thinking/thinking).
 
@@ -9808,7 +11506,7 @@ If the request succeeds, the API Key and model name are valid.
 title: "Error Codes"
 description: "When calling DeepSeek API, you may encounter errors. Here list the causes and solutions."
 source: https://api-docs.deepseek.com/quick_start/error_codes
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Error Codes
@@ -9817,10 +11515,10 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 
 | CODE | DESCRIPTION |
 | --- | --- |
-| 400 - Invalid Format | **Cause**: Invalid request body format.   **Solution**: Please modify your request body according to the hints in the error message. For more API format details, please refer to [DeepSeek API Docs.](https://api-docs.deepseek.com) |
+| 400 - Invalid Format | **Cause**: Invalid request body format.   **Solution**: Please modify your request body according to the hints in the error message. For more API format details, please refer to [DeepSeek API Docs.](../index.md) |
 | 401 - Authentication Fails | **Cause**: Authentication fails due to the wrong API key.   **Solution**: Please check your API key. If you don't have one, please [create an API key](https://platform.deepseek.com/api_keys) first. |
 | 402 - Insufficient Balance | **Cause**: You have run out of balance.   **Solution**: Please check your account's balance, and go to the [Top up](https://platform.deepseek.com/top_up) page to add funds. |
-| 422 - Invalid Parameters | **Cause**: Your request contains invalid parameters.   **Solution**: Please modify your request parameters according to the hints in the error message. For more API format details, please refer to [DeepSeek API Docs.](https://api-docs.deepseek.com) |
+| 422 - Invalid Parameters | **Cause**: Your request contains invalid parameters.   **Solution**: Please modify your request parameters according to the hints in the error message. For more API format details, please refer to [DeepSeek API Docs.](../index.md) |
 | 429 - Rate Limit Reached | **Cause**: You are sending requests too quickly, or have exceeded a concurrency or QPS limit.   **Solution**: Please pace your requests reasonably. For model rate limits, see [Rate Limit & Isolation](rate_limit.md). |
 | 500 - Server Error | **Cause**: Our server encounters an issue.   **Solution**: Please retry your request after a brief wait and contact us if the issue persists. |
 | 503 - Server Overloaded | **Cause**: The server is overloaded due to high traffic.   **Solution**: Please retry your request after a brief wait. |
@@ -9904,7 +11602,7 @@ Product prices may vary and DeepSeek reserves the right to adjust them. We recom
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
 source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Rate Limit & Isolation
@@ -9938,7 +11636,7 @@ You can pass the `user_id` parameter to the API to achieve fine-grained manageme
 
 ### Setting user\_id
 
-The `user_id` parameter must be a string matching the regex `[a-zA-Z0-9\-_]+`, with a maximum length of 512. Do not include user privacy information in `user_id`.
+The `user_id` parameter is a string. We recommend using only ASCII letters, digits, underscores (`_`), and hyphens (`-`). The UTF-8 encoded value must not exceed 512 bytes. Do not include user privacy information in `user_id`.
 
 You can set the `user_id` parameter in the following ways:
 

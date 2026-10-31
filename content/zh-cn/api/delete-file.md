@@ -2,10 +2,12 @@
 title: "删除文件"
 description: "删除一个文件。"
 source: https://api-docs.deepseek.com/zh-cn/api/delete-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # 删除文件
+
+[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/delete-file.md "在新标签页打开 Markdown")
 
 ```
 DELETE /files/:file_id
@@ -30,7 +32,6 @@ OK, 返回删除状态。
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -43,23 +44,13 @@ OK, 返回删除状态。
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 对象的类型，其值为 `file`。
 
 **deleted** booleanrequired
 
 文件是否被成功删除。
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "deleted": true
-}
-```
 
 **[Example]**
 

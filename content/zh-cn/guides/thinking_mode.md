@@ -2,7 +2,7 @@
 title: "思考模式"
 description: "DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先输出一段思维链内容，以提升最终答案的准确性。"
 source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # 思考模式
@@ -49,7 +49,7 @@ response = client.chat.completions.create(
 `top_p` 的行为因模型而异：
 
 - `deepseek-flash`：仅在思考模式下生效，有效取值范围为 `0.95`–`1.0`，低于 `0.95` 的取值会按 `0.95` 处理。在非思考模式下，该参数恒为 `1.0`，传入的值会被忽略。
-- `deepseek-v4-pro`：思考模式下会忽略传入值（携带 `tools` 时固定为 `0.95`，否则为 `1.0`）；非思考模式下生效。
+- `deepseek-v4-pro`：思考模式下会忽略传入值（启用工具调用时固定为 `0.95`，否则为 `1.0`）；非思考模式下生效。即使提供了 `tools`，将 `tool_choice` 设为 `none` 也会关闭工具调用。
 
 在思考模式下，思维链内容通过 `reasoning_content` 参数返回，与 `content` 同级。在后续轮次的请求中，`reasoning_content` 是否需要回传、是否会被拼接进上下文，取决于请求是否携带 `tools` 参数：
 

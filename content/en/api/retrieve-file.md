@@ -2,10 +2,12 @@
 title: "Retrieve File"
 description: "Returns information about a specific file."
 source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # Retrieve File
+
+[Open Markdown](https://api-docs.deepseek.com/api/retrieve-file.md "Open Markdown in a new tab")
 
 ```
 GET /files/:file_id
@@ -30,7 +32,6 @@ OK, returns the `file object`.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -43,7 +44,7 @@ The file identifier, of the form `file-api-...`, which can be referenced in chat
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
@@ -61,27 +62,13 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the file.
 
 **expires\_at** integer
 
 The Unix timestamp (in seconds) of when the file expires. Only present when an expiration was set at upload time.
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "bytes": 0,
-  "created_at": 0,
-  "filename": "string",
-  "purpose": "user_data",
-  "expires_at": 0
-}
-```
 
 **[Example]**
 

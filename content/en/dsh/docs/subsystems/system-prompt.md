@@ -1,7 +1,7 @@
 ---
 title: "System Prompt Assembly"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/system-prompt.md
-fetched: 2026-10-26
+fetched: 2026-10-31
 ---
 # System Prompt Assembly
 
@@ -27,6 +27,8 @@ interface AssembleContext {
   signal?: AbortSignal
 }
 ```
+
+`TOOL_APPLY_PATCH` takes order 1350 between `TOOL_EDIT` (1300) and `TOOL_GLOB` (1400).
 
 ## Tool-provider result
 

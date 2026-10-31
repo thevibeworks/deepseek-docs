@@ -2,7 +2,7 @@
 title: "首次调用 API"
 description: "DeepSeek API 使用与 OpenAI/Anthropic 兼容的 API 格式，通过修改配置，您可以使用 OpenAI/Anthropic SDK 来访问 DeepSeek API，或使用与 OpenAI/Anthropic API 兼容的软件。"
 source: https://api-docs.deepseek.com/zh-cn/
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # 首次调用 API
@@ -31,6 +31,8 @@ DeepSeek API 已接入多种主流 AI Agent 与编程助手工具。如果你使
 在创建 API key 之后，你可以使用以下样例脚本，通过 OpenAI API 格式来访问 DeepSeek 模型。样例为非流式输出，您可以将 stream 设置为 true 来使用流式输出。
 
 Anthropic API 格式的访问样例，请参考[Anthropic API](guides/anthropic_api.md)。
+
+运行以下示例前，请在当前终端中将环境变量 `DEEPSEEK_API_KEY` 设置为你的 API key。
 
 **[curl]**
 

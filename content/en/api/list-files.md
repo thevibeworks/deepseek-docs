@@ -2,10 +2,12 @@
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
 source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # List Files
+
+[Open Markdown](https://api-docs.deepseek.com/api/list-files.md "Open Markdown in a new tab")
 
 ```
 GET /files
@@ -31,15 +33,15 @@ The number of files to return. Must be between 1 and 1000.
 
 **order** string
 
-**Possible values:** [`asc`, `desc`]
-
 **Default value:** `asc`
+
+**Possible values:** `asc`, `desc`
 
 Sort order by creation time. `asc` for ascending, `desc` for descending.
 
 **purpose** string
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 Only return files with the given purpose. Only `user_data` is supported.
 
@@ -52,7 +54,6 @@ OK, returns a list of `file object`.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -61,7 +62,7 @@ OK, returns a list of `file object`.
 
 **object** stringrequired
 
-**Possible values:** [`list`]
+**Possible values:** `list`
 
 The object type, which is always `list`.
 
@@ -73,6 +74,8 @@ required
 
 The list of file objects.
 
+Describes a file that has been uploaded to the Files API.
+
 - Array [
 
 **id** stringrequired
@@ -81,7 +84,7 @@ The file identifier, of the form `file-api-...`, which can be referenced in chat
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
@@ -99,7 +102,7 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** [`user_data`]
+**Possible values:** `user_data`
 
 The intended purpose of the file.
 
@@ -120,28 +123,6 @@ The ID of the last file in the list. Useful as a pagination cursor.
 **has\_more** booleanrequired
 
 Whether there are more files beyond this page.
-
-**[Example (from schema)]**
-
-```json
-{
-  "object": "list",
-  "data": [
-    {
-      "id": "string",
-      "object": "file",
-      "bytes": 0,
-      "created_at": 0,
-      "filename": "string",
-      "purpose": "user_data",
-      "expires_at": 0
-    }
-  ],
-  "first_id": "string",
-  "last_id": "string",
-  "has_more": true
-}
-```
 
 **[Example]**
 

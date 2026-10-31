@@ -2,10 +2,12 @@
 title: "Delete File"
 description: "Deletes a file."
 source: https://api-docs.deepseek.com/api/delete-file
-fetched: 2026-08-23
+fetched: 2026-10-31
 ---
 
 # Delete File
+
+[Open Markdown](https://api-docs.deepseek.com/api/delete-file.md "Open Markdown in a new tab")
 
 ```
 DELETE /files/:file_id
@@ -30,7 +32,6 @@ OK, returns the deletion status.
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -43,23 +44,13 @@ The ID of the deleted file.
 
 **object** stringrequired
 
-**Possible values:** [`file`]
+**Possible values:** `file`
 
 The object type, which is always `file`.
 
 **deleted** booleanrequired
 
 Whether the file was successfully deleted.
-
-**[Example (from schema)]**
-
-```json
-{
-  "id": "string",
-  "object": "file",
-  "deleted": true
-}
-```
 
 **[Example]**
 

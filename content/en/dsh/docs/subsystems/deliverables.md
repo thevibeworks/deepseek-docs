@@ -1,7 +1,7 @@
 ---
 title: "Deliverables"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/deliverables.md
-fetched: 2026-09-18
+fetched: 2026-10-31
 ---
 # Deliverables
 
@@ -10,6 +10,8 @@ English | [中文](deliverables.zh.md)
 What a turn hands to the user, owned by the [deliverables package group](../../packages/deliverables/README.md): the files the model declared through the `present` tool, recorded in a log-only Session event, and the files the turn changed, summarized from git working-tree snapshots taken at turn start and turn end plus whole-file captures around each file-tool edit for the paths git does not cover, announced by a log-only event and served by a Host service while the Session lives together with each listed file's turn-start and turn-end comparison. Only clients read them; the Web [deliverables plugin](../../packages/client/ui-deliverables/README.md) renders both at the end of the turn. Tool behavior, snapshot mechanics, and configuration are on the package READMEs for [`tool-present`](../../packages/deliverables/tool-present/README.md) and [`workspace-changes`](../../packages/deliverables/workspace-changes/README.md).
 
 Sources: [`packages/deliverables/tool-present/src/types.ts`](../../packages/deliverables/tool-present/src/types.ts), [`packages/deliverables/workspace-changes/src/types.ts`](../../packages/deliverables/workspace-changes/src/types.ts)
+
+Patch calls use the same summary and comparison APIs. For paths outside Git coverage, a move contributes a deleted source and an added destination; a stopped commit contributes only actual net file changes. The [capture rules](../../packages/deliverables/workspace-changes/README.md#use-this-package) define path selection and observation behavior.
 
 ## `PresentedFile` — one declared delivery
 

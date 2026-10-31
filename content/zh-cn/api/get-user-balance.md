@@ -2,10 +2,12 @@
 title: "查询余额"
 description: "查询账号余额"
 source: https://api-docs.deepseek.com/zh-cn/api/get-user-balance
-fetched: 2026-09-29
+fetched: 2026-10-31
 ---
 
 # 查询余额
+
+[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/get-user-balance.md "在新标签页打开 Markdown")
 
 ```
 GET /user/balance
@@ -22,7 +24,6 @@ OK, 返回用户余额详情
 **[application/json]**
 
 - Schema
-- Example (from schema)
 - Example
 
 **[Schema]**
@@ -41,7 +42,7 @@ object[]
 
 **currency** string
 
-**Possible values:** [`CNY`, `USD`]
+**Possible values:** `CNY`, `USD`
 
 货币，人民币或美元
 
@@ -58,22 +59,6 @@ object[]
 充值余额
 
 - ]
-
-**[Example (from schema)]**
-
-```json
-{
-  "is_available": true,
-  "balance_infos": [
-    {
-      "currency": "CNY",
-      "total_balance": "110.00",
-      "granted_balance": "10.00",
-      "topped_up_balance": "100.00"
-    }
-  ]
-}
-```
 
 **[Example]**
 

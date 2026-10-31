@@ -2,7 +2,7 @@
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
 source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-10-17
+fetched: 2026-10-31
 ---
 
 # Rate Limit & Isolation
@@ -36,7 +36,7 @@ You can pass the `user_id` parameter to the API to achieve fine-grained manageme
 
 ### Setting user\_id
 
-The `user_id` parameter must be a string matching the regex `[a-zA-Z0-9\-_]+`, with a maximum length of 512. Do not include user privacy information in `user_id`.
+The `user_id` parameter is a string. We recommend using only ASCII letters, digits, underscores (`_`), and hyphens (`-`). The UTF-8 encoded value must not exceed 512 bytes. Do not include user privacy information in `user_id`.
 
 You can set the `user_id` parameter in the following ways:
 
