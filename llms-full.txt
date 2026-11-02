@@ -5211,7 +5211,7 @@ tool_calls=None
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-10-27
+fetched: 2026-11-02
 ---
 
 # FAQ: Login Issues
@@ -5281,7 +5281,7 @@ If you believe this is an error, please contact us by filling out the「[Account
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-10-27
+fetched: 2026-11-02
 ---
 
 # FAQ: User Guide
@@ -5354,7 +5354,7 @@ If you cannot find this option, please upgrade your App to the latest version.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-10-27
+fetched: 2026-11-02
 ---
 
 # FAQ: Chat Issues
@@ -5421,7 +5421,7 @@ Check if file uploads are restricted within your local network (LAN).
 title: "FAQ: API"
 description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-10-27
+fetched: 2026-11-02
 ---
 
 # FAQ: API
@@ -8488,7 +8488,7 @@ fetched: 2026-08-02
 title: "DeepSeek-R1 Release"
 description: "* ⚡ Performance on par with OpenAI-o1"
 source: https://api-docs.deepseek.com/news/news250120
-fetched: 2026-08-02
+fetched: 2026-11-02
 ---
 
 # DeepSeek-R1 Release
@@ -8536,7 +8536,7 @@ fetched: 2026-08-02
 - 💰 $0.14 / million input tokens (cache hit)
 - 💰 $0.55 / million input tokens (cache miss)
 - 💰 $2.19 / million output tokens
-- 📖 API guide: <https://api-docs.deepseek.com/guides/thinking_mode>
+- 📖 API guide: [Thinking Mode guide](../guides/thinking_mode.md)
 
 ![](https://cdn.deepseek.com/api-docs/deepseek_r1_price_en.jpeg)
 
