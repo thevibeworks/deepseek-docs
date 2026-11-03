@@ -131,8 +131,7 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-11-03"
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
@@ -1822,8 +1821,108 @@
     "content/zh-cn/api/create-message.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/api/create-message",
       "title": "Messages API"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-19-session-team-mode.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-19-session-team-mode.md",
+      "title": "2026-10-19-session-team-mode"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-27-subagent-settlement-attribution.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-27-subagent-settlement-attribution.md",
+      "title": "2026-10-27-subagent-settlement-attribution"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/agent-runtime-owner/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/agent-runtime-owner/guide.md",
+      "title": "Agent runtime ownership uses `ownerAgent`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/agent-team-subagents/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/agent-team-subagents/guide.md",
+      "title": "Agent Teams uses subagents and Session ids"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/session-team-mode/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/session-team-mode/guide.md",
+      "title": "Select Agent Teams per Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/subagent-activation-options/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/subagent-activation-options/guide.md",
+      "title": "Subagent activation options"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/subagent-service-methods/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/subagent-service-methods/guide.md",
+      "title": "Subagent service method removal"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.2/subagent-user-controls/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/subagent-user-controls/guide.md",
+      "title": "Subagent user controls address the target Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/inbox-only-agent-wait/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/inbox-only-agent-wait/guide.md",
+      "title": "Agent waits require inbox input"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/subagent-runtime-ownership/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/subagent-runtime-ownership/guide.md",
+      "title": "Subagent runtime ownership"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/team-mode-menu/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/team-mode-menu/guide.md",
+      "title": "Select Team mode from the conversation menu"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/team-projection/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/team-projection/guide.md",
+      "title": "Team projection retains tasks and mode"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/web-search-defaults/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.3/web-search-defaults/guide.md",
+      "title": "Web search defaults"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/cordis-loader-entry-trees/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/cordis-loader-entry-trees/guide.md",
+      "title": "Loader entry tree reports and Include persistence"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/cua-source-dev-helper/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/cua-source-dev-helper/guide.md",
+      "title": "Source-built Computer Use helper identity"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/desktop-stable-channel/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/desktop-stable-channel/guide.md",
+      "title": "Desktop stable channel name"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/forge-worktree-entry/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/forge-worktree-entry/guide.md",
+      "title": "One plugin entry for change requests and worktrees"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/fs-observation-policy-default-off/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/fs-observation-policy-default-off/guide.md",
+      "title": "Filesystem mutations no longer require a prior read by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/pi-ai-request-image-count/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/pi-ai-request-image-count/guide.md",
+      "title": "pi-ai request image count"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/projection-event-frames/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/projection-event-frames/guide.md",
+      "title": "Projection frames list every key one event changed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/projection-released-checkpoint/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/projection-released-checkpoint/guide.md",
+      "title": "Released projection units stay in checkpoints"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/projection-snapshot-scope/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/projection-snapshot-scope/guide.md",
+      "title": "Projection snapshot scope"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/subagent-explicit-reasoning/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/subagent-explicit-reasoning/guide.md",
+      "title": "Subagent reasoning overrides require an explicit route"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/web-search-credential-modes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/web-search-credential-modes/guide.md",
+      "title": "DeepSeek web search and fetch follow the DeepSeek model route"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/web-search-default-provider/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/web-search-default-provider/guide.md",
+      "title": "Search defaults to the DeepSeek Search API; Exa and Perplexity are removed"
     }
   },
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "site": "https://api-docs.deepseek.com"
 }

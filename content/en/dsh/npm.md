@@ -1,7 +1,7 @@
 ---
 title: "npm: @deepseek-ai/dsh"
 source: https://www.npmjs.com/package/@deepseek-ai/dsh
-fetched: 2026-11-02
+fetched: 2026-11-03
 ---
 # npm: @deepseek-ai/dsh
 
@@ -12,7 +12,7 @@ npm install -g @deepseek-ai/dsh
 ```
 
 - **latest**: `0.2.1-rc.5`
-- **alpha**: `0.2.2-alpha.2`
+- **alpha**: `0.2.2-alpha.3`
 - **next**: `0.2.1-rc.5`
 - **license**: MIT
 - **bin**: `dsh`
@@ -26,24 +26,32 @@ not the release that carries it; a guide listed here was not in that
 release's tree. Read the source at the tag before saying the release ships
 or lacks the change itself.
 
-- **alpha** (`0.2.2-alpha.2`): 10 of 91 guides on `master` are not in it:
-  - `v0.2.1-rc.2/context-menu-services`
-  - `v0.2.1-rc.3/computer-use-helper-permissions`
-  - `v0.2.1-rc.3/web-file-downloads`
-  - `v0.2.1-rc.4/reasoning-body-props`
-  - `v0.2.2-alpha.2/context-menu-target`
-  - `v0.2.2-alpha.2/forge-git-permissions`
-  - `v0.2.2-alpha.2/llm-request-purpose-declarations`
-  - `v0.2.2-alpha.2/schedule-agent-tools`
-  - `v0.2.2-alpha.2/schedule-remote-host-tasks`
-  - `v0.2.2-alpha.2/sdk-run-commands`
-- **latest** (`0.2.1-rc.5`): 47 of 91 guides on `master` are not in it:
+- **alpha** (`0.2.2-alpha.3`): 16 of 114 guides on `master` are not in it:
+  - `v0.2.1-rc.2/agent-runtime-owner`
+  - `v0.2.1-rc.2/agent-team-subagents`
+  - `v0.2.1-rc.2/session-team-mode`
+  - `v0.2.1-rc.2/subagent-activation-options`
+  - `v0.2.1-rc.2/subagent-service-methods`
+  - `v0.2.1-rc.2/subagent-user-controls`
+  - `v0.2.1-rc.3/inbox-only-agent-wait`
+  - `v0.2.1-rc.3/subagent-runtime-ownership`
+  - `v0.2.1-rc.3/team-mode-menu`
+  - `v0.2.1-rc.3/team-projection`
+  - `v0.2.1-rc.3/web-search-defaults`
+  - `v0.2.2-alpha.2/cua-source-dev-helper`
+  - `v0.2.2-alpha.2/desktop-stable-channel`
+  - `v0.2.2-alpha.2/subagent-explicit-reasoning`
+  - `v0.2.2-alpha.2/web-search-credential-modes`
+  - `v0.2.2-alpha.2/web-search-default-provider`
+- **latest** (`0.2.1-rc.5`): 70 of 114 guides on `master` are not in it:
   - `v0.2.1-alpha.2/cordis-timer-wrappers`
   - `v0.2.1-alpha.2/plugin-manager-view-fields`
   - `v0.2.1-alpha.4/model-switch-compaction`
   - `v0.2.1-alpha.4/session-model-selection`
   - `v0.2.1-rc.1/agent-instructions-chain-budgets`
   - `v0.2.1-rc.1/subagent-control-tools`
+  - `v0.2.1-rc.2/agent-runtime-owner`
+  - `v0.2.1-rc.2/agent-team-subagents`
   - `v0.2.1-rc.2/approval-projection-dependency`
   - `v0.2.1-rc.2/auto-review-shutdown`
   - `v0.2.1-rc.2/auto-review-user-sources`
@@ -67,6 +75,10 @@ or lacks the change itself.
   - `v0.2.1-rc.2/sdk-minimal-checkpoints`
   - `v0.2.1-rc.2/session-projection-handles`
   - `v0.2.1-rc.2/session-store-writes`
+  - `v0.2.1-rc.2/session-team-mode`
+  - `v0.2.1-rc.2/subagent-activation-options`
+  - `v0.2.1-rc.2/subagent-service-methods`
+  - `v0.2.1-rc.2/subagent-user-controls`
   - `v0.2.1-rc.2/tool-executor-plugins`
   - `v0.2.1-rc.2/web-fetch-private-destinations`
   - `v0.2.1-rc.2/webserver-index-peer`
@@ -74,24 +86,43 @@ or lacks the change itself.
   - `v0.2.1-rc.3/computer-use-helper-permissions`
   - `v0.2.1-rc.3/cua-bundle-id-consent`
   - `v0.2.1-rc.3/generated-worktree-names`
+  - `v0.2.1-rc.3/inbox-only-agent-wait`
   - `v0.2.1-rc.3/independent-session-forks`
   - `v0.2.1-rc.3/ptc-caller-cancellation`
   - `v0.2.1-rc.3/session-follow-activation`
+  - `v0.2.1-rc.3/subagent-runtime-ownership`
+  - `v0.2.1-rc.3/team-mode-menu`
+  - `v0.2.1-rc.3/team-projection`
   - `v0.2.1-rc.3/web-file-downloads`
+  - `v0.2.1-rc.3/web-search-defaults`
   - `v0.2.1-rc.4/model-listing-refresh`
   - `v0.2.2-alpha.2/context-menu-target`
+  - `v0.2.2-alpha.2/cordis-loader-entry-trees`
+  - `v0.2.2-alpha.2/cua-source-dev-helper`
+  - `v0.2.2-alpha.2/desktop-stable-channel`
   - `v0.2.2-alpha.2/forge-git-permissions`
+  - `v0.2.2-alpha.2/forge-worktree-entry`
+  - `v0.2.2-alpha.2/fs-observation-policy-default-off`
   - `v0.2.2-alpha.2/llm-request-purpose-declarations`
+  - `v0.2.2-alpha.2/pi-ai-request-image-count`
+  - `v0.2.2-alpha.2/projection-event-frames`
+  - `v0.2.2-alpha.2/projection-released-checkpoint`
+  - `v0.2.2-alpha.2/projection-snapshot-scope`
   - `v0.2.2-alpha.2/schedule-agent-tools`
   - `v0.2.2-alpha.2/schedule-remote-host-tasks`
   - `v0.2.2-alpha.2/sdk-run-commands`
-- **next** (`0.2.1-rc.5`): 47 of 91 guides on `master` are not in it:
+  - `v0.2.2-alpha.2/subagent-explicit-reasoning`
+  - `v0.2.2-alpha.2/web-search-credential-modes`
+  - `v0.2.2-alpha.2/web-search-default-provider`
+- **next** (`0.2.1-rc.5`): 70 of 114 guides on `master` are not in it:
   - `v0.2.1-alpha.2/cordis-timer-wrappers`
   - `v0.2.1-alpha.2/plugin-manager-view-fields`
   - `v0.2.1-alpha.4/model-switch-compaction`
   - `v0.2.1-alpha.4/session-model-selection`
   - `v0.2.1-rc.1/agent-instructions-chain-budgets`
   - `v0.2.1-rc.1/subagent-control-tools`
+  - `v0.2.1-rc.2/agent-runtime-owner`
+  - `v0.2.1-rc.2/agent-team-subagents`
   - `v0.2.1-rc.2/approval-projection-dependency`
   - `v0.2.1-rc.2/auto-review-shutdown`
   - `v0.2.1-rc.2/auto-review-user-sources`
@@ -115,6 +146,10 @@ or lacks the change itself.
   - `v0.2.1-rc.2/sdk-minimal-checkpoints`
   - `v0.2.1-rc.2/session-projection-handles`
   - `v0.2.1-rc.2/session-store-writes`
+  - `v0.2.1-rc.2/session-team-mode`
+  - `v0.2.1-rc.2/subagent-activation-options`
+  - `v0.2.1-rc.2/subagent-service-methods`
+  - `v0.2.1-rc.2/subagent-user-controls`
   - `v0.2.1-rc.2/tool-executor-plugins`
   - `v0.2.1-rc.2/web-fetch-private-destinations`
   - `v0.2.1-rc.2/webserver-index-peer`
@@ -122,20 +157,38 @@ or lacks the change itself.
   - `v0.2.1-rc.3/computer-use-helper-permissions`
   - `v0.2.1-rc.3/cua-bundle-id-consent`
   - `v0.2.1-rc.3/generated-worktree-names`
+  - `v0.2.1-rc.3/inbox-only-agent-wait`
   - `v0.2.1-rc.3/independent-session-forks`
   - `v0.2.1-rc.3/ptc-caller-cancellation`
   - `v0.2.1-rc.3/session-follow-activation`
+  - `v0.2.1-rc.3/subagent-runtime-ownership`
+  - `v0.2.1-rc.3/team-mode-menu`
+  - `v0.2.1-rc.3/team-projection`
   - `v0.2.1-rc.3/web-file-downloads`
+  - `v0.2.1-rc.3/web-search-defaults`
   - `v0.2.1-rc.4/model-listing-refresh`
   - `v0.2.2-alpha.2/context-menu-target`
+  - `v0.2.2-alpha.2/cordis-loader-entry-trees`
+  - `v0.2.2-alpha.2/cua-source-dev-helper`
+  - `v0.2.2-alpha.2/desktop-stable-channel`
   - `v0.2.2-alpha.2/forge-git-permissions`
+  - `v0.2.2-alpha.2/forge-worktree-entry`
+  - `v0.2.2-alpha.2/fs-observation-policy-default-off`
   - `v0.2.2-alpha.2/llm-request-purpose-declarations`
+  - `v0.2.2-alpha.2/pi-ai-request-image-count`
+  - `v0.2.2-alpha.2/projection-event-frames`
+  - `v0.2.2-alpha.2/projection-released-checkpoint`
+  - `v0.2.2-alpha.2/projection-snapshot-scope`
   - `v0.2.2-alpha.2/schedule-agent-tools`
   - `v0.2.2-alpha.2/schedule-remote-host-tasks`
   - `v0.2.2-alpha.2/sdk-run-commands`
+  - `v0.2.2-alpha.2/subagent-explicit-reasoning`
+  - `v0.2.2-alpha.2/web-search-credential-modes`
+  - `v0.2.2-alpha.2/web-search-default-provider`
 
 ## Versions
 
+- `0.2.2-alpha.3` -- 2026-11-03
 - `0.2.1-rc.5` -- 2026-10-29
 - `0.2.2-alpha.2` -- 2026-10-27
 - `0.2.1-rc.4` -- 2026-10-26

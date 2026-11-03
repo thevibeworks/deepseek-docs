@@ -1,7 +1,7 @@
 ---
 title: "Sessions"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session.md
-fetched: 2026-11-02
+fetched: 2026-11-03
 ---
 # Sessions
 
@@ -1003,10 +1003,10 @@ workspaceDesktop(): { name: string; available: boolean; fileManager: 'finder' | 
 @Remote({ mode: 'stream' }) observeEvent(request: SessionObserveEventRequest, signal: AbortSignal): AsyncIterable<SessionEventFrame>
 
 /**
- * Subscribe to sparse Session projection changes.
+ * Subscribe to Session projection changes.
  * @param request - target Session.
  * @param signal - subscription cancellation.
- * @returns readiness and sparse projection changes.
+ * @returns readiness followed by one projection change frame per committed event.
  */
 @Remote({ mode: 'stream' }) observeProjections(request: SessionProjectionsRequest, signal: AbortSignal): AsyncIterable<SessionProjectionFrame>
 
