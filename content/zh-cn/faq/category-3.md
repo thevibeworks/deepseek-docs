@@ -2,7 +2,7 @@
 title: "FAQ: 对话问题"
 description: "DeepSeek FAQ, 对话问题 — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=zh#/category/3
-fetched: 2026-11-02
+fetched: 2026-11-03
 ---
 
 # FAQ: 对话问题
