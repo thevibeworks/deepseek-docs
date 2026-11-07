@@ -107,7 +107,8 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "title": "🚀 Introducing DeepSeek-V3"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-07"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
@@ -131,11 +132,13 @@
     },
     "content/en/news/news250120.md": {
       "url": "https://api-docs.deepseek.com/news/news250120",
-      "title": "DeepSeek-R1 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-07"
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
-      "title": "DeepSeek-R1-0528 Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250528 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-07"
     },
     "content/en/news/news250922.md": {
       "url": "https://api-docs.deepseek.com/news/news250922",
@@ -239,7 +242,8 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "title": "Models & Pricing"
+      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-07"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
@@ -1921,8 +1925,48 @@
     "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/web-search-default-provider/guide.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/web-search-default-provider/guide.md",
       "title": "Search defaults to the DeepSeek Search API; Exa and Perplexity are removed"
+    },
+    "content/en/dsh/docs/cookbook/reviewing-ui-design.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/reviewing-ui-design.md",
+      "title": "Cookbook: review a UI design"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-27-retry-control-input.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-27-retry-control-input.md",
+      "title": "2026-10-27-retry-control-input"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-02-subagent-catalog-names.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-02-subagent-catalog-names.md",
+      "title": "2026-11-02-subagent-catalog-names"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-02-team-task-owner-names.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-02-team-task-owner-names.md",
+      "title": "2026-11-02-team-task-owner-names"
+    },
+    "content/en/dsh/docs/ui-design-review-cases.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/ui-design-review-cases.md",
+      "title": "UI design principles and review cases"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/css-anchored-menus/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/css-anchored-menus/guide.md",
+      "title": "CSS-anchored menus"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/retained-ptc-timeout/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/retained-ptc-timeout/guide.md",
+      "title": "Retained PTC timeout recovery"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/session-header-menu/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/session-header-menu/guide.md",
+      "title": "Session Header menus and export dialogs"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/chat-process-activity-context/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/chat-process-activity-context/guide.md",
+      "title": "Chat `ProcessActivity` adds `context`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md",
+      "title": "Subagent tools address agents by name"
     }
   },
-  "updated": "2026-11-03",
+  "updated": "2026-11-07",
   "site": "https://api-docs.deepseek.com"
 }

@@ -2,7 +2,7 @@
 title: "网页搜索与抓取"
 description: "Search 接口和 Fetch 接口为 Agent 与 RAG 应用提供实时网页内容："
 source: https://api-docs.deepseek.com/zh-cn/guides/search
-fetched: 2026-10-26
+fetched: 2026-11-07
 ---
 
 # 网页搜索与抓取
@@ -245,7 +245,7 @@ Search 和 Fetch 按请求次数计费，不按 token 或返回结果条数计�
 
 只有返回 HTTP 200 且产生结果的请求才会计费（Search 的 `results` 必须非空，Fetch 必须返回网页正文）。请求失败、搜索无结果或超时不计费。`count` 只控制返回的结果条数，不影响单次请求的价格。
 
-请注意，当前用户在 DeepSeek Harness/Claude Code/Codex 中使用 DeepSeek API 时，已经会通过 Server 端工具调用访问到 Search/Fetch 接口，这部分 Search/Fetch 接口调用目前未计费，并将于北京时间 2026 年 11 月 1 日 00:00 起按次收取调用费用。
+通过 DeepSeek Harness、Claude Code 或 Codex 使用 DeepSeek API 时，服务端工具触发的 Search 和 Fetch 调用同样按成功请求次数计费。
 
 ---
 

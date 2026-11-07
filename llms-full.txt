@@ -5211,7 +5211,7 @@ tool_calls=None
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-11-03
+fetched: 2026-11-04
 ---
 
 # FAQ: Login Issues
@@ -5281,7 +5281,7 @@ If you believe this is an error, please contact us by filling out the「[Account
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-11-03
+fetched: 2026-11-04
 ---
 
 # FAQ: User Guide
@@ -5354,7 +5354,7 @@ If you cannot find this option, please upgrade your App to the latest version.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-11-03
+fetched: 2026-11-04
 ---
 
 # FAQ: Chat Issues
@@ -5421,7 +5421,7 @@ Check if file uploads are restricted within your local network (LAN).
 title: "FAQ: API"
 description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-11-03
+fetched: 2026-11-04
 ---
 
 # FAQ: API
@@ -6753,7 +6753,7 @@ The following usage excerpt shows one successful search and no page reads. Token
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
 source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-10-26
+fetched: 2026-11-07
 ---
 
 # Search & Fetch
@@ -6996,7 +6996,7 @@ Search and Fetch are billed per successful request, not by tokens or by the numb
 
 A request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
 
-Note: when you use the DeepSeek API through DeepSeek Harness, Claude Code, or Codex, server-side tool calls already hit the Search and Fetch APIs. These calls are currently free of charge; per-request billing starts at 00:00 Beijing time on November 1, 2026.
+Search and Fetch calls triggered by server-side tools when using the DeepSeek API through DeepSeek Harness, Claude Code, or Codex are also billed per successful request.
 
 ---
 
