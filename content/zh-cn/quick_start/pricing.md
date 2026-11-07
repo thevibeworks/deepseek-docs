@@ -2,7 +2,7 @@
 title: "模型 & 价格"
 description: "下表所列模型价格以“百万 tokens”为单位。Token 是模型用来表示自然语言文本的的最小单位，可以是一个词、一个数字或一个标点符号等。我们将根据模型输入和输出的总 token 数进行计量计费。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/pricing
-fetched: 2026-10-17
+fetched: 2026-11-07
 ---
 
 # 模型 & 价格
@@ -53,8 +53,6 @@ Search 和 Fetch 是独立的 API，按请求次数计费。
 | --- | --- | --- |
 | Search | 每 1,000 次成功请求 | 5元 |
 | Fetch | 每 1,000 次成功请求 | 5元 |
-
-请注意，当前用户在 DeepSeek Harness/Claude Code/Codex 中使用 DeepSeek API 时，已经会通过 Server 端工具调用访问到 Search/Fetch 接口，这部分 Search/Fetch 接口调用目前未计费，并将于北京时间 2026 年 11 月 1 日 00:00 起按次收取调用费用。
 
 接口用法与完整计费规则详见[网页搜索与抓取](../guides/search.md)。
 

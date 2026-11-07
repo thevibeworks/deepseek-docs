@@ -1,7 +1,7 @@
 ---
 title: "Session Projections"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-projection.md
-fetched: 2026-11-03
+fetched: 2026-11-07
 ---
 # Session Projections
 
@@ -101,10 +101,10 @@ interface ProjectionDefinition<K extends string, S> {
     summary?: boolean
   } : never
   /**
-   * Persisted-cache invalidation version: bump whenever the serialized state fields or the
-   * fold semantics change, so persisted `(sessionId, key, ver, seq, val)`
-   * rows from an older unit are discarded instead of being forward-applied
-   * into garbage. Non-negative integer.
+   * Non-negative persisted-cache invalidation version. Bump when state fields or fold
+   * semantics change, except for optional additions whose absence preserves historical
+   * meaning and whose old-checkpoint suffix replay matches full replay. Test that
+   * equivalence before retaining a version; schema acceptance alone is insufficient.
    */
   stateVersion: number
 }
