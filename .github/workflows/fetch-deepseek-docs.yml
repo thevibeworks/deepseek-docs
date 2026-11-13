@@ -2,7 +2,14 @@ name: fetch
 
 on:
   schedule:
-    - cron: "17 */6 * * *"   # every 6 hours
+    # Every 6 hours, one line per slot on purpose. GitHub starts scheduled runs
+    # hours late; as a single `17 */6` line, half the slots never ran (about
+    # 2/day since 2026-11-02). A late tick of one line appears to be merged into
+    # its next one; claude-reads-hn lists its slots separately and keeps 4/day.
+    - cron: "17 0 * * *"
+    - cron: "17 6 * * *"
+    - cron: "17 12 * * *"
+    - cron: "17 18 * * *"
   workflow_dispatch:
 
 concurrency:
