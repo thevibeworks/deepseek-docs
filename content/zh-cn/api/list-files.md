@@ -2,7 +2,7 @@
 title: "列出文件"
 description: "返回属于该用户的文件列表，使用游标分页。"
 source: https://api-docs.deepseek.com/zh-cn/api/list-files
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # 列出文件
@@ -41,9 +41,9 @@ GET /files
 
 **purpose** string
 
-**Possible values:** `user_data`
+**Possible values:** `user_data`, `text_recognition`, `rich_layout_recognition`
 
-只返回指定用途的文件，仅支持 `user_data`。
+只返回指定用途的文件。
 
 ## Responses
 
@@ -74,7 +74,7 @@ required
 
 文件对象列表。
 
-描述一个已上传到 Files API 的文件。
+描述一个已上传到 Files API 的文件。以 OCR 用途上传的文件只在解析成功后返回。
 
 - Array [
 
@@ -102,7 +102,7 @@ required
 
 **purpose** stringrequired
 
-**Possible values:** `user_data`
+**Possible values:** `user_data`, `text_recognition`, `rich_layout_recognition`
 
 文件的用途。
 

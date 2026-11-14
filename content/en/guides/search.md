@@ -2,7 +2,7 @@
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
 source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-11-07
+fetched: 2026-11-14
 ---
 
 # Search & Fetch
@@ -13,6 +13,10 @@ The Search API and the Fetch API give agents and RAG applications access to live
 - **Fetch API** retrieves a single web page and returns its content as Markdown.
 
 Both are raw JSON APIs. They use the same bearer authentication as the DeepSeek API.
+
+To have the model search and read pages by itself during a conversation, use the [web tools](web_tools.md) instead.
+
+The Search API does not support image search yet; support will be added later. For now, image search is available only through the [web tools](web_tools.md#image-search).
 
 The base URL is `https://api.deepseek.com`:
 
@@ -245,7 +249,9 @@ Search and Fetch are billed per successful request, not by tokens or by the numb
 
 A request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
 
-Search and Fetch calls triggered by server-side tools when using the DeepSeek API through DeepSeek Harness, Claude Code, or Codex are also billed per successful request.
+Search and Fetch calls triggered by tools when using the DeepSeek API through DeepSeek Harness, Claude Code, or Codex, including [Codex Alpha Search](../quick_start/agent_integrations/codex.md), are also billed per successful request.
+
+The [web tools](web_tools.md#billing) are billed at the same web search and web fetch prices.
 
 ---
 

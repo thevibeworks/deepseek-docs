@@ -2,7 +2,7 @@
 title: "图像理解"
 description: "deepseek-flash 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。旧模型名 deepseek-v4-flash-vision-exp 仍可调用，但该模型已下线，其请求同样由最新的 Flash 模型承接。"
 source: https://api-docs.deepseek.com/zh-cn/guides/vision
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # 图像理解
@@ -16,8 +16,6 @@ fetched: 2026-10-17
 ## 传入图片
 
 共有三种方式向模型提供图片，均使用标准的 OpenAI 兼容对话补全格式，即 `content` 为一个块（block）数组，而非纯字符串。同样的三种方式也适用于 [Responses API](responses_api.md#image-input)，图片以 `input_image` 内容块承载。
-
-以下示例的 `base_url` 为 `https://api.deepseek.com`。
 
 ### 1. Base64 编码图片（内联）
 
@@ -189,7 +187,9 @@ Files API 上传文件的存储与上传配额见 [Files API：限制](files_api
 
 ## 使用限制
 
-- 图片仅支持出现在 `user` 消息中。`system` 或 `assistant` 消息携带图片会返回 `400` 错误。
+- 图片可以出现在 `user`、`system` 和 `tool` 消息中。`assistant` 消息携带图片会返回 `400` 错误。
+
+开启 [模型内容安全](safety.md) 后，送入模型的图片会经过审核。图片未通过审核时，响应以拒答结束，并指出是哪些图片，见 [处理拒答](safety.md#handling-refusals)。
 
 ---
 
@@ -259,4 +259,4 @@ print(response.output_text)
 
 `input_image` 内容块支持 `detail` 字段，语义与上文一致（`low` / `high` / `original` / `auto`）。通过 `file_id` 传图时 `detail` 被忽略；`image_url` 与 `file_id` 互斥。
 
-字段语义、使用限制（`system` / `assistant` 消息中的图片会返回 `400` 错误）以及工具输出中的图片，请参阅 [Responses API 指南](responses_api.md#image-input)。
+字段语义、使用限制（`assistant` 消息中的图片会返回 `400` 错误）以及工具输出中的图片，请参阅 [Responses API 指南](responses_api.md#image-input)。

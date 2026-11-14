@@ -1,37 +1,41 @@
 ---
 title: "Files API"
-description: "Files API 让你上传图片，之后通过 file_id 引用。推荐在以下场景使用："
+description: "Files API 让你上传文件，之后通过 file_id 引用。可以上传两类文件："
 source: https://api-docs.deepseek.com/zh-cn/guides/files_api
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # Files API
 
-Files API 让你上传图片，之后通过 `file_id` 引用。推荐在以下场景使用：
+Files API 让你上传文件，之后通过 `file_id` 引用。可以上传两类文件：
 
-- 在多个请求中复用同一张图片，无需重复上传。
-- 发送会超过 48 MiB 请求体限制或 32 MiB 单图内联限制的图片（见 [图像理解：限制](vision.md#limits)）。
+- **图片**：JPEG、PNG、GIF、WebP，格式由文件实际内容判断。引用方式见 [图像理解](vision.md)。
+- **文档**：PDF、Word、PowerPoint、Excel、电子书与纯文本。引用方式见 [文件解析](document_parsing.md)。
 
-上传的文件与 `deepseek-flash` 模型配合使用。如何在对话请求中引用已上传的文件，请参考 [图像理解](vision.md)。
-
-支持的格式：**JPEG、PNG、GIF、WebP**。格式由文件实际内容判断。
-
-以下示例的 `base_url` 为 `https://api.deepseek.com`。
+上传的文件与 `deepseek-flash` 模型配合使用。
 
 ---
 
 ## 上传文件
 
-通过 `multipart/form-data` 请求向 `POST /files` 上传文件。单个文件最大 **64 MiB**，上传需在 **10 分钟**内完成。
+以 `multipart/form-data` 请求调用 `POST /files` 上传文件。单个文件的大小上限取决于文件类型：图片 **64 MiB**，PDF、Word、PowerPoint 等文档 **100 MiB**，纯文本、表格与电子书 **32 MiB**。上传时限同样取决于文件类型：PDF、Word、PowerPoint 等文档需在 **120 秒**内上传完成，其他文件需在 **10 分钟**内上传完成。
 
 表单字段：
 
 | 字段 | 是否必填 | 说明 |
 | --- | --- | --- |
-| `file` | 是 | 要上传的图片文件。 |
-| `purpose` | 是 | 必须为 `user_data`。 |
+| `file` | 是 | 要上传的文件。可上传的文件类型取决于 `purpose`，见下表。 |
+| `purpose` | 是 | 文件的用途。取值见下表。 |
 | `expires_after[anchor]` | 否 | 若提供，必须为 `created_at`。需与 `expires_after[seconds]` 一起使用。 |
 | `expires_after[seconds]` | 否 | 有效期（秒），取值在 `3600` 到 `2592000` 之间（1 小时到 30 天）。不传这两个 `expires_after` 字段则文件永久有效。 |
+
+| `purpose` | 文件 | 用途 |
+| --- | --- | --- |
+| `user_data` | 图片（JPEG、PNG、GIF、WebP）；纯文本（txt、md、csv、json、代码文件等）；表格（XLSX、XLS）与电子书（EPUB、MOBI） | 在对话请求中引用图片，见 [图像理解](vision.md)。纯文本、表格与电子书见 [文件解析](document_parsing.md#text-files) |
+| `text_recognition` | PDF、Word（DOC、DOCX）、PowerPoint（PPT、PPTX），以及 PNG、JPEG、WebP、GIF、BMP、TIFF 等图片 | 只解析文字，文档里的图不交给模型，见 [文件解析](document_parsing.md) |
+| `rich_layout_recognition` | 同上 | 图文混排解析：文字和文档里的图一起交给模型，见 [文件解析](document_parsing.md) |
+
+上传文档时，`purpose` 须放在 `file` 字段之前。以 `user_data` 上传 PDF、Word、PowerPoint 文件会返回 `400`。
 
 ```python
 from openai import OpenAI
@@ -89,7 +93,7 @@ curl https://api.deepseek.com/files \
 | `after` | 用于分页的 `file_id` 游标；返回此文件之后的文件。 |
 | `limit` | 返回的文件数量，取值在 `1` 到 `1000` 之间。 |
 | `order` | 按创建时间排序：`asc`（默认）或 `desc`。 |
-| `purpose` | 按用途过滤。仅支持 `user_data`。 |
+| `purpose` | 按用途过滤。`user_data`、`text_recognition` 或 `rich_layout_recognition`。 |
 
 响应为分页列表：
 
@@ -177,6 +181,18 @@ print(response.choices[0].message.content)
 
 ---
 
+## 文档
+
+上传 PDF、Word、PowerPoint 等文档时，需要把 `purpose` 设为 `text_recognition` 或 `rich_layout_recognition`。表单中的 `purpose` 字段必须写在 `file` 字段之前。
+
+- 文件在上传过程中完成解析，解析成功后才返回文件对象，因此拿到的 `file_id` 都已可用。
+- 这样上传的文档不能当作图片使用。在对话请求中引用文档的方式见 [文件解析](document_parsing.md#document-qa)。
+- 上传的原始文件和解析结果都不支持下载。
+
+限制、错误与计费见 [文件解析](document_parsing.md)。
+
+---
+
 ## Anthropic 兼容 Files API
 
 同样的文件操作也可通过 Anthropic 兼容端点使用，`base_url` 为 `https://api.deepseek.com/anthropic`。所有请求**必须**带请求头 `anthropic-beta: files-api-2025-04-14`。
@@ -237,14 +253,16 @@ curl "https://api.deepseek.com/anthropic/v1/files?limit=20" \
 
 删除文件返回 `{ "id": "...", "type": "file_deleted" }`。
 
+Anthropic 兼容接口的 `purpose` 字段是可选的，不传时按 `user_data` 处理。要上传 PDF、Word、PowerPoint 等文档，需要在 `file` 字段之前传入 `purpose`，取值为 `text_recognition` 或 `rich_layout_recognition`。
+
 ---
 
 ## 限制
 
 | 限制项 | 数值 |
 | --- | --- |
-| 支持的格式 | JPEG、PNG、GIF、WebP |
-| 单个上传文件最大大小 | 64 MiB |
+| 支持的格式 | 图片：JPEG、PNG、GIF、WebP。其他文件见上文的 `purpose` 表格 |
+| 单个上传文件最大大小 | 图片 64 MiB；PDF、Word、PowerPoint 等文档 100 MiB；纯文本、表格与电子书 32 MiB |
 | 文件名最大长度 | 512 字节 |
 | 单用户最大存储空间 | 25 GiB |
 | 单用户最大存储文件数 | 10000 |

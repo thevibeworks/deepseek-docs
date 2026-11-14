@@ -1,11 +1,33 @@
 ---
 title: "更新日志"
-description: "时间: 2026-10-17"
+description: "时间: 2026-11-13"
 source: https://api-docs.deepseek.com/zh-cn/updates
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # 更新日志
+
+---
+
+## 时间: 2026-11-13
+
+### 发布全家桶应用 API
+
+在 DeepSeek App（含网页端）的对话服务中，联网搜索、文件输入、阅读链接、语音交互及安全等能力与模型推理相互配合，构成了用户熟悉的对话体验。今天，我们把这些能力开放给开发者：在原有 API 中开启对应参数，即可获得联网搜索、文件输入、阅读链接等对话功能，相关的工具调用与上下文拼接均由服务端完成。
+
+`deepseek-flash` 模型已在 Messages、Responses 与 Chat Completions 接口下支持以下能力：
+
+- **[联网搜索](guides/web_tools.md#web-search)**：在非思考模式下，打开 `deepseek_web_search` 工具后，模型可根据提问自动发起网页或图片搜索并附引用作答。
+- **[深度思考搜索](guides/web_tools.md#search-while-thinking)**：在思考模式下，打开 `deepseek_web_search` 工具后，模型可在多步推理中自主联网搜索与阅读链接。
+- **[文件输入](guides/document_parsing.md)**：支持上传 PDF、Office、图片等格式的文件，完成纯文本提取或图文混排解析后，拼入对话上下文供模型作答。
+- **[阅读链接](guides/web_tools.md#read-links)**：将 `deepseek_read_url` 工具打开后，模型可自动识别用户消息中的链接，抓取网页内容并结合上下文作答。
+- **[模型安全](guides/safety.md)**：开启安全校验参数后，我们将提供基础风控，审核模型输入输出，命中风险时返回拒答标识。如您对外提供服务，请开启该参数，并承担内容安全审核、大模型登记、AI 标识等义务。
+
+此外，上述底层能力及语音能力均支持作为独立接口单独调用，包括：[Search、Fetch](guides/search.md)、[OCR](guides/ocr.md)、[ASR](guides/asr.md)、[TTS](guides/tts.md)。
+
+我们还基于这些 API 构建并开源了一个演示用的对话客户端，支持导入 DeepSeek 历史对话，见 [演示客户端](guides/build_a_chatbot.md#demo)。
+
+使用方法请参阅 [构建 Chatbot](guides/build_a_chatbot.md)，价格见 [模型 & 价格](quick_start/pricing.md)。
 
 ---
 

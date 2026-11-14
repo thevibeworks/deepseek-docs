@@ -2,7 +2,7 @@
 title: "接入 Codex"
 description: "Codex 是 OpenAI 推出的 AI 编程助手，通过 Responses API 与模型交互，DeepSeek API 原生支持该格式。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # 接入 Codex
@@ -26,21 +26,21 @@ bash <(curl -fsSL https://cdn.deepseek.com/api-docs/codex-deepseek-setup.sh)
 Windows 用户在 PowerShell 中执行：
 
 ```powershell
-irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup.ps1 | iex
+irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex
 ```
 
 运行后按菜单选择操作：第 1 项为修改 Codex 配置，使用 `deepseek-flash` 模型，该模型同时支持[图片输入](../../guides/vision.md)；第 2 项为使用 `deepseek-v4-pro` 模型；第 9 项为恢复默认的 Codex 配置，删除 deepseek 相关配置。首次运行会提示输入 API Key（以 `sk-` 开头，在 [DeepSeek Platform](https://platform.deepseek.com/api_keys) 获取）。
+
+一键配置脚本 1.5.0 为 `deepseek-flash` 和 `deepseek-v4-pro` 默认启用 **Alpha Search（独立联网搜索）**。此功能需要 Codex 0.164 或更高版本。支持的操作和计费规则见[联网搜索](#%E8%81%94%E7%BD%91%E6%90%9C%E7%B4%A2)。
 
 脚本会依次完成以下工作：
 
 1. **备份现有配置**：将 `~/.codex/config.toml` 备份到 `~/.codex/backup-deepseek/`，随时可以还原。
 2. **写入模型目录 `~/.codex/models.json`**：向 Codex 声明 DeepSeek 模型的元数据（上下文窗口长度、支持的推理强度档位、工具调用格式等），使 Codex 能像使用内置模型一样使用 DeepSeek 模型。
-3. **修改 `~/.codex/config.toml`**：只改写必要的字段（见下文[字段说明](#configtoml-%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E)），并新增 `[model_providers.deepseek]` 配置段，在 `[desktop]` 配置段中写入 `enabled-reasoning-efforts`（原有 `[desktop]` 段中的其他设置保留）；你原有的 MCP 服务器、项目信任级别等配置全部保留。若存在与 DeepSeek 配置冲突的字段，脚本会删除它们，并逐条打印删除原因。
-4. **校验**：写入前校验 `config.toml` / `models.json` 语法合法；校验失败则中止，不修改任何文件。
+3. **更新 `~/.codex/config.toml`**，写入 DeepSeek 模型提供方、独立联网搜索、关闭不稳定功能告警和桌面端推理强度档位的设置。脚本会保留已有的 MCP 服务器和项目信任级别等配置。各字段的作用见下文[字段说明](#configtoml-%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E)。
+4. **检查生成的文件**。检查通过后，脚本才会替换当前使用的配置文件。如果检查失败，脚本会中止并提示错误。
 
-再次运行脚本，可以重新写入配置（菜单第 1 / 2 项），或恢复到安装前的默认配置（菜单第 9 项）。重新运行菜单第 1 / 2 项，还会补齐新版脚本新增的配置项（如 `show_raw_agent_reasoning`、推理强度档位），其他配置不受影响。如果此前用旧版本脚本装过 `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` 这几个条目，重新运行脚本会将它们一并清理，只保留 `deepseek-flash` 和 `deepseek-v4-pro`。
-
-内置联网搜索仅支持 `deepseek-v4-pro`，一键脚本默认将其禁用。开启方法见下文[联网搜索](#%E8%81%94%E7%BD%91%E6%90%9C%E7%B4%A2)。
+如果此前用过旧版脚本，运行 1.5.0 并选择第 1 或第 2 项即可更新已有配置。脚本也会刷新模型目录，将旧版的 `deepseek-v4-flash`、`deepseek-v4-flash-vision-exp` 等条目替换为当前的 `deepseek-flash` 和 `deepseek-v4-pro`。选择第 9 项可恢复到安装前的配置。
 
 ### 方式二：手动编辑配置文件
 
@@ -99,7 +99,7 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup.ps1 | iex
       ],
       "shell_type": "shell_command",
       "visibility": "list",
-      "minimal_client_version": "0.144.0",
+      "minimal_client_version": "0.164.0",
       "supported_in_api": true,
       "availability_nux": null,
       "upgrade": null,
@@ -166,7 +166,7 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup.ps1 | iex
       ],
       "shell_type": "shell_command",
       "visibility": "list",
-      "minimal_client_version": "0.144.0",
+      "minimal_client_version": "0.164.0",
       "supported_in_api": true,
       "availability_nux": null,
       "upgrade": null,
@@ -198,21 +198,25 @@ model_provider = "deepseek"
 preferred_auth_method = "apikey"
 forced_login_method = "api"
 model_reasoning_effort = "high"
-web_search = "disabled"
 show_raw_agent_reasoning = true
+suppress_unstable_features_warning = true
 model_catalog_json = "~/.codex/models.json"
+
+[features]
+standalone_web_search = true
 
 [model_providers.deepseek]
 name = "deepseek"
 base_url = "https://api.deepseek.com/"
 wire_api = "responses"
 experimental_bearer_token = "<你的 DeepSeek API Key>"
+supports_standalone_web_search = true
 
 [desktop]
 enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 ```
 
-如果 `config.toml` 中已有 `[desktop]` 配置段，请把 `enabled-reasoning-efforts` 加到该段里，不要再新建一个 `[desktop]`——重复的配置段会导致文件不合法。
+如果你在更新已有配置，请删除顶层的 `web_search` 字段，使搜索配置与脚本的默认设置一致。`suppress_unstable_features_warning` 要写在顶层（第一个 `[section]` 之前）。将各字段分别写入对应的 `[features]`、`[model_providers.deepseek]` 和 `[desktop]` 配置段，缺少哪个段就新建哪个段。
 
 ### config.toml 字段说明
 
@@ -222,39 +226,34 @@ enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 | `model_provider` | 使用的模型提供方，对应下方 `[model_providers.<id>]` 配置段的 id |
 | `preferred_auth_method`、`forced_login_method` | 使用 API Key 认证，跳过 ChatGPT 账号登录 |
 | `model_reasoning_effort` | 推理强度。值越高，模型思考越深入，回答质量越高，耗时也越长 |
-| `web_search` | Codex 内置的联网搜索。仅 `deepseek-v4-pro` 支持，设为 `"live"` 即可启用 |
 | `show_raw_agent_reasoning` | 显示模型的原始思考过程。仅在 Codex CLI 中有效，按 `Ctrl + T` 后展示思考过程 |
+| `suppress_unstable_features_warning` | 关闭 Codex 在启用不稳定功能时显示的告警 |
 | `model_catalog_json` | 自定义模型目录文件（`models.json`）的路径，Codex 从中读取模型元数据 |
+| `[features]` 中的 `standalone_web_search` | 启用 Codex 的独立联网搜索功能 |
 | `[model_providers.deepseek]` 中的 `name` | 模型提供方的显示名称 |
 | `[model_providers.deepseek]` 中的 `base_url` | DeepSeek API 的接口地址 |
 | `[model_providers.deepseek]` 中的 `wire_api` | 与模型通信使用的协议，`"responses"` 表示 [Responses API](../../guides/responses_api.md) |
 | `[model_providers.deepseek]` 中的 `experimental_bearer_token` | 你的 API Key，直接写在配置文件里 |
+| `[model_providers.deepseek]` 中的 `supports_standalone_web_search` | 告知 Codex，DeepSeek 提供方支持独立联网搜索 |
 | `[desktop]` 中的 `enabled-reasoning-efforts` | ChatGPT 桌面端可选的推理强度档位 |
 
 ### 联网搜索
 
-Codex 内置的联网搜索仅在使用 `deepseek-v4-pro` 时可用。一键脚本会写入 `web_search = "disabled"`；如需使用联网搜索，请在运行脚本后将该字段改为 `"live"`。上方示例配置默认使用 `deepseek-flash`，因此同样禁用了联网搜索。
+启用 Alpha Search 后，Codex 可以搜索网页、打开网页，也可以在网页内查找文本。每条返回结果的查询计为一次 Search 请求。打开网页或在页内查找时，每次成功抓取网页计为一次 Fetch 请求。详见[《网页搜索与抓取》中的计费规则](../../guides/search.md#计费)。
 
-如需启用联网搜索，请切换到 `deepseek-v4-pro`，并在 `~/.codex/config.toml` 中将 `web_search` 设为 `"live"`：
-
-```toml
-model = "deepseek-v4-pro"
-web_search = "live"
-```
-
-保存后重启 Codex。搜索由 DeepSeek 在服务端执行，请求按 Search 接口的[计费规则](../../guides/search.md)计费。
+如需关闭 Alpha Search，在 `~/.codex/config.toml` 的顶层（第一个 `[section]` 之前）加入 `web_search = "disabled"`，然后重启 Codex。这样会关闭 Codex 的联网搜索，不再产生 Search 或 Fetch 请求。注意：之后如果在配置脚本中再次选择第 1 或 2 项，脚本会删除这一设置并重新开启 Alpha Search。
 
 ## 2. 开始使用
 
 配置完成后，Codex CLI、ChatGPT 桌面端、VS Code 的 Codex 插件都会读取同一份配置文件，无需分别配置：
 
-- **Codex CLI**：进入项目目录，执行 `codex` 命令。启动信息中显示 `model: deepseek-flash` 即为生效。
+- **Codex CLI**：进入项目目录，执行 `codex` 命令。确认启动信息中显示的是你选择的模型（`deepseek-flash` 或 `deepseek-v4-pro`）。
 
   ```text
 cd /path/to/my-project
 codex
 ```
-- **ChatGPT 桌面端**：模型选择器显示「自定义」或所选模型名（如「DeepSeek-Flash」），都算配置已生效——显示哪种取决于 ChatGPT 版本。显示模型名时，可直接在客户端里切换模型；显示「自定义」时，实际使用的就是 `deepseek-flash`。
+- **ChatGPT 桌面端**：模型选择器会显示「自定义」或你选择的模型名，具体取决于客户端版本。显示「自定义」时，Codex 使用配置文件中 `model` 指定的模型。显示模型名时，可直接在客户端里切换模型。
 - **VS Code 的 Codex 插件（Codex IDE extension）**：与 Codex CLI 共用同一份配置，安装插件后即可直接使用。
 
 切换提供方后的历史会话

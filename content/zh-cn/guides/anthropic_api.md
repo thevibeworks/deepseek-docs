@@ -2,7 +2,7 @@
 title: "使用 Anthropic API"
 description: "为了满足大家对 Anthropic API 生态的使用需求，我们的 API 新增了对 Anthropic API 格式的支持，其 base_url 为 https://api.deepseek.com/anthropic。"
 source: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # 使用 Anthropic API
@@ -110,6 +110,8 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | output\_config | 仅支持 `effort` |
 | top\_k | 忽略 |
 | top\_p | 因模型而异： `deepseek-flash`：思考模式下生效（下限 `0.95`），非思考模式下恒为 `1.0`。 `deepseek-v4-pro`：思考模式下忽略传入值（启用工具调用时固定为 `0.95`，否则为 `1.0`），非思考模式下生效。即使提供了 `tools`，将 `tool_choice` 设为 `{"type": "none"}` 也会关闭工具调用 |
+| safety\_check | DeepSeek 扩展字段。`{"level": "high"}` 开启内容安全审核，`low` 或不传则不开启，见 [模型内容安全](safety.md) |
+| title | DeepSeek 扩展字段。`{"enabled": true}` 返回会话标题，见 [会话标题](conversation_title.md) |
 
 在部分 Claude Code 或 OpenCode 主 Agent 的思考模式请求中，兼容处理可能将实际生效的 `max_tokens` 提高到请求值以上。在这些场景下，不能依靠此参数严格限制输出 token 数。
 
@@ -126,13 +128,15 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | description | 完全支持 |
 | cache\_control | 忽略 |
 
+使用联网工具时，声明服务端工具 `deepseek_web_search` 与 `deepseek_read_url`，详见 [联网工具](web_tools.md#declare-tools)。同一请求中不能再声明其他服务端工具。
+
 #### tool\_choice
 
 | 取值 | 支持情况 |
 | --- | --- |
 | none | 完全支持 |
 | auto | 支持（`disable_parallel_tool_use` 被忽略） |
-| any | 按 `auto` 处理，不强制调用工具（`disable_parallel_tool_use` 被忽略） |
+| any | 非思考模式下强制调用工具；思考模式下，声明了服务端工具时按 `auto` 处理，只声明了客户端工具时返回 `400` 错误（`disable_parallel_tool_use` 被忽略） |
 | tool | 非思考模式下指定客户端工具；思考模式下返回 `400` 错误（`disable_parallel_tool_use` 被忽略） |
 
 #### 回传工具结果
@@ -150,7 +154,7 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | cache\_control | 忽略 |
 | citations | 忽略 |
 | array, type="image" | source | `deepseek-flash` 支持 user 消息和 `tool_result` 内容中的图片；assistant 消息中的图片会返回 `400` 错误。`deepseek-v4-pro` 不处理图片，会将其替换为文本 `[Unsupported Image]`。 `source.type` 可为 base64（媒体类型：image/jpeg、image/png、image/gif、image/webp）、url 或 file（使用 file 图片时，请携带请求头 `anthropic-beta: files-api-2025-04-14`）。 |
-| array, type = "document" |  | 不支持 |
+| array, type = "document" |  | user 消息中支持 `file` 与 `text` 来源，其他来源返回 `400` 错误，见 [文件解析](document_parsing.md#document-qa) |
 | array, type = "search\_result" |  | 不支持 |
 | array, type = "thinking" |  | 支持 |
 | array, type="redacted\_thinking" |  | 不支持 |
@@ -168,6 +172,8 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | array, type = "mcp\_tool\_use" |  | 不支持 |
 | array, type = "mcp\_tool\_result" |  | 不支持 |
 | array, type = "container\_upload" |  | 不支持 |
+
+使用联网工具或 `safety_check` 的请求，assistant 消息中还支持 `web_fetch_tool_result` 块，以及扩展字段 `kind` 和 `signature`。见 [联网工具 - 多轮对话](web_tools.md#multi-turn)。
 
 ## 服务端工具用量
 
@@ -218,6 +224,12 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
   }
 }
 ```
+
+### 联网工具的服务端工具块
+
+使用联网工具时，`server_tool_use` 的 `name` 为 `deepseek_web_search` 或 `deepseek_read_url`，并带 `input.action` 与 `kind`；结果块还包括 `web_fetch_tool_result`。被内容安全拒答的响应以 `stop_reason: "refusal"` 结束。见 [联网工具](web_tools.md#response-blocks) 与 [模型内容安全](safety.md#handling-refusals)。
+
+使用联网工具时，`usage.server_tool_use` 还会返回 `web_fetch_requests`、`tool_fetch` 与 `tool_image_search`，各字段的含义与计费见 [联网工具](web_tools.md#billing)。
 
 ## 流式输出与 Token 用量
 

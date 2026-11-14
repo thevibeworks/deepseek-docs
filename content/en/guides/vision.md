@@ -2,7 +2,7 @@
 title: "Vision"
 description: "The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name deepseek-v4-flash-vision-exp is still accepted, but the model has been retired and its requests are served by the latest Flash model as well."
 source: https://api-docs.deepseek.com/guides/vision
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # Vision
@@ -16,8 +16,6 @@ Supported image formats: **JPEG, PNG, GIF, and WebP**. The format is detected fr
 ## Sending Images
 
 There are three ways to provide an image to the model. All of them use the standard OpenAI-compatible Chat Completions format, where `content` is an array of blocks instead of a plain string. The same three methods are also available in the [Responses API](responses_api.md#image-input), where images are carried in `input_image` content parts.
-
-The `base_url` for the examples below is `https://api.deepseek.com`.
 
 ### 1. Base64-encoded image (inline)
 
@@ -189,7 +187,9 @@ For storage and upload quotas of files uploaded via the Files API, see [Files AP
 
 ## Restrictions
 
-- Images are supported in `user` messages only. Images in `system` or `assistant` messages return a `400` error.
+- Images are supported in `user`, `system` and `tool` messages. Images in `assistant` messages return a `400` error.
+
+With [model content safety](safety.md) enabled, images sent to the model are reviewed. If an image does not pass, the response ends with a refusal that names the blocked images; see [Handling Refusals](safety.md#handling-refusals).
 
 ---
 
@@ -259,4 +259,4 @@ print(response.output_text)
 
 The `input_image` part supports a `detail` field with the same semantics as above (`low` / `high` / `original` / `auto`). `detail` is ignored when the image is provided via `file_id`, and `image_url` and `file_id` are mutually exclusive.
 
-For field semantics, restrictions (images in `system` / `assistant` messages are rejected with a `400` error), and tool-output images, see the [Responses API guide](responses_api.md#image-input).
+For field semantics, restrictions (images in `assistant` messages are rejected with a `400` error), and tool-output images, see the [Responses API guide](responses_api.md#image-input).

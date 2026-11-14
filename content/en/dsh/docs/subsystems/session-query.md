@@ -1,7 +1,7 @@
 ---
 title: "Session Query"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/session-query.md
-fetched: 2026-10-14
+fetched: 2026-11-14
 ---
 # Session Query
 
@@ -395,6 +395,16 @@ Exact reads, filters, and traces are backend-independent concrete behavior. A ba
 observeSession( sessionId: SessionId, options: SessionObservationOptions = {}, ): Promise<SessionObservation>
 
 /**
+ * Inspect domain-owned state without attaching or resuming a cold Session.
+ * The getter runs synchronously after preparation and must not mutate or retain the Session.
+ * @param sessionId - logical Session identity.
+ * @param read - domain getter returning detached data.
+ * @param signal - preparation cancellation.
+ * @returns the getter's value at the current live or prepared cut.
+ */
+inspectSession<T>(sessionId: SessionId, read: (session: Session) => T, signal?: AbortSignal): Promise<T>
+
+/**
  * Search the live-preferred logical corpus and group by session.
  * @param request - query text, metadata filters, page size, and cursor.
  * @param exec - optional cancellation control.
@@ -510,7 +520,7 @@ async traceEvent(request: SessionEventTraceRequest, signal?: AbortSignal): Promi
 async readEvent(request: SessionEventReadRequest, signal?: AbortSignal): Promise<SessionEventWindow>
 ```
 
-Types: [SessionId](core.md) · [SessionTitleSnapshot](session-title.md)
+Types: [Session](session.md) · [SessionId](core.md) · [SessionTitleSnapshot](session-title.md)
 
 Source: [`packages/session-query/session-query/src/index.ts`](../../packages/session-query/session-query/src/index.ts)
 <!-- END GENERATED cordis-surface -->

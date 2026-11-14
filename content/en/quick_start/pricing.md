@@ -2,7 +2,7 @@
 title: "Models & Pricing"
 description: "Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # Models & Pricing
@@ -45,24 +45,37 @@ Model prices are listed in units of per 1M tokens. A token, the smallest unit of
 
 ---
 
-## Search & Fetch Pricing
+## Web Search & Fetch Pricing
 
-Search and Fetch are standalone APIs billed per request.
+Search (text, image) and web fetch are billed per use, whether you call the [Search and Fetch APIs](../guides/search.md) directly or the model uses them through tools such as the [web tools](../guides/web_tools.md).
 
-| API | Unit | Price |
+| Item | Unit | Price |
 | --- | --- | --- |
-| Search | Per 1,000 successful requests | $0.75 |
-| Fetch | Per 1,000 successful requests | $0.75 |
+| Search (text, image) | Per 1,000 searches | $0.75 |
+| Web fetch | Per 1,000 fetches | $0.75 |
 
-Note: when you use the DeepSeek API through DeepSeek Harness, Claude Code, or Codex, server-side tool calls already hit the Search and Fetch APIs. These calls are currently free of charge; per-request billing starts at 00:00 Beijing time on November 1, 2026.
+For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools](../guides/web_tools.md#billing).
 
-See the [Search & Fetch guide](../guides/search.md) for API usage and complete billing rules.
+---
+
+## File Parsing & OCR Pricing
+
+| Item | Unit | Price |
+| --- | --- | --- |
+| [File parsing](../guides/document_parsing.md), [OCR API](../guides/ocr.md) | Per 1,000 pages | $0.225 |
+
+## Speech Pricing
+
+| API | Unit | List price | Limited-time price (50% off) |
+| --- | --- | --- | --- |
+| [Text to Speech (TTS)](../guides/tts.md) | Per 10,000 characters | $0.45 | $0.225 |
+| [Speech to Text (ASR)](../guides/asr.md) | Per hour of audio | $0.116 | $0.058 |
 
 ---
 
 ## Deduction Rules
 
-For model usage, the expense = number of tokens × price. Search and Fetch are charged per successful request at the rates above.
+For model usage, the expense = number of tokens × price. Search (text, image) and web fetch are charged per use at the rates above.
 The corresponding fees will be directly deducted from your topped-up balance or granted balance, with a preference for using the granted balance first when both balances are available.
 
 Product prices may vary and DeepSeek reserves the right to adjust them. We recommend topping up based on your actual usage and regularly checking this page for the most recent pricing information.

@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Chat Completions API
@@ -39,6 +39,7 @@ oneOf
 - User message
 - Assistant message
 - Tool message
+- Latest reminder message
 
 **[System message]**
 
@@ -85,7 +86,7 @@ oneOf
 - Image content part
 - File content part
 
-**[Text content]**
+**[Latest reminder message]**
 
 **type** stringrequired
 
@@ -97,7 +98,7 @@ The type of the content part, in this case `text`.
 
 The text content.
 
-**[Array of content parts]**
+**[Text content]**
 
 **type** stringrequired
 
@@ -121,7 +122,7 @@ Either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded d
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image.
 
-**[Text content part]**
+**[Array of content parts]**
 
 Exactly one of `file_id` and `file_data` is required: passing neither returns a `400` error ("file must have a file\_id or file\_data"); passing both returns a `400` error ("file cannot have both file\_id and file\_data").
 
@@ -155,7 +156,7 @@ The role of the messages author, in this case `user`.
 
 An optional name for the participant. Provides the model information to differentiate between participants of the same role.
 
-**[Image content part]**
+**[Text content part]**
 
 **content** stringnullablerequired
 
@@ -180,7 +181,11 @@ You must set `base_url="https://api.deepseek.com/beta"` to use this feature.
 
 (Beta) Used for the thinking mode in the [Chat Prefix Completion](../guides/chat_prefix_completion.md) feature as the input for the CoT in the last assistant message. When using this feature, the `prefix` parameter must be set to `true`.
 
-**[File content part]**
+**server\_tool\_calls** object[]
+
+DeepSeek extension. The `server_tool_calls` of an earlier response, passed back unchanged. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+
+**[Image content part]**
 
 **role** stringrequired
 
@@ -199,11 +204,11 @@ oneOf
 - Text content
 - Array of content parts
 
-**[Text content]**
+**[File content part]**
 
 string
 
-**[Array of content parts]**
+**[Text content]**
 
 **Minimum items:** `1`
 
@@ -215,7 +220,7 @@ oneOf
 - Image content part
 - File content part
 
-**[Text content part]**
+**[Array of content parts]**
 
 **type** stringrequired
 
@@ -227,7 +232,7 @@ The type of the content part, in this case `text`.
 
 The text content.
 
-**[Image content part]**
+**[Text content part]**
 
 **type** stringrequired
 
@@ -251,7 +256,7 @@ Either an `http(s)` URL of the image (max 8192 characters) or a base64-encoded d
 
 Controls how the image is processed. `low` downsamples the image to 512x512 (faster, cheaper). `high`, `original`, and `auto` keep the original image.
 
-**[File content part]**
+**[Image content part]**
 
 Exactly one of `file_id` and `file_data` is required: passing neither returns a `400` error ("file must have a file\_id or file\_data"); passing both returns a `400` error ("file cannot have both file\_id and file\_data").
 
@@ -278,6 +283,20 @@ An optional filename. Only valid together with `file_data`.
 **tool\_call\_id** stringrequired
 
 Tool call that this message is responding to.
+
+**[File content part]**
+
+DeepSeek extension. Gives the model the current date, location, platform and language, like DeepSeek Chat. Place it directly before the `user` message it belongs to; anywhere else it returns `400`. See the [User Metadata Marker Guide](../guides/latest_reminder.md).
+
+**role** stringrequired
+
+**Possible values:** `latest_reminder`
+
+The role of the messages author, in this case `latest_reminder`.
+
+**content** stringrequired
+
+`<date>,<weekday>,<location>,<platform>,<language>`, for example `2026-11-11,Wednesday,Singapore,Web,English`.
 
 - ]
 
@@ -410,16 +429,24 @@ object[]
 
 nullable
 
-A list of tools the model may call. Currently, only functions are supported as a tool.
-Use this to provide a list of functions the model may generate JSON inputs for. Tool names must be unique.
+A list of tools the model may call: functions, and the web tools `deepseek_web_search` and `deepseek_read_url` (see the [Web Tools Guide](../guides/web_tools.md#chat-completions-api)).
+Use functions to provide a list of functions the model may generate JSON inputs for. Tool names must be unique.
 
 - Array [
+
+oneOf
+
+- Function tool
+- DeepSeek web search tool
+- DeepSeek read URL tool
+
+**[Function tool]**
 
 **type** stringrequired
 
 **Possible values:** `function`
 
-The type of the tool. Currently, only `function` is supported.
+The type of the tool, in this case `function`.
 
 **function**
 
@@ -451,6 +478,26 @@ Omitting `parameters` defines a function with an empty parameter list.
 
 If set to `true`, the API will use strict-mode for the tool calls to ensure the output always complies with the function's JSON schema. This is a Beta feature, for more details please refer to [Tool Calls Guide](../guides/tool_calls.md)
 
+**[DeepSeek web search tool]**
+
+DeepSeek extension. Lets the model search the web; with thinking enabled, it runs deep thinking search. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+
+**type** stringrequired
+
+**Possible values:** `deepseek_web_search`
+
+The type of the tool, in this case `deepseek_web_search`.
+
+**[DeepSeek read URL tool]**
+
+DeepSeek extension. Lets the model read the links in the last user message. See the [Web Tools Guide](../guides/web_tools.md#read-links).
+
+**type** stringrequired
+
+**Possible values:** `deepseek_read_url`
+
+The type of the tool, in this case `deepseek_read_url`.
+
 - ]
 
 **tool\_choice** string | object
@@ -469,7 +516,7 @@ Specifying a particular tool via `{"type": "function", "function": {"name": "my_
 
 `none` is the default when no tools are present. `auto` is the default if tools are present.
 
-`required` and named tool choices are not supported in thinking mode; the API returns a `400` error. Disable thinking mode first to use them.
+`required` and named tool choices are not supported in thinking mode; the API returns a `400` error. Disable thinking mode first to use them. With the web tools declared, `required` is treated as `auto`.
 
 oneOf
 
@@ -501,6 +548,32 @@ required
 **name** stringrequired
 
 The name of the function to call.
+
+**safety\_check**
+
+object
+
+nullable
+
+DeepSeek extension. Set `level` to `high` to turn on basic risk control, which reviews the model input and output. See the [Model Content Safety Guide](../guides/safety.md).
+
+**level** stringrequired
+
+**Possible values:** `low`, `high`
+
+`high`: basic risk control. `low`: the default checks, the same as omitting `safety_check`.
+
+**title**
+
+object
+
+nullable
+
+DeepSeek extension. Set `{"enabled": true}` to have the response carry a short title for the conversation. See the [Conversation Title Guide](../guides/conversation_title.md).
+
+**enabled** booleanrequired
+
+Whether to return a conversation title.
 
 **logprobs** booleannullable
 
@@ -635,6 +708,22 @@ The arguments to call the function with, as generated by the model in JSON forma
 **Possible values:** `assistant`
 
 The role of the author of this message.
+
+**annotations** object[]
+
+With the web tools. The citations in `content`. See [Web Tools - Citations](../guides/web_tools.md#citations).
+
+**server\_tool\_calls** object[]
+
+DeepSeek extension. With the web tools. The server-side tool calls of this response, one entry per step; pass it back unchanged in the next request. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+
+**title** string
+
+DeepSeek extension. The conversation title, returned when `title.enabled` is `true`. See the [Conversation Title Guide](../guides/conversation_title.md).
+
+**refusal** string
+
+Names the blocked images when images in the request fail the model content safety review. See the [Model Content Safety Guide](../guides/safety.md#handling-refusals).
 
 **logprobs**
 
@@ -812,6 +901,36 @@ Breakdown of tokens used in a completion.
 
 Tokens generated by the model for reasoning.
 
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek extension. Tokens of the safety review, already included in `completion_tokens`. Present only when `safety_check` is `high`.
+
+**server\_tool\_use**
+
+object
+
+With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+
+**tool\_search** integer
+
+**Possible values:** `>= 0`
+
+Number of billed searches, excluding image searches.
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+Number of billed page fetches.
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+Number of billed image searches.
+
 **[Example]**
 
 ```json
@@ -929,6 +1048,26 @@ The name of the function to call.
 The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
 
 - ]
+
+**annotations** object[]
+
+With the web tools. The citations in `content`. See [Web Tools - Citations](../guides/web_tools.md#citations). In streaming, sent once in the last chunk.
+
+**server\_tool\_calls** object[]
+
+DeepSeek extension. With the web tools. The server-side tool calls of this response, one entry per step; pass it back unchanged in the next request. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api). In streaming, sent once in the last chunk.
+
+**title** string
+
+DeepSeek extension. The conversation title, returned when `title.enabled` is `true`. See the [Conversation Title Guide](../guides/conversation_title.md). In streaming, sent once in the last chunk.
+
+**refusal** string
+
+Names the blocked images when images in the request fail the model content safety review. See the [Model Content Safety Guide](../guides/safety.md#handling-refusals). In streaming, sent once in the last chunk.
+
+**server\_tool\_event** object
+
+DeepSeek extension. With the web tools. The progress of a server-side tool call; a chunk carries at most one event. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **logprobs**
 

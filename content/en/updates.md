@@ -1,11 +1,33 @@
 ---
 title: "Change Log"
-description: "Date: 2026-10-17"
+description: "Date: 2026-11-13"
 source: https://api-docs.deepseek.com/updates
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # Change Log
+
+---
+
+## Date: 2026-11-13
+
+### Releasing the full suite of application APIs
+
+In the DeepSeek App (including the web version), web search, file input, URL reading, voice interaction and safety work together with model inference to form the conversation experience users know. Today we open these capabilities to developers: enable the corresponding parameters in the existing APIs to get conversation features such as web search, file input and URL reading, with the tool calls and context assembly handled by the service.
+
+The `deepseek-flash` model supports the following in the Messages, Responses and Chat Completions APIs:
+
+- **[Web search](guides/web_tools.md#web-search)**: with thinking disabled and the `deepseek_web_search` tool enabled, the model runs web or image searches as the question requires and answers with citations.
+- **[Deep thinking search](guides/web_tools.md#search-while-thinking)**: with thinking enabled and the `deepseek_web_search` tool enabled, the model searches the web and reads links on its own over multiple reasoning steps.
+- **[File input](guides/document_parsing.md)**: upload PDFs, Office files, images, and more; after plain-text extraction or rich-layout parsing, they are added to the conversation context for the model to answer from.
+- **[URL reading](guides/web_tools.md#read-links)**: with the `deepseek_read_url` tool enabled, the model detects links in the user message, fetches the pages and answers with them in context.
+- **[Model safety](guides/safety.md)**: with the safety check parameter enabled, we provide basic risk control: the model input and output are reviewed, and a refusal marker is returned when a risk is found. If you provide a service to the public, enable this parameter and fulfill obligations such as content safety review, large model registration and AI labeling.
+
+In addition, these underlying capabilities and the voice capabilities are available as standalone APIs, including [Search and Fetch](guides/search.md), [OCR](guides/ocr.md), [ASR](guides/asr.md) and [TTS](guides/tts.md).
+
+We have also built and open-sourced a demo chat client on these APIs, which can import your DeepSeek chat history; see [Demo](guides/build_a_chatbot.md#demo).
+
+See [Build a Chatbot](guides/build_a_chatbot.md) for how to use them, and [Models & Pricing](quick_start/pricing.md) for prices.
 
 ---
 

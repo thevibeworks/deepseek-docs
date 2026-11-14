@@ -2,12 +2,14 @@
 title: "对话前缀续写（Beta）"
 description: "对话前缀续写沿用 Chat Completion API，用户提供 assistant 开头的消息，来让模型补全其余的消息。"
 source: https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # 对话前缀续写（Beta）
 
 对话前缀续写沿用 [Chat Completion API](../api/create-chat-completion.md)，用户提供 assistant 开头的消息，来让模型补全其余的消息。
+
+使用 [联网工具](web_tools.md) 或 [模型内容安全](safety.md) 的请求，见 [联网工具 - 继续生成](web_tools.md#continue-generation)。
 
 ## 注意事项
 
