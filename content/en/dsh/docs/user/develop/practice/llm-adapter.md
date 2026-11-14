@@ -1,7 +1,7 @@
 ---
 title: "LLM adapters"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/practice/llm-adapter.md
-fetched: 2026-09-29
+fetched: 2026-11-14
 ---
 # LLM adapters
 
@@ -158,7 +158,7 @@ Compare the two shipped adapters to see the same harness contract implemented ov
 
 ## Error handling
 
-Adapters throw transport and protocol failures as `LlmError` values with stable codes. The agent loop preserves the error and code for diagnostics and policy; it does not convert an ordinary `Error` automatically. Every provider HTTP request must also merge `attributionHeaders()` and forward `options.signal`.
+Adapters throw transport and protocol failures as `LlmError` values with stable codes. `new LlmError` accepts only the built-in codes of `LLM_FAILURE_CODES`; an adapter's own code goes through `LlmError.fromFailure`. The agent loop preserves the error and code for diagnostics and policy; it does not convert an ordinary `Error` automatically. Every provider HTTP request must also merge `attributionHeaders()` and forward `options.signal`.
 
 ```ts
 import {
@@ -185,7 +185,7 @@ class HttpAdapter extends LlmAdapter {
       ...options.signal ? { signal: options.signal } : {},
     })
     if (!response.ok) {
-      throw new LlmError(`Provider API error: ${response.status}`, 'PROVIDER_HTTP_ERROR')
+      throw LlmError.fromFailure({ message: `Provider API error: ${response.status}`, code: 'PROVIDER_HTTP_ERROR', status: response.status })
     }
     // A real adapter parses the response and emits the complete chunk sequence.
     yield { type: 'finish', reason: { kind: 'stop' } }

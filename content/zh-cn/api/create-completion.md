@@ -2,7 +2,7 @@
 title: "FIM 补全 API（Beta）"
 description: "FIM (Fill In the Middle) 补全 API。<br/>用户需要设置 `base_url='https://api.deepseek.com/beta'` 来使用此功能。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-completion
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # FIM 补全 API（Beta）
@@ -269,6 +269,36 @@ completion tokens 的详细信息。
 
 推理模型所产生的思维链 token 数量
 
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `completion_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
+**server\_tool\_use**
+
+object
+
+使用联网工具时返回。计费的搜索与抓取次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+
+**tool\_search** integer
+
+**Possible values:** `>= 0`
+
+计费的搜索次数，不含图片搜索。
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+计费的网页抓取次数。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+计费的图片搜索次数。
+
 **[Example]**
 
 ```json
@@ -431,6 +461,36 @@ completion tokens 的详细信息。
 **reasoning\_tokens** integer
 
 推理模型所产生的思维链 token 数量
+
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `completion_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
+**server\_tool\_use**
+
+object
+
+使用联网工具时返回。计费的搜索与抓取次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+
+**tool\_search** integer
+
+**Possible values:** `>= 0`
+
+计费的搜索次数，不含图片搜索。
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+计费的网页抓取次数。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+计费的图片搜索次数。
 
 - ]
 

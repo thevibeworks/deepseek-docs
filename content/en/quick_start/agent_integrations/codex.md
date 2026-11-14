@@ -2,7 +2,7 @@
 title: "Integrate with Codex"
 description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # Integrate with Codex
@@ -31,16 +31,16 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex
 
 After launching, pick an action from the menu: option 1 configures Codex to use the `deepseek-flash` model, which also accepts [image input](../../guides/vision.md); option 2 configures it to use `deepseek-v4-pro`; option 9 restores the default Codex configuration, removing the DeepSeek-related settings. On first run, the script asks for your API Key (starting with `sk-`; get one from the [DeepSeek Platform](https://platform.deepseek.com/api_keys)).
 
+Setup script 1.5.0 enables **Alpha Search** by default for both `deepseek-flash` and `deepseek-v4-pro`. It requires Codex 0.164 or later. See [Web Search](#web-search) for supported operations and billing.
+
 The script performs the following steps:
 
 1. **Back up your existing configuration**: `~/.codex/config.toml` is backed up to `~/.codex/backup-deepseek/`, so you can restore it at any time.
 2. **Write the model catalog `~/.codex/models.json`**: this declares the metadata of DeepSeek models to Codex (context window size, supported reasoning effort levels, tool call formats, etc.), so that Codex can use DeepSeek models just like its built-in models.
-3. **Modify `~/.codex/config.toml`**: only the necessary fields are rewritten (see the [field reference](#configtoml-field-reference) below), a `[model_providers.deepseek]` section is added, and `enabled-reasoning-efforts` is written into the `[desktop]` section (other settings in an existing `[desktop]` section are kept); your existing settings such as MCP servers and project trust levels are all preserved. If any existing fields conflict with the DeepSeek configuration, the script removes them and prints the reason for each removal.
-4. **Validate**: the script validates the syntax of `config.toml` / `models.json` before writing; if validation fails, it aborts without modifying any file.
+3. **Update `~/.codex/config.toml`** with the DeepSeek provider, standalone web search settings, the setting that suppresses the unstable-features warning, and desktop reasoning effort levels. The script preserves settings such as MCP servers and project trust levels. See the [field reference](#configtoml-field-reference) below.
+4. **Check the generated files** before replacing your active configuration. If a check fails, the script stops and reports the error.
 
-Run the script again at any time to rewrite the configuration (menu option 1 or 2), or to restore it to its pre-installation state (menu option 9). Re-running menu option 1 or 2 also adds any settings introduced by newer versions of the script (such as `show_raw_agent_reasoning` and the reasoning effort levels), leaving the rest of your configuration untouched. If an older version of the script had installed the `deepseek-v4-flash` / `deepseek-v4-flash-vision-exp` entries, re-running the script removes them and leaves only `deepseek-flash` and `deepseek-v4-pro`.
-
-Built-in web search is disabled by the setup script and is available only with `deepseek-v4-pro`. See [Web Search](#web-search) to enable it.
+If you used an older script, run version 1.5.0 and select option 1 or 2 to update your existing configuration. This also refreshes the model catalog, replacing older entries such as `deepseek-v4-flash` and `deepseek-v4-flash-vision-exp` with the current `deepseek-flash` and `deepseek-v4-pro` entries. Select option 9 to restore your pre-installation configuration.
 
 ### Option 2: Edit the Configuration File Manually
 
@@ -99,7 +99,7 @@ First, create the model catalog file `~/.codex/models.json`, which declares the 
       ],
       "shell_type": "shell_command",
       "visibility": "list",
-      "minimal_client_version": "0.144.0",
+      "minimal_client_version": "0.164.0",
       "supported_in_api": true,
       "availability_nux": null,
       "upgrade": null,
@@ -166,7 +166,7 @@ First, create the model catalog file `~/.codex/models.json`, which declares the 
       ],
       "shell_type": "shell_command",
       "visibility": "list",
-      "minimal_client_version": "0.144.0",
+      "minimal_client_version": "0.164.0",
       "supported_in_api": true,
       "availability_nux": null,
       "upgrade": null,
@@ -198,21 +198,25 @@ model_provider = "deepseek"
 preferred_auth_method = "apikey"
 forced_login_method = "api"
 model_reasoning_effort = "high"
-web_search = "disabled"
 show_raw_agent_reasoning = true
+suppress_unstable_features_warning = true
 model_catalog_json = "~/.codex/models.json"
+
+[features]
+standalone_web_search = true
 
 [model_providers.deepseek]
 name = "deepseek"
 base_url = "https://api.deepseek.com/"
 wire_api = "responses"
 experimental_bearer_token = "<your DeepSeek API Key>"
+supports_standalone_web_search = true
 
 [desktop]
 enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 ```
 
-If `config.toml` already has a `[desktop]` section, add `enabled-reasoning-efforts` to that section instead of creating a second `[desktop]` — a duplicate section makes the file invalid.
+If you are updating an existing file, remove any top-level `web_search` setting to match the script's defaults. Put `suppress_unstable_features_warning` at the top level, before the first `[section]`. Add the settings to the corresponding `[features]`, `[model_providers.deepseek]` and `[desktop]` sections, creating each section only if it is missing.
 
 ### config.toml Field Reference
 
@@ -222,39 +226,34 @@ If `config.toml` already has a `[desktop]` section, add `enabled-reasoning-effor
 | `model_provider` | The model provider to use, matching the id of the `[model_providers.<id>]` section below |
 | `preferred_auth_method`, `forced_login_method` | Authenticate with an API Key, skipping the ChatGPT account login |
 | `model_reasoning_effort` | Reasoning effort. Higher values make the model think more deeply, producing better answers at the cost of longer response time |
-| `web_search` | Codex's built-in web search. Available only with `deepseek-v4-pro`; set to `"live"` to enable it |
 | `show_raw_agent_reasoning` | Show the model's raw reasoning (thinking) content. Only takes effect in Codex CLI: press `Ctrl + T` to view the thinking process |
+| `suppress_unstable_features_warning` | Hides the warning Codex shows when unstable features are enabled |
 | `model_catalog_json` | Path to the custom model catalog file (`models.json`), from which Codex reads model metadata |
+| `standalone_web_search` in `[features]` | Enables standalone web search in Codex |
 | `name` in `[model_providers.deepseek]` | Display name of the model provider |
 | `base_url` in `[model_providers.deepseek]` | Endpoint of the DeepSeek API |
 | `wire_api` in `[model_providers.deepseek]` | The protocol used to communicate with the model; `"responses"` means the [Responses API](../../guides/responses_api.md) |
 | `experimental_bearer_token` in `[model_providers.deepseek]` | Your API Key, stored directly in the configuration file |
+| `supports_standalone_web_search` in `[model_providers.deepseek]` | Tells Codex that the DeepSeek provider supports standalone web search |
 | `enabled-reasoning-efforts` in `[desktop]` | Reasoning effort levels available in the ChatGPT desktop app |
 
 ### Web Search
 
-Codex's built-in web search is available only when Codex uses `deepseek-v4-pro`. The setup script writes `web_search = "disabled"`; change this field to `"live"` after running the script if you want to use web search. The example configuration above also disables web search because it uses `deepseek-flash`.
+With Alpha Search, Codex can search the web, open a page and find text on that page. Each query that returns results counts as one Search request. Opening a page or finding text on it counts as one Fetch request when the page is successfully retrieved. See [Search and Fetch billing](../../guides/search.md#billing).
 
-To enable web search, switch to `deepseek-v4-pro` and set `web_search` to `"live"` in `~/.codex/config.toml`:
-
-```toml
-model = "deepseek-v4-pro"
-web_search = "live"
-```
-
-Restart Codex after saving the change. DeepSeek executes the searches on the server, and the requests are billed at [Search API pricing](../../guides/search.md#billing).
+To turn off Alpha Search, add `web_search = "disabled"` at the top level of `~/.codex/config.toml` (before the first `[section]`) and restart Codex. This turns off web search in Codex, so no Search or Fetch requests are made. Note: selecting option 1 or 2 in the setup script again removes this setting and turns Alpha Search back on.
 
 ## 2. Get Started
 
 Once configured, Codex CLI, the ChatGPT desktop app, and the Codex IDE extension for VS Code all read the same configuration file — no per-client configuration is needed:
 
-- **Codex CLI**: enter your project directory and run the `codex` command. If the startup banner shows `model: deepseek-flash`, the configuration is in effect.
+- **Codex CLI**: enter your project directory and run the `codex` command. Check that the startup banner shows the model you selected (`deepseek-flash` or `deepseek-v4-pro`).
 
   ```text
 cd /path/to/my-project
 codex
 ```
-- **ChatGPT desktop app**: the model picker showing "Custom" or the selected model name (e.g. "DeepSeek-Flash") both mean the configuration is in effect — which one appears depends on your ChatGPT version. When the model name is shown, you can switch models directly in the app; when "Custom" is shown, the model actually in use is `deepseek-flash`.
+- **ChatGPT desktop app**: depending on your app version, the model picker shows either "Custom" or the name of the model you selected. If it shows "Custom", Codex uses the `model` set in your configuration file. If it shows the model name, you can switch models directly in the app.
 - **Codex IDE extension for VS Code**: shares the same configuration as Codex CLI; simply install the extension and start using it.
 
 Session history after switching providers

@@ -1,7 +1,7 @@
 ---
 title: "Core"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/core.md
-fetched: 2026-11-03
+fetched: 2026-11-14
 ---
 # Core
 
@@ -83,6 +83,7 @@ interface Agent {
    * Clear queued and steering work — unless `keepInbox` — and abort the active
    * turn or between-turn task. The first cause wins for that activity. With no
    * active activity, cancellation is a no-op and does not arm later work.
+   * Queue-write failures still abort the activity and propagate to the caller.
    * @param cause - the stable caller intent carried by the active operation signal.
    * @param options - cancellation options; `keepInbox` preserves pending work.
    */

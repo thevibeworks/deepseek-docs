@@ -1,7 +1,7 @@
 ---
 title: "Official DeepSeek LLM API wire extensions"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/deepseek-llm-api-wire-extensions.md
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 # Official DeepSeek LLM API wire extensions
 
@@ -28,7 +28,7 @@ The [`DeepSeekLlmApiExtensionRegistry`](../packages/llm/deepseek-llm-api-extensi
 
 | Header | Presence | Value |
 |---|---|---|
-| `user-agent` | Every provider HTTP request, including Files API operations | Application identity in `product/version (+url)` form; the default product is `deepseek-harness` |
+| `user-agent` | Every provider HTTP request, including Files API operations | Application identity in `product/version (+url)` form, followed by `dsh-profile/<profile>` naming the booted profile, percent-encoded outside `tchar` and for `%` (for example `dsh-profile/desktop`, `dsh-profile/web`, `dsh-profile/sdk`); the default product is `deepseek-harness` |
 | `x-deepseek-harness-user-id` | Every authorized model request | The stable anonymous UUID for the resolved Harness home |
 | `x-deepseek-harness-session-id` | Model requests carrying a Session id | The exact request `sessionId` string |
 | `x-deepseek-harness-compact` | Model requests whose purpose is `compaction` | The literal string `1` |

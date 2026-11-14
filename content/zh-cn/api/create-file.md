@@ -2,7 +2,7 @@
 title: "上传文件"
 description: "上传图片文件，之后可在对话补全请求中通过其 `file_id` 引用。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-file
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # 上传文件
@@ -17,21 +17,23 @@ POST /files
 
 支持的格式：JPEG、PNG、GIF、WebP。格式由文件内容判断。详见 [Files API 指南](../guides/files_api.md)。
 
+上传文档时，把 `purpose` 设为 `text_recognition` 或 `rich_layout_recognition`，并放在 `file` 字段之前。详见 [文件解析指南](../guides/document_parsing.md)。
+
 ## Request
 
 **[multipart/form-data]**
 
 **Bodyrequired**
 
-**file** binaryrequired
-
-要上传的图片文件。支持的格式：JPEG、PNG、GIF、WebP。单个文件最大 64 MiB。
-
 **purpose** stringrequired
 
-**Possible values:** `user_data`
+**Possible values:** `user_data`, `text_recognition`, `rich_layout_recognition`
 
-上传文件的用途，必须为 `user_data`。
+上传文件的用途。上传文档时，请把该字段放在 `file` 之前。各用途支持的文件类型见 [Files API 指南](../guides/files_api.md)。
+
+**file** binaryrequired
+
+要上传的文件。可上传的文件类型取决于 `purpose`。
 
 **expires\_after[anchor]** string
 
@@ -84,7 +86,7 @@ OK, 返回上传的 `file object`。
 
 **purpose** stringrequired
 
-**Possible values:** `user_data`
+**Possible values:** `user_data`, `text_recognition`, `rich_layout_recognition`
 
 文件的用途。
 

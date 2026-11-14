@@ -2,7 +2,7 @@
 title: "Retrieve File"
 description: "Returns information about a specific file."
 source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Retrieve File
@@ -62,7 +62,7 @@ The name of the file.
 
 **purpose** stringrequired
 
-**Possible values:** `user_data`
+**Possible values:** `user_data`, `text_recognition`, `rich_layout_recognition`
 
 The intended purpose of the file.
 

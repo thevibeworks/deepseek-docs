@@ -2,7 +2,7 @@
 title: "网页搜索与抓取"
 description: "Search 接口和 Fetch 接口为 Agent 与 RAG 应用提供实时网页内容："
 source: https://api-docs.deepseek.com/zh-cn/guides/search
-fetched: 2026-11-07
+fetched: 2026-11-14
 ---
 
 # 网页搜索与抓取
@@ -13,6 +13,10 @@ Search 接口和 Fetch 接口为 Agent 与 RAG 应用提供实时网页内容：
 - **Fetch 接口**抓取单个网页，以 Markdown 文本返回页面内容。
 
 两者都是原始 JSON API，使用与 DeepSeek API 相同的 Bearer 鉴权。
+
+如果要让模型在对话中自己搜索和阅读网页，请使用 [联网工具](web_tools.md)。
+
+Search 接口暂不支持图片搜索，后续会支持。目前图片搜索只能通过 [联网工具](web_tools.md#image-search) 使用。
 
 Base URL 为 `https://api.deepseek.com`：
 
@@ -245,7 +249,9 @@ Search 和 Fetch 按请求次数计费，不按 token 或返回结果条数计�
 
 只有返回 HTTP 200 且产生结果的请求才会计费（Search 的 `results` 必须非空，Fetch 必须返回网页正文）。请求失败、搜索无结果或超时不计费。`count` 只控制返回的结果条数，不影响单次请求的价格。
 
-通过 DeepSeek Harness、Claude Code 或 Codex 使用 DeepSeek API 时，服务端工具触发的 Search 和 Fetch 调用同样按成功请求次数计费。
+通过 DeepSeek Harness、Claude Code 或 Codex 使用 DeepSeek API 时，工具触发的 Search 和 Fetch 调用同样按成功请求次数计费，包括 [Codex Alpha Search](../quick_start/agent_integrations/codex.md)。
+
+[联网工具](web_tools.md#billing) 的网页搜索与网页抓取同样按上述价格计费。
 
 ---
 

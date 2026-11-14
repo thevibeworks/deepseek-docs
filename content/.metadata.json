@@ -107,8 +107,7 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-11-08"
+      "title": "🚀 Introducing DeepSeek-V3"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
@@ -136,8 +135,7 @@
     },
     "content/en/news/news250528.md": {
       "url": "https://api-docs.deepseek.com/news/news250528",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250528 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-11-07"
+      "title": "DeepSeek-R1-0528 Release"
     },
     "content/en/news/news250922.md": {
       "url": "https://api-docs.deepseek.com/news/news250922",
@@ -241,8 +239,7 @@
     },
     "content/en/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/quick_start/pricing",
-      "error": "served fallback shell for https://api-docs.deepseek.com/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-11-07"
+      "title": "Models & Pricing"
     },
     "content/en/updates.md": {
       "url": "https://api-docs.deepseek.com/updates",
@@ -1237,10 +1234,6 @@
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/mcp.md",
       "title": "MCP"
     },
-    "content/en/dsh/docs/subsystems/office-to-pdf.md": {
-      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/office-to-pdf.md",
-      "title": "Office to PDF"
-    },
     "content/en/dsh/docs/subsystems/ptc-runtime.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/ptc-runtime.md",
       "title": "PTC runtime"
@@ -1964,8 +1957,292 @@
     "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md": {
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md",
       "title": "Subagent tools address agents by name"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-05-timeline-priority-notice.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-05-timeline-priority-notice.md",
+      "title": "2026-11-05-timeline-priority-notice"
+    },
+    "content/en/dsh/docs/subsystems/office-kit.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/office-kit.md",
+      "title": "Office Kit"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.1-rc.4/sandbox-unsupported-policy-error/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.4/sandbox-unsupported-policy-error/guide.md",
+      "title": "Remove SandboxUnsupportedPolicyError imports"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/llm-error-builtin-codes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/llm-error-builtin-codes/guide.md",
+      "title": "`new LlmError` accepts only built-in failure codes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/office-kit-package/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/office-kit-package/guide.md",
+      "title": "`@deepseek-ai/dsh-office-kit` replaces `@deepseek-ai/dsh-office-to-pdf`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/office-operation-tools/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/office-operation-tools/guide.md",
+      "title": "Office operation skills are replaced by Office tools"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/office-skill-resources/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/office-skill-resources/guide.md",
+      "title": "Office skills load from the packaged assets"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/account-notification-fields/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/account-notification-fields/guide.md",
+      "title": "Update account notification consumers"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/account-remote-provider/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/account-remote-provider/guide.md",
+      "title": "Account service and Remote imports"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/archive-worktrees/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/archive-worktrees/guide.md",
+      "title": "Worktree cleanup on archive"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/attachment-error-codes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/attachment-error-codes/guide.md",
+      "title": "Attachment failures keep their codes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/cua-ax-read-limits/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/cua-ax-read-limits/guide.md",
+      "title": "macOS AX tree read limits"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/cua-hover-ax-only/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/cua-hover-ax-only/guide.md",
+      "title": "macOS hover keeps the system pointer in place by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/cua-native-platform/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/cua-native-platform/guide.md",
+      "title": "Native CUA application and window API"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/dsh-doc-skill/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/dsh-doc-skill/guide.md",
+      "title": "`dsh-doc` replaces the Creator mode skills"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/forge-change-request-overview/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/forge-change-request-overview/guide.md",
+      "title": "Forge snapshots carry the change request overview, and actions report unknown outcomes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/forge-pinned-diff/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/forge-pinned-diff/guide.md",
+      "title": "Forge diffs read one head commit"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/forge-review-reads/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/forge-review-reads/guide.md",
+      "title": "Forge failures report unsupported reads"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/package-export-cleanup/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/package-export-cleanup/guide.md",
+      "title": "Replace internal plugin-root imports"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/plugin-update-method/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/plugin-update-method/guide.md",
+      "title": "`BundleInfo.update` replaces `BundleInfo.updatable`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/ptc-bootstrap-protocol/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/ptc-bootstrap-protocol/guide.md",
+      "title": "Node PTC bootstrap protocol version 3 and the scoped-repl format"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/ptc-inspect-output/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/ptc-inspect-output/guide.md",
+      "title": "Explicit output in TypeScript PTC programs"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/ptc-scoped-repl-default/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/ptc-scoped-repl-default/guide.md",
+      "title": "Retained Node PTC runs the scoped REPL by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/runtime-context-reminders/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/runtime-context-reminders/guide.md",
+      "title": "Runtime-context reminder records"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/session-append-overloads/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/session-append-overloads/guide.md",
+      "title": "Update replacements for `Session.append`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/subagent-interrupt-default/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/subagent-interrupt-default/guide.md",
+      "title": "Built-in configurations disable agent interruption"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/terminal-backend-cleanup-error/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/terminal-backend-cleanup-error/guide.md",
+      "title": "`TerminalBackendCleanupError` extends `TerminalError`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/terminal-bundle-sidebar-backend/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/terminal-bundle-sidebar-backend/guide.md",
+      "title": "Persistent terminals open in the Web sidebar"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/web-fetch-transport-error-codes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/web-fetch-transport-error-codes/guide.md",
+      "title": "Local HTTP fetch transport failures use classified codes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/web-search-billing/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/web-search-billing/guide.md",
+      "title": "DeepSeek web search and fetch choose their credential by billing"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/window-drag-regions/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/window-drag-regions/guide.md",
+      "title": "Explicit window regions for custom Client overlays"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/client-module-metadata/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/client-module-metadata/guide.md",
+      "title": "Client module metadata"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/connection-page-peer/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/connection-page-peer/guide.md",
+      "title": "Token Provider and route admission migration"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cordis-root-and-intercept-metadata/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/cordis-root-and-intercept-metadata/guide.md",
+      "title": "`ctx[Context.root]` replaces `ctx.root`, and service intercept metadata is renamed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cua-agents-without-preset/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/cua-agents-without-preset/guide.md",
+      "title": "CUA gives Agents without a preset `cua_run_code`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cua-macos-provider/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/cua-macos-provider/guide.md",
+      "title": "macOS Computer Use provider name"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cua-partial-observations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/cua-partial-observations/guide.md",
+      "title": "macOS CUA isolates unavailable AX branches"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/deepseek-files-timeout/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/deepseek-files-timeout/guide.md",
+      "title": "DeepSeek image upload timeout"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/experimental-tool-error-codes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/experimental-tool-error-codes/guide.md",
+      "title": "Experimental plugin failures carry error codes"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/package-export-cleanup/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/package-export-cleanup/guide.md",
+      "title": "Update removed package subpath imports"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/python-ptc-removal/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/python-ptc-removal/guide.md",
+      "title": "Python PTC removal"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/session-status-package/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/session-status-package/guide.md",
+      "title": "Session status moves to `@deepseek-ai/dsh-client-ui-session-status` and completion reminders follow Host reading records"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/shared-search-filter/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/shared-search-filter/guide.md",
+      "title": "Shared search filter replaces rankByName and searchMode"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/shell-fs-tool-error-codes/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/shell-fs-tool-error-codes/guide.md",
+      "title": "Shell and read_image failures use consolidated error codes"
+    },
+    "content/en/dsh/docs/user/guide/desktop-uninstall-cleanup.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/desktop-uninstall-cleanup.md",
+      "title": "Uninstall DSH Desktop"
+    },
+    "content/en/api/asr.md": {
+      "url": "https://api-docs.deepseek.com/api/asr",
+      "title": "Speech to Text"
+    },
+    "content/en/api/ocr.md": {
+      "url": "https://api-docs.deepseek.com/api/ocr",
+      "title": "OCR"
+    },
+    "content/en/api/tts.md": {
+      "url": "https://api-docs.deepseek.com/api/tts",
+      "title": "Text to Speech"
+    },
+    "content/en/guides/build_a_chatbot.md": {
+      "url": "https://api-docs.deepseek.com/guides/build_a_chatbot",
+      "title": "Build a Chatbot"
+    },
+    "content/en/guides/document_parsing.md": {
+      "url": "https://api-docs.deepseek.com/guides/document_parsing",
+      "title": "File Parsing"
+    },
+    "content/en/guides/asr.md": {
+      "url": "https://api-docs.deepseek.com/guides/asr",
+      "title": "Speech to Text"
+    },
+    "content/en/guides/conversation_title.md": {
+      "url": "https://api-docs.deepseek.com/guides/conversation_title",
+      "title": "Conversation Title"
+    },
+    "content/en/guides/safety.md": {
+      "url": "https://api-docs.deepseek.com/guides/safety",
+      "title": "Model Content Safety"
+    },
+    "content/en/guides/latest_reminder.md": {
+      "url": "https://api-docs.deepseek.com/guides/latest_reminder",
+      "title": "User Metadata Marker"
+    },
+    "content/en/guides/ocr.md": {
+      "url": "https://api-docs.deepseek.com/guides/ocr",
+      "title": "OCR"
+    },
+    "content/en/guides/web_tools.md": {
+      "url": "https://api-docs.deepseek.com/guides/web_tools",
+      "title": "Web Tools"
+    },
+    "content/en/guides/tts.md": {
+      "url": "https://api-docs.deepseek.com/guides/tts",
+      "title": "Text to Speech"
+    },
+    "content/en/news/news261113.md": {
+      "url": "https://api-docs.deepseek.com/news/news261113",
+      "title": "The full DeepSeek App experience, now via API"
+    },
+    "content/zh-cn/api/asr.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/asr",
+      "title": "语音识别"
+    },
+    "content/zh-cn/api/ocr.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/ocr",
+      "title": "OCR"
+    },
+    "content/zh-cn/guides/build_a_chatbot.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/build_a_chatbot",
+      "title": "构建 Chatbot"
+    },
+    "content/zh-cn/api/tts.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/api/tts",
+      "title": "语音合成"
+    },
+    "content/zh-cn/guides/document_parsing.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/document_parsing",
+      "title": "文件解析"
+    },
+    "content/zh-cn/guides/asr.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/asr",
+      "title": "语音识别"
+    },
+    "content/zh-cn/guides/conversation_title.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/conversation_title",
+      "title": "会话标题"
+    },
+    "content/zh-cn/guides/latest_reminder.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/latest_reminder",
+      "title": "用户元信息标记"
+    },
+    "content/zh-cn/guides/ocr.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/ocr",
+      "title": "OCR"
+    },
+    "content/zh-cn/guides/web_tools.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/web_tools",
+      "title": "联网工具"
+    },
+    "content/zh-cn/guides/tts.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/tts",
+      "title": "语音合成"
+    },
+    "content/zh-cn/guides/safety.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/safety",
+      "title": "模型内容安全"
+    },
+    "content/zh-cn/news/news261113.md": {
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news261113",
+      "title": "DeepSeek 发布全家桶应用 API"
     }
   },
-  "updated": "2026-11-07",
+  "updated": "2026-11-14",
   "site": "https://api-docs.deepseek.com"
 }

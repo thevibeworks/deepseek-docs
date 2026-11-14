@@ -1,37 +1,41 @@
 ---
 title: "Files API"
-description: "The Files API lets you upload images and reference them later by file_id. It is the recommended way to:"
+description: "The Files API lets you upload files and reference them later by file_id. You can upload two kinds of files:"
 source: https://api-docs.deepseek.com/guides/files_api
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # Files API
 
-The Files API lets you upload images and reference them later by `file_id`. It is the recommended way to:
+The Files API lets you upload files and reference them later by `file_id`. You can upload two kinds of files:
 
-- Reuse the same image across multiple requests without re-uploading it.
-- Send images that would otherwise exceed the 48 MiB request body limit or the 32 MiB per-image inline limit (see [Vision: Limits](vision.md#limits)).
+- **Images**: JPEG, PNG, GIF and WebP. The format is detected from the actual file content. See [Vision](vision.md) for how to reference them.
+- **Documents**: PDF, Word, PowerPoint, Excel, ebooks and plain text. See [File Parsing](document_parsing.md) for how to reference them.
 
-Uploaded files are used together with the `deepseek-flash` model. See [Vision](vision.md) for how to reference an uploaded file in a chat request.
-
-Supported formats: **JPEG, PNG, GIF, and WebP**. The format is detected from the actual file content.
-
-The `base_url` for the examples below is `https://api.deepseek.com`.
+Uploaded files are used together with the `deepseek-flash` model.
 
 ---
 
 ## Upload a File
 
-Upload a file with a `multipart/form-data` request to `POST /files`. A single file may be at most **64 MiB**, and the upload must complete within **10 minutes**.
+Upload a file with a `multipart/form-data` request to `POST /files`. The size limit of a file depends on its type: **64 MiB** for images, **100 MiB** for documents such as PDF, Word and PowerPoint files, and **32 MiB** for plain text, spreadsheets and ebooks. The time limit for an upload also depends on the file type: **120 seconds** for documents such as PDF, Word and PowerPoint files, and **10 minutes** for other files.
 
 Form fields:
 
 | Field | Required | Description |
 | --- | --- | --- |
-| `file` | Yes | The image file to upload. |
-| `purpose` | Yes | Must be `user_data`. |
+| `file` | Yes | The file to upload. The accepted file types depend on `purpose`; see the table below. |
+| `purpose` | Yes | What the file is for. See the values below. |
 | `expires_after[anchor]` | No | Must be `created_at` if provided. Required together with `expires_after[seconds]`. |
 | `expires_after[seconds]` | No | Lifetime in seconds, between `3600` and `2592000` (1 hour to 30 days). Omit both `expires_after` fields to keep the file permanently. |
+
+| `purpose` | File | Use |
+| --- | --- | --- |
+| `user_data` | Images (JPEG, PNG, GIF, WebP); plain text (txt, md, csv, json, source code files and so on); spreadsheets (XLSX, XLS) and ebooks (EPUB, MOBI) | Reference the image in a chat request; see [Vision](vision.md). For plain text, spreadsheets and ebooks, see [File Parsing](document_parsing.md#text-files) |
+| `text_recognition` | PDF, Word (DOC, DOCX), PowerPoint (PPT, PPTX), and images such as PNG, JPEG, WebP, GIF, BMP and TIFF | Only the text is parsed; figures in the document are not given to the model. See [File Parsing](document_parsing.md) |
+| `rich_layout_recognition` | Same as above | The text and the figures in the document are given to the model together. See [File Parsing](document_parsing.md) |
+
+For a document, send `purpose` before the `file` field. Uploading a PDF, Word or PowerPoint file with `user_data` returns `400`.
 
 ```python
 from openai import OpenAI
@@ -89,7 +93,7 @@ Query parameters:
 | `after` | A `file_id` cursor for pagination; returns files after this one. |
 | `limit` | Number of files to return, between `1` and `1000`. |
 | `order` | Sort order by creation time: `asc` (default) or `desc`. |
-| `purpose` | Filter by purpose. Only `user_data` is supported. |
+| `purpose` | Filter by purpose. `user_data`, `text_recognition` or `rich_layout_recognition`. |
 
 The response is a paginated list:
 
@@ -177,6 +181,18 @@ A `file` block can also carry an image inline as base64 via `file_data` instead 
 
 ---
 
+## Documents
+
+To upload documents such as PDF, Word and PowerPoint files, set `purpose` to `text_recognition` or `rich_layout_recognition`. The `purpose` field must come before the `file` field in the form.
+
+- The file is parsed during the upload, and the upload returns the file object only after parsing succeeds, so every `file_id` you get is ready.
+- Documents uploaded this way cannot be used as images. To reference a document in a chat request, see [File Parsing](document_parsing.md#document-qa).
+- Neither the uploaded original file nor the parsing result can be downloaded.
+
+See [File Parsing](document_parsing.md) for the limits, errors and billing.
+
+---
+
 ## Anthropic-Compatible Files API
 
 The same file operations are also available through the Anthropic-compatible endpoint, with `base_url` = `https://api.deepseek.com/anthropic`. All requests **require** the header `anthropic-beta: files-api-2025-04-14`.
@@ -237,14 +253,16 @@ curl "https://api.deepseek.com/anthropic/v1/files?limit=20" \
 
 Deleting a file returns `{ "id": "...", "type": "file_deleted" }`.
 
+On the Anthropic-compatible endpoint, the `purpose` field is optional and defaults to `user_data`. To upload documents such as PDF, Word and PowerPoint files, send `purpose` set to `text_recognition` or `rich_layout_recognition` before the `file` field.
+
 ---
 
 ## Limits
 
 | Limit | Value |
 | --- | --- |
-| Supported formats | JPEG, PNG, GIF, WebP |
-| Max upload file size | 64 MiB |
+| Supported formats | Images: JPEG, PNG, GIF, WebP. For other files, see the `purpose` table above |
+| Max upload file size | Images: 64 MiB; documents such as PDF, Word and PowerPoint files: 100 MiB; plain text, spreadsheets and ebooks: 32 MiB |
 | Max filename length | 512 bytes |
 | Max storage per user | 25 GiB |
 | Max number of stored files per user | 10000 |

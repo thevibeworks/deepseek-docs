@@ -1,7 +1,7 @@
 ---
 title: "Persistent PTY Sessions"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/terminal.md
-fetched: 2026-08-26
+fetched: 2026-11-14
 ---
 # Persistent PTY Sessions
 
@@ -36,7 +36,7 @@ A backend owns how one registered type starts and detects readiness. `TerminalSe
 interface TerminalBackend {
   /** Stable type selected by {@link TerminalSpawnRequest.type}. */
   readonly type: string
-  /** Create an unpublished session or reject after cleaning partial resources; cleanup failure uses {@link TerminalBackendCleanupError}. */
+  /** Create an unpublished session or reject after cleaning partial resources; cleanup failure uses `TerminalBackendCleanupError`. */
   spawn(spec: TerminalBackendSpawnSpec): Promise<TerminalBackendSession>
 }
 ```

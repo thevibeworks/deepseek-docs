@@ -1,7 +1,7 @@
 ---
 title: "Vendored package rescope"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/rescope.md
-fetched: 2026-11-03
+fetched: 2026-11-14
 ---
 # Vendored package rescope
 
@@ -13,7 +13,7 @@ The Cordis framework and its foundation libraries are vendored under [`vendor/`]
 
 | Directory | Upstream name | Published name | Upstream version | Role |
 |---|---|---|---|---|
-| `vendor/cordis/` | `cordis` | `@deepseek-ai/cordis` | 4.0.0-rc.11 | Framework core: `Context`, `Service`, `Fiber`, events |
+| `vendor/cordis/` | `cordis` | `@deepseek-ai/cordis` | 4.0.0-rc.12 | Framework core: `Context`, `Service`, `Fiber`, events |
 | `vendor/cosmokit/` | `cosmokit` | `@deepseek-ai/cosmokit` | 1.8.1 | Shared utilities the framework and Schemastery build on |
 | `vendor/schemastery/` | `schemastery` | `@deepseek-ai/schemastery` | 3.18.0 | Config schemas (`Schema`) behind every plugin's `Config` |
 | `vendor/loader/` | `@cordisjs/plugin-loader` | `@deepseek-ai/cordis-plugin-loader` | 1.0.0-rc.8 | `cordis.yml` loading, plugin resolution, repository cache |

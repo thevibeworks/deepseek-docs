@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Responses API
@@ -35,9 +35,11 @@ nullable
 
 模型的输入。既可以传纯字符串（视作一条 `user` 消息），也可以传输入 item 列表。
 
-支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`system` / `assistant` 消息中的图片将返回 `400` 错误。文件输入不支持。
+支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 在 `deepseek-flash` 上视同 `system`，在 `deepseek-v4-pro` 上视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `system` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`assistant` 消息中的图片将返回 `400` 错误。`user` 消息中支持用 `input_file` 的 `file_id` 引用已上传的文件，见[文件解析](../guides/document_parsing.md)；`file_url` 不支持。
 
 `input` 与 `instructions` 至少传一个。
+
+使用联网工具或 `safety_check` 为 `high` 时，部分输入 item 不被接受。详见 [联网工具指南](../guides/web_tools.md#responses-api)。
 
 oneOf
 
@@ -64,7 +66,7 @@ string
 
 **Possible values:** `user`, `assistant`, `system`, `developer`
 
-用于 `message` item。消息作者的角色。`developer` 视同 `user`。
+用于 `message` item。消息作者的角色。`developer` 在 `deepseek-flash` 上视同 `system`，在 `deepseek-v4-pro` 上视同 `user`。
 
 **content** string | object[]
 
@@ -87,6 +89,7 @@ oneOf
 
 - 文本内容块
 - 图片内容块
+- 文件内容块
 - 推理文本内容块
 
 **[文本内容块]**
@@ -103,7 +106,7 @@ oneOf
 
 **[图片内容块]**
 
-图片内容块。会作为真实图片处理。仅允许出现在 `user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中；`system` / `assistant` 消息中的图片将返回 `400` 错误（"Image in system message is unsupported" / "Image in assistant message is unsupported"）。
+图片内容块。会作为真实图片处理。可以出现在 `user` / `system` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中；`assistant` 消息中的图片将返回 `400` 错误。
 
 **type** stringrequired
 
@@ -124,6 +127,20 @@ oneOf
 **file\_id** string
 
 通过 [Files API](../guides/files_api.md) 上传的图片文件 ID，形如 `file-api-...`。与 `image_url` 互斥；设置 `file_id` 时 `detail` 被忽略。
+
+**[文件内容块]**
+
+引用通过 Files API 上传的文件。可以出现在 `user` 消息 item 中。详见 [文件解析指南](../guides/document_parsing.md#document-qa)。
+
+**type** stringrequired
+
+**Possible values:** `input_file`
+
+内容块的类型，此场景下为 `input_file`。
+
+**file\_id** stringrequired
+
+已上传文件的 ID，形如 `file-api-...`。
 
 **[推理文本内容块]**
 
@@ -172,6 +189,7 @@ oneOf
 
 - 文本内容块
 - 图片内容块
+- 文件内容块
 - 推理文本内容块
 
 **[文本内容块]**
@@ -188,7 +206,7 @@ oneOf
 
 **[图片内容块]**
 
-图片内容块。会作为真实图片处理。仅允许出现在 `user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中；`system` / `assistant` 消息中的图片将返回 `400` 错误（"Image in system message is unsupported" / "Image in assistant message is unsupported"）。
+图片内容块。会作为真实图片处理。可以出现在 `user` / `system` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中；`assistant` 消息中的图片将返回 `400` 错误。
 
 **type** stringrequired
 
@@ -209,6 +227,20 @@ oneOf
 **file\_id** string
 
 通过 [Files API](../guides/files_api.md) 上传的图片文件 ID，形如 `file-api-...`。与 `image_url` 互斥；设置 `file_id` 时 `detail` 被忽略。
+
+**[文件内容块]**
+
+引用通过 Files API 上传的文件。可以出现在 `user` 消息 item 中。详见 [文件解析指南](../guides/document_parsing.md#document-qa)。
+
+**type** stringrequired
+
+**Possible values:** `input_file`
+
+内容块的类型，此场景下为 `input_file`。
+
+**file\_id** stringrequired
+
+已上传文件的 ID，形如 `file-api-...`。
 
 **[推理文本内容块]**
 
@@ -307,15 +339,15 @@ nullable
 
 模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。支持 `function` 工具；`web_search` 在 `deepseek-v4-pro` 下支持，其余内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
 
-模型可能会调用的工具。`function` 定义一个函数工具——注意在 Responses API 格式中，`name` / `parameters` 等函数字段位于工具对象的顶层。`custom` 定义 custom 工具，仅支持 `{"type": "custom", "name": "apply_patch"}`，其他名称会返回 `400` 错误。`web_search` 启用服务端网页搜索，在 `deepseek-v4-pro` 下支持。
+模型可能会调用的工具。`function` 定义一个函数工具——注意在 Responses API 格式中，`name` / `parameters` 等函数字段位于工具对象的顶层。`custom` 定义 custom 工具，仅支持 `{"type": "custom", "name": "apply_patch"}`，其他名称会返回 `400` 错误。`web_search` 启用服务端网页搜索，在 `deepseek-v4-pro` 下支持。`deepseek_web_search` 与 `deepseek_read_url` 是联网工具，不能与 `web_search` 同时声明，详见 [联网工具指南](../guides/web_tools.md#responses-api)。
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** `function`, `custom`, `web_search`
+**Possible values:** `function`, `custom`, `web_search`, `deepseek_web_search`, `deepseek_read_url`
 
-工具的类型：`function`、`custom`（仅 `apply_patch`）或 `web_search`（仅 `deepseek-v4-pro`）。
+工具类型：`function`、`custom`（仅 `apply_patch`）、`web_search`（仅 `deepseek-v4-pro`）、`deepseek_web_search` 或 `deepseek_read_url`。
 
 **name** string
 
@@ -386,6 +418,32 @@ The name of the function to call. Required when `type` is `function`.
 
 - 可用于区分您业务侧的用户身份，以帮助我们进行内容安全审核；也可用于 KVCache 隔离与调度隔离。详情请参考[限速与用户隔离](../quick_start/rate_limit.md)
 
+**safety\_check**
+
+object
+
+nullable
+
+DeepSeek 扩展字段。`level` 设为 `high` 时开启基础风控，审核模型的输入与输出。详见 [模型内容安全指南](../guides/safety.md)。
+
+**level** stringrequired
+
+**Possible values:** `low`, `high`
+
+`high`：开启基础风控。`low`：默认检查，与不传 `safety_check` 相同。
+
+**title**
+
+object
+
+nullable
+
+DeepSeek 扩展字段。传入 `{"enabled": true}`，响应会带上简短的会话标题。详见 [会话标题指南](../guides/conversation_title.md)。
+
+**enabled** booleanrequired
+
+是否返回会话标题。
+
 ## Responses
 
 - 200 (No streaming)
@@ -450,7 +508,7 @@ required
 
 模型生成的输出 item 列表。思考模式下，思维链以 `reasoning` item 的形式在 `message` item 之前返回。函数调用以 `function_call` item 返回。
 
-模型生成的输出 item。`message` item 承载模型回复文本，`reasoning` item 承载思维链，`function_call` item 表示函数调用，`custom_tool_call` item 表示 custom 工具调用（如 `apply_patch`），`web_search_call` item 表示服务端网页搜索（仅 `deepseek-v4-pro`），`tool_search_call` item 表示工具搜索。
+模型生成的输出 item。`message` item 承载模型回复文本，`reasoning` item 承载思维链，`function_call` item 表示函数调用，`custom_tool_call` item 表示 custom 工具调用（如 `apply_patch`），`web_search_call` item 表示服务端网页搜索（仅 `deepseek-v4-pro`），`tool_search_call` item 表示工具搜索。使用联网工具时，每次工具调用都是一个 `web_search_call` item，并带扩展字段 `kind`、`page`、`signature` 与 `error`。
 
 - Array [
 
@@ -504,7 +562,33 @@ object[]
 
 用于 `function_call` item。模型生成的调用函数的入参，格式为 JSON。请注意，模型并不总是生成有效的 JSON，且可能会虚构出您的函数模式中未定义的参数。在调用函数之前，请在您的代码中验证这些入参是否有效。
 
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**action** object
+
+用于 `web_search_call` item。`type` 为 `search`（带 `queries` 与 `sources`）、`open_page`（带 `url`）或 `find_in_page`（带 `url` 与 `pattern`）。使用联网工具时，`sources` 的每个元素还带有用于展示的 `title`、`snippet`、`site_name`、`site_icon` 与 `published_at`。
+
+**page** object
+
+DeepSeek 扩展字段，用于打开或阅读了网页的 `web_search_call` item：`url`、`title` 与 `published_at`。不返回网页正文。
+
+**signature** string
+
+DeepSeek 扩展字段，用于成功的 `read_link` 调用，是加密后的网页。请原样回传，网页才会拼回上下文。
+
+**error** object
+
+DeepSeek 扩展字段，用于失败的 `web_search_call` item（`status` 为 `failed`）。`code` 为 `unavailable`、`url_not_accessible` 或 `url_not_allowed`。
+
 - ]
+
+**title** string
+
+DeepSeek 扩展字段。会话标题，只在请求开启了 `title` 且生成了标题时出现。流式响应请从结束事件的 `response.title` 中读取。
 
 **usage**
 
@@ -542,6 +626,12 @@ object
 
 模型生成的思维链 token 数。
 
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `output_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
 **total\_tokens** integerrequired
 
 该请求使用的 token 总数（输入 + 输出）。
@@ -550,7 +640,7 @@ object
 
 object
 
-成功的服务端网页搜索和抓取次数，与 token 用量分别统计。仅在 tool\_search 或 tool\_fetch 大于零时返回，否则省略整个字段。返回时两个子字段均存在。流式响应中，请从终止事件 response.completed、response.incomplete 或 response.failed 的 response.usage 读取。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/responses_api.md#server-tool-usage)。
+成功的服务端网页搜索和抓取次数，与 token 用量分别统计。仅在其中一项计数大于零时返回，否则省略整个字段。返回时各个子字段均存在。流式响应中，请从终止事件 response.completed、response.incomplete 或 response.failed 的 response.usage 读取。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/responses_api.md#server-tool-usage)。
 
 **tool\_search** integerrequired
 
@@ -562,7 +652,13 @@ object
 
 **Possible values:** `>= 0`
 
-通过 open\_page 或 find\_in\_page 成功抓取网页的次数。失败的尝试不计入。此字段可作为计费依据。
+通过 open\_page 或 find\_in\_page 成功抓取网页的次数。失败的尝试不计入。此字段可作为计费依据。使用联网工具时，页内查找不计入。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。成功的图片搜索次数。此字段可作为计费依据。
 
 **[Example]**
 

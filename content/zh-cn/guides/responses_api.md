@@ -2,7 +2,7 @@
 title: "使用 Responses API"
 description: "为了满足大家对 Codex 的需求，我们的 API 新增了对 Responses API 格式的支持，其 base_url 为 https://api.deepseek.com。"
 source: https://api-docs.deepseek.com/zh-cn/guides/responses_api
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # 使用 Responses API
@@ -109,7 +109,7 @@ input=[
 
 ### 使用限制
 
-- 图片仅允许出现在 `user` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` 的输出中；`system` / `assistant` 消息中的图片会返回 `400` 错误。
+- 图片可以出现在 `user` / `system` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` 的输出中；`assistant` 消息中的图片会返回 `400` 错误。
 - `deepseek-flash` 会真正处理 `input_image` 内容块。
 - 与对话补全相同的图片限制（内联单张 32 MiB、`file_id` 单张 64 MiB、不含 `file_id` 图片总计 64 MiB，含 `file_id` 图片最高 200 MiB、单请求 600 张等）同样适用，详见[图像理解：限制](vision.md#limits)。
 
@@ -146,6 +146,8 @@ input=[
 | `truncation` | 不支持。输入超出上下文窗口时返回 `400` 错误 |
 | `service_tier` | 不支持 |
 | `safety_identifier` | 不支持 |
+| `safety_check` | DeepSeek 扩展字段。`{"level": "high"}` 开启内容安全审核，见 [模型内容安全](safety.md) |
+| `title` | DeepSeek 扩展字段。`{"enabled": true}` 返回会话标题，见 [会话标题](conversation_title.md) |
 | `prompt_cache_key` / `prompt_cache_retention` | 不支持。上下文缓存自动管理，见[上下文硬盘缓存](kv_cache.md) |
 | `context_management` | 不支持 |
 | `stream_options` | 不支持 |
@@ -156,7 +158,7 @@ input=[
 
 | 类型 | 支持情况 |
 | --- | --- |
-| `message` | 支持。角色支持 `user` / `assistant` / `system` / `developer`（`developer` 视同 `user`）；content 支持字符串和 `input_text` / `output_text` / `input_image` 内容块。`input_image` 内容块会作为真实图片处理（仅允许出现在 `user` / `developer` 消息中，`system` / `assistant` 消息中的图片会返回 `400` 错误）。文件输入不支持 |
+| `message` | 支持。角色支持 `user` / `assistant` / `system` / `developer`（`developer` 在 `deepseek-flash` 上视同 `system`，在 `deepseek-v4-pro` 上视同 `user`）；content 支持字符串和 `input_text` / `output_text` / `input_image` 内容块。`input_image` 内容块会作为真实图片处理（`assistant` 消息中的图片会返回 `400` 错误）。`user` 消息中支持用 `input_file` 的 `file_id` 引用已上传的文件，见 [文件解析](document_parsing.md#document-qa)；`file_url` 不支持 |
 | `function_call` | 支持。归并到相邻 assistant 消息 |
 | `function_call_output` | 支持。`output` 可以是字符串或内容块列表；输出中的 `input_image` 内容块会作为真实图片处理 |
 | `reasoning` | 支持。明文 `content` 归并到相邻 assistant 消息；`summary`、`encrypted_content` 不支持 |
@@ -171,8 +173,11 @@ input=[
 | --- | --- |
 | `function` | 支持 |
 | `custom` | 仅支持 `{"type": "custom", "name": "apply_patch"}`（用于 Codex 兼容）；其他名称返回 `400` 错误 |
-| `web_search` | `deepseek-v4-pro` 支持。接口会在服务端执行搜索，将结果加入上下文并继续生成响应；`deepseek-flash` 下忽略 |
+| `web_search` | `deepseek-v4-pro` 支持。接口会在服务端执行搜索，将结果加入上下文并继续生成响应；`deepseek-flash` 忽略 |
+| `deepseek_web_search` / `deepseek_read_url` | 支持。不能与 `web_search` 同时声明，见 [联网工具](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` 等内置工具 | 忽略 |
+
+上述 `web_search` 是由 Responses API 在服务端执行的工具。Codex 的 Alpha Search 使用独立搜索接口，支持 `deepseek-flash` 和 `deepseek-v4-pro`，不受上述模型限制。配置方法见[接入 Codex](../quick_start/agent_integrations/codex.md)。
 
 ### 响应字段
 
@@ -190,9 +195,10 @@ Token 用量在 `usage` 中返回：
 | 字段 | 含义 |
 | --- | --- |
 | `tool_search` | 成功的网页搜索查询次数。一次搜索调用包含多个查询时，可能计为多次 |
-| `tool_fetch` | 成功的网页读取次数，包括打开网页和在网页内查找文本 |
+| `tool_fetch` | 成功的网页读取次数，包括打开网页和在网页内查找文本。使用联网工具时，页内查找不计入。 |
+| `tool_image_search` | 成功的图片搜索次数，仅在使用联网工具时返回。 |
 
-这些值统计工具操作次数，不是 token 数。`tool_search` 统计网页搜索，不统计 `tool_search_call` 输出项所表示的客户端工具发现操作。失败操作不计入，搜索没有结果时也不增加 `tool_search`。如果两项计数均为零，整个 `server_tool_use` 字段会被省略；字段出现时，两项计数都会返回，包括值为零的项。
+这些值统计工具操作次数，不是 token 数。`tool_search` 统计网页搜索，不统计 `tool_search_call` 输出项所表示的客户端工具发现操作。失败操作不计入，搜索没有结果时也不增加 `tool_search`。如果各项计数均为零，整个 `server_tool_use` 字段会被省略；字段出现时，各项计数都会返回，包括值为零的项。
 
 `output` 中的 `web_search_call` 项描述单次服务端操作，`usage.server_tool_use` 则提供汇总计数。流式请求应从最终 `response.completed`、`response.incomplete` 或 `response.failed` 事件的 `response.usage` 中读取这些计数；接口不会单独发送工具用量事件，初始响应事件中的 `usage` 为 `null`。
 

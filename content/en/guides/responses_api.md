@@ -2,7 +2,7 @@
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Using the Responses API
@@ -109,7 +109,7 @@ input=[
 
 ### Restrictions
 
-- Images are allowed only in `user` / `developer` message items and in `function_call_output` / `custom_tool_call_output` outputs. Images in `system` or `assistant` messages return a `400` error.
+- Images are allowed in `user` / `system` / `developer` message items and in `function_call_output` / `custom_tool_call_output` outputs. Images in `assistant` messages return a `400` error.
 - `deepseek-flash` processes `input_image` parts as real images.
 - The same shared image limits as Chat Completions apply (32 MiB per inline image, 64 MiB per `file_id` image, 64 MiB total without `file_id` images or up to 200 MiB with them, 600 images per request, etc.) — see [Vision: Limits](vision.md#limits).
 
@@ -146,6 +146,8 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 | `truncation` | Not supported. Requests exceeding the context window return a `400` error |
 | `service_tier` | Not supported |
 | `safety_identifier` | Not supported |
+| `safety_check` | DeepSeek extension. `{"level": "high"}` turns on model content safety; see [Model Content Safety](safety.md) |
+| `title` | DeepSeek extension. `{"enabled": true}` returns a conversation title; see [Conversation Title](conversation_title.md) |
 | `prompt_cache_key` / `prompt_cache_retention` | Not supported. Context caching is managed automatically, see [Context Caching](kv_cache.md) |
 | `context_management` | Not supported |
 | `stream_options` | Not supported |
@@ -156,7 +158,7 @@ Unsupported parameters are **silently ignored** and do not cause errors, so exis
 
 | Type | Support Status |
 | --- | --- |
-| `message` | Supported. Roles `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`); content supports strings and `input_text` / `output_text` / `input_image` content parts. `input_image` parts are processed as real images (allowed in `user` / `developer` messages only; images in `system` / `assistant` messages return a `400` error). File inputs are not supported |
+| `message` | Supported. Roles `user` / `assistant` / `system` / `developer` (`developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`); content supports strings and `input_text` / `output_text` / `input_image` content parts. `input_image` parts are processed as real images (images in `assistant` messages return a `400` error). In `user` messages, `input_file` with a `file_id` references an uploaded file, see [File Parsing](document_parsing.md#document-qa); `file_url` is not supported |
 | `function_call` | Supported. Merged into the adjacent assistant message |
 | `function_call_output` | Supported. The `output` may be a string or a list of content parts; `input_image` parts in the output are processed as real images |
 | `reasoning` | Supported. Plain-text `content` is merged into the adjacent assistant message; `summary` and `encrypted_content` are not supported |
@@ -172,7 +174,10 @@ Note: `web_search_call` items returned by a previous response can be passed back
 | `function` | Supported |
 | `custom` | Only `{"type": "custom", "name": "apply_patch"}` is supported (for Codex compatibility); other names return a `400` error |
 | `web_search` | Supported with `deepseek-v4-pro`. The API runs the search on the server, adds the results to the context, and continues the response. Ignored with `deepseek-flash` |
+| `deepseek_web_search` / `deepseek_read_url` | Supported. Cannot be declared together with `web_search`; see [Web Tools](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
+
+The `web_search` tool above runs on the server through the Responses API. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
 
 ### Response Fields
 
@@ -190,9 +195,10 @@ When server-side web tools complete successfully, `usage.server_tool_use` report
 | Field | Meaning |
 | --- | --- |
 | `tool_search` | Number of successful web search queries. A search call containing multiple queries can contribute more than one to this count |
-| `tool_fetch` | Number of successful web page reads, including opening a page and finding text within a page |
+| `tool_fetch` | Number of successful web page reads, including opening a page and finding text within a page. With the web tools, finding text in a page is not counted. |
+| `tool_image_search` | Number of successful image searches, returned only with the web tools. |
 
-These values count tool operations, not tokens. `tool_search` counts web searches; it does not count client-side tool discovery represented by `tool_search_call` output items. Failed operations are not counted, and searches returning no results do not increase `tool_search`. If both counts are zero, the entire `server_tool_use` field is omitted. When the field is present, both counts are included, even if one is zero.
+These values count tool operations, not tokens. `tool_search` counts web searches; it does not count client-side tool discovery represented by `tool_search_call` output items. Failed operations are not counted, and searches returning no results do not increase `tool_search`. If all counts are zero, the entire `server_tool_use` field is omitted. When the field is present, all counts are included, even those that are zero.
 
 The `web_search_call` items in `output` describe individual server-side operations; `usage.server_tool_use` contains the aggregate counts. For streaming requests, read these counts from `response.usage` in the final `response.completed`, `response.incomplete`, or `response.failed` event. They are not sent as a separate usage event, and `usage` is `null` in the initial response events.
 

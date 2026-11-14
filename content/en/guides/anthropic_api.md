@@ -2,7 +2,7 @@
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Using the Anthropic API
@@ -110,6 +110,8 @@ Authenticate with either `x-api-key: <API_KEY>` or `Authorization: Bearer <API_K
 | output\_config | Only `effort` is supported |
 | top\_k | Ignored |
 | top\_p | Depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); takes effect in non-thinking mode. Setting `tool_choice` to `{"type": "none"}` disables tool calling even when `tools` is provided |
+| safety\_check | DeepSeek extension. `{"level": "high"}` turns on model content safety; `low` or omitting it leaves it off. See [Model Content Safety](safety.md) |
+| title | DeepSeek extension. `{"enabled": true}` returns a conversation title; see [Conversation Title](conversation_title.md) |
 
 For certain main-agent requests from Claude Code or OpenCode in thinking mode, compatibility handling can increase the effective `max_tokens` above the requested value. In these cases, this parameter does not provide a strict output-token limit.
 
@@ -126,13 +128,15 @@ For client-defined tools, provide `name`, `input_schema`, and an optional `descr
 | description | Fully Supported |
 | cache\_control | Ignored |
 
+To use the web tools, declare the server tools `deepseek_web_search` and `deepseek_read_url`. See [Web Tools](web_tools.md#declare-tools). No other server tools can be declared together with them.
+
 #### tool\_choice
 
 | Value | Support Status |
 | --- | --- |
 | none | Fully Supported |
 | auto | Supported (`disable_parallel_tool_use` is ignored) |
-| any | Treated as `auto`; does not force a tool call (`disable_parallel_tool_use` is ignored) |
+| any | Forces a tool call in non-thinking mode; in thinking mode, treated as `auto` when a server tool is declared, and returns a `400` error when only client tools are declared (`disable_parallel_tool_use` is ignored) |
 | tool | Selects a named client tool in non-thinking mode; returns a `400` error in thinking mode (`disable_parallel_tool_use` is ignored) |
 
 #### Returning tool results
@@ -150,7 +154,7 @@ When continuing tool calls in thinking mode, preserve and pass back the assistan
 | cache\_control | Ignored |
 | citations | Ignored |
 | array, type="image" | source | `deepseek-flash` supports images in user messages and `tool_result` content; images in assistant messages return a `400` error. `deepseek-v4-pro` does not process images and replaces them with the text `[Unsupported Image]`. `source.type` can be base64 (media types: image/jpeg, image/png, image/gif, image/webp), url, or file (include the header `anthropic-beta: files-api-2025-04-14` when using file images). |
-| array, type = "document" |  | Not Supported |
+| array, type = "document" |  | The `file` and `text` sources are supported in user messages; other sources return a `400` error. See [File Parsing](document_parsing.md#document-qa) |
 | array, type = "search\_result" |  | Not Supported |
 | array, type = "thinking" |  | Supported |
 | array, type="redacted\_thinking" |  | Not Supported |
@@ -168,6 +172,8 @@ When continuing tool calls in thinking mode, preserve and pass back the assistan
 | array, type = "mcp\_tool\_use" |  | Not Supported |
 | array, type = "mcp\_tool\_result" |  | Not Supported |
 | array, type = "container\_upload" |  | Not Supported |
+
+Requests that use the web tools or `safety_check` also accept `web_fetch_tool_result` blocks in assistant messages, and the extension fields `kind` and `signature`. See [Web Tools - Multi-turn Conversations](web_tools.md#multi-turn).
 
 ## Server tool usage
 
@@ -218,6 +224,12 @@ A successful response to this request contained `server_tool_use`, `web_search_t
   }
 }
 ```
+
+### Server Tool Blocks of the Web Tools
+
+With the web tools, the `name` of a `server_tool_use` block is `deepseek_web_search` or `deepseek_read_url`, and the block carries `input.action` and `kind`; results also include `web_fetch_tool_result`. A response refused by model content safety ends with `stop_reason: "refusal"`. See [Web Tools](web_tools.md#response-blocks) and [Model Content Safety](safety.md#handling-refusals).
+
+With the web tools, `usage.server_tool_use` also returns `web_fetch_requests`, `tool_fetch` and `tool_image_search`. See [Web Tools](web_tools.md#billing) for their meaning and for billing.
 
 ## Streaming and token usage
 

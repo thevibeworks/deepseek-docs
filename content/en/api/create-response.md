@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Responses API
@@ -35,9 +35,11 @@ nullable
 
 The input to the model. Either a plain string (treated as a single `user` message), or a list of input items.
 
-Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `user`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error. File inputs are not supported.
+Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error. In `user` messages, `input_file` with a `file_id` references an uploaded file, see [File Parsing](../guides/document_parsing.md); `file_url` is not supported.
 
 At least one of `input` and `instructions` is required.
+
+With the web tools or `safety_check` set to `high`, some input items are not accepted. See the [Web Tools guide](../guides/web_tools.md#responses-api).
 
 oneOf
 
@@ -64,7 +66,7 @@ The type of the input item. For `message` items, this field can be omitted if `r
 
 **Possible values:** `user`, `assistant`, `system`, `developer`
 
-For `message` items. The role of the message author. `developer` is treated as `user`.
+For `message` items. The role of the message author. `developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`.
 
 **content** string | object[]
 
@@ -87,6 +89,7 @@ oneOf
 
 - Text content part
 - Image content part
+- File content part
 - Reasoning text content part
 
 **[Text content part]**
@@ -103,7 +106,7 @@ The text content.
 
 **[Image content part]**
 
-An image content part. Processed as a real image. Allowed only in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error ("Image in system message is unsupported" / "Image in assistant message is unsupported").
+An image content part. Processed as a real image. Allowed in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error.
 
 **type** stringrequired
 
@@ -124,6 +127,20 @@ Controls how the image is processed. `low` downsamples the image to 512x512 (fas
 **file\_id** string
 
 The ID of an image file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`. Mutually exclusive with `image_url`; `detail` is ignored when `file_id` is set.
+
+**[File content part]**
+
+References a file uploaded via the Files API. Allowed in `user` message items. See the [File Parsing guide](../guides/document_parsing.md#document-qa).
+
+**type** stringrequired
+
+**Possible values:** `input_file`
+
+The type of the content part, in this case `input_file`.
+
+**file\_id** stringrequired
+
+The ID of the uploaded file, of the form `file-api-...`.
 
 **[Reasoning text content part]**
 
@@ -172,6 +189,7 @@ oneOf
 
 - Text content part
 - Image content part
+- File content part
 - Reasoning text content part
 
 **[Text content part]**
@@ -188,7 +206,7 @@ The text content.
 
 **[Image content part]**
 
-An image content part. Processed as a real image. Allowed only in `user` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `system` or `assistant` messages return a `400` error ("Image in system message is unsupported" / "Image in assistant message is unsupported").
+An image content part. Processed as a real image. Allowed in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error.
 
 **type** stringrequired
 
@@ -209,6 +227,20 @@ Controls how the image is processed. `low` downsamples the image to 512x512 (fas
 **file\_id** string
 
 The ID of an image file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`. Mutually exclusive with `image_url`; `detail` is ignored when `file_id` is set.
+
+**[File content part]**
+
+References a file uploaded via the Files API. Allowed in `user` message items. See the [File Parsing guide](../guides/document_parsing.md#document-qa).
+
+**type** stringrequired
+
+**Possible values:** `input_file`
+
+The type of the content part, in this case `input_file`.
+
+**file\_id** stringrequired
+
+The ID of the uploaded file, of the form `file-api-...`.
 
 **[Reasoning text content part]**
 
@@ -307,15 +339,15 @@ nullable
 
 A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
 
-A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`.
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api).
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** `function`, `custom`, `web_search`
+**Possible values:** `function`, `custom`, `web_search`, `deepseek_web_search`, `deepseek_read_url`
 
-The type of the tool: `function`, `custom` (only `apply_patch`), or `web_search` (`deepseek-v4-pro` only).
+The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `deepseek_web_search` or `deepseek_read_url`.
 
 **name** string
 
@@ -388,6 +420,32 @@ A custom end-user identifier. We recommend using only ASCII letters, digits, und
 
 - It can be used to distinguish user identities on your side to help us with content safety review, for KVCache isolation, and for scheduling isolation. For more details, please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md)
 
+**safety\_check**
+
+object
+
+nullable
+
+DeepSeek extension. Set `level` to `high` to turn on basic risk control, which reviews the model input and output. See the [Model Content Safety Guide](../guides/safety.md).
+
+**level** stringrequired
+
+**Possible values:** `low`, `high`
+
+`high`: basic risk control. `low`: the default checks, the same as omitting `safety_check`.
+
+**title**
+
+object
+
+nullable
+
+DeepSeek extension. Set `{"enabled": true}` to have the response carry a short title for the conversation. See the [Conversation Title Guide](../guides/conversation_title.md).
+
+**enabled** booleanrequired
+
+Whether to return a conversation title.
+
 ## Responses
 
 - 200 (No streaming)
@@ -452,7 +510,7 @@ required
 
 The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
-An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent tool searches.
+An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent tool searches. With the web tools, every tool call is a `web_search_call` item with the extension fields `kind`, `page`, `signature` and `error`.
 
 - Array [
 
@@ -506,7 +564,33 @@ For `function_call` / `custom_tool_call` items. The name of the function or cust
 
 For `function_call` items. The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
 
+**kind** Web tools capability (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek extension on blocks produced by the web tools: `search` for web search, `deep_search` for deep thinking search, `read_link` for URL reading, and `image_search` or `deep_image_search` (during deep thinking search) for image search. Pass it back unchanged.
+
+**action** object
+
+For `web_search_call` items. `type` is `search` (with `queries` and `sources`), `open_page` (with `url`) or `find_in_page` (with `url` and `pattern`). With the web tools, each element of `sources` also carries `title`, `snippet`, `site_name`, `site_icon` and `published_at` for display.
+
+**page** object
+
+DeepSeek extension, for `web_search_call` items that opened or read a page: `url`, `title` and `published_at`. The page text is not returned.
+
+**signature** string
+
+DeepSeek extension, for successful `read_link` calls. The page, encrypted. Pass it back unchanged so that the page is restored into the context.
+
+**error** object
+
+DeepSeek extension, for failed `web_search_call` items (`status` is `failed`). `code` is `unavailable`, `url_not_accessible` or `url_not_allowed`.
+
 - ]
+
+**title** string
+
+DeepSeek extension. The conversation title, present only when the request enabled `title` and a title was generated. In streaming responses, read it from `response.title` in the final event.
 
 **usage**
 
@@ -544,6 +628,12 @@ Breakdown of the output tokens.
 
 Number of reasoning (chain-of-thought) tokens generated by the model.
 
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek extension. Tokens of the safety review, already included in `output_tokens`. Present only when `safety_check` is `high`.
+
 **total\_tokens** integerrequired
 
 Total number of tokens used in the request (input + output).
@@ -552,7 +642,7 @@ Total number of tokens used in the request (input + output).
 
 object
 
-Successful server-side web search and page-fetch counts, separate from token usage. Present only when tool\_search or tool\_fetch is greater than zero; otherwise omitted. Both fields are present when this object is returned. In streaming responses, read response.usage from the terminal response.completed, response.incomplete, or response.failed event. These are cumulative counts, not deltas. See [Server tool usage](../guides/responses_api.md#server-tool-usage).
+Successful server-side web search and page-fetch counts, separate from token usage. Present only when one of the counts is greater than zero; otherwise omitted. All fields are present when this object is returned. In streaming responses, read response.usage from the terminal response.completed, response.incomplete, or response.failed event. These are cumulative counts, not deltas. See [Server tool usage](../guides/responses_api.md#server-tool-usage).
 
 **tool\_search** integerrequired
 
@@ -564,7 +654,13 @@ Number of successful web search queries. A search with multiple queries can add 
 
 **Possible values:** `>= 0`
 
-Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. This field can be used as a basis for billing.
+Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. With the web tools, finding text in a page is not counted. This field can be used as a basis for billing.
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+With the web tools. Number of successful image searches. This field can be used as a basis for billing.
 
 **[Example]**
 

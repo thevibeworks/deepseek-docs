@@ -2,7 +2,7 @@
 title: "Messages API"
 description: "以 Anthropic Messages API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-message
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Messages API
@@ -61,6 +61,7 @@ oneOf
 
 - 用户消息
 - 助手消息
+- 最新提醒消息
 
 **[用户消息]**
 
@@ -81,7 +82,7 @@ oneOf
 
 string
 
-**[文本内容]**
+**[最新提醒消息]**
 
 **最少元素数：** `1`
 
@@ -93,9 +94,10 @@ oneOf
 
 - 文本块
 - 图片块
+- 文档块
 - 工具结果块
 
-**[用户内容块]**
+**[文本内容]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -107,7 +109,41 @@ oneOf
 
 文本内容。
 
-**[文本块]**
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
+
+**[用户内容块]**
 
 `deepseek-flash` 支持用户消息和工具结果中的图片输入，不支持 assistant 消息中的图片。`deepseek-v4-pro` 不支持图片输入。图片限制见[视觉理解指南](../guides/vision.md)。
 
@@ -125,7 +161,7 @@ oneOf
 - 图片 URL
 - 已上传的图片文件
 
-**[图片块]**
+**[文本块]**
 
 **type** stringrequired
 
@@ -139,7 +175,7 @@ oneOf
 
 Base64 编码的图片数据，不包含 data URL 前缀。
 
-**[工具结果块]**
+**[图片块]**
 
 **type** stringrequired
 
@@ -149,7 +185,7 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 服务端可下载图片的 HTTP 或 HTTPS URL。
 
-**[Base64 图片]**
+**[文档块]**
 
 请求必须携带 `anthropic-beta: files-api-2025-04-14` 请求头。
 
@@ -161,7 +197,54 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 已上传图片文件的 ID，见 [Files API 指南](../guides/files_api.md#anthropic-compatible-files-api)。
 
+**[工具结果块]**
+
+供模型阅读的文档，支持出现在用户消息中。详见 [文件解析指南](../guides/document_parsing.md#document-qa)。
+
+**type** stringrequired
+
+**Possible values:** `document`
+
+**source** object
+
+required
+
+oneOf
+
+- 已上传的文件
+- 内联文本
+
+**[Base64 图片]**
+
+请求必须携带 `anthropic-beta: files-api-2025-04-14` 请求头。
+
+**type** stringrequired
+
+**Possible values:** `file`
+
+**file\_id** stringrequired
+
+通过 [Files API](../guides/files_api.md) 上传的文件 ID，形如 `file-api-...`。
+
 **[图片 URL]**
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**media\_type** string
+
+**Possible values:** `text/plain`
+
+**data** stringrequired
+
+文档的文本内容。
+
+**title** string
+
+可选。`text` 来源的文档展示给模型的文件名。
+
+**[已上传的图片文件]**
 
 仅用于 user 消息。为每个待处理的工具调用 ID 返回一个结果，不得重复，并将结果放在所有文本块或图片块之前。
 
@@ -185,11 +268,11 @@ oneOf
 - 工具结果内容块
 - 空值
 
-**[已上传的图片文件]**
+**[已上传的文件]**
 
 string
 
-**[文本内容]**
+**[内联文本]**
 
 - Array [
 
@@ -198,7 +281,7 @@ oneOf
 - 文本块
 - 图片块
 
-**[工具结果内容块]**
+**[文本内容]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -210,7 +293,41 @@ oneOf
 
 文本内容。
 
-**[空值]**
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
+
+**[工具结果内容块]**
 
 `deepseek-flash` 支持用户消息和工具结果中的图片输入，不支持 assistant 消息中的图片。`deepseek-v4-pro` 不支持图片输入。图片限制见[视觉理解指南](../guides/vision.md)。
 
@@ -228,7 +345,7 @@ oneOf
 - 图片 URL
 - 已上传的图片文件
 
-**[文本块]**
+**[空值]**
 
 **type** stringrequired
 
@@ -242,7 +359,7 @@ oneOf
 
 Base64 编码的图片数据，不包含 data URL 前缀。
 
-**[图片块]**
+**[文本块]**
 
 **type** stringrequired
 
@@ -252,7 +369,7 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 服务端可下载图片的 HTTP 或 HTTPS URL。
 
-**[Base64 图片]**
+**[图片块]**
 
 请求必须携带 `anthropic-beta: files-api-2025-04-14` 请求头。
 
@@ -266,7 +383,7 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 - ]
 
-**[图片 URL]**
+**[Base64 图片]**
 
 null
 
@@ -276,7 +393,7 @@ null
 
 - ]
 
-**[已上传的图片文件]**
+**[图片 URL]**
 
 历史 assistant 消息。回传时保留其内容块，包括思考、工具调用和网页搜索结果。
 
@@ -293,11 +410,11 @@ oneOf
 - 文本内容
 - 助手内容块
 
-**[文本内容]**
+**[已上传的图片文件]**
 
 string
 
-**[助手内容块]**
+**[文本内容]**
 
 **最少元素数：** `1`
 
@@ -310,8 +427,9 @@ oneOf
 - 工具调用块
 - 服务端工具调用块
 - 网页搜索结果块
+- 网页抓取结果块
 
-**[文本块]**
+**[助手内容块]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -323,7 +441,41 @@ oneOf
 
 文本内容。
 
-**[思考块]**
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
+
+**[文本块]**
 
 **type** stringrequired
 
@@ -337,7 +489,7 @@ oneOf
 
 思考块附带的签名。回传该块时应保留；输入签名目前不会被校验。
 
-**[工具调用块]**
+**[思考块]**
 
 出现在 assistant 消息中。每个工具调用块都必须在紧接的 user 消息中有对应的工具结果块。
 
@@ -357,9 +509,9 @@ oneOf
 
 传给工具的 JSON 参数，通常为符合其 `input_schema` 的对象。
 
-**[服务端工具调用块]**
+**[工具调用块]**
 
-服务端执行网页搜索时返回。对应的 `web_search_tool_result` 出现在同一条 assistant 消息中，客户端无需执行该工具。
+服务端执行网页搜索、`deepseek_web_search` 或 `deepseek_read_url` 时返回。对应的 `web_search_tool_result` 或 `web_fetch_tool_result` 出现在同一条 assistant 消息中，客户端无需执行该工具。
 
 **type** stringrequired
 
@@ -371,7 +523,7 @@ oneOf
 
 **name** stringrequired
 
-**Possible values:** `web_search`
+**Possible values:** `web_search`, `web_fetch`, `deepseek_web_search`, `deepseek_read_url`
 
 **input** nullablerequired
 
@@ -387,7 +539,13 @@ object
 
 **Possible values:** `direct`
 
-**[网页搜索结果块]**
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**[服务端工具调用块]**
 
 **type** stringrequired
 
@@ -412,7 +570,7 @@ oneOf
 - 网页搜索结果
 - 网页搜索错误
 
-**[网页搜索结果]**
+**[网页搜索结果块]**
 
 **type** stringrequired
 
@@ -434,7 +592,19 @@ oneOf
 
 页面时效元数据（如有），可以为 `null`。
 
-**[网页搜索错误]**
+**snippet** stringnullable
+
+DeepSeek 扩展字段。用于展示的结果摘要纯文本。
+
+**site\_name** stringnullable
+
+DeepSeek 扩展字段。站点名称，未知时为 `null`。
+
+**site\_icon** stringnullable
+
+DeepSeek 扩展字段。站点图标的 URL，未知时为 `null`。
+
+**[网页抓取结果块]**
 
 **type** stringrequired
 
@@ -448,7 +618,116 @@ oneOf
 
 - ]
 
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**[网页搜索结果]**
+
+深度思考搜索中打开网页（`deepseek_web_search`）或 `deepseek_read_url` 阅读链接时返回。回传时请原样保留，包括 `kind` 和 `signature`。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result`
+
+**tool\_use\_id** stringrequired
+
+关联的 `server_tool_use` 块 ID。
+
+**content** object
+
+required
+
+抓取到的网页，或抓取失败的原因。
+
+oneOf
+
+- 网页抓取结果
+- 网页抓取错误
+
+**[网页搜索错误]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_result`
+
+**url** stringrequired
+
+网页的 URL。
+
+**content**
+
+object
+
+required
+
+以文本文档形式表示的网页。
+
+**type** string
+
+**Possible values:** `document`
+
+**source**
+
+object
+
+**type** string
+
+**Possible values:** `text`
+
+**media\_type** string
+
+**Possible values:** `text/plain`
+
+**data** string
+
+恒为空字符串，不返回网页正文。`read_link` 的网页放在 `signature` 中。
+
+**title** stringnullable
+
+网页标题。
+
+**published\_at** stringnullable
+
+DeepSeek 扩展字段，替代 `retrieved_at`。网页的发布时间，未知时为 `null`。阅读用户消息中的链接时，为网页上提取到的日期，格式不固定；深度思考搜索中打开的网页为 RFC 3339 时间戳。
+
+**[网页抓取结果]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `url_not_accessible`, `url_not_allowed`, `unavailable`
+
+抓取失败的原因。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**signature** string
+
+DeepSeek 扩展字段。仅出现在成功的 `read_link` 结果上，内容是加密后的网页。回传时请原样保留，服务端据此把网页拼回上下文。
+
 - ]
+
+**[网页抓取错误]**
+
+DeepSeek 扩展。与 DeepSeek 网页端一样，向模型提供当前日期、地点、平台与语言。请紧挨着放在它所属的 `user` 消息之前，放在其他位置返回 `400`。无论是否使用联网工具均可使用。详见 [用户元信息标记指南](../guides/latest_reminder.md)。
+
+**role** stringrequired
+
+**Possible values:** `latest_reminder`
+
+**content** stringrequired
+
+`<date>,<weekday>,<location>,<platform>,<language>`，例如 `2026-11-11,星期三,新加坡,Web,中文`。
 
 - ]
 
@@ -481,6 +760,40 @@ string
 **text** stringrequired
 
 文本内容。
+
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
 
 - ]
 
@@ -540,7 +853,7 @@ object[]
 
 nullable
 
-模型可使用的工具，支持客户端定义的工具和服务端网页搜索工具。工具名称必须唯一，空数组等同于未提供工具。`cache_control` 会被忽略。
+模型可使用的工具，支持客户端定义的工具、服务端网页搜索工具，以及服务端工具 `deepseek_web_search` 与 `deepseek_read_url`。工具名称必须唯一，空数组等同于未提供工具。`cache_control` 会被忽略。
 
 - Array [
 
@@ -548,6 +861,8 @@ oneOf
 
 - 客户端工具
 - 网页搜索服务端工具
+- DeepSeek 联网搜索服务端工具
+- DeepSeek 阅读链接服务端工具
 
 **[客户端工具]**
 
@@ -594,6 +909,34 @@ required
 **Possible values:** `>= 0`
 
 本次请求允许的最大搜索次数。默认值和服务端上限通常均为 5；Claude Code 搜索子 Agent 兼容请求的默认值和上限均为 1。超过相应上限的值会被截到上限。超过次数限制的搜索返回 `max_uses_exceeded` 结果。
+
+**[DeepSeek 联网搜索服务端工具]**
+
+DeepSeek 扩展。让模型联网搜索；开启思考时进行深度思考搜索。详见 [联网工具指南](../guides/web_tools.md)。
+
+**type** stringrequired
+
+**Possible values:** `deepseek_web_search`
+
+**name** string
+
+**Possible values:** `deepseek_web_search`
+
+可选，服务端不校验。
+
+**[DeepSeek 阅读链接服务端工具]**
+
+DeepSeek 扩展。让模型阅读最后一条用户消息中的链接。详见 [联网工具指南](../guides/web_tools.md#read-links)。
+
+**type** stringrequired
+
+**Possible values:** `deepseek_read_url`
+
+**name** string
+
+**Possible values:** `deepseek_read_url`
+
+可选，服务端不校验。
 
 - ]
 
@@ -697,6 +1040,32 @@ nullable
 
 自定义终端用户标识。建议仅使用英文字母、数字、下划线（`_`）和连字符（`-`）。UTF-8 编码后不得超过 512 字节。请勿包含个人隐私信息。详见[限流与隔离](../quick_start/rate_limit.md)。
 
+**safety\_check**
+
+object
+
+nullable
+
+DeepSeek 扩展字段。`level` 设为 `high` 时开启基础风控，审核模型的输入与输出。详见 [模型内容安全指南](../guides/safety.md)。
+
+**level** stringrequired
+
+**Possible values:** `low`, `high`
+
+`high`：开启基础风控。`low`：默认检查，与不传 `safety_check` 相同。
+
+**title**
+
+object
+
+nullable
+
+DeepSeek 扩展字段。传入 `{"enabled": true}`，响应会带上简短的会话标题。详见 [会话标题指南](../guides/conversation_title.md)。
+
+**enabled** booleanrequired
+
+是否返回会话标题。
+
 ## Responses
 
 - 200 (No streaming)
@@ -747,6 +1116,7 @@ oneOf
 - 工具调用块
 - 服务端工具调用输出
 - 网页搜索结果块
+- 网页抓取结果块
 
 **[Example]**
 
@@ -759,6 +1129,40 @@ oneOf
 **text** stringrequired
 
 文本内容。
+
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
 
 **[文本块]**
 
@@ -808,11 +1212,11 @@ oneOf
 
 **name** stringrequired
 
-服务端工具名称。
+服务端工具名称：网页搜索为 `web_search`。使用联网工具时，为开启这项能力的工具名：搜索与深度思考搜索的步骤为 `deepseek_web_search`，阅读链接为 `deepseek_read_url`。
 
 **input** nullablerequired
 
-传递给服务端工具的参数，为 JSON 值，通常是对象。
+传递给服务端工具的参数，为 JSON 值，通常是对象。使用联网工具时，`input.action` 为 `search`、`open_page`、`find_in_page` 或 `read_link`。
 
 **caller**
 
@@ -823,6 +1227,12 @@ required
 **type** stringrequired
 
 **Possible values:** `direct`
+
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
 
 **[服务端工具调用输出]**
 
@@ -871,7 +1281,19 @@ oneOf
 
 页面时效元数据（如有），可以为 `null`。
 
-**[网页搜索结果]**
+**snippet** stringnullable
+
+DeepSeek 扩展字段。用于展示的结果摘要纯文本。
+
+**site\_name** stringnullable
+
+DeepSeek 扩展字段。站点名称，未知时为 `null`。
+
+**site\_icon** stringnullable
+
+DeepSeek 扩展字段。站点图标的 URL，未知时为 `null`。
+
+**[网页抓取结果块]**
 
 **type** stringrequired
 
@@ -885,6 +1307,103 @@ oneOf
 
 - ]
 
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**[网页搜索结果]**
+
+深度思考搜索中打开网页（`deepseek_web_search`）或 `deepseek_read_url` 阅读链接时返回。回传时请原样保留，包括 `kind` 和 `signature`。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result`
+
+**tool\_use\_id** stringrequired
+
+关联的 `server_tool_use` 块 ID。
+
+**content** object
+
+required
+
+抓取到的网页，或抓取失败的原因。
+
+oneOf
+
+- 网页抓取结果
+- 网页抓取错误
+
+**[网页搜索错误]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_result`
+
+**url** stringrequired
+
+网页的 URL。
+
+**content**
+
+object
+
+required
+
+以文本文档形式表示的网页。
+
+**type** string
+
+**Possible values:** `document`
+
+**source**
+
+object
+
+**type** string
+
+**Possible values:** `text`
+
+**media\_type** string
+
+**Possible values:** `text/plain`
+
+**data** string
+
+恒为空字符串，不返回网页正文。`read_link` 的网页放在 `signature` 中。
+
+**title** stringnullable
+
+网页标题。
+
+**published\_at** stringnullable
+
+DeepSeek 扩展字段，替代 `retrieved_at`。网页的发布时间，未知时为 `null`。阅读用户消息中的链接时，为网页上提取到的日期，格式不固定；深度思考搜索中打开的网页为 RFC 3339 时间戳。
+
+**[网页抓取结果]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `url_not_accessible`, `url_not_allowed`, `unavailable`
+
+抓取失败的原因。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**signature** string
+
+DeepSeek 扩展字段。仅出现在成功的 `read_link` 结果上，内容是加密后的网页。回传时请原样保留，服务端据此把网页拼回上下文。
+
 - ]
 
 **stop\_reason** stringnullablerequired
@@ -896,6 +1415,30 @@ oneOf
 **stop\_sequence** stringnullablerequired
 
 命中的停止序列；未命中时为 null。
+
+**stop\_details**
+
+object
+
+nullable
+
+模型内容安全审核拒答时（`stop_reason` 为 `refusal`）出现。详见 [模型内容安全指南](../guides/safety.md#handling-refusals)。
+
+**type** stringrequired
+
+**Possible values:** `refusal`
+
+**category** stringnullable
+
+恒为 `null`。
+
+**explanation** stringnullable
+
+请求中的图片未通过审核时，指出被拦截的图片；其余情况为 `null`。
+
+**title** string
+
+DeepSeek 扩展字段。会话标题，只在请求开启了 `title` 且生成了标题时出现。与搜索结果、引用中的 `title` 无关。
 
 **usage**
 
@@ -927,6 +1470,24 @@ required
 
 生成的输出 token 数，开启思考时包含思考 token。在 message\_delta 中为累计值，而非增量。
 
+**output\_tokens\_details**
+
+object
+
+`output_tokens` 的明细。开启思考或 `safety_check` 为 `high` 时返回。
+
+**thinking\_tokens** integer
+
+**Possible values:** `>= 0`
+
+思考 token 数，已包含在 `output_tokens` 中。
+
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `output_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
 **service\_tier** stringrequired
 
 **Possible values:** `standard`
@@ -935,7 +1496,7 @@ required
 
 object
 
-服务端网页搜索次数，与 token 用量分别统计。仅在至少尝试过一次网页搜索时返回，否则省略整个字段。返回时两个子字段均存在。非流式响应读取最终消息的 usage，流式响应读取最后的 message\_delta.usage。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/anthropic_api.md#server-tool-usage)。
+服务端网页搜索与抓取次数，与 token 用量分别统计。仅在其中一项计数大于零时返回，否则省略整个字段。返回时各个子字段均存在。非流式响应读取最终消息的 usage，流式响应读取最后的 message\_delta.usage。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/anthropic_api.md#server-tool-usage)。
 
 **web\_search\_requests** integerrequired
 
@@ -949,7 +1510,25 @@ object
 
 成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
 
-**[网页搜索错误]**
+**web\_fetch\_requests** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。响应中抓取结果块的数量（含错误块），仅供展示。
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。计费的网页抓取次数。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。计费的图片搜索次数。
+
+**[网页抓取错误]**
 
 ```json
 {
@@ -1042,6 +1621,7 @@ oneOf
 - 工具调用块
 - 服务端工具调用输出
 - 网页搜索结果块
+- 网页抓取结果块
 
 **[message\_start]**
 
@@ -1054,6 +1634,40 @@ oneOf
 **text** stringrequired
 
 文本内容。
+
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
 
 **[content\_block\_start]**
 
@@ -1103,11 +1717,11 @@ oneOf
 
 **name** stringrequired
 
-服务端工具名称。
+服务端工具名称：网页搜索为 `web_search`。使用联网工具时，为开启这项能力的工具名：搜索与深度思考搜索的步骤为 `deepseek_web_search`，阅读链接为 `deepseek_read_url`。
 
 **input** nullablerequired
 
-传递给服务端工具的参数，为 JSON 值，通常是对象。
+传递给服务端工具的参数，为 JSON 值，通常是对象。使用联网工具时，`input.action` 为 `search`、`open_page`、`find_in_page` 或 `read_link`。
 
 **caller**
 
@@ -1118,6 +1732,12 @@ required
 **type** stringrequired
 
 **Possible values:** `direct`
+
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
 
 **[message\_delta]**
 
@@ -1166,6 +1786,18 @@ oneOf
 
 页面时效元数据（如有），可以为 `null`。
 
+**snippet** stringnullable
+
+DeepSeek 扩展字段。用于展示的结果摘要纯文本。
+
+**site\_name** stringnullable
+
+DeepSeek 扩展字段。站点名称，未知时为 `null`。
+
+**site\_icon** stringnullable
+
+DeepSeek 扩展字段。站点图标的 URL，未知时为 `null`。
+
 **[ping]**
 
 **type** stringrequired
@@ -1180,6 +1812,103 @@ oneOf
 
 - ]
 
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**[文本块]**
+
+深度思考搜索中打开网页（`deepseek_web_search`）或 `deepseek_read_url` 阅读链接时返回。回传时请原样保留，包括 `kind` 和 `signature`。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result`
+
+**tool\_use\_id** stringrequired
+
+关联的 `server_tool_use` 块 ID。
+
+**content** object
+
+required
+
+抓取到的网页，或抓取失败的原因。
+
+oneOf
+
+- 网页抓取结果
+- 网页抓取错误
+
+**[思考输出]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_result`
+
+**url** stringrequired
+
+网页的 URL。
+
+**content**
+
+object
+
+required
+
+以文本文档形式表示的网页。
+
+**type** string
+
+**Possible values:** `document`
+
+**source**
+
+object
+
+**type** string
+
+**Possible values:** `text`
+
+**media\_type** string
+
+**Possible values:** `text/plain`
+
+**data** string
+
+恒为空字符串，不返回网页正文。`read_link` 的网页放在 `signature` 中。
+
+**title** stringnullable
+
+网页标题。
+
+**published\_at** stringnullable
+
+DeepSeek 扩展字段，替代 `retrieved_at`。网页的发布时间，未知时为 `null`。阅读用户消息中的链接时，为网页上提取到的日期，格式不固定；深度思考搜索中打开的网页为 RFC 3339 时间戳。
+
+**[工具调用块]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `url_not_accessible`, `url_not_allowed`, `unavailable`
+
+抓取失败的原因。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**signature** string
+
+DeepSeek 扩展字段。仅出现在成功的 `read_link` 结果上，内容是加密后的网页。回传时请原样保留，服务端据此把网页拼回上下文。
+
 - ]
 
 **stop\_reason** stringnullablerequired
@@ -1191,6 +1920,30 @@ oneOf
 **stop\_sequence** stringnullablerequired
 
 命中的停止序列；未命中时为 null。
+
+**stop\_details**
+
+object
+
+nullable
+
+模型内容安全审核拒答时（`stop_reason` 为 `refusal`）出现。详见 [模型内容安全指南](../guides/safety.md#handling-refusals)。
+
+**type** stringrequired
+
+**Possible values:** `refusal`
+
+**category** stringnullable
+
+恒为 `null`。
+
+**explanation** stringnullable
+
+请求中的图片未通过审核时，指出被拦截的图片；其余情况为 `null`。
+
+**title** string
+
+DeepSeek 扩展字段。会话标题，只在请求开启了 `title` 且生成了标题时出现。与搜索结果、引用中的 `title` 无关。
 
 **usage**
 
@@ -1222,6 +1975,24 @@ required
 
 生成的输出 token 数，开启思考时包含思考 token。在 message\_delta 中为累计值，而非增量。
 
+**output\_tokens\_details**
+
+object
+
+`output_tokens` 的明细。开启思考或 `safety_check` 为 `high` 时返回。
+
+**thinking\_tokens** integer
+
+**Possible values:** `>= 0`
+
+思考 token 数，已包含在 `output_tokens` 中。
+
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `output_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
 **service\_tier** stringrequired
 
 **Possible values:** `standard`
@@ -1230,7 +2001,7 @@ required
 
 object
 
-服务端网页搜索次数，与 token 用量分别统计。仅在至少尝试过一次网页搜索时返回，否则省略整个字段。返回时两个子字段均存在。非流式响应读取最终消息的 usage，流式响应读取最后的 message\_delta.usage。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/anthropic_api.md#server-tool-usage)。
+服务端网页搜索与抓取次数，与 token 用量分别统计。仅在其中一项计数大于零时返回，否则省略整个字段。返回时各个子字段均存在。非流式响应读取最终消息的 usage，流式响应读取最后的 message\_delta.usage。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/anthropic_api.md#server-tool-usage)。
 
 **web\_search\_requests** integerrequired
 
@@ -1244,7 +2015,25 @@ object
 
 成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
 
-**[文本块]**
+**web\_fetch\_requests** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。响应中抓取结果块的数量（含错误块），仅供展示。
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。计费的网页抓取次数。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。计费的图片搜索次数。
+
+**[服务端工具调用输出]**
 
 **type** stringrequired
 
@@ -1267,8 +2056,9 @@ oneOf
 - 工具调用块
 - 服务端工具调用输出
 - 网页搜索结果块
+- 网页抓取结果块
 
-**[思考输出]**
+**[网页搜索结果块]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -1280,7 +2070,41 @@ oneOf
 
 文本内容。
 
-**[工具调用块]**
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
+
+**[网页抓取结果块]**
 
 **type** stringrequired
 
@@ -1294,7 +2118,7 @@ oneOf
 
 随思考内容块返回的不透明签名；回传内容块时请保留。
 
-**[服务端工具调用输出]**
+**[网页搜索结果]**
 
 出现在 assistant 消息中。每个工具调用块都必须在紧接的 user 消息中有对应的工具结果块。
 
@@ -1314,7 +2138,7 @@ oneOf
 
 传给工具的 JSON 参数，通常为符合其 `input_schema` 的对象。
 
-**[网页搜索结果块]**
+**[网页搜索错误]**
 
 描述由服务端执行的一次工具调用。请求级搜索计数另见 `usage.server_tool_use`，客户端无需执行此调用。
 
@@ -1328,11 +2152,11 @@ oneOf
 
 **name** stringrequired
 
-服务端工具名称。
+服务端工具名称：网页搜索为 `web_search`。使用联网工具时，为开启这项能力的工具名：搜索与深度思考搜索的步骤为 `deepseek_web_search`，阅读链接为 `deepseek_read_url`。
 
 **input** nullablerequired
 
-传递给服务端工具的参数，为 JSON 值，通常是对象。
+传递给服务端工具的参数，为 JSON 值，通常是对象。使用联网工具时，`input.action` 为 `search`、`open_page`、`find_in_page` 或 `read_link`。
 
 **caller**
 
@@ -1344,7 +2168,13 @@ required
 
 **Possible values:** `direct`
 
-**[网页搜索结果]**
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**[网页抓取结果]**
 
 **type** stringrequired
 
@@ -1369,7 +2199,7 @@ oneOf
 - 网页搜索结果
 - 网页搜索错误
 
-**[网页搜索错误]**
+**[网页抓取错误]**
 
 **type** stringrequired
 
@@ -1391,6 +2221,18 @@ oneOf
 
 页面时效元数据（如有），可以为 `null`。
 
+**snippet** stringnullable
+
+DeepSeek 扩展字段。用于展示的结果摘要纯文本。
+
+**site\_name** stringnullable
+
+DeepSeek 扩展字段。站点名称，未知时为 `null`。
+
+**site\_icon** stringnullable
+
+DeepSeek 扩展字段。站点图标的 URL，未知时为 `null`。
+
 **[文本块]**
 
 **type** stringrequired
@@ -1405,7 +2247,104 @@ oneOf
 
 - ]
 
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
 **[思考输出]**
+
+深度思考搜索中打开网页（`deepseek_web_search`）或 `deepseek_read_url` 阅读链接时返回。回传时请原样保留，包括 `kind` 和 `signature`。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result`
+
+**tool\_use\_id** stringrequired
+
+关联的 `server_tool_use` 块 ID。
+
+**content** object
+
+required
+
+抓取到的网页，或抓取失败的原因。
+
+oneOf
+
+- 网页抓取结果
+- 网页抓取错误
+
+**[工具调用块]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_result`
+
+**url** stringrequired
+
+网页的 URL。
+
+**content**
+
+object
+
+required
+
+以文本文档形式表示的网页。
+
+**type** string
+
+**Possible values:** `document`
+
+**source**
+
+object
+
+**type** string
+
+**Possible values:** `text`
+
+**media\_type** string
+
+**Possible values:** `text/plain`
+
+**data** string
+
+恒为空字符串，不返回网页正文。`read_link` 的网页放在 `signature` 中。
+
+**title** stringnullable
+
+网页标题。
+
+**published\_at** stringnullable
+
+DeepSeek 扩展字段，替代 `retrieved_at`。网页的发布时间，未知时为 `null`。阅读用户消息中的链接时，为网页上提取到的日期，格式不固定；深度思考搜索中打开的网页为 RFC 3339 时间戳。
+
+**[服务端工具调用输出]**
+
+**type** stringrequired
+
+**Possible values:** `web_fetch_tool_result_error`
+
+**error\_code** stringrequired
+
+**Possible values:** `url_not_accessible`, `url_not_allowed`, `unavailable`
+
+抓取失败的原因。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
+
+**kind** 联网工具能力 (string)
+
+**Possible values:** `search`, `deep_search`, `read_link`, `image_search`, `deep_image_search`
+
+DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
+
+**signature** string
+
+DeepSeek 扩展字段。仅出现在成功的 `read_link` 结果上，内容是加密后的网页。回传时请原样保留，服务端据此把网页拼回上下文。
+
+**[网页搜索结果块]**
 
 **type** stringrequired
 
@@ -1427,8 +2366,9 @@ oneOf
 - 思考增量
 - 签名增量
 - 工具输入增量
+- 引用增量
 
-**[工具调用块]**
+**[网页抓取结果块]**
 
 **type** stringrequired
 
@@ -1438,7 +2378,7 @@ oneOf
 
 将此文本追加到当前文本内容块。
 
-**[服务端工具调用输出]**
+**[网页搜索结果]**
 
 **type** stringrequired
 
@@ -1448,7 +2388,7 @@ oneOf
 
 将此文本追加到当前思考内容块。
 
-**[网页搜索结果块]**
+**[网页搜索错误]**
 
 **type** stringrequired
 
@@ -1458,7 +2398,7 @@ oneOf
 
 已完成的思考内容块的签名。
 
-**[网页搜索结果]**
+**[网页抓取结果]**
 
 **type** stringrequired
 
@@ -1468,7 +2408,43 @@ oneOf
 
 工具输入 JSON 的一个片段。拼接此内容块的全部片段，在 content\_block\_stop 后解析完整 JSON。
 
-**[网页搜索错误]**
+**[网页抓取错误]**
+
+向当前文本块追加一条引用，随联网工具返回。
+
+**type** stringrequired
+
+**Possible values:** `citations_delta`
+
+**citation**
+
+object
+
+required
+
+回答引用的一个来源，随联网工具返回。
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+**[文本增量]**
 
 **type** stringrequired
 
@@ -1480,7 +2456,7 @@ oneOf
 
 内容块的索引，从 0 开始。
 
-**[文本增量]**
+**[思考增量]**
 
 **type** stringrequired
 
@@ -1501,6 +2477,30 @@ required
 **stop\_sequence** stringnullablerequired
 
 命中的停止序列；未命中时为 null。
+
+**stop\_details**
+
+object
+
+nullable
+
+模型内容安全审核拒答时（`stop_reason` 为 `refusal`）出现。详见 [模型内容安全指南](../guides/safety.md#handling-refusals)。
+
+**type** stringrequired
+
+**Possible values:** `refusal`
+
+**category** stringnullable
+
+恒为 `null`。
+
+**explanation** stringnullable
+
+请求中的图片未通过审核时，指出被拦截的图片；其余情况为 `null`。
+
+**title** string
+
+DeepSeek 扩展字段。会话标题，只在请求开启了 `title` 且生成了标题时出现。
 
 **usage**
 
@@ -1532,6 +2532,24 @@ required
 
 生成的输出 token 数，开启思考时包含思考 token。在 message\_delta 中为累计值，而非增量。
 
+**output\_tokens\_details**
+
+object
+
+`output_tokens` 的明细。开启思考或 `safety_check` 为 `high` 时返回。
+
+**thinking\_tokens** integer
+
+**Possible values:** `>= 0`
+
+思考 token 数，已包含在 `output_tokens` 中。
+
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `output_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
 **service\_tier** stringrequired
 
 **Possible values:** `standard`
@@ -1540,7 +2558,7 @@ required
 
 object
 
-服务端网页搜索次数，与 token 用量分别统计。仅在至少尝试过一次网页搜索时返回，否则省略整个字段。返回时两个子字段均存在。非流式响应读取最终消息的 usage，流式响应读取最后的 message\_delta.usage。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/anthropic_api.md#server-tool-usage)。
+服务端网页搜索与抓取次数，与 token 用量分别统计。仅在其中一项计数大于零时返回，否则省略整个字段。返回时各个子字段均存在。非流式响应读取最终消息的 usage，流式响应读取最后的 message\_delta.usage。这些计数是累计值，不是增量。详见[服务端工具用量](../guides/anthropic_api.md#server-tool-usage)。
 
 **web\_search\_requests** integerrequired
 
@@ -1554,13 +2572,31 @@ object
 
 成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
 
-**[思考增量]**
+**web\_fetch\_requests** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。响应中抓取结果块的数量（含错误块），仅供展示。
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。计费的网页抓取次数。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+使用联网工具时返回。计费的图片搜索次数。
+
+**[签名增量]**
 
 **type** stringrequired
 
 **Possible values:** `message_stop`
 
-**[签名增量]**
+**[工具输入增量]**
 
 **type** stringrequired
 
@@ -1568,7 +2604,7 @@ object
 
 - ]
 
-**[工具输入增量]**
+**[引用增量]**
 
 ```shell
 event: message_start
@@ -1593,7 +2629,7 @@ event: message_stop
 data: {"type":"message_stop"}
 ```
 
-无效请求，例如 `messages` 数组为空或工具结果未配对。请求错误使用 DeepSeek 通用的 `{error: {message, type, param, code}}` 结构，不含 Anthropic 顶层的 `type: "error"` 字段。其他 HTTP 错误请参考[错误码](../quick_start/error_codes.md)。
+无效请求，例如 `messages` 数组为空或工具结果未配对。错误使用 Anthropic 的结构 `{type: "error", error: {type, message}}`，其中 `error.type` 与 HTTP 状态码对应：`invalid_request_error`（400、422）、`authentication_error`（401）、`billing_error`（402）、`permission_error`（403）、`not_found_error`（404）、`request_too_large`（413）、`rate_limit_error`（429）、`timeout_error`（408、504）、`overloaded_error`（503）、`api_error`（500 及其他）。各状态码的原因请参考[错误码](../quick_start/error_codes.md)。
 
 **[application/json]**
 
@@ -1604,29 +2640,34 @@ data: {"type":"message_stop"}
 
 **Schema**
 
+**type** stringrequired
+
+**Possible values:** `error`
+
+固定为 `error`。
+
 **error**
 
 object
 
 required
 
-**code** stringnullablerequired
+**type** stringrequired
+
+错误类型，例如 `invalid_request_error`、`rate_limit_error`。
 
 **message** stringrequired
 
-**param** stringnullablerequired
-
-**type** stringrequired
+错误说明。
 
 **[Example]**
 
 ```json
 {
+  "type": "error",
   "error": {
-    "message": "messages: at least one message is required",
     "type": "invalid_request_error",
-    "param": null,
-    "code": "invalid_request_error"
+    "message": "messages: at least one message is required"
   }
 }
 ```

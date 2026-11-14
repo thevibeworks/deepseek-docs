@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # Chat Completions API
@@ -39,6 +39,7 @@ oneOf
 - User message
 - Assistant message
 - Tool message
+- Latest reminder message
 
 **[System message]**
 
@@ -85,7 +86,7 @@ oneOf
 - Image content part
 - File content part
 
-**[Text content]**
+**[Latest reminder message]**
 
 **type** stringrequired
 
@@ -97,7 +98,7 @@ oneOf
 
 文本内容。
 
-**[Array of content parts]**
+**[Text content]**
 
 **type** stringrequired
 
@@ -121,7 +122,7 @@ required
 
 控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。
 
-**[Text content part]**
+**[Array of content parts]**
 
 `file_id` 与 `file_data` 必须二选一：两者都不传返回 `400` 错误（"file must have a file\_id or file\_data"）；两者都传返回 `400` 错误（"file cannot have both file\_id and file\_data"）。
 
@@ -155,7 +156,7 @@ required
 
 可以选填的参与者的名称，为模型提供信息以区分相同角色的参与者。
 
-**[Image content part]**
+**[Text content part]**
 
 **content** stringnullablerequired
 
@@ -181,7 +182,11 @@ assistant 消息的内容。
 
 (Beta) 用于思考模式下在[对话前缀续写](../guides/chat_prefix_completion.md)功能下，作为最后一条 assistant 思维链内容的输入。使用此功能时，`prefix` 参数必须设置为 `true`。
 
-**[File content part]**
+**server\_tool\_calls** object[]
+
+DeepSeek 扩展字段。此前响应中的 `server_tool_calls`，原样回传。见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+
+**[Image content part]**
 
 **role** stringrequired
 
@@ -200,11 +205,11 @@ oneOf
 - Text content
 - Array of content parts
 
-**[Text content]**
+**[File content part]**
 
 string
 
-**[Array of content parts]**
+**[Text content]**
 
 **最少元素数：** `1`
 
@@ -216,7 +221,7 @@ oneOf
 - Image content part
 - File content part
 
-**[Text content part]**
+**[Array of content parts]**
 
 **type** stringrequired
 
@@ -228,7 +233,7 @@ oneOf
 
 文本内容。
 
-**[Image content part]**
+**[Text content part]**
 
 **type** stringrequired
 
@@ -252,7 +257,7 @@ required
 
 控制图片的处理方式。`low` 将图片缩小到 512x512（更快、更省 token）；`high`、`original` 与 `auto` 保留原图。
 
-**[File content part]**
+**[Image content part]**
 
 `file_id` 与 `file_data` 必须二选一：两者都不传返回 `400` 错误（"file must have a file\_id or file\_data"）；两者都传返回 `400` 错误（"file cannot have both file\_id and file\_data"）。
 
@@ -279,6 +284,20 @@ required
 **tool\_call\_id** stringrequired
 
 此消息所响应的 tool call 的 ID。
+
+**[File content part]**
+
+DeepSeek 扩展。与 DeepSeek 网页端一样，向模型提供当前日期、地点、平台与语言。请紧挨着放在它所属的 `user` 消息之前，放在其他位置返回 `400`。详见 [用户元信息标记指南](../guides/latest_reminder.md)。
+
+**role** stringrequired
+
+**Possible values:** `latest_reminder`
+
+该消息的发起角色，其值为 `latest_reminder`。
+
+**content** stringrequired
+
+`<date>,<weekday>,<location>,<platform>,<language>`，例如 `2026-11-11,星期三,新加坡,Web,中文`。
 
 - ]
 
@@ -404,15 +423,23 @@ object[]
 
 nullable
 
-模型可能会调用的 tool 的列表。目前，仅支持 function 作为工具。使用此参数来提供以 JSON 作为输入参数的 function 列表。tool 名称必须唯一。
+模型可能会调用的 tool 的列表：function，以及联网工具 `deepseek_web_search` 与 `deepseek_read_url`（见 [联网工具指南](../guides/web_tools.md#chat-completions-api)）。使用 function 来提供以 JSON 作为输入参数的 function 列表。tool 名称必须唯一。
 
 - Array [
+
+oneOf
+
+- Function 工具
+- DeepSeek 联网搜索工具
+- DeepSeek 阅读链接工具
+
+**[Function 工具]**
 
 **type** stringrequired
 
 **Possible values:** `function`
 
-tool 的类型。目前仅支持 function。
+tool 的类型，此场景下为 `function`。
 
 **function**
 
@@ -442,6 +469,26 @@ function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls �
 
 如果设置为 `true`，API 将在函数调用中使用 strict 模式，以确保输出始终符合函数的 JSON schema 定义。该功能为 Beta 功能，详细使用方式请参阅[Tool Calls 指南](../guides/tool_calls.md)
 
+**[DeepSeek 联网搜索工具]**
+
+DeepSeek 扩展。让模型联网搜索；开启思考时进行深度思考搜索。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+
+**type** stringrequired
+
+**Possible values:** `deepseek_web_search`
+
+tool 的类型，此场景下为 `deepseek_web_search`。
+
+**[DeepSeek 阅读链接工具]**
+
+DeepSeek 扩展。让模型阅读最后一条用户消息中的链接。详见 [联网工具指南](../guides/web_tools.md#read-links)。
+
+**type** stringrequired
+
+**Possible values:** `deepseek_read_url`
+
+tool 的类型，此场景下为 `deepseek_read_url`。
+
 - ]
 
 **tool\_choice** string | object
@@ -460,7 +507,7 @@ nullable
 
 当没有 tool 时，默认值为 `none`。如果有 tool 存在，默认值为 `auto`。
 
-思考模式下不支持 `required` 和指定具体 tool 的用法，API 会返回 `400` 错误。请先关闭思考模式。
+思考模式下不支持 `required` 和指定具体 tool 的用法，API 会返回 `400` 错误。请先关闭思考模式。声明了联网工具时，`required` 按 `auto` 处理。
 
 oneOf
 
@@ -492,6 +539,32 @@ required
 **name** stringrequired
 
 要调用的函数名称。
+
+**safety\_check**
+
+object
+
+nullable
+
+DeepSeek 扩展字段。`level` 设为 `high` 时开启基础风控，审核模型的输入与输出。详见 [模型内容安全指南](../guides/safety.md)。
+
+**level** stringrequired
+
+**Possible values:** `low`, `high`
+
+`high`：开启基础风控。`low`：默认检查，与不传 `safety_check` 相同。
+
+**title**
+
+object
+
+nullable
+
+DeepSeek 扩展字段。传入 `{"enabled": true}`，响应会带上简短的会话标题。详见 [会话标题指南](../guides/conversation_title.md)。
+
+**enabled** booleanrequired
+
+是否返回会话标题。
 
 **logprobs** booleannullable
 
@@ -633,6 +706,22 @@ required
 **Possible values:** `assistant`
 
 生成这条消息的角色。
+
+**annotations** object[]
+
+使用联网工具时返回。`content` 中的引用，见 [联网工具 - 引用](../guides/web_tools.md#citations)。
+
+**server\_tool\_calls** object[]
+
+DeepSeek 扩展字段，使用联网工具时返回。本次响应的服务端工具调用，每个元素是一步；下一轮请求中原样回传。见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+
+**title** string
+
+DeepSeek 扩展字段。会话标题，`title.enabled` 为 `true` 时返回。见 [会话标题指南](../guides/conversation_title.md)。
+
+**refusal** string
+
+请求中的图片未通过模型内容安全审核时，指出被拦截的图片。见 [模型内容安全指南](../guides/safety.md#handling-refusals)。
 
 **logprobs**
 
@@ -810,6 +899,36 @@ completion tokens 的详细信息。
 
 推理模型所产生的思维链 token 数量
 
+**safety\_tokens** integer
+
+**Possible values:** `>= 0`
+
+DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `completion_tokens` 中。仅在 `safety_check` 为 `high` 时返回。
+
+**server\_tool\_use**
+
+object
+
+使用联网工具时返回。计费的搜索与抓取次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+
+**tool\_search** integer
+
+**Possible values:** `>= 0`
+
+计费的搜索次数，不含图片搜索。
+
+**tool\_fetch** integer
+
+**Possible values:** `>= 0`
+
+计费的网页抓取次数。
+
+**tool\_image\_search** integer
+
+**Possible values:** `>= 0`
+
+计费的图片搜索次数。
+
 **[Example]**
 
 ```json
@@ -927,6 +1046,26 @@ object
 要调用的 function 的参数，由模型生成，格式为 JSON。请注意，模型并不总是生成有效的 JSON，并且可能会臆造出你的函数模式中未定义的参数。在调用函数之前，请在代码中验证这些参数。
 
 - ]
+
+**annotations** object[]
+
+使用联网工具时返回。`content` 中的引用，见 [联网工具 - 引用](../guides/web_tools.md#citations)。流式输出时只在最后一个 chunk 中出现一次。
+
+**server\_tool\_calls** object[]
+
+DeepSeek 扩展字段，使用联网工具时返回。本次响应的服务端工具调用，每个元素是一步；下一轮请求中原样回传。见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。流式输出时只在最后一个 chunk 中出现一次。
+
+**title** string
+
+DeepSeek 扩展字段。会话标题，`title.enabled` 为 `true` 时返回。见 [会话标题指南](../guides/conversation_title.md)。流式输出时只在最后一个 chunk 中出现一次。
+
+**refusal** string
+
+请求中的图片未通过模型内容安全审核时，指出被拦截的图片。见 [模型内容安全指南](../guides/safety.md#handling-refusals)。流式输出时只在最后一个 chunk 中出现一次。
+
+**server\_tool\_event** object
+
+DeepSeek 扩展字段，使用联网工具时返回。服务端工具调用的进度，每个 chunk 最多携带一个事件。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
 
 **logprobs**
 

@@ -2,7 +2,7 @@
 title: "查询文件"
 description: "返回指定文件的信息。"
 source: https://api-docs.deepseek.com/zh-cn/api/retrieve-file
-fetched: 2026-11-02
+fetched: 2026-11-14
 ---
 
 # 查询文件
@@ -62,7 +62,7 @@ OK, 返回 `file object`。
 
 **purpose** stringrequired
 
-**Possible values:** `user_data`
+**Possible values:** `user_data`, `text_recognition`, `rich_layout_recognition`
 
 文件的用途。
 

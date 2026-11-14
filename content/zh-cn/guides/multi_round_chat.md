@@ -2,7 +2,7 @@
 title: "多轮对话"
 description: "本指南将介绍如何使用 DeepSeek /chat/completions API 进行多轮对话。"
 source: https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat
-fetched: 2026-10-17
+fetched: 2026-11-14
 ---
 
 # 多轮对话
@@ -10,6 +10,8 @@ fetched: 2026-10-17
 本指南将介绍如何使用 DeepSeek `/chat/completions` API 进行多轮对话。
 
 DeepSeek `/chat/completions` API 是一个“无状态” API，即服务端不记录用户请求的上下文，用户在每次请求时，**需将之前所有对话历史拼接好后**，传递给对话 API。
+
+使用 [联网工具](web_tools.md) 或 [模型内容安全](safety.md) 的请求，历史的回传方式不同，见 [联网工具 - 多轮对话](web_tools.md#multi-turn)。
 
 下面的代码以 Python 语言，展示了如何进行上下文拼接，以实现多轮对话。
 
