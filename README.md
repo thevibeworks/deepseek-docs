@@ -128,10 +128,9 @@ the one client-rendered page; its data is fetched from the site's static
 
 [`fetch-deepseek-docs.yml`](.github/workflows/fetch-deepseek-docs.yml)
 runs every 6 hours: fetch (dsh from GitHub/npm, then the api-docs site),
-then hand the diff to Claude Code running on
-the **DeepSeek API itself** (`deepseek-flash` via the
-Anthropic-compatible endpoint, `anthropic_api_key` = a `DEEPSEEK_API_KEY`
-repo secret). The agent only classifies the change and writes decision
+then hand the diff to Claude Code on Claude Opus 5.5 (`--effort high`,
+authenticated with a `CLAUDE_CODE_OAUTH_TOKEN` repo secret). The agent
+only classifies the change and writes decision
 files; a deterministic bash step publishes -- minor changes commit
 straight to main, high-signal changes (new models, pricing, API schema,
 dsh breaking changes) open a PR for human review. A deterministic
@@ -139,8 +138,7 @@ pricing tripwire overrides the agent: any pricing.md diff touching
 time-of-day tier language (时段 / off-peak / peak / discount /
 multiplier / 分时) is forced high-signal, because the peak-hour plan
 was dropped 2026-08-08 with a repricing pending and downstream
-consumers need to hear about its return the same day. DeepSeek docs,
-kept fresh by DeepSeek.
+consumers need to hear about its return the same day.
 
 ## Disclaimer
 

@@ -83,25 +83,26 @@ jobs:
       # The agent only DECIDES: it reads the diff and writes gitignored
       # .decision/ files. It runs with permissions skipped, which is safe
       # because its blast radius is nil -- every side effect (commit, push,
-      # PR) lives in the deterministic Publish step below. Runs Claude Code
-      # on the DeepSeek API via the Anthropic-compatible endpoint.
-      - name: Agent triage (deepseek-flash)
+      # PR) lives in the deterministic Publish step below.
+      #
+      # Claude Opus 5.5 on the repo's CLAUDE_CODE_OAUTH_TOKEN (shadows the
+      # org secret of the same name), as in claude-code-docs and
+      # claude-reads-hn. The pin moves with the model: v1.0.168 ships Claude
+      # Code 2.1.204, too old for Opus 5.5 (needs 2.1.280); v1.0.237 is what
+      # claude-code-docs runs this same decide-then-publish job on. Effort
+      # is explicit because Claude Code starts Opus 5.5 at medium; high
+      # matches both siblings, and triage runs only when a document changed,
+      # so the extra depth is paid rarely.
+      - name: Agent triage (claude-opus-5-5)
         if: steps.diff.outputs.newsworthy == 'true'
-        uses: anthropics/claude-code-action@v1.0.168
-        env:
-          ANTHROPIC_BASE_URL: https://api.deepseek.com/anthropic
-          ANTHROPIC_MODEL: deepseek-flash
-          ANTHROPIC_DEFAULT_OPUS_MODEL: deepseek-flash
-          ANTHROPIC_DEFAULT_SONNET_MODEL: deepseek-flash
-          ANTHROPIC_DEFAULT_HAIKU_MODEL: deepseek-flash
-          ANTHROPIC_SMALL_FAST_MODEL: deepseek-flash
-          CLAUDE_CODE_SUBAGENT_MODEL: deepseek-flash
+        uses: anthropics/claude-code-action@v1.0.237
         with:
-          anthropic_api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           show_full_output: true
           claude_args: |
-            --model deepseek-flash
+            --model claude-opus-5-5
+            --effort high
             --dangerously-skip-permissions
           prompt: |
             You are the docs editor for this DeepSeek API docs mirror. The
