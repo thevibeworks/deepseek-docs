@@ -2,14 +2,20 @@ name: fetch
 
 on:
   schedule:
-    # Every 6 hours, one line per slot on purpose. GitHub starts scheduled runs
-    # hours late; as a single `17 */6` line, half the slots never ran (about
-    # 2/day since 2026-11-02). A late tick of one line appears to be merged into
-    # its next one; claude-reads-hn lists its slots separately and keeps 4/day.
-    - cron: "17 0 * * *"
-    - cron: "17 6 * * *"
-    - cron: "17 12 * * *"
-    - cron: "17 18 * * *"
+    # claude-reads-hn's slots: 09:00 / 14:00 / 19:00 / 00:00 +8, the hours
+    # DeepSeek ships in. One line per slot on purpose: as a single `17 */6`
+    # line, half the slots never ran (about 2/day since 2026-11-02).
+    #
+    # These are the fallback, not the clock. GitHub starts them hours late
+    # here (the 00:17 slot of 2026-11-16 ran at 06:30) and on claude-reads-hn
+    # (1.5-6h, 2026-11-11..16). Its on-time runs come from an external
+    # workflow_dispatch at the slot hour; the same dispatch of this workflow
+    # (ref: main) is what makes these slots punctual. A duplicate run is
+    # harmless: nothing upstream changed, so it commits nothing.
+    - cron: "17 1 * * *"   # 09:17 +8
+    - cron: "17 6 * * *"   # 14:17 +8
+    - cron: "17 11 * * *"  # 19:17 +8
+    - cron: "17 16 * * *"  # 00:17 +8
   workflow_dispatch:
 
 concurrency:
@@ -24,7 +30,14 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
+      # `ref` checks out the branch tip when the job starts. Without it a run
+      # that queued behind another (concurrency above) gets the commit it was
+      # triggered on, refetches onto that stale tree, and its push is
+      # rejected -- claude-reads-hn shipped duplicates 21 times this way once
+      # two triggers fired per slot.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - uses: astral-sh/setup-uv@v5
 
