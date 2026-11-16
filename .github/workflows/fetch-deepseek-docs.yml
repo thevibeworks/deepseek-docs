@@ -6,12 +6,13 @@ on:
     # DeepSeek ships in. One line per slot on purpose: as a single `17 */6`
     # line, half the slots never ran (about 2/day since 2026-11-02).
     #
-    # These are the fallback, not the clock. GitHub starts them hours late
-    # here (the 00:17 slot of 2026-11-16 ran at 06:30) and on claude-reads-hn
-    # (1.5-6h, 2026-11-11..16). Its on-time runs come from an external
-    # workflow_dispatch at the slot hour; the same dispatch of this workflow
-    # (ref: main) is what makes these slots punctual. A duplicate run is
-    # harmless: nothing upstream changed, so it commits nothing.
+    # GitHub starts these hours late (the 00:17 slot of 2026-11-16 ran at
+    # 06:30), and that is accepted: no external dispatcher (2026-11-16).
+    # Nor does a late or doubled-up run need a skip gate like
+    # claude-reads-hn's, which exists because each of its runs publishes an
+    # edition. A fetch is idempotent: a run that finds no document changed
+    # upstream runs no triage and pings no one (at most it commits the
+    # fetch-state bookkeeping in content/.metadata.json, see Detect changes).
     - cron: "17 1 * * *"   # 09:17 +8
     - cron: "17 6 * * *"   # 14:17 +8
     - cron: "17 11 * * *"  # 19:17 +8
