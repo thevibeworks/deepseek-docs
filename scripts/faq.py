@@ -185,15 +185,21 @@ def main() -> int:
         for category in data[key]["categories"]:
             path = out_dir / f"category-{category['id']}.md"
             text = render(category, locale_dir, fetched)
+            # The fetched: line moves every run; compare the rest. Writing a
+            # date-only change made every day's first run look like news:
+            # triage, a commit and a phone push for an unchanged FAQ (22 such
+            # commits 2026-10-06..11-10, e.g. acd5f41).
+            old = path.read_text() if path.exists() else ""
+            changed = strip_fetched(old) != strip_fetched(text)
             if args.check:
-                # The fetched: line moves every run; compare the rest.
-                old = path.read_text() if path.exists() else ""
-                if strip_fetched(old) != strip_fetched(text):
+                if changed:
                     stale.append(str(path.relative_to(ROOT)))
                 continue
-            out_dir.mkdir(parents=True, exist_ok=True)
-            path.write_text(text)
-            written.append(f"{path.relative_to(ROOT)} ({len(category['questions'])}q)")
+            if changed:
+                out_dir.mkdir(parents=True, exist_ok=True)
+                path.write_text(text)
+            written.append(f"{'ok ' if changed else '== '} {path.relative_to(ROOT)}"
+                           f" ({len(category['questions'])}q)")
 
     if args.check:
         if stale:
@@ -202,7 +208,7 @@ def main() -> int:
         print("faq mirror up to date")
         return 0
     for line in written:
-        print("  ==", line)
+        print("  " + line)
     print(f"{len(written)} category files")
     return 0
 
