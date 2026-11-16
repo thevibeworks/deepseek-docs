@@ -127,7 +127,10 @@ the one client-rendered page; its data is fetched from the site's static
 ## Automation
 
 [`fetch-deepseek-docs.yml`](.github/workflows/fetch-deepseek-docs.yml)
-runs every 6 hours: fetch (dsh from GitHub/npm, then the api-docs site),
+runs four times a day, at claude-reads-hn's slots (09:17 / 14:17 / 19:17 /
+00:17 +8; GitHub starts scheduled runs hours late, so treat these as the
+earliest a slot can run): fetch (dsh from GitHub/npm, the FAQ, then the
+api-docs site),
 then hand the diff to Claude Code on Claude Opus 5.5 (`--effort high`,
 authenticated with a `CLAUDE_CODE_OAUTH_TOKEN` repo secret). The agent
 only classifies the change and writes decision
