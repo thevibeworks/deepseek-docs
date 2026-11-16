@@ -9,9 +9,10 @@
 # ///
 """Mirror https://api-docs.deepseek.com/ as an LLM-friendly markdown vault.
 
-The site is Docusaurus v3 (fully server-rendered, no llms.txt, no .md
-variants), so we discover pages via sitemap.xml per locale, extract the
-article body from the HTML, and convert it to markdown locally.
+The site is Docusaurus v3 (fully server-rendered, no llms.txt; per-page .md
+exports exist as of 2026-11-15 but are not used here), so we discover pages
+via sitemap.xml per locale plus the pages those link to, extract the article
+body from the HTML, and convert it to markdown locally.
 
 Usage:
     uv run scripts/fetcher.py                      # fetch all locales
@@ -76,6 +77,11 @@ def url_to_relpath(url: str, locale: str) -> str:
     return f"{path}.md"
 
 
+def page_url(locale: str, page: str) -> str:
+    """Inverse of url_to_relpath, for pages no sitemap handed us a URL for."""
+    return f"{SITE}{LOCALES[locale]}/{'' if page == 'index' else page}"
+
+
 # ---------------------------------------------------------------- conversion
 
 
@@ -107,20 +113,20 @@ def detect_language(pre) -> str:
     return ""
 
 
-def rewrite_links(article, locale: str, self_rel: str, page_paths: set[str]) -> None:
+def rewrite_links(article, locale: str, self_rel: str, page_paths: set[str],
+                  missing: set[str]) -> None:
     """Make links work inside the vault: internal doc links become relative
-    .md links; site assets become absolute URLs."""
+    .md links; site assets become absolute URLs. A link to a doc page outside
+    page_paths is added to `missing` so the caller can probe it."""
     import posixpath
     prefix = LOCALES[locale]
     self_dir = posixpath.dirname(self_rel)
+    other_prefixes = [p for p in LOCALES.values() if p and p != prefix]
 
-    def to_md_rel(path: str) -> str | None:
+    def page_of(path: str) -> str:
         if prefix and path.startswith(prefix):
             path = path[len(prefix):] or "/"
-        clean = path.strip("/") or "index"
-        if clean not in page_paths:
-            return None
-        return posixpath.relpath(f"{clean}.md", self_dir or ".")
+        return path.strip("/") or "index"
 
     for a in article.find_all("a", href=True):
         href = a["href"]
@@ -128,11 +134,18 @@ def rewrite_links(article, locale: str, self_rel: str, page_paths: set[str]) -> 
             continue
         if href.startswith("/"):
             path, _, frag = href.partition("#")
-            rel = to_md_rel(path)
-            if rel:
-                a["href"] = rel + (f"#{frag}" if frag else "")
-            else:
-                a["href"] = SITE + href
+            page = page_of(path)
+            if page in page_paths:
+                a["href"] = (posixpath.relpath(f"{page}.md", self_dir or ".")
+                             + (f"#{frag}" if frag else ""))
+                continue
+            a["href"] = SITE + href
+            # Assets carry an extension (/img/x.webp, the page's own .md
+            # export); another locale's pages belong to that locale's run.
+            if not ("?" in path or posixpath.splitext(page)[1]
+                    or any(path == p or path.startswith(p + "/")
+                           for p in other_prefixes)):
+                missing.add(page)
     for img in article.find_all("img", src=True):
         if img["src"].startswith("/"):
             img["src"] = SITE + img["src"]
@@ -145,9 +158,12 @@ def preprocess(article: BeautifulSoup) -> list[str]:
     # Anchor permalinks render as stray "[​](#...)" links -- drop them.
     for a in article.select("a.hash-link"):
         a.decompose()
-    # Copy buttons, edit links, screen-reader-only helpers.
+    # Copy buttons, edit links, screen-reader-only helpers. .doc-page-actions
+    # is the "Copy page / Open Markdown" widget (2026-11); on API pages it
+    # sits inside the article and leaked "[Open Markdown](...api/x.md)".
     for sel in ("button", ".theme-code-block-copied", ".sr-only",
-                "[class*=codeButton]", "[class*=buttonGroup]"):
+                "[class*=codeButton]", "[class*=buttonGroup]",
+                ".doc-page-actions"):
         for el in article.select(sel):
             el.decompose()
     # Code blocks -> placeholder tokens, swapped back in after conversion
@@ -188,7 +204,7 @@ def preprocess(article: BeautifulSoup) -> list[str]:
 
 
 def html_to_markdown(html: str, url: str, locale: str, self_rel: str,
-                     page_paths: set[str]) -> tuple[str, dict]:
+                     page_paths: set[str], missing: set[str]) -> tuple[str, dict]:
     soup = BeautifulSoup(html, "html.parser")
     title_el = soup.select_one("title")
     title = title_el.get_text().split("|")[0].strip() if title_el else ""
@@ -213,7 +229,7 @@ def html_to_markdown(html: str, url: str, locale: str, self_rel: str,
                or soup.select_one("main"))
     if article is None:
         raise ValueError(f"no article container in {url}")
-    rewrite_links(article, locale, self_rel, page_paths)
+    rewrite_links(article, locale, self_rel, page_paths, missing)
     code_blocks = preprocess(article)
     body = markdownify(str(article), heading_style="ATX", bullets="-")
     body = re.sub(
@@ -311,8 +327,23 @@ async def fetch_prompt_library(session, url: str, out: Path, results: dict):
         print(f"  ERR {url}: {e}", file=sys.stderr)
 
 
+class Crawl:
+    """One locale's pages, converted but not yet written. Pages are written
+    only once every link has settled, so a page discovered through a link
+    does not rewrite its referrers twice in one run."""
+
+    def __init__(self, page_paths: set[str]):
+        self.page_paths = page_paths
+        self.html: dict[str, str] = {}  # url -> HTML that converted cleanly
+        self.rendered: dict[Path, tuple[str, str, str]] = {}  # out -> (text, url, title)
+        # missing page path -> pages linking to it, as (rel, url, probe) jobs
+        self.linked_from: dict[str, set[tuple[str, str, str]]] = {}
+
+
 async def fetch_page(session, sem, url: str, out: Path, results: dict,
-                     locale: str, page_paths: set[str], gap: bool = False):
+                     locale: str, crawl: Crawl, probe: str = ""):
+    """Convert one page into crawl.rendered. A non-empty `probe` names why a
+    page no sitemap of this locale lists is being tried."""
     rel = url_to_relpath(url, locale)
     if rel == "prompt-library.md":
         async with sem:
@@ -321,27 +352,28 @@ async def fetch_page(session, sem, url: str, out: Path, results: dict,
     async with sem:
         try:
             for attempt in range(3):
-                html = await fetch_text(session, url)
+                html = crawl.html.get(url) or await fetch_text(session, url)
+                missing: set[str] = set()
                 try:
                     body, meta = html_to_markdown(
-                        html, url, locale, rel, page_paths)
+                        html, url, locale, rel, crawl.page_paths, missing)
                     break
                 except FallbackPageError:
                     if attempt == 2:
                         raise
                     await asyncio.sleep(2.0 * (attempt + 1))
-            changed = write_if_changed(out, render_page(body, meta, url))
-            results[str(out.relative_to(ROOT))] = {
-                "url": url, "title": meta["title"], "changed": changed}
-            print(f"  {'ok ' if changed else '== '} {out.relative_to(ROOT)}")
+            crawl.html[url] = html
+            crawl.rendered[out] = (render_page(body, meta, url), url, meta["title"])
+            for page in missing:
+                crawl.linked_from.setdefault(page, set()).add((rel, url, probe))
         except Exception as e:  # noqa: BLE001 - report and continue
-            if gap and isinstance(e, FallbackPageError):
-                # A sitemap-gap probe this locale does not serve: nothing to
-                # mirror and nothing for the manifest, or every page one
-                # locale lacks would sit there as a permanent error. (A
-                # `raise` from its own `except` clause would skip this
-                # handler and end the run: 2026-10-17, news250120.)
-                print(f"  --  {url}: listed in another locale only")
+            if probe and isinstance(e, FallbackPageError):
+                # A probe this locale does not serve: nothing to mirror and
+                # nothing for the manifest, or every page one locale lacks
+                # would sit there as a permanent error. (A `raise` from its
+                # own `except` clause would skip this handler and end the
+                # run: 2026-10-17, news250120.)
+                print(f"  --  {url}: {probe}")
                 return
             results[str(out.relative_to(ROOT))] = {"url": url, "error": str(e)}
             print(f"  ERR {url}: {e}", file=sys.stderr)
@@ -367,22 +399,44 @@ async def run_fetch(locales: list[str], incremental: bool) -> dict:
             if locale in locales:
                 print(f"[{locale}] {len(urls)} pages from {sitemap}")
         for locale in locales:
-            prefix = LOCALES[locale]
             pages = listed[locale]
             gaps = sorted({rel for other, rels in listed.items() if other != locale
                            for rel in rels} - pages.keys())
             if gaps:
                 print(f"[{locale}] {len(gaps)} listed only in another locale's sitemap; probing")
-            page_paths = {rel[:-3] for rel in pages} | {rel[:-3] for rel in gaps}
-            tasks = []
-            for rel, url, gap in ([(r, u, False) for r, u in pages.items()]
-                                  + [(r, f"{SITE}{prefix}/{r[:-3]}", True) for r in gaps]):
-                out = CONTENT / locale / rel
-                if incremental and out.exists():
-                    continue
-                tasks.append(fetch_page(session, sem, url, out, results,
-                                        locale, page_paths, gap))
-            await asyncio.gather(*tasks)
+            crawl = Crawl({rel[:-3] for rel in pages} | {rel[:-3] for rel in gaps})
+            jobs = ([(r, u, "") for r, u in pages.items()]
+                    + [(r, page_url(locale, r[:-3]), "listed in another locale only")
+                       for r in gaps])
+            # Neither sitemap is the whole site: news250929 links
+            # guides/comparison_testing, which upstream serves and no sitemap
+            # lists (2026-11-15). So every link target outside the mirror is
+            # probed; one this locale serves joins it, and the pages linking
+            # to it are converted again from cached HTML so the link resolves
+            # locally. Stops once a round adds no page and no target: both
+            # sets only grow, and the site is finite.
+            probed: set[str] = set()
+            while jobs:
+                await asyncio.gather(*[
+                    fetch_page(session, sem, url, CONTENT / locale / rel, results,
+                               locale, crawl, probe)
+                    for rel, url, probe in jobs
+                    if not (incremental and (CONTENT / locale / rel).exists())])
+                found = {p for p in probed - crawl.page_paths
+                         if CONTENT / locale / f"{p}.md" in crawl.rendered}
+                crawl.page_paths |= found
+                targets = sorted(crawl.linked_from.keys() - crawl.page_paths - probed)
+                probed.update(targets)
+                if targets:
+                    print(f"[{locale}] {len(targets)} linked but in no sitemap; probing")
+                jobs = sorted({job for p in found for job in crawl.linked_from[p]})
+                jobs += [(f"{t}.md", page_url(locale, t), "linked, but not served")
+                         for t in targets]
+            for out, (text, url, title) in sorted(crawl.rendered.items()):
+                changed = write_if_changed(out, text)
+                results[str(out.relative_to(ROOT))] = {
+                    "url": url, "title": title, "changed": changed}
+                print(f"  {'ok ' if changed else '== '} {out.relative_to(ROOT)}")
     return results
 
 
