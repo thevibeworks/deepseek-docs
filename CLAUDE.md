@@ -46,7 +46,9 @@ markdownify). Source registry lives in `sources.json`. The site is
 Docusaurus v3, fully SSR except `/prompt-library` (client-rendered from
 `/zh-cn/data/prompts.json`, special-cased in the fetcher). Unknown paths
 return HTTP 200 with the SPA shell -- never trust status codes alone when
-probing for new endpoints.
+probing for new endpoints. Pages are discovered from both locales'
+sitemaps plus every page an article links to; a probe that comes back as
+the SPA shell is dropped, not recorded.
 
 After changing conversion logic, re-run a full fetch and spot-check:
 code fences keep indentation and raw underscores, internal links resolve
