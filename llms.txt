@@ -19,6 +19,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 
 ## API Reference
 
+- [Speech to Text](content/en/api/asr.md): Transcribe an audio file into text. The whole file is sent in one request and the complete transcript is returned. See the [Speech to Text guide](/guides/a...
 - [Chat Completions API](content/en/api/create-chat-completion.md): Creates a model response for the given chat conversation.
 - [FIM Completion API (Beta)](content/en/api/create-completion.md): FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature.
 - [Upload File](content/en/api/create-file.md): Upload an image file that can later be referenced by its `file_id` in chat completion requests.
@@ -30,24 +31,35 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Get User Balance](content/en/api/get-user-balance.md): Get user current balance
 - [List Files](content/en/api/list-files.md): Returns a list of files that belong to the user, with cursor-based pagination.
 - [Lists Models](content/en/api/list-models.md): Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output ...
+- [OCR](content/en/api/ocr.md): Recognize the text in a PDF, Word or PowerPoint document or in an image, and return the result page by page. The file is not stored in the Files API. See t...
 - [Retrieve File](content/en/api/retrieve-file.md): Returns information about a specific file.
 - [Search](content/en/api/search.md): Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, er...
+- [Text to Speech](content/en/api/tts.md): Convert text into speech. The audio is streamed in the response body as it is synthesized. See the [Text to Speech guide](/guides/tts) for the voices, lang...
 
 ## Guides
 
 - [Using the Anthropic API](content/en/guides/anthropic_api.md): To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deeps...
+- [Speech to Text](content/en/guides/asr.md): Transcribe an audio file into text, for example for voice input in a chatbot.
+- [Build a Chatbot](content/en/guides/build_a_chatbot.md): The DeepSeek API offers the same conversation features as DeepSeek Chat on the web and in the app: web search, deep thinking search, file input and URL rea...
 - [Chat Prefix Completion (Beta)](content/en/guides/chat_prefix_completion.md): The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the mes...
 - [Integrate with AI Tools](content/en/guides/coding_agents.md): This guide shows how to integrate DeepSeek models with popular AI coding tools, including Claude Code, OpenCode, and OpenClaw.
-- [Files API](content/en/guides/files_api.md): The Files API lets you upload images and reference them later by file_id. It is the recommended way to:
+- [Conversation Title](content/en/guides/conversation_title.md): Set "title" true} to have the response carry a short title for the conversation, for example to show in a conversation list. The model writes the title tog...
+- [File Parsing](content/en/guides/document_parsing.md): Have the model answer questions based on your files, like uploading files in DeepSeek Chat. There are two steps:
+- [Files API](content/en/guides/files_api.md): The Files API lets you upload files and reference them later by file_id. You can upload two kinds of files:
 - [FIM Completion (Beta)](content/en/guides/fim_completion.md): In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is comm...
 - [JSON Output](content/en/guides/json_mode.md): In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing.
 - [Context Caching](content/en/guides/kv_cache.md): The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code.
+- [User Metadata Marker](content/en/guides/latest_reminder.md): DeepSeek Chat tells the model the current date and the user's location, platform and language, so that answers fit the user's situation. With the API, you ...
 - [Multi-round Conversation](content/en/guides/multi_round_chat.md): This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations.
+- [OCR](content/en/guides/ocr.md): The OCR API recognizes the text in a PDF, Word or PowerPoint document or in an image, and returns the result page by page. The file is not stored in the Fi...
 - [Using the Responses API](content/en/guides/responses_api.md): To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com.
+- [Model Content Safety](content/en/guides/safety.md): Set safety_check to {"level": "high"} to turn on basic risk control, which reviews the model input and output.
 - [Search & Fetch](content/en/guides/search.md): The Search API and the Fetch API give agents and RAG applications access to live web content:
 - [Thinking Mode](content/en/guides/thinking_mode.md): The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the ...
 - [Tool Calls](content/en/guides/tool_calls.md): Tool Calls allows the model to call external tools to enhance its capabilities.
+- [Text to Speech](content/en/guides/tts.md): Convert text into natural speech, for example to read chatbot answers aloud.
 - [Vision](content/en/guides/vision.md): The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more...
+- [Web Tools](content/en/guides/web_tools.md): DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fet...
 
 ## API Samples
 
@@ -101,7 +113,8 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live](content/en/news/news260821.md): DeepSeek-V4-Flash-Vision-Exp is now live on the DeepSeek API Platform! 🚀
 - [DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient](content/en/news/news260910.md): 🚀 Introducing DeepSeek-V4.1-Flash: smarter, faster, more efficient.
 - [DeepSeek-V4.1-Flash-1017: Wish-Driven Programming Made Real](content/en/news/news261017.md): 🚀 DeepSeek-V4.1-Flash-1017 is here!
-- [Change Log](content/en/updates.md): Date: 2026-10-17
+- [The full DeepSeek App experience, now via API](content/en/news/news261113.md): Search, files, links, safety, and voice. The capabilities behind the DeepSeek App are now available through the DeepSeek API.
+- [Change Log](content/en/updates.md): Date: 2026-11-13
 
 ## dsh (DeepSeek Harness)
 
@@ -183,6 +196,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [2026-10-27-subagent-settlement-attribution](content/en/dsh/docs/persistence-changes/2026-10-27-subagent-settlement-attribution.md)
 - [2026-11-02-subagent-catalog-names](content/en/dsh/docs/persistence-changes/2026-11-02-subagent-catalog-names.md)
 - [2026-11-02-team-task-owner-names](content/en/dsh/docs/persistence-changes/2026-11-02-team-task-owner-names.md)
+- [2026-11-05-timeline-priority-notice](content/en/dsh/docs/persistence-changes/2026-11-05-timeline-priority-notice.md)
 - [Persistence-type change records](content/en/dsh/docs/persistence-changes/README.md)
 - [Session persistence formats](content/en/dsh/docs/persistence-changes/historical-formats/README.md)
 - [Session V0 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v0.md)
@@ -249,7 +263,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [LLM Streaming](content/en/dsh/docs/subsystems/llm-streaming.md)
 - [LSP navigation](content/en/dsh/docs/subsystems/lsp.md)
 - [MCP](content/en/dsh/docs/subsystems/mcp.md)
-- [Office to PDF](content/en/dsh/docs/subsystems/office-to-pdf.md)
+- [Office Kit](content/en/dsh/docs/subsystems/office-kit.md)
 - [OTel reporting](content/en/dsh/docs/subsystems/otel.md)
 - [Permission Presets](content/en/dsh/docs/subsystems/permission-presets.md)
 - [Session Persistence](content/en/dsh/docs/subsystems/persistence.md)
@@ -393,6 +407,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Web search defaults](content/en/dsh/docs/upgrade-guide/v0.2.1-rc.3/web-search-defaults/guide.md)
 - [Model listings refresh automatically](content/en/dsh/docs/upgrade-guide/v0.2.1-rc.4/model-listing-refresh/guide.md)
 - [Reasoning Body Slot text fields](content/en/dsh/docs/upgrade-guide/v0.2.1-rc.4/reasoning-body-props/guide.md)
+- [Remove SandboxUnsupportedPolicyError imports](content/en/dsh/docs/upgrade-guide/v0.2.1-rc.4/sandbox-unsupported-policy-error/guide.md)
 - [Context menu types and icons](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/context-menu-target/guide.md)
 - [Loader entry tree reports and Include persistence](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/cordis-loader-entry-trees/guide.md)
 - [CSS-anchored menus](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/css-anchored-menus/guide.md)
@@ -401,6 +416,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Forge Git query permissions and content conversion](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/forge-git-permissions/guide.md)
 - [One plugin entry for change requests and worktrees](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/forge-worktree-entry/guide.md)
 - [Filesystem mutations no longer require a prior read by default](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/fs-observation-policy-default-off/guide.md)
+- [`new LlmError` accepts only built-in failure codes](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/llm-error-builtin-codes/guide.md)
 - [Declare auxiliary LLM request purposes](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/llm-request-purpose-declarations/guide.md)
 - [pi-ai request image count](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/pi-ai-request-image-count/guide.md)
 - [Projection frames list every key one event changed](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/projection-event-frames/guide.md)
@@ -415,7 +431,47 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [DeepSeek web search and fetch follow the DeepSeek model route](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/web-search-credential-modes/guide.md)
 - [Search defaults to the DeepSeek Search API; Exa and Perplexity are removed](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.2/web-search-default-provider/guide.md)
 - [Chat `ProcessActivity` adds `context`](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/chat-process-activity-context/guide.md)
+- [`@deepseek-ai/dsh-office-kit` replaces `@deepseek-ai/dsh-office-to-pdf`](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/office-kit-package/guide.md)
+- [Office operation skills are replaced by Office tools](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/office-operation-tools/guide.md)
+- [Office skills load from the packaged assets](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/office-skill-resources/guide.md)
 - [Subagent tools address agents by name](content/en/dsh/docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md)
+- [Update account notification consumers](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/account-notification-fields/guide.md)
+- [Account service and Remote imports](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/account-remote-provider/guide.md)
+- [Worktree cleanup on archive](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/archive-worktrees/guide.md)
+- [Attachment failures keep their codes](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/attachment-error-codes/guide.md)
+- [macOS AX tree read limits](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/cua-ax-read-limits/guide.md)
+- [macOS hover keeps the system pointer in place by default](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/cua-hover-ax-only/guide.md)
+- [Native CUA application and window API](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/cua-native-platform/guide.md)
+- [`dsh-doc` replaces the Creator mode skills](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/dsh-doc-skill/guide.md)
+- [Forge snapshots carry the change request overview, and actions report unknown outcomes](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/forge-change-request-overview/guide.md)
+- [Forge diffs read one head commit](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/forge-pinned-diff/guide.md)
+- [Forge failures report unsupported reads](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/forge-review-reads/guide.md)
+- [Replace internal plugin-root imports](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/package-export-cleanup/guide.md)
+- [`BundleInfo.update` replaces `BundleInfo.updatable`](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/plugin-update-method/guide.md)
+- [Node PTC bootstrap protocol version 3 and the scoped-repl format](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/ptc-bootstrap-protocol/guide.md)
+- [Explicit output in TypeScript PTC programs](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/ptc-inspect-output/guide.md)
+- [Retained Node PTC runs the scoped REPL by default](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/ptc-scoped-repl-default/guide.md)
+- [Runtime-context reminder records](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/runtime-context-reminders/guide.md)
+- [Update replacements for `Session.append`](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/session-append-overloads/guide.md)
+- [Built-in configurations disable agent interruption](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/subagent-interrupt-default/guide.md)
+- [`TerminalBackendCleanupError` extends `TerminalError`](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/terminal-backend-cleanup-error/guide.md)
+- [Persistent terminals open in the Web sidebar](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/terminal-bundle-sidebar-backend/guide.md)
+- [Local HTTP fetch transport failures use classified codes](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/web-fetch-transport-error-codes/guide.md)
+- [DeepSeek web search and fetch choose their credential by billing](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/web-search-billing/guide.md)
+- [Explicit window regions for custom Client overlays](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.1/window-drag-regions/guide.md)
+- [Client module metadata](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/client-module-metadata/guide.md)
+- [Token Provider and route admission migration](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/connection-page-peer/guide.md)
+- [`ctx[Context.root]` replaces `ctx.root`, and service intercept metadata is renamed](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cordis-root-and-intercept-metadata/guide.md)
+- [CUA gives Agents without a preset `cua_run_code`](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cua-agents-without-preset/guide.md)
+- [macOS Computer Use provider name](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cua-macos-provider/guide.md)
+- [macOS CUA isolates unavailable AX branches](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/cua-partial-observations/guide.md)
+- [DeepSeek image upload timeout](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/deepseek-files-timeout/guide.md)
+- [Experimental plugin failures carry error codes](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/experimental-tool-error-codes/guide.md)
+- [Update removed package subpath imports](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/package-export-cleanup/guide.md)
+- [Python PTC removal](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/python-ptc-removal/guide.md)
+- [Session status moves to `@deepseek-ai/dsh-client-ui-session-status` and completion reminders follow Host reading records](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/session-status-package/guide.md)
+- [Shared search filter replaces rankByName and searchMode](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/shared-search-filter/guide.md)
+- [Shell and read_image failures use consolidated error codes](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/shell-fs-tool-error-codes/guide.md)
 - [Plugin configuration](content/en/dsh/docs/user/develop/basic/config.md)
 - [Your first plugin](content/en/dsh/docs/user/develop/basic/index.md)
 - [Package and install a plugin](content/en/dsh/docs/user/develop/basic/publish.md)
@@ -426,6 +482,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Configure persistent plugins from a prompt](content/en/dsh/docs/user/develop/practice/dynamic-cordis.md)
 - [Three-role capability design](content/en/dsh/docs/user/develop/practice/index.md)
 - [LLM adapters](content/en/dsh/docs/user/develop/practice/llm-adapter.md)
+- [Uninstall DSH Desktop](content/en/dsh/docs/user/guide/desktop-uninstall-cleanup.md)
 - [Create review Sessions from GitHub webhooks](content/en/dsh/docs/user/guide/github-review.md)
 - [Use the Web UI](content/en/dsh/docs/user/guide/index.md)
 - [Connect a third-party memory MCP server](content/en/dsh/docs/user/guide/mcp-memory.md)
