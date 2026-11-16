@@ -2,12 +2,10 @@
 title: "Retrieve File"
 description: "Returns information about a specific file."
 source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Retrieve File
-
-[Open Markdown](https://api-docs.deepseek.com/api/retrieve-file.md "Open Markdown in a new tab")
 
 ```
 GET /files/:file_id

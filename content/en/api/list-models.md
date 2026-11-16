@@ -2,12 +2,10 @@
 title: "Lists Models"
 description: "Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output modalities, supported effort levels, and per-protocol API capabilities. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
 source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Lists Models
-
-[Open Markdown](https://api-docs.deepseek.com/api/list-models.md "Open Markdown in a new tab")
 
 ```
 GET /models

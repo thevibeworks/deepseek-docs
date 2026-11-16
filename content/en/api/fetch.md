@@ -2,12 +2,10 @@
 title: "Fetch"
 description: "Fetch a web page and return its title and content as Markdown. See the [Search & Fetch guide](/guides/search) for error handling and billing."
 source: https://api-docs.deepseek.com/api/fetch
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Fetch
-
-[Open Markdown](https://api-docs.deepseek.com/api/fetch.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/fetch

@@ -2,12 +2,10 @@
 title: "Messages API"
 description: "Creates a model response in the Anthropic Messages API format."
 source: https://api-docs.deepseek.com/api/create-message
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Messages API
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-message.md "Open Markdown in a new tab")
 
 ```
 POST /anthropic/v1/messages

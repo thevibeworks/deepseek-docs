@@ -2,12 +2,10 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Chat Completions API
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/create-chat-completion.md "在新标签页打开 Markdown")
 
 ```
 POST /chat/completions

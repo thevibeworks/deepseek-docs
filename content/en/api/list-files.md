@@ -2,12 +2,10 @@
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
 source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # List Files
-
-[Open Markdown](https://api-docs.deepseek.com/api/list-files.md "Open Markdown in a new tab")
 
 ```
 GET /files

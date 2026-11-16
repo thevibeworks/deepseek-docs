@@ -2,12 +2,10 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Responses API
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/create-response.md "在新标签页打开 Markdown")
 
 ```
 POST /responses

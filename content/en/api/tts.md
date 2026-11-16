@@ -2,12 +2,10 @@
 title: "Text to Speech"
 description: "Convert text into speech. The audio is streamed in the response body as it is synthesized. See the [Text to Speech guide](/guides/tts) for the voices, languages, limits, errors and billing."
 source: https://api-docs.deepseek.com/api/tts
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Text to Speech
-
-[Open Markdown](https://api-docs.deepseek.com/api/tts.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/tts

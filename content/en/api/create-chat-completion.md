@@ -2,12 +2,10 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Chat Completions API
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-chat-completion.md "Open Markdown in a new tab")
 
 ```
 POST /chat/completions

@@ -2,12 +2,10 @@
 title: "OCR"
 description: "Recognize the text in a PDF, Word or PowerPoint document or in an image, and return the result page by page. The file is not stored in the Files API. See the [OCR guide](/guides/ocr) for the limits, errors and billing."
 source: https://api-docs.deepseek.com/api/ocr
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # OCR
-
-[Open Markdown](https://api-docs.deepseek.com/api/ocr.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/ocr

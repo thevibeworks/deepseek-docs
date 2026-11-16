@@ -2,12 +2,10 @@
 title: "Get User Balance"
 description: "Get user current balance"
 source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Get User Balance
-
-[Open Markdown](https://api-docs.deepseek.com/api/get-user-balance.md "Open Markdown in a new tab")
 
 ```
 GET /user/balance

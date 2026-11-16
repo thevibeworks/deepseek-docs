@@ -2,12 +2,10 @@
 title: "网页抓取"
 description: "抓取网页，返回页面标题与 Markdown 格式的内容。错误处理和计费说明请参考[网页搜索与抓取指南](/zh-cn/guides/search)。"
 source: https://api-docs.deepseek.com/zh-cn/api/fetch
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # 网页抓取
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/fetch.md "在新标签页打开 Markdown")
 
 ```
 POST /v1/tools/fetch

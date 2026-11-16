@@ -2,12 +2,10 @@
 title: "Speech to Text"
 description: "Transcribe an audio file into text. The whole file is sent in one request and the complete transcript is returned. See the [Speech to Text guide](/guides/asr) for the languages, limits, errors and billing."
 source: https://api-docs.deepseek.com/api/asr
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Speech to Text
-
-[Open Markdown](https://api-docs.deepseek.com/api/asr.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/asr

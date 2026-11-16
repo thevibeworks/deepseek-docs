@@ -2,12 +2,10 @@
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # FIM Completion API (Beta)
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-completion.md "Open Markdown in a new tab")
 
 ```
 POST /completions

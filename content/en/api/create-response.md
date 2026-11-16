@@ -2,12 +2,10 @@
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Responses API
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-response.md "Open Markdown in a new tab")
 
 ```
 POST /responses

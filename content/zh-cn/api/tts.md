@@ -2,12 +2,10 @@
 title: "语音合成"
 description: "把文本合成为语音，音频边合成边在响应体中流式返回。音色、语种、限制、错误与计费见 [语音合成指南](/zh-cn/guides/tts)。"
 source: https://api-docs.deepseek.com/zh-cn/api/tts
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # 语音合成
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/tts.md "在新标签页打开 Markdown")
 
 ```
 POST /v1/tools/tts

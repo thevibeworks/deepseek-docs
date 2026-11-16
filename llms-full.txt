@@ -7,12 +7,10 @@
 title: "Speech to Text"
 description: "Transcribe an audio file into text. The whole file is sent in one request and the complete transcript is returned. See the [Speech to Text guide](/guides/asr) for the languages, limits, errors and billing."
 source: https://api-docs.deepseek.com/api/asr
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Speech to Text
-
-[Open Markdown](https://api-docs.deepseek.com/api/asr.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/asr
@@ -76,12 +74,10 @@ Loading...
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Chat Completions API
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-chat-completion.md "Open Markdown in a new tab")
 
 ```
 POST /chat/completions
@@ -1325,12 +1321,10 @@ Loading...
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # FIM Completion API (Beta)
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-completion.md "Open Markdown in a new tab")
 
 ```
 POST /completions
@@ -1836,12 +1830,10 @@ Loading...
 title: "Upload File"
 description: "Upload an image file that can later be referenced by its `file_id` in chat completion requests."
 source: https://api-docs.deepseek.com/api/create-file
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Upload File
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-file.md "Open Markdown in a new tab")
 
 ```
 POST /files
@@ -1950,12 +1942,10 @@ Loading...
 title: "Messages API"
 description: "Creates a model response in the Anthropic Messages API format."
 source: https://api-docs.deepseek.com/api/create-message
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Messages API
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-message.md "Open Markdown in a new tab")
 
 ```
 POST /anthropic/v1/messages
@@ -4629,12 +4619,10 @@ Loading...
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Responses API
-
-[Open Markdown](https://api-docs.deepseek.com/api/create-response.md "Open Markdown in a new tab")
 
 ```
 POST /responses
@@ -5486,12 +5474,10 @@ DeepSeek Support: [api-service@deepseek.com](mailto:api-service@deepseek.com)
 title: "Delete File"
 description: "Deletes a file."
 source: https://api-docs.deepseek.com/api/delete-file
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Delete File
-
-[Open Markdown](https://api-docs.deepseek.com/api/delete-file.md "Open Markdown in a new tab")
 
 ```
 DELETE /files/:file_id
@@ -5555,12 +5541,10 @@ Loading...
 title: "Fetch"
 description: "Fetch a web page and return its title and content as Markdown. See the [Search & Fetch guide](/guides/search) for error handling and billing."
 source: https://api-docs.deepseek.com/api/fetch
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Fetch
-
-[Open Markdown](https://api-docs.deepseek.com/api/fetch.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/fetch
@@ -5625,12 +5609,10 @@ Loading...
 title: "Get User Balance"
 description: "Get user current balance"
 source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Get User Balance
-
-[Open Markdown](https://api-docs.deepseek.com/api/get-user-balance.md "Open Markdown in a new tab")
 
 ```
 GET /user/balance
@@ -5708,12 +5690,10 @@ Loading...
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
 source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # List Files
-
-[Open Markdown](https://api-docs.deepseek.com/api/list-files.md "Open Markdown in a new tab")
 
 ```
 GET /files
@@ -5860,12 +5840,10 @@ Loading...
 title: "Lists Models"
 description: "Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output modalities, supported effort levels, and per-protocol API capabilities. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
 source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Lists Models
-
-[Open Markdown](https://api-docs.deepseek.com/api/list-models.md "Open Markdown in a new tab")
 
 ```
 GET /models
@@ -6038,12 +6016,10 @@ Loading...
 title: "OCR"
 description: "Recognize the text in a PDF, Word or PowerPoint document or in an image, and return the result page by page. The file is not stored in the Files API. See the [OCR guide](/guides/ocr) for the limits, errors and billing."
 source: https://api-docs.deepseek.com/api/ocr
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # OCR
-
-[Open Markdown](https://api-docs.deepseek.com/api/ocr.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/ocr
@@ -6185,12 +6161,10 @@ Loading...
 title: "Retrieve File"
 description: "Returns information about a specific file."
 source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Retrieve File
-
-[Open Markdown](https://api-docs.deepseek.com/api/retrieve-file.md "Open Markdown in a new tab")
 
 ```
 GET /files/:file_id
@@ -6275,12 +6249,10 @@ Loading...
 title: "Search"
 description: "Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, error handling, and billing."
 source: https://api-docs.deepseek.com/api/search
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Search
-
-[Open Markdown](https://api-docs.deepseek.com/api/search.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/search
@@ -6431,12 +6403,10 @@ Loading...
 title: "Text to Speech"
 description: "Convert text into speech. The audio is streamed in the response body as it is synthesized. See the [Text to Speech guide](/guides/tts) for the voices, languages, limits, errors and billing."
 source: https://api-docs.deepseek.com/api/tts
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # Text to Speech
-
-[Open Markdown](https://api-docs.deepseek.com/api/tts.md "Open Markdown in a new tab")
 
 ```
 POST /v1/tools/tts
@@ -6844,7 +6814,7 @@ tool_calls=None
 title: "FAQ: Login Issues"
 description: "DeepSeek FAQ, Login Issues — 9 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/1
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # FAQ: Login Issues
@@ -6914,7 +6884,7 @@ If you believe this is an error, please contact us by filling out the「[Account
 title: "FAQ: User Guide"
 description: "DeepSeek FAQ, User Guide — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/2
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # FAQ: User Guide
@@ -6987,7 +6957,7 @@ If you cannot find this option, please upgrade your App to the latest version.
 title: "FAQ: Chat Issues"
 description: "DeepSeek FAQ, Chat Issues — 10 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/3
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # FAQ: Chat Issues
@@ -7054,7 +7024,7 @@ Check if file uploads are restricted within your local network (LAN).
 title: "FAQ: API"
 description: "DeepSeek FAQ, API — 16 questions and answers."
 source: https://static.deepseek.com/faq/index.html?lang=en#/category/4
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # FAQ: API
@@ -7925,6 +7895,22 @@ Chat with OpenClaw in the terminal:
 ```text
 openclaw terminal
 ```
+
+
+<!-- ===== content/en/guides/comparison_testing.md ===== -->
+
+---
+title: "V3.1-Terminus Comparison Testing"
+description: "This document is outdated and is no longer maintained. The previous comparison testing instructions have been removed."
+source: https://api-docs.deepseek.com/guides/comparison_testing
+fetched: 2026-11-16
+---
+
+# V3.1-Terminus Comparison Testing
+
+This document is outdated and is no longer maintained. The previous comparison testing instructions have been removed.
+
+Please refer to the [latest API documentation](../index.md) for current usage instructions.
 
 
 <!-- ===== content/en/guides/conversation_title.md ===== -->
@@ -12338,7 +12324,7 @@ Thanks to everyone for your feedback. It drives us to keep improving and refinin
 title: "Introducing DeepSeek-V3.2-Exp"
 description: "🚀 Introducing DeepSeek-V3.2-Exp — our latest experimental model!"
 source: https://api-docs.deepseek.com/news/news250929
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Introducing DeepSeek-V3.2-Exp
@@ -12371,7 +12357,7 @@ fetched: 2026-11-02
 
 💰 DeepSeek API prices drop 50%+, effective immediately.
 
-🔹 For comparison testing, V3.1-Terminus remains available via a temporary API until Oct 15th, 2025, 15:59 (UTC Time). Details: [Comparison testing guide](https://api-docs.deepseek.com/guides/comparison_testing)
+🔹 For comparison testing, V3.1-Terminus remains available via a temporary API until Oct 15th, 2025, 15:59 (UTC Time). Details: [Comparison testing guide](../guides/comparison_testing.md)
 
 ![](https://api-docs.deepseek.com/img/v3_2_price_en.jpeg)
 

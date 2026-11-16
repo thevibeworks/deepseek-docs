@@ -2,12 +2,10 @@
 title: "删除文件"
 description: "删除一个文件。"
 source: https://api-docs.deepseek.com/zh-cn/api/delete-file
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # 删除文件
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/delete-file.md "在新标签页打开 Markdown")
 
 ```
 DELETE /files/:file_id

@@ -2,12 +2,10 @@
 title: "列出文件"
 description: "返回属于该用户的文件列表，使用游标分页。"
 source: https://api-docs.deepseek.com/zh-cn/api/list-files
-fetched: 2026-11-15
+fetched: 2026-11-16
 ---
 
 # 列出文件
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/list-files.md "在新标签页打开 Markdown")
 
 ```
 GET /files

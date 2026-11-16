@@ -2,12 +2,10 @@
 title: "获取模型列表"
 description: "列出当前可用的模型，并提供各模型的元数据：展示名称、上下文窗口、输出上限、支持的输入/输出模态、支持的推理强度（effort）档位，以及按 API 协议声明的能力。请前往[模型 & 价格](/zh-cn/quick_start/pricing)查看当前支持的模型列表"
 source: https://api-docs.deepseek.com/zh-cn/api/list-models
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # 获取模型列表
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/list-models.md "在新标签页打开 Markdown")
 
 ```
 GET /models

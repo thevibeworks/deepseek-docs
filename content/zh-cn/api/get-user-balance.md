@@ -2,12 +2,10 @@
 title: "查询余额"
 description: "查询账号余额"
 source: https://api-docs.deepseek.com/zh-cn/api/get-user-balance
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # 查询余额
-
-[打开 Markdown](https://api-docs.deepseek.com/zh-cn/api/get-user-balance.md "在新标签页打开 Markdown")
 
 ```
 GET /user/balance

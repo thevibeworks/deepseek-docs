@@ -2,12 +2,10 @@
 title: "Delete File"
 description: "Deletes a file."
 source: https://api-docs.deepseek.com/api/delete-file
-fetched: 2026-11-02
+fetched: 2026-11-16
 ---
 
 # Delete File
-
-[Open Markdown](https://api-docs.deepseek.com/api/delete-file.md "Open Markdown in a new tab")
 
 ```
 DELETE /files/:file_id
