@@ -1,7 +1,7 @@
 ---
 title: "Extensions"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/extensions.md
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 # Extensions
 
@@ -21,7 +21,7 @@ Generated from source by `scripts/gen-cordis-catalog.ts` (verified fresh by `pnp
 
 ### `ctx.cordisInspect` — `CordisInspectRegistryService`
 
-Registry and cross-page router behind the two model-facing inspect tools.
+Registry and cross-page router behind the model-facing inspection tool.
 
 ```ts cordis-catalog
 /**

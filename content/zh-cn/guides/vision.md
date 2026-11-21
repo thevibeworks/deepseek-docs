@@ -2,7 +2,7 @@
 title: "图像理解"
 description: "deepseek-flash 模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等。旧模型名 deepseek-v4-flash-vision-exp 仍可调用，但该模型已下线，其请求同样由最新的 Flash 模型承接。"
 source: https://api-docs.deepseek.com/zh-cn/guides/vision
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # 图像理解
@@ -175,8 +175,8 @@ print(response.choices[0].message.content)
 | 支持的格式 | JPEG、PNG、GIF、WebP |
 | 外部 URL 长度 | 8192 个字符 |
 | 请求体大小 | 48 MiB |
-| 单张图片最大大小（base64 / 外部 URL） | 32 MiB |
-| 单张图片最大大小（Files API `file_id`） | 64 MiB |
+| 单张图片文件大小上限（base64 / 外部 URL） | 32 MiB |
+| 单张图片文件大小上限（Files API `file_id`） | 64 MiB |
 | 单个请求最大图片数 | 600 |
 | 单个请求图片总大小 | 不含 `file_id` 图片最多 64 MiB；包含 `file_id` 图片最高 200 MiB |
 | 图片最大尺寸 | 单边最长 8192 像素；单个请求包含 15 张及以上图片时，降为单边最长 4096 像素 |

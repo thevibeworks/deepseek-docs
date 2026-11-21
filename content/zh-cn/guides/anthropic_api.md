@@ -2,7 +2,7 @@
 title: "使用 Anthropic API"
 description: "为了满足大家对 Anthropic API 生态的使用需求，我们的 API 新增了对 Anthropic API 格式的支持，其 base_url 为 https://api.deepseek.com/anthropic。"
 source: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # 使用 Anthropic API
@@ -102,7 +102,7 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | mcp\_servers | 忽略 |
 | metadata | 支持 `user_id`，其它字段忽略 关于 `user_id` 参数的更多信息，请参考 [限速与隔离](../quick_start/rate_limit.md)。 |
 | service\_tier | 忽略 |
-| stop\_sequences | 完全支持 |
+| stop\_sequences | 完全支持。最多 16 个非空字符串，每个字符串不能超过 512 字节（UTF-8 编码） |
 | stream | 完全支持 |
 | system | 完全支持 |
 | temperature | 有效范围为 [0.0 ~ 2.0]。非思考模式下生效；思考模式下固定为 `1.0` |
@@ -228,8 +228,6 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 ### 联网工具的服务端工具块
 
 使用联网工具时，`server_tool_use` 的 `name` 为 `deepseek_web_search` 或 `deepseek_read_url`，并带 `input.action` 与 `kind`；结果块还包括 `web_fetch_tool_result`。被内容安全拒答的响应以 `stop_reason: "refusal"` 结束。见 [联网工具](web_tools.md#response-blocks) 与 [模型内容安全](safety.md#handling-refusals)。
-
-使用联网工具时，`usage.server_tool_use` 还会返回 `web_fetch_requests`、`tool_fetch` 与 `tool_image_search`，各字段的含义与计费见 [联网工具](web_tools.md#billing)。
 
 ## 流式输出与 Token 用量
 

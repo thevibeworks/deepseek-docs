@@ -2,7 +2,7 @@
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Using the Responses API
@@ -177,7 +177,7 @@ Note: `web_search_call` items returned by a previous response can be passed back
 | `deepseek_web_search` / `deepseek_read_url` | Supported. Cannot be declared together with `web_search`; see [Web Tools](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
 
-The `web_search` tool above runs on the server through the Responses API. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
+The `web_search` tool above runs on the server through the Responses API and is not charged. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
 
 ### Response Fields
 

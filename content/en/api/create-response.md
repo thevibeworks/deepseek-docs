@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Responses API
@@ -646,19 +646,19 @@ Successful server-side web search and page-fetch counts, separate from token usa
 
 **Possible values:** `>= 0`
 
-Number of successful web search queries. A search with multiple queries can add more than one; failed queries and queries with no results are not counted. This field can be used as a basis for billing.
+Number of successful web search queries. A search with multiple queries can add more than one.
 
 **tool\_fetch** integerrequired
 
 **Possible values:** `>= 0`
 
-Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. With the web tools, finding text in a page is not counted. This field can be used as a basis for billing.
+Number of successful page fetches performed by open\_page or find\_in\_page. With the web tools, finding text in a page is not counted.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of successful image searches. This field can be used as a basis for billing.
+With the web tools. Number of successful image searches.
 
 **[Example]**
 

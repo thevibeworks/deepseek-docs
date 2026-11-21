@@ -1,7 +1,7 @@
 ---
 title: "Web Client Slots"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/slots.md
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 # Web Client Slots
 
@@ -20,6 +20,8 @@ The root-scoped lists `sidebar.panellist.actions`, `conversation.session.header.
 [ui-workspace](../../packages/client/ui-workspace/README.md#understand-the-implementation) documents Session-row extension positions, visibility, and keyboard behavior.
 
 [ui-settings](../../packages/client/ui-settings/README.md#filling-the-settings-slots) documents the settings page and navigation-icon extension points.
+
+[ui-session-panel](../../packages/client/ui-session-panel/README.md#contribute-a-section) documents the Session panel's section, title-control, row, and toggle-indicator extension positions.
 
 ## Declaration and lifecycle
 
@@ -153,6 +155,8 @@ root [AppFrame]
       │     ├─ conversation.session.header.lineage
       │     ├─ conversation.session.header.actions
       │     ├─ conversation.session.header.utilities
+      │     │  └─ id=session-panel [SessionPanelToggle]
+      │     │     └─ conversation.session.panel.indicator [list, inline]
       │     ├─ conversation.session.header.views.actions
       │     └─ conversation.session.header.corner
       └─ calls Factory: conversation.content
@@ -163,6 +167,11 @@ Factory: conversation.content [ConversationContent]
 │     ├─ id=chat [ChatView]
 │     │  ├─ conversation.chat.text-interaction [list]
 │     │  ├─ conversation.chat.markdown.fence [hoc, keyed by fence language]
+│     │  ├─ conversation.chat.aside [SessionPanel]
+│     │  │  ├─ conversation.session.panel.section [list]
+│     │  │  │  └─ id=environment [EnvironmentSection]
+│     │  │  │     └─ conversation.session.panel.environment.row [list]
+│     │  │  └─ conversation.session.panel.section.actions [keyed]
 │     │  └─ conversation.chat.flow [ChatFlow]
 │     │     └─ conversation.chat.node [ChatNodeSeat dispatch]
 │     │        ├─ key=user [UserMessageNodeView]

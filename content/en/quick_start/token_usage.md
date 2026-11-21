@@ -2,7 +2,7 @@
 title: "Token & Token Usage"
 description: "Tokens are the basic units used by models to represent natural language text, and also the units we use for billing. They can be intuitively understood as 'characters' or 'words'. Typically, a Chinese word, an English word, a number, or a symbol is counted as a token."
 source: https://api-docs.deepseek.com/quick_start/token_usage
-fetched: 2026-08-29
+fetched: 2026-11-21
 ---
 
 # Token & Token Usage
@@ -18,7 +18,7 @@ However, due to the different tokenization methods used by different models, the
 
 ## Calculate token usage offline
 
-You can run the demo tokenizer code in the following zip package to calculate the token usage for your intput/output.
+You can run the demo tokenizer code in the following zip package to calculate the token usage for your input/output.
 
 [deepseek\_tokenizer.zip](https://cdn.deepseek.com/api-docs/deepseek_v4_tokenizer.zip)
 

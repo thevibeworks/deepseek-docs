@@ -2,7 +2,7 @@
 title: "FIM 补全 API（Beta）"
 description: "FIM (Fill In the Middle) 补全 API。<br/>用户需要设置 `base_url='https://api.deepseek.com/beta'` 来使用此功能。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-completion
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # FIM 补全 API（Beta）
@@ -34,7 +34,7 @@ FIM (Fill In the Middle) 补全 API。
 
 **Default value:** `false`
 
-在输出中，把 prompt 的内容也输出出来。不能与 `suffix` 或 `logprobs` 一起使用。
+在输出中，把 prompt 的内容也一并返回。不能与 `suffix` 或 `logprobs` 一起使用。
 
 **logprobs** integernullable
 
@@ -42,7 +42,7 @@ FIM (Fill In the Middle) 补全 API。
 
 **Default value:** `null`
 
-制定输出中包含 logprobs 最可能输出 token 的对数概率，包含采样的 token。例如，如果 logprobs 是 20，API 将返回一个包含 20 个最可能的 token 的列表。API 将始终返回采样 token 的对数概率，因此响应中可能会有最多 logprobs+1 个元素。
+指定输出中包含 logprobs 最可能输出 token 的对数概率，包含采样的 token。例如，如果 logprobs 是 20，API 将返回一个包含 20 个最可能的 token 的列表。API 将始终返回采样 token 的对数概率，因此响应中可能会有最多 logprobs+1 个元素。
 
 logprobs 的最大值是 20。
 
@@ -58,7 +58,7 @@ nullable
 
 **Default value:** `null`
 
-一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。
+一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。每个 string 不能为空，且不能超过 512 字节（UTF-8 编码）。
 
 oneOf
 
@@ -107,7 +107,7 @@ nullable
 
 **Default value:** `null`
 
-制定被补全内容的后缀。
+补全内容之后的后缀。
 
 **temperature** numbernullable
 
@@ -277,25 +277,25 @@ DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `completi
 
 object
 
-使用联网工具时返回。计费的搜索与抓取次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+使用联网工具时返回。搜索与抓取的次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-计费的搜索次数，不含图片搜索。
+搜索次数，不含图片搜索。
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-计费的网页抓取次数。
+网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-计费的图片搜索次数。
+图片搜索次数。
 
 **[Example]**
 
@@ -470,25 +470,25 @@ DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `completi
 
 object
 
-使用联网工具时返回。计费的搜索与抓取次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+使用联网工具时返回。搜索与抓取的次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-计费的搜索次数，不含图片搜索。
+搜索次数，不含图片搜索。
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-计费的网页抓取次数。
+网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-计费的图片搜索次数。
+图片搜索次数。
 
 - ]
 

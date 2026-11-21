@@ -2,7 +2,7 @@
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Using the Anthropic API
@@ -102,7 +102,7 @@ Authenticate with either `x-api-key: <API_KEY>` or `Authorization: Bearer <API_K
 | mcp\_servers | Ignored |
 | metadata | `user_id` is supported, others are ignored Please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md) for more information about `user_id` parameter. |
 | service\_tier | Ignored |
-| stop\_sequences | Fully Supported |
+| stop\_sequences | Fully Supported. Up to 16 sequences; each non-empty string must be at most 512 bytes (UTF-8 encoded) |
 | stream | Fully Supported |
 | system | Fully Supported |
 | temperature | Valid range: [0.0 ~ 2.0]. Takes effect in non-thinking mode; fixed at `1.0` in thinking mode |
@@ -228,8 +228,6 @@ A successful response to this request contained `server_tool_use`, `web_search_t
 ### Server Tool Blocks of the Web Tools
 
 With the web tools, the `name` of a `server_tool_use` block is `deepseek_web_search` or `deepseek_read_url`, and the block carries `input.action` and `kind`; results also include `web_fetch_tool_result`. A response refused by model content safety ends with `stop_reason: "refusal"`. See [Web Tools](web_tools.md#response-blocks) and [Model Content Safety](safety.md#handling-refusals).
-
-With the web tools, `usage.server_tool_use` also returns `web_fetch_requests`, `tool_fetch` and `tool_image_search`. See [Web Tools](web_tools.md#billing) for their meaning and for billing.
 
 ## Streaming and token usage
 

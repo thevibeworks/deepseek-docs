@@ -74,7 +74,7 @@ Loading...
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Chat Completions API
@@ -427,7 +427,7 @@ nullable
 
 **Default value:** `null`
 
-Up to 16 sequences where the API will stop generating further tokens.
+Up to 16 sequences where the API will stop generating further tokens. Each sequence must be a non-empty string of at most 512 bytes (UTF-8 encoded).
 
 oneOf
 
@@ -981,25 +981,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 **[Example]**
 
@@ -1321,7 +1321,7 @@ Loading...
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
 source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # FIM Completion API (Beta)
@@ -1377,7 +1377,7 @@ nullable
 
 **Default value:** `null`
 
-Up to 16 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
+Up to 16 sequences where the API will stop generating further tokens. Each sequence must be a non-empty string of at most 512 bytes (UTF-8 encoded). The returned text will not contain the stop sequence.
 
 oneOf
 
@@ -1594,25 +1594,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 **[Example]**
 
@@ -1781,25 +1781,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 - ]
 
@@ -1942,7 +1942,7 @@ Loading...
 title: "Messages API"
 description: "Creates a model response in the Anthropic Messages API format."
 source: https://api-docs.deepseek.com/api/create-message
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Messages API
@@ -2950,7 +2950,7 @@ null
 
 **Maximum items:** `16`
 
-Up to 16 non-empty strings that stop generation. If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
+Up to 16 non-empty strings that stop generation. Each string must be at most 512 bytes (UTF-8 encoded). If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
 
 **temperature** numbernullable
 
@@ -3446,7 +3446,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -3458,13 +3458,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Web fetch error]**
 
@@ -3951,7 +3951,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -3963,13 +3963,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Server tool use output]**
 
@@ -4508,7 +4508,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -4520,13 +4520,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Signature delta]**
 
@@ -4619,7 +4619,7 @@ Loading...
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
 source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Responses API
@@ -5263,19 +5263,19 @@ Successful server-side web search and page-fetch counts, separate from token usa
 
 **Possible values:** `>= 0`
 
-Number of successful web search queries. A search with multiple queries can add more than one; failed queries and queries with no results are not counted. This field can be used as a basis for billing.
+Number of successful web search queries. A search with multiple queries can add more than one.
 
 **tool\_fetch** integerrequired
 
 **Possible values:** `>= 0`
 
-Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. With the web tools, finding text in a page is not counted. This field can be used as a basis for billing.
+Number of successful page fetches performed by open\_page or find\_in\_page. With the web tools, finding text in a page is not counted.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of successful image searches. This field can be used as a basis for billing.
+With the web tools. Number of successful image searches.
 
 **[Example]**
 
@@ -7159,7 +7159,7 @@ If you are not redirected automatically, please visit [FAQ](https://static.deeps
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
 source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Using the Anthropic API
@@ -7259,7 +7259,7 @@ Authenticate with either `x-api-key: <API_KEY>` or `Authorization: Bearer <API_K
 | mcp\_servers | Ignored |
 | metadata | `user_id` is supported, others are ignored Please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md) for more information about `user_id` parameter. |
 | service\_tier | Ignored |
-| stop\_sequences | Fully Supported |
+| stop\_sequences | Fully Supported. Up to 16 sequences; each non-empty string must be at most 512 bytes (UTF-8 encoded) |
 | stream | Fully Supported |
 | system | Fully Supported |
 | temperature | Valid range: [0.0 ~ 2.0]. Takes effect in non-thinking mode; fixed at `1.0` in thinking mode |
@@ -7385,8 +7385,6 @@ A successful response to this request contained `server_tool_use`, `web_search_t
 ### Server Tool Blocks of the Web Tools
 
 With the web tools, the `name` of a `server_tool_use` block is `deepseek_web_search` or `deepseek_read_url`, and the block carries `input.action` and `kind`; results also include `web_fetch_tool_result`. A response refused by model content safety ends with `stop_reason: "refusal"`. See [Web Tools](web_tools.md#response-blocks) and [Model Content Safety](safety.md#handling-refusals).
-
-With the web tools, `usage.server_tool_use` also returns `web_fetch_requests`, `tool_fetch` and `tool_image_search`. See [Web Tools](web_tools.md#billing) for their meaning and for billing.
 
 ## Streaming and token usage
 
@@ -8986,7 +8984,7 @@ An account can have at most 15 recognitions in progress, counted separately from
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
 source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Using the Responses API
@@ -9161,7 +9159,7 @@ Note: `web_search_call` items returned by a previous response can be passed back
 | `deepseek_web_search` / `deepseek_read_url` | Supported. Cannot be declared together with `web_search`; see [Web Tools](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
 
-The `web_search` tool above runs on the server through the Responses API. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
+The `web_search` tool above runs on the server through the Responses API and is not charged. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
 
 ### Response Fields
 
@@ -9378,7 +9376,7 @@ In all three protocols:
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
 source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Search & Fetch
@@ -9616,18 +9614,18 @@ Search and Fetch are read-only. For HTTP 408, 429, or 5xx errors, wait and retry
 
 ## Billing
 
-Search and Fetch are billed per successful request, not by tokens or by the number of returned results:
+The Search and Fetch APIs are billed per successful request, not by tokens or by the number of returned results:
 
 | API | Unit | Price |
 | --- | --- | --- |
-| Search | Per 1,000 successful requests | $0.75 |
-| Fetch | Per 1,000 successful requests | $0.75 |
+| Search API | Per 1,000 successful requests | $0.75 |
+| Fetch API | Per 1,000 successful requests | $0.75 |
 
-A request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
+A standalone request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
 
-Search and Fetch calls triggered by tools when using the DeepSeek API through DeepSeek Harness, Claude Code, or Codex, including [Codex Alpha Search](../quick_start/agent_integrations/codex.md), are also billed per successful request.
+Searches performed by the model through server-side tools are not billed (text search, image search and page fetch). Only model token usage is billed. Server-side tools include the [web tools](web_tools.md#billing), the `web_search` tool in the Responses API, Web Search in Claude Code, and search in DeepSeek Harness when **Web search provider** is set to **DeepSeek server-side search** or **Auto** (the default).
 
-The [web tools](web_tools.md#billing) are billed at the same web search and web fetch prices.
+Searches that call the Search and Fetch APIs directly from the client are billed at the prices above, such as search in DeepSeek Harness when **Web search provider** is **DeepSeek Search API**, and [Codex Alpha Search](../quick_start/agent_integrations/codex.md).
 
 ---
 
@@ -10696,16 +10694,16 @@ For field semantics, restrictions (images in `assistant` messages are rejected w
 
 ---
 title: "Web Tools"
-description: "DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool."
+description: "DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool."
 source: https://api-docs.deepseek.com/guides/web_tools
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Web Tools
 
-DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool.
+DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool.
 
-To call search and fetch directly from your own code, use the [Search & Fetch](search.md) APIs instead.
+These tools are designed for conversations, to [build a chatbot](build_a_chatbot.md). To search and fetch web pages in an agent or in your own code, use the [Search & Fetch](search.md) APIs instead.
 
 | Capability | How to enable it | What it does |
 | --- | --- | --- |
@@ -11306,16 +11304,10 @@ The `usage` in the final `message_delta`, or in a non-streaming response, is the
 | `output_tokens` | Output tokens |
 | `output_tokens_details.thinking_tokens` | The thinking tokens among them, returned when thinking is enabled |
 | `cache_creation_input_tokens` | Always `0` |
-| `server_tool_use.web_search_requests`, `web_fetch_requests` | The numbers of search result blocks and fetch result blocks in the response, including errors. They are for display and are not billed counts |
-| `server_tool_use.tool_search`, `tool_fetch`, `tool_image_search` | The billed numbers of searches (excluding image searches), fetches and image searches |
+| `server_tool_use.web_search_requests`, `web_fetch_requests` | The numbers of search result blocks and fetch result blocks in the response, including errors |
+| `server_tool_use.tool_search`, `tool_fetch`, `tool_image_search` | The numbers of searches (excluding image searches), fetches and image searches |
 
-Tool calls are billed separately, at the web search, image search and web fetch prices in [Models & Pricing](../quick_start/pricing.md#web-tools-pricing), the same prices as the Search and Fetch APIs:
-
-- Web search: a search call that returns results is billed for each of its queries, so a call with three queries counts as three. A call that fails or returns no results is not billed.
-- Image search: each image counts as 1 search, and each region the model selects in an image counts as 1 more. A search that fails or finds no results is not billed.
-- Web fetch, URL reading: per page fetched successfully, including pages whose result is then replaced by a `url_not_allowed` or `unavailable` error under model content safety. Links that cannot be fetched are not billed.
-- Web fetch, deep thinking search: an opened page is billed only when it is fetched from the web. Opening the same page again, moving through a page, and opening a page whose content came with the search results are free.
-- Finding text in a page is free.
+These server tools are not billed (text search, image search and page fetch). Only model token usage is billed.
 
 ---
 
@@ -11336,7 +11328,7 @@ Common error messages:
 
 ### Generation Failures
 
-If an error occurs after the answer has started to generate, such as an inference timeout or interruption, the HTTP status is already `200`. The response ends with an error and carries `usage`. Inference, searches and page reads that ran before the failure are billed as usual.
+If an error occurs after the answer has started to generate, such as an inference timeout or interruption, the HTTP status is already `200`. The response ends with an error and carries `usage`.
 
 | Protocol | Streaming | Non-streaming |
 | --- | --- | --- |
@@ -11432,7 +11424,7 @@ Each tool call is a `web_search_call` item with the DeepSeek extension `kind`:
 
 ### Usage
 
-- In `usage.server_tool_use`, `tool_search` is the number of billed searches (excluding image searches), `tool_fetch` the number of billed fetches, and `tool_image_search` the number of billed image searches. The field is omitted when all three are `0`.
+- In `usage.server_tool_use`, `tool_search` is the number of searches (excluding image searches), `tool_fetch` the number of fetches, and `tool_image_search` the number of image searches. The field is omitted when all three are `0`.
 
 ### Multi-turn Conversations
 
@@ -11545,7 +11537,7 @@ The tool calls are in the extension field `message.server_tool_calls`. Each entr
 
 ### Usage
 
-In `usage.server_tool_use`, `tool_search`, `tool_fetch` and `tool_image_search` are the numbers of billed searches, fetches and image searches, as in the [Responses API](#responses-api).
+In `usage.server_tool_use`, `tool_search`, `tool_fetch` and `tool_image_search` are the numbers of searches, fetches and image searches, as in the [Responses API](#responses-api).
 
 ### Multi-turn Conversations
 
@@ -13569,7 +13561,7 @@ You can also configure messaging platforms to use AstrBot directly from your pre
 title: "Integrate with Claude Code"
 description: "Claude Code is an AI coding assistant that runs in the terminal."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code
-fetched: 2026-10-17
+fetched: 2026-11-21
 ---
 
 # Integrate with Claude Code
@@ -13676,7 +13668,7 @@ claude
 
 ## Using Web Search in Claude Code
 
-The DeepSeek API natively supports the Web Search feature in Claude Code. When using Claude Code, if the model determines that your question requires a web search, it will invoke the Web Search tool and perform the search through the API provided by DeepSeek. Because invoking the Web Search tool generates additional LLM API requests to summarize the retrieved search content, additional model token costs will be incurred. The search requests themselves are also subject to [Search API billing](../../guides/search.md#billing).
+The DeepSeek API natively supports the Web Search feature in Claude Code. When using Claude Code, if the model determines that your question requires a web search, it will invoke the Web Search tool and perform the search through the API provided by DeepSeek. Because invoking the Web Search tool generates additional LLM API requests to summarize the retrieved search content, additional model token costs will be incurred. The search requests themselves are not billed.
 
 The following image shows an example of triggering the Web Search feature in Claude Code, where the user's question (Help me to search for best Rust tutorials) triggered the Web Search tool:
 
@@ -13702,7 +13694,7 @@ With this mapping, when using the developer mode of the new Claude Desktop APP, 
 title: "Integrate with Codex"
 description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
 source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Integrate with Codex
@@ -13939,7 +13931,7 @@ If you are updating an existing file, remove any top-level `web_search` setting 
 
 ### Web Search
 
-With Alpha Search, Codex can search the web, open a page and find text on that page. Each query that returns results counts as one Search request. Opening a page or finding text on it counts as one Fetch request when the page is successfully retrieved. See [Search and Fetch billing](../../guides/search.md#billing).
+With Alpha Search, Codex uses the standalone Search and Fetch APIs to search the web, open a page and find text on that page. Each query that returns results counts as one Search request. Opening a page or finding text on it counts as one Fetch request when the page is successfully retrieved. These standalone requests are billed per successful request. See [Search and Fetch billing](../../guides/search.md#billing).
 
 To turn off Alpha Search, add `web_search = "disabled"` at the top level of `~/.codex/config.toml` (before the first `[section]`) and restart Codex. This turns off web search in Codex, so no Search or Fetch requests are made. Note: selecting option 1 or 2 in the setup script again removes this setting and turns Alpha Search back on.
 
@@ -15210,14 +15202,14 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 
 ---
 title: "Models & Pricing"
-description: "Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
+description: "Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
 source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Models & Pricing
 
-Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model.
+Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model.
 
 ---
 
@@ -15255,16 +15247,18 @@ Model prices are listed in units of per 1M tokens. A token, the smallest unit of
 
 ---
 
-## Web Search & Fetch Pricing
+## Search & Fetch API Pricing
 
-Search (text, image) and web fetch are billed per use, whether you call the [Search and Fetch APIs](../guides/search.md) directly or the model uses them through tools such as the [web tools](../guides/web_tools.md).
+The [Search and Fetch APIs](../guides/search.md) are billed per use.
 
 | Item | Unit | Price |
 | --- | --- | --- |
-| Search (text, image) | Per 1,000 searches | $0.75 |
-| Web fetch | Per 1,000 fetches | $0.75 |
+| Search API (text) | Per 1,000 successful requests | $0.75 |
+| Fetch API | Per 1,000 successful requests | $0.75 |
 
-For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools](../guides/web_tools.md#billing).
+For the billing rules, see [Search & Fetch](../guides/search.md).
+
+Starting 12:00 on November 18, 2026 (Beijing Time, UTC+8), the server-side search and web fetch tool calls triggered when calling the model are no longer billed; the results they return are appended to the model context and billed as model token usage. Server-side search is triggered when you use the [web tools](../guides/web_tools.md), the [`web_search` tool in the Anthropic API](../guides/anthropic_api.md#server-tool-usage) or the [`web_search` tool in the Responses API](../guides/responses_api.md#tools).
 
 ---
 
@@ -15285,7 +15279,7 @@ For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools]
 
 ## Deduction Rules
 
-For model usage, the expense = number of tokens × price. Search (text, image) and web fetch are charged per use at the rates above.
+For model usage, the expense = number of tokens × price. Search API and Fetch API calls are charged per use at the rates above.
 The corresponding fees will be directly deducted from your topped-up balance or granted balance, with a preference for using the granted balance first when both balances are available.
 
 Product prices may vary and DeepSeek reserves the right to adjust them. We recommend topping up based on your actual usage and regularly checking this page for the most recent pricing information.
@@ -15401,7 +15395,7 @@ If the request has not started inference after 10 minutes, the server will close
 title: "Token & Token Usage"
 description: "Tokens are the basic units used by models to represent natural language text, and also the units we use for billing. They can be intuitively understood as 'characters' or 'words'. Typically, a Chinese word, an English word, a number, or a symbol is counted as a token."
 source: https://api-docs.deepseek.com/quick_start/token_usage
-fetched: 2026-08-29
+fetched: 2026-11-21
 ---
 
 # Token & Token Usage
@@ -15417,7 +15411,7 @@ However, due to the different tokenization methods used by different models, the
 
 ## Calculate token usage offline
 
-You can run the demo tokenizer code in the following zip package to calculate the token usage for your intput/output.
+You can run the demo tokenizer code in the following zip package to calculate the token usage for your input/output.
 
 [deepseek\_tokenizer.zip](https://cdn.deepseek.com/api-docs/deepseek_v4_tokenizer.zip)
 

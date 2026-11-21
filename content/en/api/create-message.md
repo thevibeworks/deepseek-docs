@@ -2,7 +2,7 @@
 title: "Messages API"
 description: "Creates a model response in the Anthropic Messages API format."
 source: https://api-docs.deepseek.com/api/create-message
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Messages API
@@ -1010,7 +1010,7 @@ null
 
 **Maximum items:** `16`
 
-Up to 16 non-empty strings that stop generation. If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
+Up to 16 non-empty strings that stop generation. Each string must be at most 512 bytes (UTF-8 encoded). If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
 
 **temperature** numbernullable
 
@@ -1506,7 +1506,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -1518,13 +1518,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Web fetch error]**
 
@@ -2011,7 +2011,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -2023,13 +2023,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Server tool use output]**
 
@@ -2568,7 +2568,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -2580,13 +2580,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Signature delta]**
 

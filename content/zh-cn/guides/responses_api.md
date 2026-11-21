@@ -2,7 +2,7 @@
 title: "使用 Responses API"
 description: "为了满足大家对 Codex 的需求，我们的 API 新增了对 Responses API 格式的支持，其 base_url 为 https://api.deepseek.com。"
 source: https://api-docs.deepseek.com/zh-cn/guides/responses_api
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # 使用 Responses API
@@ -177,7 +177,7 @@ input=[
 | `deepseek_web_search` / `deepseek_read_url` | 支持。不能与 `web_search` 同时声明，见 [联网工具](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` 等内置工具 | 忽略 |
 
-上述 `web_search` 是由 Responses API 在服务端执行的工具。Codex 的 Alpha Search 使用独立搜索接口，支持 `deepseek-flash` 和 `deepseek-v4-pro`，不受上述模型限制。配置方法见[接入 Codex](../quick_start/agent_integrations/codex.md)。
+上述 `web_search` 是由 Responses API 在服务端执行的工具，不计费。Codex 的 Alpha Search 使用独立搜索接口，支持 `deepseek-flash` 和 `deepseek-v4-pro`，不受上述模型限制。配置方法见[接入 Codex](../quick_start/agent_integrations/codex.md)。
 
 ### 响应字段
 

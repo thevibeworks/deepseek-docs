@@ -2,7 +2,7 @@
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Responses API
@@ -644,19 +644,19 @@ object
 
 **Possible values:** `>= 0`
 
-成功的网页搜索查询次数。一次搜索含多个查询时可能累计多次；失败或结果为空的查询不计入。此字段可作为计费依据。
+成功的网页搜索查询次数。一次搜索含多个查询时可能累计多次。
 
 **tool\_fetch** integerrequired
 
 **Possible values:** `>= 0`
 
-通过 open\_page 或 find\_in\_page 成功抓取网页的次数。失败的尝试不计入。此字段可作为计费依据。使用联网工具时，页内查找不计入。
+通过 open\_page 或 find\_in\_page 成功抓取网页的次数。使用联网工具时，页内查找不计入。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。成功的图片搜索次数。此字段可作为计费依据。
+使用联网工具时返回。成功的图片搜索次数。
 
 **[Example]**
 

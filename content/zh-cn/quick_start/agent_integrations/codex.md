@@ -2,7 +2,7 @@
 title: "接入 Codex"
 description: "Codex 是 OpenAI 推出的 AI 编程助手，通过 Responses API 与模型交互，DeepSeek API 原生支持该格式。"
 source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # 接入 Codex
@@ -239,7 +239,7 @@ enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
 
 ### 联网搜索
 
-启用 Alpha Search 后，Codex 可以搜索网页、打开网页，也可以在网页内查找文本。每条返回结果的查询计为一次 Search 请求。打开网页或在页内查找时，每次成功抓取网页计为一次 Fetch 请求。详见[《网页搜索与抓取》中的计费规则](../../guides/search.md#计费)。
+启用 Alpha Search 后，Codex 通过独立的 Search 与 Fetch API 搜索网页、打开网页，也可以在网页内查找文本。每条返回结果的查询计为一次 Search 请求。打开网页或在页内查找时，每次成功抓取网页计为一次 Fetch 请求。这些独立请求按成功请求次数计费。详见[《网页搜索与抓取》中的计费规则](../../guides/search.md#billing)。
 
 如需关闭 Alpha Search，在 `~/.codex/config.toml` 的顶层（第一个 `[section]` 之前）加入 `web_search = "disabled"`，然后重启 Codex。这样会关闭 Codex 的联网搜索，不再产生 Search 或 Fetch 请求。注意：之后如果在配置脚本中再次选择第 1 或 2 项，脚本会删除这一设置并重新开启 Alpha Search。
 
