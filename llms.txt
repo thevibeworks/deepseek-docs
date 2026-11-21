@@ -13,7 +13,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 
 - [Your First API Call](content/en/index.md): The DeepSeek API uses an API format compatible with OpenAI/Anthropic. By modifying the configuration, you can use the OpenAI/Anthropic SDK or softwares com...
 - [Error Codes](content/en/quick_start/error_codes.md): When calling DeepSeek API, you may encounter errors. Here list the causes and solutions.
-- [Models & Pricing](content/en/quick_start/pricing.md): Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctua...
+- [Models & Pricing](content/en/quick_start/pricing.md): Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. W...
 - [Rate Limit & Isolation](content/en/quick_start/rate_limit.md): Concurrency Limit
 - [Token & Token Usage](content/en/quick_start/token_usage.md): Tokens are the basic units used by models to represent natural language text, and also the units we use for billing. They can be intuitively understood as ...
 
@@ -60,7 +60,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Tool Calls](content/en/guides/tool_calls.md): Tool Calls allows the model to call external tools to enhance its capabilities.
 - [Text to Speech](content/en/guides/tts.md): Convert text into natural speech, for example to read chatbot answers aloud.
 - [Vision](content/en/guides/vision.md): The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more...
-- [Web Tools](content/en/guides/web_tools.md): DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fet...
+- [Web Tools](content/en/guides/web_tools.md): DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decide...
 
 ## API Samples
 
@@ -198,6 +198,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [2026-11-02-subagent-catalog-names](content/en/dsh/docs/persistence-changes/2026-11-02-subagent-catalog-names.md)
 - [2026-11-02-team-task-owner-names](content/en/dsh/docs/persistence-changes/2026-11-02-team-task-owner-names.md)
 - [2026-11-05-timeline-priority-notice](content/en/dsh/docs/persistence-changes/2026-11-05-timeline-priority-notice.md)
+- [2026-11-13-workspace-root-change](content/en/dsh/docs/persistence-changes/2026-11-13-workspace-root-change.md)
 - [Persistence-type change records](content/en/dsh/docs/persistence-changes/README.md)
 - [Session persistence formats](content/en/dsh/docs/persistence-changes/historical-formats/README.md)
 - [Session V0 persistence format](content/en/dsh/docs/persistence-changes/historical-formats/v0.md)
@@ -239,6 +240,7 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Vendored package rescope](content/en/dsh/docs/rescope.md)
 - [Session format version and release status](content/en/dsh/docs/session-format-status.md)
 - [Subsystems](content/en/dsh/docs/subsystems/README.md)
+- [DeepSeek Account](content/en/dsh/docs/subsystems/account.md)
 - [Agent Teams](content/en/dsh/docs/subsystems/agent-team.md)
 - [User Approval](content/en/dsh/docs/subsystems/approval.md)
 - [Durable Attachments](content/en/dsh/docs/subsystems/attachment.md)
@@ -473,6 +475,31 @@ Each file carries frontmatter with its canonical `source:` URL.
 - [Session status moves to `@deepseek-ai/dsh-client-ui-session-status` and completion reminders follow Host reading records](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/session-status-package/guide.md)
 - [Shared search filter replaces rankByName and searchMode](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/shared-search-filter/guide.md)
 - [Shell and read_image failures use consolidated error codes](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.2/shell-fs-tool-error-codes/guide.md)
+- [Action cards come from blocks in answers](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/action-card-blocks/guide.md)
+- [Plugin events stream and synced browser configuration](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/client-hmr-plugin-events-stream/guide.md)
+- [Use one Cordis inspection tool](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/cordis-inspect-tool/guide.md)
+- [Loader validates entry options, and Include parses YAML 1.2](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/cordis-loader-entry-validation/guide.md)
+- [`enter_worktree` replaces `create_worktree`](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/create-worktree-tool-merged/guide.md)
+- [Resolve the file policy for DeepSeekFileStore](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-file-policy/guide.md)
+- [DeepSeek content refusal error code](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-refusal-code/guide.md)
+- [DeepSeek consumers authenticate through ctx.deepseekAuth](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-request-auth/guide.md)
+- [Forge providers register the commands that bind change requests](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/forge-command-rules/guide.md)
+- [Forge providers declare hosts, names, sign-in, and review decisions](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/forge-provider-hosts/guide.md)
+- [Read command-line overlays from their files](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/profile-context-overlay-paths/guide.md)
+- [Admitted MCP image blocks become PTC `Image` values](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-mcp-image-values/guide.md)
+- [PTC output truncation](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-output-limit/guide.md)
+- [PTC tool-result inspection and bootstrap protocol 5](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-tool-result-inspection/guide.md)
+- [Fork creation takes a parent source](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-fork-source/guide.md)
+- [Session header entries move into the Session panel](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-panel-entries/guide.md)
+- [Request the `conversation` facet when rendering a Session](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-retain-conversation-facet/guide.md)
+- [Built-in plugins section removal](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/settings-section-plugins-page/guide.md)
+- [Subagent initial tasks are agent messages](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/subagent-initial-task-source/guide.md)
+- [Read subagent model selection from the current setting](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/subagent-model-selection-live-setting/guide.md)
+- [Upstream skills base row](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/upstream-skills-base-row/guide.md)
+- [The `working_directory` tool and the subagent `cwd` parameter are removed](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/working-directory-tool-removed/guide.md)
+- [`ForgeFailure.code` gains `rate-limited`](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/forge-rate-limited-failure/guide.md)
+- [Search on DeepSeek models defaults to legacy Messages search](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/web-search-deepseek-model-default/guide.md)
+- [The `workspace-write` boundary follows the Session's working directory](content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/workspace-write-boundary-follows-root/guide.md)
 - [Plugin configuration](content/en/dsh/docs/user/develop/basic/config.md)
 - [Your first plugin](content/en/dsh/docs/user/develop/basic/index.md)
 - [Package and install a plugin](content/en/dsh/docs/user/develop/basic/publish.md)

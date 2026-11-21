@@ -2,7 +2,7 @@
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
 source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # Search & Fetch
@@ -240,18 +240,18 @@ Search and Fetch are read-only. For HTTP 408, 429, or 5xx errors, wait and retry
 
 ## Billing
 
-Search and Fetch are billed per successful request, not by tokens or by the number of returned results:
+The Search and Fetch APIs are billed per successful request, not by tokens or by the number of returned results:
 
 | API | Unit | Price |
 | --- | --- | --- |
-| Search | Per 1,000 successful requests | $0.75 |
-| Fetch | Per 1,000 successful requests | $0.75 |
+| Search API | Per 1,000 successful requests | $0.75 |
+| Fetch API | Per 1,000 successful requests | $0.75 |
 
-A request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
+A standalone request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
 
-Search and Fetch calls triggered by tools when using the DeepSeek API through DeepSeek Harness, Claude Code, or Codex, including [Codex Alpha Search](../quick_start/agent_integrations/codex.md), are also billed per successful request.
+Searches performed by the model through server-side tools are not billed (text search, image search and page fetch). Only model token usage is billed. Server-side tools include the [web tools](web_tools.md#billing), the `web_search` tool in the Responses API, Web Search in Claude Code, and search in DeepSeek Harness when **Web search provider** is set to **DeepSeek server-side search** or **Auto** (the default).
 
-The [web tools](web_tools.md#billing) are billed at the same web search and web fetch prices.
+Searches that call the Search and Fetch APIs directly from the client are billed at the prices above, such as search in DeepSeek Harness when **Web search provider** is **DeepSeek Search API**, and [Codex Alpha Search](../quick_start/agent_integrations/codex.md).
 
 ---
 

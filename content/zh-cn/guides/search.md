@@ -2,7 +2,7 @@
 title: "网页搜索与抓取"
 description: "Search 接口和 Fetch 接口为 Agent 与 RAG 应用提供实时网页内容："
 source: https://api-docs.deepseek.com/zh-cn/guides/search
-fetched: 2026-11-15
+fetched: 2026-11-21
 ---
 
 # 网页搜索与抓取
@@ -240,18 +240,18 @@ Search 和 Fetch 都是只读请求。遇到 HTTP 408、429 或 5xx 错误时，
 
 ## 计费
 
-Search 和 Fetch 按请求次数计费，不按 token 或返回结果条数计费：
+Search API 和 Fetch API 按成功请求次数计费，不按 token 或返回结果条数计费：
 
 | API | 计费单位 | 价格 |
 | --- | --- | --- |
-| Search | 每 1,000 次成功请求 | 5元 |
-| Fetch | 每 1,000 次成功请求 | 5元 |
+| Search API | 每 1,000 次成功请求 | 5元 |
+| Fetch API | 每 1,000 次成功请求 | 5元 |
 
-只有返回 HTTP 200 且产生结果的请求才会计费（Search 的 `results` 必须非空，Fetch 必须返回网页正文）。请求失败、搜索无结果或超时不计费。`count` 只控制返回的结果条数，不影响单次请求的价格。
+独立请求只有返回 HTTP 200 且产生结果时才会计费（Search 的 `results` 必须非空，Fetch 必须返回网页正文）。请求失败、搜索无结果或超时不计费。`count` 只控制返回的结果条数，不影响单次请求的价格。
 
-通过 DeepSeek Harness、Claude Code 或 Codex 使用 DeepSeek API 时，工具触发的 Search 和 Fetch 调用同样按成功请求次数计费，包括 [Codex Alpha Search](../quick_start/agent_integrations/codex.md)。
+模型通过服务端工具执行的搜索不计费（文字搜索、图片搜索与网页抓取），只有模型 Token 用量计费。服务端工具包括[联网工具](web_tools.md#billing)、Responses API 的 `web_search`、Claude Code 的 Web Search，以及 DeepSeek Harness 中「网页搜索提供方」设为「DeepSeek 服务端搜索」或「自动」（默认值）时的搜索。
 
-[联网工具](web_tools.md#billing) 的网页搜索与网页抓取同样按上述价格计费。
+客户端直接调用 Search 与 Fetch API 的搜索按上表价格计费，例如 DeepSeek Harness 中「网页搜索提供方」为「DeepSeek Search API」时的搜索，以及 [Codex Alpha Search](../quick_start/agent_integrations/codex.md)。
 
 ---
 

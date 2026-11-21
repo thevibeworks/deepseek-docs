@@ -1,7 +1,7 @@
 ---
 title: "Get started with the Python SDK"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/python-sdk.md
-fetched: 2026-11-03
+fetched: 2026-11-21
 ---
 # Get started with the Python SDK
 
@@ -188,7 +188,7 @@ Create a new root Session and ask it to create and list a shared task. Its first
 |---|---|
 | System prompt | `DSH_SYSTEM_PROMPT`, falling back to `You are a helpful software engineer assistant.` |
 | Model in `minimal.py` | `--model`, then `DSH_MODEL`, then `deepseek-v4-flash` |
-| Model-facing tools | Persistent `bash` on Linux/macOS or `pwsh` on Windows, `read_image`, and `working_directory` |
+| Model-facing tools | Persistent `bash` on Linux/macOS or `pwsh` on Windows, and `read_image` |
 | Shell timeout | 300 seconds |
 | Optional runtime context | Absent |
 | Context compaction | Automatic; summarizes older history through an additional model request |

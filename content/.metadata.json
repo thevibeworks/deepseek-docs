@@ -107,7 +107,8 @@
     },
     "content/en/news/news1226.md": {
       "url": "https://api-docs.deepseek.com/news/news1226",
-      "title": "🚀 Introducing DeepSeek-V3"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news1226 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-21"
     },
     "content/en/news/news250325.md": {
       "url": "https://api-docs.deepseek.com/news/news250325",
@@ -485,7 +486,8 @@
     },
     "content/zh-cn/quick_start/pricing.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing",
-      "title": "模型 & 价格"
+      "error": "served fallback shell for https://api-docs.deepseek.com/zh-cn/quick_start/pricing (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-21"
     },
     "content/zh-cn/quick_start/error_codes.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/quick_start/error_codes",
@@ -941,7 +943,8 @@
     },
     "content/en/news/news260813.md": {
       "url": "https://api-docs.deepseek.com/news/news260813",
-      "title": "DeepSeek-V4-Pro GA Release"
+      "error": "served fallback shell for https://api-docs.deepseek.com/news/news260813 (canonical: https://api-docs.deepseek.com/)",
+      "error_since": "2026-11-21"
     },
     "content/zh-cn/news/news260813.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/news/news260813",
@@ -2250,8 +2253,116 @@
     "content/zh-cn/guides/comparison_testing.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/guides/comparison_testing",
       "title": "V3.1-Terminus 对比测试"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-13-workspace-root-change.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-13-workspace-root-change.md",
+      "title": "2026-11-13-workspace-root-change"
+    },
+    "content/en/dsh/docs/subsystems/account.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/account.md",
+      "title": "DeepSeek Account"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/action-card-blocks/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/action-card-blocks/guide.md",
+      "title": "Action cards come from blocks in answers"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/client-hmr-plugin-events-stream/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/client-hmr-plugin-events-stream/guide.md",
+      "title": "Plugin events stream and synced browser configuration"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/cordis-inspect-tool/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/cordis-inspect-tool/guide.md",
+      "title": "Use one Cordis inspection tool"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/cordis-loader-entry-validation/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/cordis-loader-entry-validation/guide.md",
+      "title": "Loader validates entry options, and Include parses YAML 1.2"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/create-worktree-tool-merged/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/create-worktree-tool-merged/guide.md",
+      "title": "`enter_worktree` replaces `create_worktree`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-file-policy/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/deepseek-file-policy/guide.md",
+      "title": "Resolve the file policy for DeepSeekFileStore"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-refusal-code/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/deepseek-refusal-code/guide.md",
+      "title": "DeepSeek content refusal error code"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-request-auth/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/deepseek-request-auth/guide.md",
+      "title": "DeepSeek consumers authenticate through ctx.deepseekAuth"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/forge-command-rules/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/forge-command-rules/guide.md",
+      "title": "Forge providers register the commands that bind change requests"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/forge-provider-hosts/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/forge-provider-hosts/guide.md",
+      "title": "Forge providers declare hosts, names, sign-in, and review decisions"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/profile-context-overlay-paths/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/profile-context-overlay-paths/guide.md",
+      "title": "Read command-line overlays from their files"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-mcp-image-values/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/ptc-mcp-image-values/guide.md",
+      "title": "Admitted MCP image blocks become PTC `Image` values"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-output-limit/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/ptc-output-limit/guide.md",
+      "title": "PTC output truncation"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-tool-result-inspection/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/ptc-tool-result-inspection/guide.md",
+      "title": "PTC tool-result inspection and bootstrap protocol 5"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-fork-source/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/session-fork-source/guide.md",
+      "title": "Fork creation takes a parent source"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-panel-entries/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/session-panel-entries/guide.md",
+      "title": "Session header entries move into the Session panel"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-retain-conversation-facet/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/session-retain-conversation-facet/guide.md",
+      "title": "Request the `conversation` facet when rendering a Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/settings-section-plugins-page/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/settings-section-plugins-page/guide.md",
+      "title": "Built-in plugins section removal"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/subagent-initial-task-source/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/subagent-initial-task-source/guide.md",
+      "title": "Subagent initial tasks are agent messages"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/subagent-model-selection-live-setting/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/subagent-model-selection-live-setting/guide.md",
+      "title": "Read subagent model selection from the current setting"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/upstream-skills-base-row/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/upstream-skills-base-row/guide.md",
+      "title": "Upstream skills base row"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/working-directory-tool-removed/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/working-directory-tool-removed/guide.md",
+      "title": "The `working_directory` tool and the subagent `cwd` parameter are removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/forge-rate-limited-failure/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.4/forge-rate-limited-failure/guide.md",
+      "title": "`ForgeFailure.code` gains `rate-limited`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/web-search-deepseek-model-default/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.4/web-search-deepseek-model-default/guide.md",
+      "title": "Search on DeepSeek models defaults to legacy Messages search"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/workspace-write-boundary-follows-root/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.4/workspace-write-boundary-follows-root/guide.md",
+      "title": "The `workspace-write` boundary follows the Session's working directory"
     }
   },
-  "updated": "2026-11-16",
+  "updated": "2026-11-21",
   "site": "https://api-docs.deepseek.com"
 }

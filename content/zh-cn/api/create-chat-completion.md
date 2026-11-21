@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "根据输入的上下文，来让模型补全对话内容。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Chat Completions API
@@ -353,7 +353,7 @@ nullable
 
 **Default value:** `null`
 
-一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。
+一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。每个 string 不能为空，且不能超过 512 字节（UTF-8 编码）。
 
 oneOf
 
@@ -907,25 +907,25 @@ DeepSeek 扩展字段。安全审核产生的 token 数，已包含在 `completi
 
 object
 
-使用联网工具时返回。计费的搜索与抓取次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
+使用联网工具时返回。搜索与抓取的次数；各项计数均为零时省略。详见 [联网工具指南](../guides/web_tools.md#chat-completions-api)。
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-计费的搜索次数，不含图片搜索。
+搜索次数，不含图片搜索。
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-计费的网页抓取次数。
+网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-计费的图片搜索次数。
+图片搜索次数。
 
 **[Example]**
 

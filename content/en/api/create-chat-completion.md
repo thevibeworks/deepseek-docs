@@ -2,7 +2,7 @@
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
 source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Chat Completions API
@@ -355,7 +355,7 @@ nullable
 
 **Default value:** `null`
 
-Up to 16 sequences where the API will stop generating further tokens.
+Up to 16 sequences where the API will stop generating further tokens. Each sequence must be a non-empty string of at most 512 bytes (UTF-8 encoded).
 
 oneOf
 
@@ -909,25 +909,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 **[Example]**
 

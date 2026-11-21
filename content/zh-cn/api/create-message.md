@@ -2,7 +2,7 @@
 title: "Messages API"
 description: "以 Anthropic Messages API 格式创建模型响应。"
 source: https://api-docs.deepseek.com/zh-cn/api/create-message
-fetched: 2026-11-16
+fetched: 2026-11-21
 ---
 
 # Messages API
@@ -1010,7 +1010,7 @@ null
 
 **最多元素数：** `16`
 
-最多 16 个非空停止字符串。匹配到其中一个字符串时，`stop_reason` 为 `stop_sequence`，`stop_sequence` 返回匹配的字符串。
+最多 16 个非空停止字符串，每个字符串不能超过 512 字节（UTF-8 编码）。匹配到其中一个字符串时，`stop_reason` 为 `stop_sequence`，`stop_sequence` 返回匹配的字符串。
 
 **temperature** numbernullable
 
@@ -1506,7 +1506,7 @@ object
 
 **Possible values:** `>= 0`
 
-成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
+成功且返回非空结果的服务端网页搜索次数。
 
 **web\_fetch\_requests** integer
 
@@ -1518,13 +1518,13 @@ object
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的网页抓取次数。
+使用联网工具时返回。网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的图片搜索次数。
+使用联网工具时返回。图片搜索次数。
 
 **[网页抓取错误]**
 
@@ -2011,7 +2011,7 @@ object
 
 **Possible values:** `>= 0`
 
-成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
+成功且返回非空结果的服务端网页搜索次数。
 
 **web\_fetch\_requests** integer
 
@@ -2023,13 +2023,13 @@ object
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的网页抓取次数。
+使用联网工具时返回。网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的图片搜索次数。
+使用联网工具时返回。图片搜索次数。
 
 **[服务端工具调用输出]**
 
@@ -2568,7 +2568,7 @@ object
 
 **Possible values:** `>= 0`
 
-成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
+成功且返回非空结果的服务端网页搜索次数。
 
 **web\_fetch\_requests** integer
 
@@ -2580,13 +2580,13 @@ object
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的网页抓取次数。
+使用联网工具时返回。网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的图片搜索次数。
+使用联网工具时返回。图片搜索次数。
 
 **[签名增量]**
 
