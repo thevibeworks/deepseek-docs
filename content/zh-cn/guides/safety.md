@@ -1,8 +1,8 @@
 ---
 title: "模型内容安全"
 description: "在请求中传入 \"safety_check\" \"high\"}，即可开启基础风控，审核模型的输入与输出。"
-source: https://api-docs.deepseek.com/zh-cn/guides/safety
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/safety/
+fetched: 2026-11-28
 ---
 
 # 模型内容安全

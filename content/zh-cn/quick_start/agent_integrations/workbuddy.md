@@ -1,8 +1,8 @@
 ---
 title: "接入 WorkBuddy/CodeBuddy"
 description: "WorkBuddy/CodeBuddy 是 AI Agent 与编程助手工具。它支持通过本地模型配置文件添加自定义模型，可以使用 OpenAI 兼容的 Chat Completions API 接入 DeepSeek V4。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/workbuddy
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/workbuddy/
+fetched: 2026-11-28
 ---
 
 # 接入 WorkBuddy/CodeBuddy

@@ -1,8 +1,8 @@
 ---
 title: "Fetch"
 description: "Fetch a web page and return its title and content as Markdown. See the [Search & Fetch guide](/guides/search) for error handling and billing."
-source: https://api-docs.deepseek.com/api/fetch
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/fetch/
+fetched: 2026-11-28
 ---
 
 # Fetch

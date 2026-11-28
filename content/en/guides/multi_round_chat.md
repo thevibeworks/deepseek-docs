@@ -1,8 +1,8 @@
 ---
 title: "Multi-round Conversation"
 description: "This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations."
-source: https://api-docs.deepseek.com/guides/multi_round_chat
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/multi_round_chat/
+fetched: 2026-11-28
 ---
 
 # Multi-round Conversation

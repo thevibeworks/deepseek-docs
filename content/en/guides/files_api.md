@@ -1,8 +1,8 @@
 ---
 title: "Files API"
 description: "The Files API lets you upload files and reference them later by file_id. You can upload two kinds of files:"
-source: https://api-docs.deepseek.com/guides/files_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/files_api/
+fetched: 2026-11-28
 ---
 
 # Files API

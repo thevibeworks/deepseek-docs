@@ -1,8 +1,8 @@
 ---
 title: "Change Log"
 description: "Date: 2026-11-13"
-source: https://api-docs.deepseek.com/updates
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/updates/
+fetched: 2026-11-28
 ---
 
 # Change Log

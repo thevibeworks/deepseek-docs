@@ -1,8 +1,8 @@
 ---
 title: "Model Content Safety"
 description: "Set safety_check to {\"level\": \"high\"} to turn on basic risk control, which reviews the model input and output."
-source: https://api-docs.deepseek.com/guides/safety
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/safety/
+fetched: 2026-11-28
 ---
 
 # Model Content Safety

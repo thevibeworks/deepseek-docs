@@ -1,8 +1,8 @@
 ---
 title: "Integrate with WorkBuddy/CodeBuddy"
 description: "WorkBuddy/CodeBuddy is an AI agent and coding assistant. It supports custom models through local model configuration files, and DeepSeek V4 can be connected through the OpenAI-compatible Chat Completions API."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy/
+fetched: 2026-11-28
 ---
 
 # Integrate with WorkBuddy/CodeBuddy

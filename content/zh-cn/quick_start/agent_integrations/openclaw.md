@@ -1,8 +1,8 @@
 ---
 title: "接入 OpenClaw"
 description: "OpenClaw 是一个开源的个人 AI 助手，可以接入飞书、微信等常用聊天工具，可以通过 Skill 扩展能力。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/openclaw
-fetched: 2026-08-16
+source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/openclaw/
+fetched: 2026-11-28
 ---
 
 # 接入 OpenClaw

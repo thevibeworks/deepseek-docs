@@ -1,8 +1,8 @@
 ---
 title: "用户元信息标记"
 description: "DeepSeek 网页端会把当前日期、用户所在地、平台和语言告诉模型，让回答更贴合用户的情况。使用 API 时，这些信息由你通过一条 latest_reminder 消息提供。"
-source: https://api-docs.deepseek.com/zh-cn/guides/latest_reminder
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/latest_reminder/
+fetched: 2026-11-28
 ---
 
 # 用户元信息标记

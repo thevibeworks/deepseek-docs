@@ -1,8 +1,8 @@
 ---
 title: "File Parsing"
 description: "Have the model answer questions based on your files, like uploading files in DeepSeek Chat. There are two steps:"
-source: https://api-docs.deepseek.com/guides/document_parsing
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/document_parsing/
+fetched: 2026-11-28
 ---
 
 # File Parsing

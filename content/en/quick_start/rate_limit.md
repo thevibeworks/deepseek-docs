@@ -1,8 +1,8 @@
 ---
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
-source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/quick_start/rate_limit/
+fetched: 2026-11-28
 ---
 
 # Rate Limit & Isolation

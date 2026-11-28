@@ -1,8 +1,8 @@
 ---
 title: "Integrate with OpenClaw"
 description: "OpenClaw is an open-source personal AI assistant that can connect to popular chat tools like Feishu and WeChat, and can be extended through Skills."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/openclaw
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/openclaw/
+fetched: 2026-11-28
 ---
 
 # Integrate with OpenClaw

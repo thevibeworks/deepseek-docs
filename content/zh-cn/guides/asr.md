@@ -1,8 +1,8 @@
 ---
 title: "语音识别"
 description: "把音频文件转写为文字，例如用于 Chatbot 的语音输入。"
-source: https://api-docs.deepseek.com/zh-cn/guides/asr
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/asr/
+fetched: 2026-11-28
 ---
 
 # 语音识别

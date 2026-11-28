@@ -1,8 +1,8 @@
 ---
 title: "错误码"
 description: "您在调用 DeepSeek API 时，可能会遇到以下错误。这里列出了相关错误的原因及其解决方法。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/error_codes
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/quick_start/error_codes/
+fetched: 2026-11-28
 ---
 
 # 错误码

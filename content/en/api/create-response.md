@@ -1,8 +1,8 @@
 ---
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
-source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-response/
+fetched: 2026-11-28
 ---
 
 # Responses API
@@ -33,7 +33,7 @@ nullable
 
 The input to the model. Either a plain string (treated as a single `user` message), or a list of input items.
 
-Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error. In `user` messages, `input_file` with a `file_id` references an uploaded file, see [File Parsing](../guides/document_parsing.md); `file_url` is not supported.
+Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call` / `tool_search_call` / `tool_search_output`; other types are ignored. `tool_search_call` and `tool_search_output` are supported with `deepseek-flash` and load the tools discovered by a client-executed `tool_search` call. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error. In `user` messages, `input_file` with a `file_id` references an uploaded file, see [File Parsing](../guides/document_parsing.md); `file_url` is not supported.
 
 At least one of `input` and `instructions` is required.
 
@@ -50,15 +50,15 @@ string
 
 **[Input item list]**
 
-An input item. Supported types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. `reasoning` and `function_call` items are automatically merged into the adjacent assistant message by the server. A `web_search_call` item returned by a previous response can be passed back to restore its search results into the context. Please refer to the [Responses API Guide](../guides/responses_api.md#multi-turn-conversation) for the pass-back rules in multi-turn conversations.
+An input item. Supported types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call` / `tool_search_call` / `tool_search_output`; other types are ignored. `reasoning` and `function_call` items are automatically merged into the adjacent assistant message by the server. A `web_search_call` item returned by a previous response can be passed back to restore its search results into the context. A `tool_search_call` item returned by a previous response is passed back together with a matching `tool_search_output` item to load the discovered tools; this is supported with `deepseek-flash`. Please refer to the [Responses API Guide](../guides/responses_api.md#multi-turn-conversation) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading) for the pass-back rules.
 
 - Array [
 
 **type** string
 
-**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`
+**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`, `tool_search_call`, `tool_search_output`
 
-The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool. `web_search_call` items restore the search results of a previous server-side search.
+The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool. `web_search_call` items restore the search results of a previous server-side search. `tool_search_call` / `tool_search_output` items load the tools discovered by a client-executed `tool_search` call.
 
 **role** string
 
@@ -156,15 +156,23 @@ The chain-of-thought text content.
 
 **call\_id** string
 
-For `function_call` / `function_call_output` items. The ID pairing a function call with its output. Must be non-empty and unique, and every `function_call` must have a matching `function_call_output`.
+For `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `tool_search_call` / `tool_search_output` items. The ID that pairs a tool call with its output. Must be non-empty and unique. A `function_call` must have a matching `function_call_output`; a `tool_search_output` must have a matching `tool_search_call`.
 
 **name** string
 
-For `function_call` items. The name of the function to call.
+For `function_call` / `custom_tool_call` items. The name of the function or custom tool to call.
 
-**arguments** string
+**arguments** string | object
 
-For `function_call` items. The arguments to call the function with, in JSON format.
+For `function_call` items, the arguments to call the function with, in JSON format. For `tool_search_call` items, an object containing the search arguments.
+
+oneOf
+
+- JSON string
+
+**[JSON string]**
+
+string
 
 **output** string | object[]
 
@@ -254,6 +262,54 @@ The chain-of-thought text content.
 
 - ]
 
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search_call` / `tool_search_output` items. Must be `client`.
+
+**tools**
+
+object[]
+
+For `tool_search_output` items. The tool definitions to load, in the same format as top-level `tools`. The model can call these tools from this point in the input.
+
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `tool_search` enables client-executed tool search and is supported with `deepseek-flash`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `function`, `custom`, `web_search`, `tool_search`, `deepseek_web_search`, `deepseek_read_url`
+
+The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `tool_search` (`deepseek-flash` only, with `execution: "client"`), `deepseek_web_search` or `deepseek_read_url`.
+
+**name** string
+
+For `function` and `custom` tools. The name of the tool. For function tools, must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. For custom tools, must be `apply_patch`.
+
+**description** string
+
+For `function` tools, and optionally for `tool_search`, a description of what the tool does, used by the model to choose when and how to call it.
+
+**parameters**
+
+object
+
+The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
+
+Omitting `parameters` defines a function with an empty parameter list.
+
+**property name\*** anynullable
+
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search` tools. Must be `client`: the client performs the search and returns the discovered tools in a `tool_search_output` input item. Server-executed tool search is not supported.
+
+- ]
+
 - ]
 
 **instructions** stringnullable
@@ -335,17 +391,17 @@ object[]
 
 nullable
 
-A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
+A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; a client-executed `tool_search` tool is supported with `deepseek-flash` to load tool definitions mid-conversation; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading) for details.
 
-A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api).
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `tool_search` enables client-executed tool search and is supported with `deepseek-flash`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** `function`, `custom`, `web_search`, `deepseek_web_search`, `deepseek_read_url`
+**Possible values:** `function`, `custom`, `web_search`, `tool_search`, `deepseek_web_search`, `deepseek_read_url`
 
-The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `deepseek_web_search` or `deepseek_read_url`.
+The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `tool_search` (`deepseek-flash` only, with `execution: "client"`), `deepseek_web_search` or `deepseek_read_url`.
 
 **name** string
 
@@ -353,7 +409,7 @@ For `function` and `custom` tools. The name of the tool. For function tools, mus
 
 **description** string
 
-For `function` tools. A description of what the function does, used by the model to choose when and how to call the function.
+For `function` tools, and optionally for `tool_search`, a description of what the tool does, used by the model to choose when and how to call it.
 
 **parameters**
 
@@ -364,6 +420,12 @@ The parameters the functions accepts, described as a JSON Schema object. See the
 Omitting `parameters` defines a function with an empty parameter list.
 
 **property name\*** anynullable
+
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search` tools. Must be `client`: the client performs the search and returns the discovered tools in a `tool_search_output` input item. Server-executed tool search is not supported.
 
 - ]
 
@@ -508,7 +570,7 @@ required
 
 The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
-An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent tool searches. With the web tools, every tool call is a `web_search_call` item with the extension fields `kind`, `page`, `signature` and `error`.
+An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent client-executed tool searches (`deepseek-flash` only). With the web tools, every tool call is a `web_search_call` item with the extension fields `kind`, `page`, `signature` and `error`.
 
 - Array [
 
@@ -558,9 +620,23 @@ For `function_call` / `custom_tool_call` / `tool_search_call` items. An identifi
 
 For `function_call` / `custom_tool_call` items. The name of the function or custom tool to call.
 
-**arguments** string
+**arguments** string | object
 
-For `function_call` items. The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+For `function_call` items, the arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function. For `tool_search_call` items, an object containing the search arguments.
+
+oneOf
+
+- JSON string
+
+**[Example]**
+
+string
+
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search_call` items. Always `client`.
 
 **kind** Web tools capability (string)
 
@@ -646,21 +722,21 @@ Successful server-side web search and page-fetch counts, separate from token usa
 
 **Possible values:** `>= 0`
 
-Number of successful web search queries. A search with multiple queries can add more than one; failed queries and queries with no results are not counted. This field can be used as a basis for billing.
+Number of successful web search queries. A search with multiple queries can add more than one.
 
 **tool\_fetch** integerrequired
 
 **Possible values:** `>= 0`
 
-Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. With the web tools, finding text in a page is not counted. This field can be used as a basis for billing.
+Number of successful page fetches performed by open\_page or find\_in\_page. With the web tools, finding text in a page is not counted.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of successful image searches. This field can be used as a basis for billing.
+With the web tools. Number of successful image searches.
 
-**[Example]**
+**[JSON string]**
 
 ```json
 {

@@ -1,8 +1,8 @@
 ---
 title: "Build a Chatbot"
 description: "The DeepSeek API offers the same conversation features as DeepSeek Chat on the web and in the app: web search, deep thinking search, file input and URL reading, plus basic risk control for model content safety. You can use them to build your own chatbot."
-source: https://api-docs.deepseek.com/guides/build_a_chatbot
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/build_a_chatbot/
+fetched: 2026-11-28
 ---
 
 # Build a Chatbot

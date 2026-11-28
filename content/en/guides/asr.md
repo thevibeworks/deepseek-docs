@@ -1,8 +1,8 @@
 ---
 title: "Speech to Text"
 description: "Transcribe an audio file into text, for example for voice input in a chatbot."
-source: https://api-docs.deepseek.com/guides/asr
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/asr/
+fetched: 2026-11-28
 ---
 
 # Speech to Text

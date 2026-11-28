@@ -1,8 +1,8 @@
 ---
 title: "使用 Responses API"
 description: "为了满足大家对 Codex 的需求，我们的 API 新增了对 Responses API 格式的支持，其 base_url 为 https://api.deepseek.com。"
-source: https://api-docs.deepseek.com/zh-cn/guides/responses_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/responses_api/
+fetched: 2026-11-28
 ---
 
 # 使用 Responses API
@@ -129,7 +129,7 @@ input=[
 | `top_p` | 支持；行为因模型而异： `deepseek-flash`：思考模式下生效（下限 `0.95`），非思考模式下恒为 `1.0`。 `deepseek-v4-pro`：思考模式下忽略传入值（启用工具调用时固定为 `0.95`，否则为 `1.0`），非思考模式下生效。即使提供了 `tools`，将 `tool_choice` 设为 `none` 也会关闭工具调用 |
 | `max_output_tokens` | 支持 |
 | `top_logprobs` | 支持（范围 [0, 20]） |
-| `tools` | 部分支持。`function` 支持；`web_search` 在 `deepseek-v4-pro` 下支持；其他类型忽略，见下方 Tools 表 |
+| `tools` | 部分支持。`function` 支持；`web_search` 在 `deepseek-v4-pro` 下支持；客户端执行的 `tool_search` 在 `deepseek-flash` 下支持；其他类型忽略，见下方 Tools 表 |
 | `tool_choice` | 支持。`none` / `auto` / `required` / 指定某个工具（`{"type": "function", "name": ...}`） |
 | `reasoning` | 部分支持。`effort` 支持；`summary` 可传入但不生成摘要 |
 | `text` | 部分支持。`format` 完整支持；`verbosity` 可传入但不生效 |
@@ -163,6 +163,7 @@ input=[
 | `function_call_output` | 支持。`output` 可以是字符串或内容块列表；输出中的 `input_image` 内容块会作为真实图片处理 |
 | `reasoning` | 支持。明文 `content` 归并到相邻 assistant 消息；`summary`、`encrypted_content` 不支持 |
 | `custom_tool_call` / `custom_tool_call_output` | 支持（配合 `apply_patch` custom 工具使用，含 `call_id` 配对校验）。`output` 中的 `input_image` 内容块会作为真实图片处理 |
+| `tool_search_call` / `tool_search_output` | `deepseek-flash` 支持。用于加载客户端执行的 `tool_search` 调用返回的工具。见[延迟加载工具](tool_calls.md#deferred-tool-loading) |
 | 其他类型 | 忽略 |
 
 注：上一次响应返回的 `web_search_call` item 可以回传到 `input`，接口会还原对应的搜索结果并拼接到上下文中。
@@ -174,10 +175,11 @@ input=[
 | `function` | 支持 |
 | `custom` | 仅支持 `{"type": "custom", "name": "apply_patch"}`（用于 Codex 兼容）；其他名称返回 `400` 错误 |
 | `web_search` | `deepseek-v4-pro` 支持。接口会在服务端执行搜索，将结果加入上下文并继续生成响应；`deepseek-flash` 忽略 |
+| `tool_search` | `deepseek-flash` 下且 `execution` 为 `client` 时支持。模型返回 `tool_search_call`；客户端用包含待加载工具定义的 `tool_search_output` item 回复。不支持 `execution: "server"`。见[延迟加载工具](tool_calls.md#deferred-tool-loading) |
 | `deepseek_web_search` / `deepseek_read_url` | 支持。不能与 `web_search` 同时声明，见 [联网工具](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` 等内置工具 | 忽略 |
 
-上述 `web_search` 是由 Responses API 在服务端执行的工具。Codex 的 Alpha Search 使用独立搜索接口，支持 `deepseek-flash` 和 `deepseek-v4-pro`，不受上述模型限制。配置方法见[接入 Codex](../quick_start/agent_integrations/codex.md)。
+上述 `web_search` 是由 Responses API 在服务端执行的工具，不计费。Codex 的 Alpha Search 使用独立搜索接口，支持 `deepseek-flash` 和 `deepseek-v4-pro`，不受上述模型限制。配置方法见[接入 Codex](../quick_start/agent_integrations/codex.md)。
 
 ### 响应字段
 

@@ -1,7 +1,7 @@
 ---
 title: "Subagents"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/subagent.md
-fetched: 2026-11-07
+fetched: 2026-11-28
 ---
 # Subagents
 
@@ -13,7 +13,17 @@ The unified activation API manages local conversations and external executions. 
 
 Every backend uses startActivation. Capability flags validate request options; prepareContinuable selects local Agent creation, while start selects one external execution. The model-facing tool uses parent delivery. Workflow and code mode consumers can await caller results without injecting another parent message. Historical children with unavailable descriptors remain discoverable as `mode: 'unknown'` without granting continuation capabilities; the [package README](../../packages/subagent/subagent/README.md) defines catalog persistence.
 
-Optional `cwd` selects the child's initial directory; relative paths resolve against the parent's current effective directory. Omitting it captures that directory at admission. Local child Sessions retain the parent's original project, and cold resume retains their logged directory state.
+Optional Host-chosen `cwd` selects the child's initial directory; a relative path resolves against the parent's current directory. Omitting it captures that directory at admission. The model-facing delegation tools pass no directory. Local child Sessions retain the parent's original project, and cold resume retains their logged directory state.
+
+```ts type-equiv
+/** Current concurrency capacity of one subagent tree; observing it reserves no slots. */
+interface SubagentCapacity {
+  /** Occupied slots, including starting, resident, and stopping children; excludes the root. */
+  readonly running: number
+  /** Configured maximum; running may exceed it after the limit is lowered. */
+  readonly limit: number
+}
+```
 
 ```ts type-equiv
 /**
@@ -91,7 +101,7 @@ interface SubagentStartRequest {
   readonly agentPreset?: string
   /** Optional short display label persisted with a session-backed child. */
   readonly label?: string
-  /** Content delivered as the child's user message. */
+  /** Initial task; local continuable children record it as a message from the parent agent. */
   readonly prompt: ContentBlock[]
   /**
    * The spawning agent. Its effective directory supplies the default cwd;
@@ -109,8 +119,8 @@ interface SubagentStartRequest {
   /**
    * Optional host-Agent provider, model, reasoning-effort, and output-token
    * overrides. Requires {@link SubagentCapabilities.agentOptions}; in-process
-   * providers merge them over the parent Agent's options when they create the
-   * child, while the DSH SDK provider merges them over its instance defaults
+   * providers resolve them against the parent's current model choice and
+   * output-token limit, while the DSH SDK provider merges them over its instance defaults
    * before initializing the separate child runtime.
    */
   readonly agentOptions?: AgentOptions
@@ -141,6 +151,8 @@ interface ResolvedSubagentStartRequest extends SubagentStartRequest {
 ## Local children and activations
 
 Spawn alone supports an independent `agentPreset`; omission and fork inherit the parent's active composition. The [child preset rules](../../packages/subagent/subagent/README.md#restoring-child-composition) define explicit selection, event ordering, and historical restoration.
+
+Local child models use the Agent's `modelSelection` projection. Creation records a complete initial choice after inherited history and before publication; later model changes never rewrite the descriptor. The descriptor records identity fields; historical composition fields remain readable. See the [child model rules](../../packages/subagent/subagent/README.md#child-model-choices).
 
 A local child has a durable Session and at most one live activation. The manager reserves identity and capacity, prepares the child through its backend, and owns input admission, cold resume, and child-first disposal. The activation result settles after resource release and completion notification. Disposal reports cleanup failure separately without replacing a captured result. Structured capture closes input for that activation; a later cold resume does not inherit the output schema.
 
@@ -176,9 +188,10 @@ interface ContinuableCreateRequest {
  */
 interface ContinuableCreateSpec {
   /**
-   * Completed-turn prefix of the parent's log to seed the child session with,
-   * or absent for a fresh child. Same durable contract as
-   * `CreateAgentOptions.seed`: contiguous from seq 0, lossless JSON, balanced.
+   * Unmodified completed-turn prefix of the parent's log, contiguous from seq
+   * 0 with lossless JSON and balanced steps and turns; absent for a fresh child.
+   * The manager uses its length as the fork cut and stores the prefix as
+   * supplied, so a transformed prefix would diverge from the parent history.
    */
   readonly seed?: readonly SessionEvent[]
 }
@@ -198,9 +211,11 @@ interface SubagentMemberNames {
 }
 ```
 
-## Messages and interruption
+## Messages, interruption, and model selection
 
 `sendMessage` requires the exact live sender and a target Session id in the same root tree. Root and continuable members can message across branches; admission revalidates the sender and root. Running targets receive Steer; only an absent target cold-resumes, while its creation ancestors may remain offline. External executions reject follow-ups. Local and external executions report final text, structured output, diagnostics, and status to their direct creator only while it is online; caller delivery suppresses those notices. `drainDescendants` awaits whole-tree teardown; an activation receipt’s `dispose()` releases only that execution.
+
+`selectModel` uses the target child’s Session id and user or exact-live-ancestor authority. Selection and image admission share the child lock. An absent child is restored for maintenance under its live root: it takes no capacity slot, publishes no lifecycle events, runs no task, and produces no completion notice. The remote `selectModelByUser` operation checks target Session authorization and leaves user defaults unchanged. The [model-selection rules](../../packages/subagent/subagent/README.md#child-model-choices) define creation, step timing, and compatibility.
 
 ```ts type-equiv
 /** Durable attribution for one model-authored message between Agents. */
@@ -244,13 +259,31 @@ interface SubagentSendMessageOptions {
 
 ```ts type-equiv
 /**
- * Authority under which one interrupt request is admitted. `user` is a trusted
+ * Authority under which a child control operation is admitted. `user` is a trusted
  * host operation; Remote callers need permission on the target Session before
  * invoking it. `ancestor` carries an exact live Agent in the target's creation ancestry.
  */
 type SubagentInterruptAuthority =
   | { readonly kind: 'user' }
   | { readonly kind: 'ancestor'; readonly agent: Agent }
+```
+
+```ts type-equiv
+/** Complete human-selected model choice for a continuable child. */
+interface SubagentSelectModelRequest {
+  readonly childSessionId: SessionId
+  readonly provider: string
+  readonly model: string
+  /** Omission clears an explicit effort and uses the selected model's default. */
+  readonly reasoningEffort?: string
+}
+```
+
+```ts type-equiv
+/** Choice returned after the child's persistence barrier confirms it. */
+interface SubagentSelectModelReceipt {
+  readonly selected: ModelSelection
+}
 ```
 
 ## Durable enumeration
@@ -435,7 +468,25 @@ Generated from source by `scripts/gen-cordis-catalog.ts` (verified fresh by `pnp
 
 ### `ctx.subagentModelSelection` — `SubagentModelSelectionConfig`
 
-Host settings owner that records Session authorization before the first model request.
+Host settings owner whose current value authorizes explicit child routes and names the default child route in every Session.
+
+```ts cordis-catalog
+/**
+ * Read the routes the setting currently authorizes. Each call samples the
+ * live setting, so an edit applies to the next delegation in every Session.
+ * @returns a detached route list, or undefined when the setting is disabled.
+ * @throws {SubagentError} `INVALID_MODEL_SELECTION_SETTINGS` when the enabled setting has no route,
+ *   or its routes are malformed or repeated. Disabled settings do not read or validate routes.
+ */
+allowedRoutes(): AllowedModelRoute[] | undefined
+
+/**
+ * Read the route a child uses when its delegation names none. Each call
+ * samples the live setting, independently of `enabled` and `allowedModels`.
+ * @returns a detached route, or undefined when the setting names none.
+ */
+defaultRoute(): AllowedModelRoute | undefined
+```
 
 Source: [`packages/subagent/tool-subagent/src/model-selection-settings.ts`](../../packages/subagent/tool-subagent/src/model-selection-settings.ts)
 
@@ -474,6 +525,13 @@ startActivation(spec: SubagentActivationSpec): Promise<SubagentActivation>
  * @throws when the caller or its runtime owner is unavailable.
  */
 rootOf(caller: Agent): Agent
+
+/**
+ * Observe the shared concurrency capacity of the caller's subagent tree.
+ * @param caller - exact live root or resident tree member.
+ * @returns occupied slots and the current limit; this observation reserves no capacity.
+ */
+capacityOf(caller: Agent): SubagentCapacity
 
 /**
  * Report the model-facing names of a live tree member and its direct creator.
@@ -543,6 +601,21 @@ async sendMessage( sender: Agent, targetId: SessionId, content: ContentBlock[], 
 interrupt(targetSessionId: SessionId, authority: SubagentInterruptAuthority): void
 
 /**
+ * Record a local child's complete model choice for future steps without
+ * adding a message or changing user defaults. Selection and image admission
+ * share the child's operation order; an already prepared step retains its model.
+ * @param childId - durable continuable child Session id.
+ * @param selection - complete choice; omitted effort follows adapter defaults.
+ * @param authority - trusted user operation or exact live creation ancestor.
+ * @param signal - cancellation before selection is recorded.
+ * @returns the recorded choice after its durability barrier completes.
+ * @throws {LlmError} when the LLM runtime rejects the selected route or effort.
+ * @throws {SubagentError} when access or child availability fails;
+ * PERSISTENCE_UNCONFIRMED means the choice may have changed but durability is unknown.
+ */
+async selectModel( childId: SessionId, selection: Readonly<ModelSelection>, authority: SubagentInterruptAuthority, signal: AbortSignal, ): Promise<ModelSelection>
+
+/**
  * Close admission and stop all instances in the selected subagent trees, then await
  * pending startup and cleanup. Ordinary members are ignored. The cutoff lasts
  * until each exact root leaves the registry; unrelated subagent trees remain live.
@@ -603,6 +676,19 @@ listDescendants(rootSessionId: SessionId, signal?: AbortSignal): Promise<Subagen
 @Remote({ name: 'interruptByUser', resources: { session: childSessionId => childSessionId } }) interruptByUser(childSessionId: SessionId): SubagentInterruptReceipt
 
 /**
+ * Select a local child's model under the caller's target-Session permission.
+ * Like Session model selection, it accepts only a model its provider lists in the
+ * current catalog. No message or global default is changed. A successful receipt
+ * confirms the child's persistence barrier; an unconfirmed failure may follow a live change.
+ * @param request - target and complete model choice; omitted effort uses adapter defaults.
+ * @param signal - caller cancellation before selection is recorded.
+ * @returns the recorded choice after confirmed persistence.
+ * @throws {RemoteError} validation, authorization, availability, cancellation,
+ * or subagent/model-selection-unconfirmed when the durable outcome is unknown.
+ */
+@Remote({ name: 'selectModelByUser', resources: { session: request => request.childSessionId } }) async selectModelByUser(request: SubagentSelectModelRequest, signal: AbortSignal): Promise<SubagentSelectModelReceipt>
+
+/**
  * Register a provider under its name. Registration is effect-scoped and HMR
  * safe; removing a provider blocks new starts but does not revoke runs that
  * were already returned to their holders. Providers without either execution
@@ -620,7 +706,7 @@ registerProvider(provider: SubagentProvider): () => void
 getProvider(name: string): SubagentProvider | undefined
 ```
 
-Types: [Agent](core.md) · [ContentBlock](llm-streaming.md) · [MessageId](llm-streaming.md) · [SessionId](core.md)
+Types: [Agent](core.md) · [ContentBlock](llm-streaming.md) · [MessageId](llm-streaming.md) · [ModelSelection](core.md) · [SessionId](core.md)
 
 Source: [`packages/subagent/subagent/src/index.ts`](../../packages/subagent/subagent/src/index.ts)
 

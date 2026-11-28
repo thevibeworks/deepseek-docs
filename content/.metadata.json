@@ -26,11 +26,11 @@
       "title": "thinking_mode_api_example_tool_call"
     },
     "content/en/api/create-chat-completion.md": {
-      "url": "https://api-docs.deepseek.com/api/create-chat-completion",
+      "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
       "title": "Chat Completions API"
     },
     "content/en/api/create-completion.md": {
-      "url": "https://api-docs.deepseek.com/api/create-completion",
+      "url": "https://api-docs.deepseek.com/api/create-completion/",
       "title": "FIM Completion API (Beta)"
     },
     "content/en/api/deepseek-api.md": {
@@ -38,7 +38,7 @@
       "title": "DeepSeek API"
     },
     "content/en/api/create-response.md": {
-      "url": "https://api-docs.deepseek.com/api/create-response",
+      "url": "https://api-docs.deepseek.com/api/create-response/",
       "title": "Responses API"
     },
     "content/en/api_samples/thinking_mode_api_example_non_streaming.md": {
@@ -46,11 +46,11 @@
       "title": "thinking_mode_api_example_non_streaming"
     },
     "content/en/api/list-models.md": {
-      "url": "https://api-docs.deepseek.com/api/list-models",
+      "url": "https://api-docs.deepseek.com/api/list-models/",
       "title": "Lists Models"
     },
     "content/en/api/get-user-balance.md": {
-      "url": "https://api-docs.deepseek.com/api/get-user-balance",
+      "url": "https://api-docs.deepseek.com/api/get-user-balance/",
       "title": "Get User Balance"
     },
     "content/en/api_samples/thinking_mode_api_example_tool_call_output.md": {
@@ -58,11 +58,11 @@
       "title": "thinking_mode_api_example_tool_call_output"
     },
     "content/en/guides/anthropic_api.md": {
-      "url": "https://api-docs.deepseek.com/guides/anthropic_api",
+      "url": "https://api-docs.deepseek.com/guides/anthropic_api/",
       "title": "Using the Anthropic API"
     },
     "content/en/guides/chat_prefix_completion.md": {
-      "url": "https://api-docs.deepseek.com/guides/chat_prefix_completion",
+      "url": "https://api-docs.deepseek.com/guides/chat_prefix_completion/",
       "title": "Chat Prefix Completion (Beta)"
     },
     "content/en/guides/coding_agents.md": {
@@ -70,7 +70,7 @@
       "title": "Integrate with AI Tools"
     },
     "content/en/guides/json_mode.md": {
-      "url": "https://api-docs.deepseek.com/guides/json_mode",
+      "url": "https://api-docs.deepseek.com/guides/json_mode/",
       "title": "JSON Output"
     },
     "content/en/faq.md": {
@@ -78,92 +78,91 @@
       "title": "FAQ"
     },
     "content/en/guides/multi_round_chat.md": {
-      "url": "https://api-docs.deepseek.com/guides/multi_round_chat",
+      "url": "https://api-docs.deepseek.com/guides/multi_round_chat/",
       "title": "Multi-round Conversation"
     },
     "content/en/guides/responses_api.md": {
-      "url": "https://api-docs.deepseek.com/guides/responses_api",
+      "url": "https://api-docs.deepseek.com/guides/responses_api/",
       "title": "Using the Responses API"
     },
     "content/en/guides/kv_cache.md": {
-      "url": "https://api-docs.deepseek.com/guides/kv_cache",
+      "url": "https://api-docs.deepseek.com/guides/kv_cache/",
       "title": "Context Caching"
     },
     "content/en/guides/thinking_mode.md": {
-      "url": "https://api-docs.deepseek.com/guides/thinking_mode",
+      "url": "https://api-docs.deepseek.com/guides/thinking_mode/",
       "title": "Thinking Mode"
     },
     "content/en/news/news0802.md": {
-      "url": "https://api-docs.deepseek.com/news/news0802",
+      "url": "https://api-docs.deepseek.com/news/news0802/",
       "title": "DeepSeek API introduces Context Caching on Disk, cutting prices by an order of magnitude"
     },
     "content/en/guides/tool_calls.md": {
-      "url": "https://api-docs.deepseek.com/guides/tool_calls",
+      "url": "https://api-docs.deepseek.com/guides/tool_calls/",
       "title": "Tool Calls"
     },
     "content/en/guides/fim_completion.md": {
-      "url": "https://api-docs.deepseek.com/guides/fim_completion",
+      "url": "https://api-docs.deepseek.com/guides/fim_completion/",
       "title": "FIM Completion (Beta)"
     },
     "content/en/news/news1226.md": {
-      "url": "https://api-docs.deepseek.com/news/news1226",
+      "url": "https://api-docs.deepseek.com/news/news1226/",
       "title": "🚀 Introducing DeepSeek-V3"
     },
     "content/en/news/news250325.md": {
-      "url": "https://api-docs.deepseek.com/news/news250325",
+      "url": "https://api-docs.deepseek.com/news/news250325/",
       "title": "DeepSeek-V3-0324 Release"
     },
     "content/en/news/news0725.md": {
-      "url": "https://api-docs.deepseek.com/news/news0725",
+      "url": "https://api-docs.deepseek.com/news/news0725/",
       "title": "DeepSeek API Upgrade"
     },
     "content/en/news/news1120.md": {
-      "url": "https://api-docs.deepseek.com/news/news1120",
+      "url": "https://api-docs.deepseek.com/news/news1120/",
       "title": "🚀 DeepSeek-R1-Lite-Preview is now live: unleashing supercharged reasoning power!"
     },
     "content/en/news/news0905.md": {
-      "url": "https://api-docs.deepseek.com/news/news0905",
+      "url": "https://api-docs.deepseek.com/news/news0905/",
       "title": "DeepSeek-V2.5: A New Open-Source Model Combining General and Coding Capabilities"
     },
     "content/en/news/news1210.md": {
-      "url": "https://api-docs.deepseek.com/news/news1210",
+      "url": "https://api-docs.deepseek.com/news/news1210/",
       "title": "🚀 DeepSeek V2.5: The Grand Finale 🎉"
     },
     "content/en/news/news250120.md": {
-      "url": "https://api-docs.deepseek.com/news/news250120",
-      "error": "served fallback shell for https://api-docs.deepseek.com/news/news250120 (canonical: https://api-docs.deepseek.com/)",
-      "error_since": "2026-11-16"
+      "url": "https://api-docs.deepseek.com/news/news250120/",
+      "title": "DeepSeek-R1 Release"
     },
     "content/en/news/news250528.md": {
-      "url": "https://api-docs.deepseek.com/news/news250528",
+      "url": "https://api-docs.deepseek.com/news/news250528/",
       "title": "DeepSeek-R1-0528 Release"
     },
     "content/en/news/news250922.md": {
-      "url": "https://api-docs.deepseek.com/news/news250922",
+      "url": "https://api-docs.deepseek.com/news/news250922/",
       "title": "DeepSeek-V3.1-Terminus"
     },
     "content/en/news/news250929.md": {
-      "url": "https://api-docs.deepseek.com/news/news250929",
+      "url": "https://api-docs.deepseek.com/news/news250929/",
       "title": "Introducing DeepSeek-V3.2-Exp"
     },
     "content/en/news/news250821.md": {
-      "url": "https://api-docs.deepseek.com/news/news250821",
+      "url": "https://api-docs.deepseek.com/news/news250821/",
       "title": "DeepSeek-V3.1 Release"
     },
     "content/en/news/news250115.md": {
-      "url": "https://api-docs.deepseek.com/news/news250115",
+      "url": "https://api-docs.deepseek.com/news/news250115/",
       "title": "Introducing DeepSeek App"
     },
     "content/en/news/news251201.md": {
-      "url": "https://api-docs.deepseek.com/news/news251201",
+      "url": "https://api-docs.deepseek.com/news/news251201/",
       "title": "DeepSeek-V3.2 Release"
     },
     "content/en/news/news260424.md": {
-      "url": "https://api-docs.deepseek.com/news/news260424",
+      "url": "https://api-docs.deepseek.com/news/news260424/",
       "title": "DeepSeek V4 Preview Release"
     },
     "content/en/quick_start/agent_integrations/claude_code.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/",
       "title": "Integrate with Claude Code"
     },
     "content/en/quick_start/agent_integrations/astrbot.md": {
@@ -175,7 +174,7 @@
       "title": "Integrate with GitHub Copilot CLI"
     },
     "content/en/quick_start/agent_integrations/codex.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/codex",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/codex/",
       "title": "Integrate with Codex"
     },
     "content/en/quick_start/agent_integrations/crush.md": {
@@ -191,7 +190,7 @@
       "title": "Integrate with Langcli"
     },
     "content/en/quick_start/agent_integrations/hermes.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/hermes",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/hermes/",
       "title": "Integrate with Hermes Agent"
     },
     "content/en/quick_start/agent_integrations/github_copilot.md": {
@@ -215,11 +214,11 @@
       "title": "Integrate with Pi"
     },
     "content/en/quick_start/agent_integrations/reasonix.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix/",
       "title": "Integrate with Reasonix"
     },
     "content/en/quick_start/error_codes.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/error_codes",
+      "url": "https://api-docs.deepseek.com/quick_start/error_codes/",
       "title": "Error Codes"
     },
     "content/en/index.md": {
@@ -227,31 +226,31 @@
       "title": "Your First API Call"
     },
     "content/en/quick_start/agent_integrations/workbuddy.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy/",
       "title": "Integrate with WorkBuddy/CodeBuddy"
     },
     "content/en/quick_start/agent_integrations/openclaw.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/openclaw",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/openclaw/",
       "title": "Integrate with OpenClaw"
     },
     "content/en/quick_start/agent_integrations/opencode.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/opencode",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/opencode/",
       "title": "Integrate with OpenCode"
     },
     "content/en/quick_start/pricing.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/pricing",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing/",
       "title": "Models & Pricing"
     },
     "content/en/updates.md": {
-      "url": "https://api-docs.deepseek.com/updates",
+      "url": "https://api-docs.deepseek.com/updates/",
       "title": "Change Log"
     },
     "content/en/quick_start/rate_limit.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/rate_limit",
+      "url": "https://api-docs.deepseek.com/quick_start/rate_limit/",
       "title": "Rate Limit & Isolation"
     },
     "content/en/quick_start/token_usage.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/token_usage",
+      "url": "https://api-docs.deepseek.com/quick_start/token_usage/",
       "title": "Token & Token Usage"
     },
     "content/zh-cn/prompt-library.md": {
@@ -280,7 +279,7 @@
       "title": "thinking_mode_api_example_non_streaming"
     },
     "content/zh-cn/api/create-chat-completion.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/create-chat-completion",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/",
       "title": "Chat Completions API"
     },
     "content/zh-cn/api_samples/chat_nodejs.md": {
@@ -288,11 +287,11 @@
       "title": "chat_nodejs"
     },
     "content/zh-cn/api/create-completion.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/create-completion",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-completion/",
       "title": "FIM 补全 API（Beta）"
     },
     "content/zh-cn/api/create-response.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/create-response",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-response/",
       "title": "Responses API"
     },
     "content/zh-cn/api_samples/thinking_mode_api_example_tool_call_output.md": {
@@ -300,11 +299,11 @@
       "title": "thinking_mode_api_example_tool_call_output"
     },
     "content/zh-cn/guides/anthropic_api.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/anthropic_api",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/anthropic_api/",
       "title": "使用 Anthropic API"
     },
     "content/zh-cn/api/get-user-balance.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/get-user-balance",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/get-user-balance/",
       "title": "查询余额"
     },
     "content/zh-cn/api/deepseek-api.md": {
@@ -312,11 +311,11 @@
       "title": "DeepSeek API"
     },
     "content/zh-cn/guides/chat_prefix_completion.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion/",
       "title": "对话前缀续写（Beta）"
     },
     "content/zh-cn/api/list-models.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/list-models",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/list-models/",
       "title": "获取模型列表"
     },
     "content/zh-cn/guides/coding_agents.md": {
@@ -328,91 +327,91 @@
       "title": "常见问题"
     },
     "content/zh-cn/guides/json_mode.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/json_mode",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/json_mode/",
       "title": "JSON Output"
     },
     "content/zh-cn/guides/kv_cache.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/kv_cache",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/kv_cache/",
       "title": "上下文硬盘缓存"
     },
     "content/zh-cn/guides/fim_completion.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/fim_completion",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/fim_completion/",
       "title": "FIM 补全（Beta）"
     },
     "content/zh-cn/guides/thinking_mode.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/thinking_mode",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/thinking_mode/",
       "title": "思考模式"
     },
     "content/zh-cn/guides/multi_round_chat.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat/",
       "title": "多轮对话"
     },
     "content/zh-cn/guides/responses_api.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/responses_api",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/responses_api/",
       "title": "使用 Responses API"
     },
     "content/zh-cn/news/news0802.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news0802",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news0802/",
       "title": "DeepSeek API 创新采用硬盘缓存，价格再降一个数量级"
     },
     "content/zh-cn/news/news250120.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250120",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250120/",
       "title": "DeepSeek-R1 发布，性能对标 OpenAI o1 正式版"
     },
     "content/zh-cn/news/news0725.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news0725",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news0725/",
       "title": "DeepSeek API 升级，支持续写、FIM、Function Calling、JSON Output"
     },
     "content/zh-cn/news/news0905.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news0905",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news0905/",
       "title": "DeepSeek-V2.5：融合通用与代码能力的全新开源模型"
     },
     "content/zh-cn/news/news1226.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news1226",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news1226/",
       "title": "DeepSeek-V3 正式发布"
     },
     "content/zh-cn/guides/tool_calls.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/tool_calls",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/tool_calls/",
       "title": "Tool Calls"
     },
     "content/zh-cn/news/news1210.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news1210",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news1210/",
       "title": "DeepSeek V2 系列收官，联网搜索上线官网"
     },
     "content/zh-cn/news/news1120.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news1120",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news1120/",
       "title": "DeepSeek推理模型预览版上线，解密o1推理过程"
     },
     "content/zh-cn/news/news250922.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250922",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250922/",
       "title": "DeepSeek-V3.1 版本更新"
     },
     "content/zh-cn/news/news250528.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250528",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250528/",
       "title": "DeepSeek-R1 更新，思考更深，推理更强"
     },
     "content/zh-cn/news/news250115.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250115",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250115/",
       "title": "DeepSeek APP"
     },
     "content/zh-cn/news/news250325.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250325",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250325/",
       "title": "DeepSeek-V3 模型更新，各项能力全面进阶"
     },
     "content/zh-cn/news/news260424.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news260424",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news260424/",
       "title": "DeepSeek-V4 预览版：迈入百万上下文普惠时代"
     },
     "content/zh-cn/news/news251201.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news251201",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news251201/",
       "title": "DeepSeek V3.2 正式版：强化 Agent 能力，融入思考推理"
     },
     "content/zh-cn/news/news250821.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250821",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250821/",
       "title": "DeepSeek-V3.1 发布"
     },
     "content/zh-cn/news/news250929.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news250929",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news250929/",
       "title": "DeepSeek-V3.2-Exp 发布，训练推理提效，API 同步降价"
     },
     "content/zh-cn/quick_start/agent_integrations/astrbot.md": {
@@ -420,7 +419,7 @@
       "title": "接入 AstrBot"
     },
     "content/zh-cn/quick_start/agent_integrations/claude_code.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code/",
       "title": "接入 Claude Code"
     },
     "content/zh-cn/quick_start/agent_integrations/copilot_cli.md": {
@@ -432,11 +431,11 @@
       "title": "接入 Crush"
     },
     "content/zh-cn/quick_start/agent_integrations/hermes.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/hermes",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/hermes/",
       "title": "接入 Hermes"
     },
     "content/zh-cn/quick_start/agent_integrations/codex.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex/",
       "title": "接入 Codex"
     },
     "content/zh-cn/quick_start/agent_integrations/nanobot.md": {
@@ -460,7 +459,7 @@
       "title": "接入 Langcli"
     },
     "content/zh-cn/quick_start/agent_integrations/openclaw.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/openclaw",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/openclaw/",
       "title": "接入 OpenClaw"
     },
     "content/zh-cn/quick_start/agent_integrations/deepcode.md": {
@@ -472,11 +471,11 @@
       "title": "接入 Pi"
     },
     "content/zh-cn/quick_start/agent_integrations/reasonix.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/reasonix",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/reasonix/",
       "title": "接入 Reasonix"
     },
     "content/zh-cn/quick_start/agent_integrations/opencode.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode/",
       "title": "接入 OpenCode"
     },
     "content/zh-cn/index.md": {
@@ -484,27 +483,27 @@
       "title": "首次调用 API"
     },
     "content/zh-cn/quick_start/pricing.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
       "title": "模型 & 价格"
     },
     "content/zh-cn/quick_start/error_codes.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/error_codes",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/error_codes/",
       "title": "错误码"
     },
     "content/zh-cn/quick_start/rate_limit.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit/",
       "title": "限速与隔离"
     },
     "content/zh-cn/quick_start/agent_integrations/workbuddy.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/workbuddy",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/workbuddy/",
       "title": "接入 WorkBuddy/CodeBuddy"
     },
     "content/zh-cn/updates.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/updates",
+      "url": "https://api-docs.deepseek.com/zh-cn/updates/",
       "title": "更新日志"
     },
     "content/zh-cn/quick_start/token_usage.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/token_usage",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/token_usage/",
       "title": "Token 用量计算"
     },
     "content/en/dsh/index.md": {
@@ -940,67 +939,67 @@
       "title": "npm: @deepseek-ai/dsh"
     },
     "content/en/news/news260813.md": {
-      "url": "https://api-docs.deepseek.com/news/news260813",
+      "url": "https://api-docs.deepseek.com/news/news260813/",
       "title": "DeepSeek-V4-Pro GA Release"
     },
     "content/zh-cn/news/news260813.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news260813",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news260813/",
       "title": "DeepSeek-V4-Pro 正式版上线"
     },
     "content/en/api/create-file.md": {
-      "url": "https://api-docs.deepseek.com/api/create-file",
+      "url": "https://api-docs.deepseek.com/api/create-file/",
       "title": "Upload File"
     },
     "content/en/api/delete-file.md": {
-      "url": "https://api-docs.deepseek.com/api/delete-file",
+      "url": "https://api-docs.deepseek.com/api/delete-file/",
       "title": "Delete File"
     },
     "content/en/api/retrieve-file.md": {
-      "url": "https://api-docs.deepseek.com/api/retrieve-file",
+      "url": "https://api-docs.deepseek.com/api/retrieve-file/",
       "title": "Retrieve File"
     },
     "content/en/guides/files_api.md": {
-      "url": "https://api-docs.deepseek.com/guides/files_api",
+      "url": "https://api-docs.deepseek.com/guides/files_api/",
       "title": "Files API"
     },
     "content/en/guides/vision.md": {
-      "url": "https://api-docs.deepseek.com/guides/vision",
+      "url": "https://api-docs.deepseek.com/guides/vision/",
       "title": "Vision"
     },
     "content/en/api/list-files.md": {
-      "url": "https://api-docs.deepseek.com/api/list-files",
+      "url": "https://api-docs.deepseek.com/api/list-files/",
       "title": "List Files"
     },
     "content/en/news/news260821.md": {
-      "url": "https://api-docs.deepseek.com/news/news260821",
+      "url": "https://api-docs.deepseek.com/news/news260821/",
       "title": "DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live"
     },
     "content/zh-cn/api/create-file.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/create-file",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-file/",
       "title": "上传文件"
     },
     "content/zh-cn/api/delete-file.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/delete-file",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/delete-file/",
       "title": "删除文件"
     },
     "content/zh-cn/api/list-files.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/list-files",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/list-files/",
       "title": "列出文件"
     },
     "content/zh-cn/api/retrieve-file.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/retrieve-file",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/retrieve-file/",
       "title": "查询文件"
     },
     "content/zh-cn/guides/files_api.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/files_api",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/files_api/",
       "title": "Files API"
     },
     "content/zh-cn/guides/vision.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/vision",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/vision/",
       "title": "图像理解"
     },
     "content/zh-cn/news/news260821.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news260821",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news260821/",
       "title": "V4-Flash-Vision-Exp 上线，开启多模态 API 服务"
     },
     "content/en/dsh/docs/cookbook/adding-a-settings-card.md": {
@@ -1252,19 +1251,19 @@
       "title": "Run DSH behind a network proxy"
     },
     "content/en/news/news260910.md": {
-      "url": "https://api-docs.deepseek.com/news/news260910",
+      "url": "https://api-docs.deepseek.com/news/news260910/",
       "title": "DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient"
     },
     "content/en/quick_start/agent_integrations/qoder.md": {
-      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/qoder",
+      "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/qoder/",
       "title": "Integrate with Qoder"
     },
     "content/zh-cn/news/news260910.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news260910",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news260910/",
       "title": "DeepSeek V4.1 Flash：更强、更快、更普惠"
     },
     "content/zh-cn/quick_start/agent_integrations/qoder.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/qoder",
+      "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/qoder/",
       "title": "接入 Qoder"
     },
     "content/en/dsh/docs/persistence-changes/2026-09-16-session-format-v4.md": {
@@ -1564,35 +1563,35 @@
       "title": "Plugin indexes"
     },
     "content/en/api/fetch.md": {
-      "url": "https://api-docs.deepseek.com/api/fetch",
+      "url": "https://api-docs.deepseek.com/api/fetch/",
       "title": "Fetch"
     },
     "content/en/news/news261017.md": {
-      "url": "https://api-docs.deepseek.com/news/news261017",
+      "url": "https://api-docs.deepseek.com/news/news261017/",
       "title": "DeepSeek-V4.1-Flash-1017: Wish-Driven Programming Made Real"
     },
     "content/en/guides/search.md": {
-      "url": "https://api-docs.deepseek.com/guides/search",
+      "url": "https://api-docs.deepseek.com/guides/search/",
       "title": "Search & Fetch"
     },
     "content/en/api/search.md": {
-      "url": "https://api-docs.deepseek.com/api/search",
+      "url": "https://api-docs.deepseek.com/api/search/",
       "title": "Search"
     },
     "content/zh-cn/api/fetch.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/fetch",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/fetch/",
       "title": "网页抓取"
     },
     "content/zh-cn/api/search.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/search",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/search/",
       "title": "网页搜索"
     },
     "content/zh-cn/guides/search.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/search",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/search/",
       "title": "网页搜索与抓取"
     },
     "content/zh-cn/news/news261017.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news261017",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news261017/",
       "title": "DeepSeek V4.1 Flash 新版本：许愿式编程一键成真"
     },
     "content/en/dsh/docs/persistence-changes/2026-10-22-action-card-status.md": {
@@ -1812,11 +1811,11 @@
       "title": "SDK run accepts native commands"
     },
     "content/en/api/create-message.md": {
-      "url": "https://api-docs.deepseek.com/api/create-message",
+      "url": "https://api-docs.deepseek.com/api/create-message/",
       "title": "Messages API"
     },
     "content/zh-cn/api/create-message.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/create-message",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/create-message/",
       "title": "Messages API"
     },
     "content/en/dsh/docs/persistence-changes/2026-10-19-session-team-mode.md": {
@@ -2140,107 +2139,107 @@
       "title": "Uninstall DSH Desktop"
     },
     "content/en/api/asr.md": {
-      "url": "https://api-docs.deepseek.com/api/asr",
+      "url": "https://api-docs.deepseek.com/api/asr/",
       "title": "Speech to Text"
     },
     "content/en/api/ocr.md": {
-      "url": "https://api-docs.deepseek.com/api/ocr",
+      "url": "https://api-docs.deepseek.com/api/ocr/",
       "title": "OCR"
     },
     "content/en/guides/build_a_chatbot.md": {
-      "url": "https://api-docs.deepseek.com/guides/build_a_chatbot",
+      "url": "https://api-docs.deepseek.com/guides/build_a_chatbot/",
       "title": "Build a Chatbot"
     },
     "content/en/api/tts.md": {
-      "url": "https://api-docs.deepseek.com/api/tts",
+      "url": "https://api-docs.deepseek.com/api/tts/",
       "title": "Text to Speech"
     },
     "content/en/guides/document_parsing.md": {
-      "url": "https://api-docs.deepseek.com/guides/document_parsing",
+      "url": "https://api-docs.deepseek.com/guides/document_parsing/",
       "title": "File Parsing"
     },
     "content/en/guides/asr.md": {
-      "url": "https://api-docs.deepseek.com/guides/asr",
+      "url": "https://api-docs.deepseek.com/guides/asr/",
       "title": "Speech to Text"
     },
     "content/en/guides/conversation_title.md": {
-      "url": "https://api-docs.deepseek.com/guides/conversation_title",
+      "url": "https://api-docs.deepseek.com/guides/conversation_title/",
       "title": "Conversation Title"
     },
     "content/en/guides/latest_reminder.md": {
-      "url": "https://api-docs.deepseek.com/guides/latest_reminder",
+      "url": "https://api-docs.deepseek.com/guides/latest_reminder/",
       "title": "User Metadata Marker"
     },
     "content/en/guides/ocr.md": {
-      "url": "https://api-docs.deepseek.com/guides/ocr",
+      "url": "https://api-docs.deepseek.com/guides/ocr/",
       "title": "OCR"
     },
     "content/en/guides/safety.md": {
-      "url": "https://api-docs.deepseek.com/guides/safety",
+      "url": "https://api-docs.deepseek.com/guides/safety/",
       "title": "Model Content Safety"
     },
     "content/en/guides/web_tools.md": {
-      "url": "https://api-docs.deepseek.com/guides/web_tools",
+      "url": "https://api-docs.deepseek.com/guides/web_tools/",
       "title": "Web Tools"
     },
     "content/en/guides/tts.md": {
-      "url": "https://api-docs.deepseek.com/guides/tts",
+      "url": "https://api-docs.deepseek.com/guides/tts/",
       "title": "Text to Speech"
     },
     "content/en/news/news261113.md": {
-      "url": "https://api-docs.deepseek.com/news/news261113",
+      "url": "https://api-docs.deepseek.com/news/news261113/",
       "title": "The full DeepSeek App experience, now via API"
     },
     "content/zh-cn/api/asr.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/asr",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/asr/",
       "title": "语音识别"
     },
     "content/zh-cn/api/ocr.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/ocr",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/ocr/",
       "title": "OCR"
     },
     "content/zh-cn/api/tts.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/api/tts",
+      "url": "https://api-docs.deepseek.com/zh-cn/api/tts/",
       "title": "语音合成"
     },
     "content/zh-cn/guides/asr.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/asr",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/asr/",
       "title": "语音识别"
     },
     "content/zh-cn/guides/build_a_chatbot.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/build_a_chatbot",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/build_a_chatbot/",
       "title": "构建 Chatbot"
     },
     "content/zh-cn/guides/conversation_title.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/conversation_title",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/conversation_title/",
       "title": "会话标题"
     },
     "content/zh-cn/guides/document_parsing.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/document_parsing",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/document_parsing/",
       "title": "文件解析"
     },
     "content/zh-cn/guides/ocr.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/ocr",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/ocr/",
       "title": "OCR"
     },
     "content/zh-cn/guides/safety.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/safety",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/safety/",
       "title": "模型内容安全"
     },
     "content/zh-cn/guides/latest_reminder.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/latest_reminder",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/latest_reminder/",
       "title": "用户元信息标记"
     },
     "content/zh-cn/guides/tts.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/tts",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/tts/",
       "title": "语音合成"
     },
     "content/zh-cn/guides/web_tools.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/guides/web_tools",
+      "url": "https://api-docs.deepseek.com/zh-cn/guides/web_tools/",
       "title": "联网工具"
     },
     "content/zh-cn/news/news261113.md": {
-      "url": "https://api-docs.deepseek.com/zh-cn/news/news261113",
+      "url": "https://api-docs.deepseek.com/zh-cn/news/news261113/",
       "title": "DeepSeek 发布全家桶应用 API"
     },
     "content/en/guides/comparison_testing.md": {
@@ -2250,8 +2249,380 @@
     "content/zh-cn/guides/comparison_testing.md": {
       "url": "https://api-docs.deepseek.com/zh-cn/guides/comparison_testing",
       "title": "V3.1-Terminus 对比测试"
+    },
+    "content/en/dsh/docs/cookbook/contributing-system-messages.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/contributing-system-messages.md",
+      "title": "Cookbook: contributing system messages"
+    },
+    "content/en/dsh/docs/core-guidelines/README.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/core-guidelines/README.md",
+      "title": "DSH Core Guidelines"
+    },
+    "content/en/dsh/docs/core-guidelines/backend.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/core-guidelines/backend.md",
+      "title": "B: Backend"
+    },
+    "content/en/dsh/docs/core-guidelines/data-exchange.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/core-guidelines/data-exchange.md",
+      "title": "D: Data exchange"
+    },
+    "content/en/dsh/docs/core-guidelines/frontend.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/core-guidelines/frontend.md",
+      "title": "F: Frontend"
+    },
+    "content/en/dsh/docs/core-guidelines/general.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/core-guidelines/general.md",
+      "title": "G: General"
+    },
+    "content/en/dsh/docs/core-guidelines/prompt.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/core-guidelines/prompt.md",
+      "title": "P: Prompt"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-19-plugin-reference-source.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-19-plugin-reference-source.md",
+      "title": "2026-10-19-plugin-reference-source"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-21-system-section-admissions.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-21-system-section-admissions.md",
+      "title": "2026-10-21-system-section-admissions"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-10-28-im-message-source.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-10-28-im-message-source.md",
+      "title": "2026-10-28-im-message-source"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-09-sdk-prompt-time-zone.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-09-sdk-prompt-time-zone.md",
+      "title": "2026-11-09-sdk-prompt-time-zone"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-13-workspace-root-change.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-13-workspace-root-change.md",
+      "title": "2026-11-13-workspace-root-change"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-17-action-card-decision-event.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-17-action-card-decision-event.md",
+      "title": "2026-11-17-action-card-decision-event"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-18-cua-activity-context.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-18-cua-activity-context.md",
+      "title": "2026-11-18-cua-activity-context"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-19-cua-input-notices.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-19-cua-input-notices.md",
+      "title": "2026-11-19-cua-input-notices"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-20-side-session-origin.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-20-side-session-origin.md",
+      "title": "2026-11-20-side-session-origin"
+    },
+    "content/en/dsh/docs/persistence-changes/2026-11-24-todo-reminder-source.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-11-24-todo-reminder-source.md",
+      "title": "2026-11-24-todo-reminder-source"
+    },
+    "content/en/dsh/docs/subsystems/account.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/account.md",
+      "title": "DeepSeek Account"
+    },
+    "content/en/dsh/docs/subsystems/environment.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/environment.md",
+      "title": "Execution environments"
+    },
+    "content/en/dsh/docs/subsystems/im.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/im.md",
+      "title": "IM automation"
+    },
+    "content/en/dsh/docs/subsystems/read-aloud.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/read-aloud.md",
+      "title": "Read-aloud"
+    },
+    "content/en/dsh/docs/subsystems/shared-texture.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/shared-texture.md",
+      "title": "Shared textures"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/action-card-blocks/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/action-card-blocks/guide.md",
+      "title": "Action cards come from blocks in answers"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/client-hmr-plugin-events-stream/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/client-hmr-plugin-events-stream/guide.md",
+      "title": "Plugin events stream and synced browser configuration"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/cordis-inspect-tool/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/cordis-inspect-tool/guide.md",
+      "title": "Use one Cordis inspection tool"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/cordis-loader-entry-validation/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/cordis-loader-entry-validation/guide.md",
+      "title": "Loader validates entry options, and Include parses YAML 1.2"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/create-worktree-tool-merged/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/create-worktree-tool-merged/guide.md",
+      "title": "`enter_worktree` replaces `create_worktree`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-file-policy/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/deepseek-file-policy/guide.md",
+      "title": "Resolve the file policy for DeepSeekFileStore"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-refusal-code/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/deepseek-refusal-code/guide.md",
+      "title": "DeepSeek content refusal error code"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/deepseek-request-auth/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/deepseek-request-auth/guide.md",
+      "title": "DeepSeek consumers authenticate through ctx.deepseekAuth"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/forge-command-rules/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/forge-command-rules/guide.md",
+      "title": "Forge providers register the commands that bind change requests"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/forge-provider-hosts/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/forge-provider-hosts/guide.md",
+      "title": "Forge providers declare hosts, names, sign-in, and review decisions"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/profile-context-overlay-paths/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/profile-context-overlay-paths/guide.md",
+      "title": "Read command-line overlays from their files"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-mcp-image-values/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/ptc-mcp-image-values/guide.md",
+      "title": "Admitted MCP image blocks become PTC `Image` values"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-output-limit/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/ptc-output-limit/guide.md",
+      "title": "PTC output truncation"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/ptc-tool-result-inspection/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/ptc-tool-result-inspection/guide.md",
+      "title": "PTC tool-result inspection and bootstrap protocol 5"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-fork-source/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/session-fork-source/guide.md",
+      "title": "Fork creation takes a parent source"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-panel-entries/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/session-panel-entries/guide.md",
+      "title": "Session header entries move into the Session panel"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/session-retain-conversation-facet/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/session-retain-conversation-facet/guide.md",
+      "title": "Request the `conversation` facet when rendering a Session"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/settings-section-plugins-page/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/settings-section-plugins-page/guide.md",
+      "title": "Built-in plugins section removal"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/subagent-initial-task-source/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/subagent-initial-task-source/guide.md",
+      "title": "Subagent initial tasks are agent messages"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/subagent-model-selection-live-setting/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/subagent-model-selection-live-setting/guide.md",
+      "title": "Read subagent model selection from the current setting"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/upstream-skills-base-row/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/upstream-skills-base-row/guide.md",
+      "title": "Upstream skills base row"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.3/working-directory-tool-removed/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.3/working-directory-tool-removed/guide.md",
+      "title": "The `working_directory` tool and the subagent `cwd` parameter are removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/forge-rate-limited-failure/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.4/forge-rate-limited-failure/guide.md",
+      "title": "`ForgeFailure.code` gains `rate-limited`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/web-search-deepseek-model-default/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.4/web-search-deepseek-model-default/guide.md",
+      "title": "Search on DeepSeek models defaults to legacy Messages search"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.4/workspace-write-boundary-follows-root/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.4/workspace-write-boundary-follows-root/guide.md",
+      "title": "The `workspace-write` boundary follows the Session's working directory"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/archive-worktrees-without-sandbox-policy/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/archive-worktrees-without-sandbox-policy/guide.md",
+      "title": "Archive cleanup ignores the creator's sandbox policy"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/compaction-summary-preview/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/compaction-summary-preview/guide.md",
+      "title": "Compaction summary previews"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/cua-activity-helper/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/cua-activity-helper/guide.md",
+      "title": "Update an overridden macOS helper"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/cua-held-inputs/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/cua-held-inputs/guide.md",
+      "title": "CUA reports held input after programs"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/cua-system-input/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/cua-system-input/guide.md",
+      "title": "CUA system input"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/independent-action-cards/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/independent-action-cards/guide.md",
+      "title": "Action cards stay available across turns"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/list-agents-capacity/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/list-agents-capacity/guide.md",
+      "title": "Read list_agents members through agents"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/office-single-skill/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/office-single-skill/guide.md",
+      "title": "One bundled `office` skill replaces the Office format skills"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/personalized-recommendations-bundle-retired/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/personalized-recommendations-bundle-retired/guide.md",
+      "title": "Personalized recommendations bundle removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/pi-image-resize-defaults/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/pi-image-resize-defaults/guide.md",
+      "title": "Request-image byte limits"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/ptc-default-scoped-repl/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/ptc-default-scoped-repl/guide.md",
+      "title": "Node PTC runs the scoped REPL by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/sdk-prompt-time-zone/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/sdk-prompt-time-zone/guide.md",
+      "title": "SDK prompts report the process time zone by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/session-query-inspect-session-removed/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/session-query-inspect-session-removed/guide.md",
+      "title": "`ctx.sessionQuery.inspectSession` is removed"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.2-rc.5/system-prompt-integrations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.5/system-prompt-integrations/guide.md",
+      "title": "System sections and custom integrations"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.1/node-24-22-3/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.1/node-24-22-3/guide.md",
+      "title": "Node.js 24.22.3 or 26.13.1 is required"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/apply-patch-default-on/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/apply-patch-default-on/guide.md",
+      "title": "`apply_patch` follows `edit` by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/bundle-row-package-selection/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/bundle-row-package-selection/guide.md",
+      "title": "Bundle plugin rows load their bundle's package"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/client-packages-dynamic-plugins/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/client-packages-dynamic-plugins/guide.md",
+      "title": "Three Client packages become `immediately` dynamic plugin packages"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/conversation-focus-kinds/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/conversation-focus-kinds/guide.md",
+      "title": "Conversation View focus values"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/cordis-inspect-providers-host-runner/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/cordis-inspect-providers-host-runner/guide.md",
+      "title": "Host inspect providers move into `cordis-host-runner`"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/cua-macos-show/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/cua-macos-show/guide.md",
+      "title": "Showing a macOS app or window"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/cua-windows-partial-observations/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/cua-windows-partial-observations/guide.md",
+      "title": "Windows accessibility reads can return partial trees"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/desktop-channel-convergence/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/desktop-channel-convergence/guide.md",
+      "title": "Desktop update channels default to stable and require explicit unlock"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/factory-content-roots/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/factory-content-roots/guide.md",
+      "title": "DOM roots for Component Factories"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/forge-local-changes-head/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/forge-local-changes-head/guide.md",
+      "title": "The local changes reads of the Forge panel name the branch they show"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/forge-review-lists-host-scope/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/forge-review-lists-host-scope/guide.md",
+      "title": "The review page's lists name a repository's host and a host's sign-in command"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/forge-viewer-list-rows/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/forge-viewer-list-rows/guide.md",
+      "title": "Forge viewer list rows no longer carry closing issues"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/general-settings-group-slots/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/general-settings-group-slots/guide.md",
+      "title": "Built-in General Settings rows use group item slots"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/headless-session-preset/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/headless-session-preset/guide.md",
+      "title": "Resuming a Session from a custom headless profile"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/hoc-slot-children-outlet/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/hoc-slot-children-outlet/guide.md",
+      "title": "DOM selectors for hoc slot children"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/invalid-tool-arguments-code/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/invalid-tool-arguments-code/guide.md",
+      "title": "Invalid tool arguments error code"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/list-item-roots/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/list-item-roots/guide.md",
+      "title": "DOM selectors for list slot items"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/office-tools-renamed-document/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/office-tools-renamed-document/guide.md",
+      "title": "`dsh-tool-office` becomes `dsh-tool-document` with `document_*` tools"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/react-19-client-runtime/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/react-19-client-runtime/guide.md",
+      "title": "Client plugins run on React 19"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/responsive-standard-props/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/responsive-standard-props/guide.md",
+      "title": "Responsive and document standard props"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/sdk-cordis-inspect/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/sdk-cordis-inspect/guide.md",
+      "title": "SDK runtime inspection tool"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/session-panel-indicators/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/session-panel-indicators/guide.md",
+      "title": "Draw indicators on the Session panel toggle"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/slot-class-name-props/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/slot-class-name-props/guide.md",
+      "title": "Class names removed from the menu button and the hero brand mark"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/sqlite-event-rows/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/sqlite-event-rows/guide.md",
+      "title": "SQLite Session store with one row per event"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/theme-standard-prop/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/theme-standard-prop/guide.md",
+      "title": "`useTheme` standard prop"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/time-context-reminder/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/time-context-reminder/guide.md",
+      "title": "Time-context reminder records"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/tool-registry-roots/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/tool-registry-roots/guide.md",
+      "title": "Tool executors become root tool registries"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/voice-input-cloud-default/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/voice-input-cloud-default/guide.md",
+      "title": "Voice input recognizes in the cloud by default"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/windows-cua-identities/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/windows-cua-identities/guide.md",
+      "title": "Windows application permissions"
+    },
+    "content/en/dsh/docs/upgrade-guide/v0.2.3-alpha.2/workspace-changes-timeout/guide.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-alpha.2/workspace-changes-timeout/guide.md",
+      "title": "Workspace changes give up a git command after 3 seconds"
+    },
+    "content/en/dsh/docs/user/session-control.md": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/session-control.md",
+      "title": "Send a message to another Session"
     }
   },
-  "updated": "2026-11-16",
+  "updated": "2026-11-28",
   "site": "https://api-docs.deepseek.com"
 }

@@ -1,8 +1,8 @@
 ---
 title: "获取模型列表"
 description: "列出当前可用的模型，并提供各模型的元数据：展示名称、上下文窗口、输出上限、支持的输入/输出模态、支持的推理强度（effort）档位，以及按 API 协议声明的能力。请前往[模型 & 价格](/zh-cn/quick_start/pricing)查看当前支持的模型列表"
-source: https://api-docs.deepseek.com/zh-cn/api/list-models
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/list-models/
+fetched: 2026-11-28
 ---
 
 # 获取模型列表
@@ -117,7 +117,16 @@ object
 对话过程中更新 system 提示词时，模型采用新提示词的方式。
 
 - `leading-only`：只有对话开头的 system 提示词生效。要更改提示词，需修改开头这条 system 提示词；历史中后续出现的 system 消息不会被视为提示词更新。
-- `in-history`：可以在对话历史中追加 `system` 消息。历史中最新的一条 `system` 消息提供完整的有效提示词，并替代此前的所有 system 提示词。
+- `in-history`：可以在对话历史中追加 `system` 消息。最新的一条 `system` 消息会更新当前生效的 system 提示词；冲突时以更晚的为准（此前的 `system` 消息仍保留在历史中，不冲突的指令仍可能生效）。
+
+**tool\_update** stringrequired
+
+**Possible values:** `leading-only`, `addition-only`
+
+对话过程中增删工具时，模型采用新工具列表的方式。
+
+- `leading-only`：只使用请求顶层声明的工具，`defer_loading`、`tool_addition` 和 `tool_reference` 的加载效果会被忽略（`tool_reference` 会按工具名纯文本处理）。工具变化时，每次请求都要重新发送完整的 `tools` 数组。
+- `addition-only`：以 `defer_loading: true` 声明的工具，会在后续 `system` 消息包含 `tool_addition` 块，或 `tool_result` 包含 `tool_reference` 块时被加载。不支持 `tool_removal` 块。
 
 - ]
 
@@ -142,7 +151,8 @@ object
       },
       "api_capabilities": {
         "anthropic_messages": {
-          "system_prompt_update": "in-history"
+          "system_prompt_update": "in-history",
+          "tool_update": "addition-only"
         }
       }
     },
@@ -161,7 +171,8 @@ object
       },
       "api_capabilities": {
         "anthropic_messages": {
-          "system_prompt_update": "leading-only"
+          "system_prompt_update": "leading-only",
+          "tool_update": "leading-only"
         }
       }
     }

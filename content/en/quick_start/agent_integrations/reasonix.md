@@ -1,8 +1,8 @@
 ---
 title: "Integrate with Reasonix"
 description: "Reasonix is a coding agent that runs in the terminal."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix
-fetched: 2026-08-08
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix/
+fetched: 2026-11-28
 ---
 
 # Integrate with Reasonix

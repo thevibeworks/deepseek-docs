@@ -1,15 +1,15 @@
 ---
 title: "联网工具"
-description: "DeepSeek 提供两个服务端工具，让模型具备与 DeepSeek 网页端一致的联网能力。是否联网由模型判断，搜索和抓取都在服务端完成，客户端不需要执行任何工具。"
-source: https://api-docs.deepseek.com/zh-cn/guides/web_tools
-fetched: 2026-11-15
+description: "DeepSeek 提供两个服务端工具，在对话中提供与 DeepSeek 网页端相同的联网搜索、深度思考搜索与阅读链接。是否联网由模型判断，搜索和抓取都在服务端完成，客户端不需要执行任何工具。"
+source: https://api-docs.deepseek.com/zh-cn/guides/web_tools/
+fetched: 2026-11-28
 ---
 
 # 联网工具
 
-DeepSeek 提供两个服务端工具，让模型具备与 DeepSeek 网页端一致的联网能力。是否联网由模型判断，搜索和抓取都在服务端完成，客户端不需要执行任何工具。
+DeepSeek 提供两个服务端工具，在对话中提供与 DeepSeek 网页端相同的联网搜索、深度思考搜索与阅读链接。是否联网由模型判断，搜索和抓取都在服务端完成，客户端不需要执行任何工具。
 
-如果要在自己的程序里直接调用搜索和抓取，请使用 [网页搜索与抓取](search.md) 接口。
+这两个工具为对话场景设计，用于[构建 Chatbot](build_a_chatbot.md)。如果要在 Agent 或自己的程序里搜索和抓取网页，请使用 [网页搜索与抓取](search.md) 接口。
 
 | 能力 | 开启方式 | 说明 |
 | --- | --- | --- |
@@ -610,16 +610,10 @@ curl https://api.deepseek.com/beta/chat/completions \
 | `output_tokens` | 输出 Token |
 | `output_tokens_details.thinking_tokens` | 其中的思考 Token，开启思考时返回 |
 | `cache_creation_input_tokens` | 恒为 `0` |
-| `server_tool_use.web_search_requests`、`web_fetch_requests` | 响应中搜索结果块、抓取结果块的数量（含错误块），仅供展示，不是计费次数 |
-| `server_tool_use.tool_search`、`tool_fetch`、`tool_image_search` | 计费的搜索次数（不含图片搜索）、抓取次数、图片搜索次数 |
+| `server_tool_use.web_search_requests`、`web_fetch_requests` | 响应中搜索结果块、抓取结果块的数量（含错误块） |
+| `server_tool_use.tool_search`、`tool_fetch`、`tool_image_search` | 搜索次数（不含图片搜索）、抓取次数、图片搜索次数 |
 
-工具调用另行计费，按 [模型 & 价格](../quick_start/pricing.md#web-tools-pricing) 中网页搜索、图片搜索和网页抓取的价格计算，与 Search、Fetch API 同价：
-
-- 网页搜索：一次搜索调用返回了结果时，按它包含的查询词条数计费，例如一次调用包含 3 个查询词时计 3 次。调用失败或没有返回任何结果时不计费。
-- 图片搜索：每张图片计 1 次，模型框选图片中的区域时每个区域另计 1 次。搜索失败或没有搜到结果时不计费。
-- 网页抓取（阅读链接）：按成功抓取的网页数计费，包括开启模型内容安全后结果被替换为 `url_not_allowed` 或 `unavailable` 错误的网页。抓取失败的链接不计费。
-- 网页抓取（深度思考搜索）：打开网页只在实际从网络抓取时计费。再次打开同一网页、在网页中翻页、打开内容已随搜索结果返回的网页均不计费。
-- 页内查找不计费。
+这些服务端工具不计费（文字搜索、图片搜索与网页抓取），只有模型 Token 用量计费。
 
 ---
 
@@ -640,7 +634,7 @@ curl https://api.deepseek.com/beta/chat/completions \
 
 ### 生成失败
 
-回答开始生成之后出错时（例如推理超时或中断），HTTP 状态码已经是 `200`，响应以错误结束，并带上 `usage`。失败之前已经执行的推理、搜索与阅读照常计费。
+回答开始生成之后出错时（例如推理超时或中断），HTTP 状态码已经是 `200`，响应以错误结束，并带上 `usage`。
 
 | 协议 | 流式 | 非流式 |
 | --- | --- | --- |
@@ -736,7 +730,7 @@ data: {"type":"error","error":{"type":"api_error","message":"The model failed to
 
 ### 用量
 
-- `usage.server_tool_use` 中，`tool_search` 是计费的搜索次数（不含图片搜索），`tool_fetch` 是计费的抓取次数，`tool_image_search` 是计费的图片搜索次数。三者都为 `0` 时不返回该字段。
+- `usage.server_tool_use` 中，`tool_search` 是搜索次数（不含图片搜索），`tool_fetch` 是抓取次数，`tool_image_search` 是图片搜索次数。三者都为 `0` 时不返回该字段。
 
 ### 多轮对话
 
@@ -849,7 +843,7 @@ data: {"type":"error","error":{"type":"api_error","message":"The model failed to
 
 ### 用量
 
-`usage.server_tool_use` 中的 `tool_search`、`tool_fetch` 与 `tool_image_search` 是计费的搜索、抓取与图片搜索次数，与 [Responses API](#responses-api) 相同。
+`usage.server_tool_use` 中的 `tool_search`、`tool_fetch` 与 `tool_image_search` 是搜索、抓取与图片搜索次数，与 [Responses API](#responses-api) 相同。
 
 ### 多轮对话
 

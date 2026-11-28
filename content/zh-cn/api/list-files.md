@@ -1,8 +1,8 @@
 ---
 title: "列出文件"
 description: "返回属于该用户的文件列表，使用游标分页。"
-source: https://api-docs.deepseek.com/zh-cn/api/list-files
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/list-files/
+fetched: 2026-11-28
 ---
 
 # 列出文件

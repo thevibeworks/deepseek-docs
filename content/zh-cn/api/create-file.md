@@ -1,8 +1,8 @@
 ---
 title: "上传文件"
 description: "上传图片文件，之后可在对话补全请求中通过其 `file_id` 引用。"
-source: https://api-docs.deepseek.com/zh-cn/api/create-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/create-file/
+fetched: 2026-11-28
 ---
 
 # 上传文件

@@ -1,8 +1,8 @@
 ---
 title: "Messages API"
 description: "Creates a model response in the Anthropic Messages API format."
-source: https://api-docs.deepseek.com/api/create-message
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-message/
+fetched: 2026-11-28
 ---
 
 # Messages API
@@ -51,7 +51,7 @@ required
 
 **Minimum items:** `1`
 
-The conversation history. At least one message is required. This API is stateless: include the messages needed for the current turn in every request. Use the top-level `system` field for the system prompt. When continuing after a tool call, pass back the complete assistant content, including thinking and tool-use blocks, followed by the matching tool results. The service may restore omitted thinking content from tool-call IDs; if recovery is required but fails, the request returns `400`. Preserve the complete content for reliable replay.
+The conversation history. At least one message is required. This API is stateless: include the messages needed for the current turn in every request. Use the top-level `system` field for the system prompt. A `system` message may also appear between turns; its content may include `tool_addition` blocks to load deferred tools. When continuing after a tool call, pass back the complete assistant content, including thinking and tool-use blocks, followed by the matching tool results. The service may restore omitted thinking content from tool-call IDs; if recovery is required but fails, the request returns `400`. Preserve the complete content for reliable replay.
 
 - Array [
 
@@ -59,6 +59,7 @@ oneOf
 
 - User message
 - Assistant message
+- System message
 - Latest reminder message
 
 **[User message]**
@@ -80,7 +81,7 @@ oneOf
 
 string
 
-**[Latest reminder message]**
+**[System message]**
 
 **Minimum items:** `1`
 
@@ -95,7 +96,7 @@ oneOf
 - Document block
 - Tool-result block
 
-**[Text content]**
+**[Latest reminder message]**
 
 Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
 
@@ -141,7 +142,7 @@ The answer text of the current text block up to this citation. Unlike the Anthro
 
 - ]
 
-**[User content blocks]**
+**[Text content]**
 
 Image input is supported by `deepseek-flash` in user messages and tool results. Images in assistant messages are not supported. `deepseek-v4-pro` does not support image input. See the [Vision Guide](../guides/vision.md) for image limits.
 
@@ -159,7 +160,7 @@ oneOf
 - Image URL
 - Uploaded image file
 
-**[Text block]**
+**[User content blocks]**
 
 **type** stringrequired
 
@@ -173,7 +174,7 @@ oneOf
 
 The base64-encoded image bytes, without a data-URL prefix.
 
-**[Image block]**
+**[Text block]**
 
 **type** stringrequired
 
@@ -183,7 +184,7 @@ The base64-encoded image bytes, without a data-URL prefix.
 
 An HTTP or HTTPS URL from which the server can download the image.
 
-**[Document block]**
+**[Image block]**
 
 Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
@@ -195,7 +196,7 @@ Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
 The ID of an uploaded image file. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
 
-**[Tool-result block]**
+**[Document block]**
 
 A document for the model to read, supported in user messages. See the [File Parsing Guide](../guides/document_parsing.md#document-qa).
 
@@ -212,7 +213,7 @@ oneOf
 - Uploaded file
 - Inline text
 
-**[Base64 image]**
+**[Tool-result block]**
 
 The request must carry the `anthropic-beta: files-api-2025-04-14` header.
 
@@ -224,7 +225,7 @@ The request must carry the `anthropic-beta: files-api-2025-04-14` header.
 
 The ID of a file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`.
 
-**[Image URL]**
+**[Base64 image]**
 
 **type** stringrequired
 
@@ -242,9 +243,9 @@ The text of the document.
 
 Optional. The file name shown to the model for a `text` source.
 
-**[Uploaded image file]**
+**[Image URL]**
 
-Only valid in user messages. Return one result for every pending tool-use ID, with no duplicates, before any text or image blocks.
+Only valid in user messages. Return one result for every pending tool-use ID, with no duplicates, before any text or image blocks. The `content` may also contain `tool_reference` blocks to load deferred tools.
 
 **type** stringrequired
 
@@ -258,7 +259,7 @@ The ID of the corresponding `tool_use` block in the immediately preceding assist
 
 nullable
 
-The tool output as a string or a list of text and image blocks. If omitted or `null`, the result is empty.
+The tool output as a string or a list of text, image, and `tool_reference` blocks. If omitted or `null`, the result is empty.
 
 oneOf
 
@@ -266,11 +267,11 @@ oneOf
 - Tool-result content blocks
 - Null value
 
-**[Uploaded file]**
+**[Uploaded image file]**
 
 string
 
-**[Inline text]**
+**[Uploaded file]**
 
 - Array [
 
@@ -278,8 +279,9 @@ oneOf
 
 - Text block
 - Image block
+- Tool-reference block
 
-**[Text content]**
+**[Inline text]**
 
 Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
 
@@ -325,7 +327,7 @@ The answer text of the current text block up to this citation. Unlike the Anthro
 
 - ]
 
-**[Tool-result content blocks]**
+**[Text content]**
 
 Image input is supported by `deepseek-flash` in user messages and tool results. Images in assistant messages are not supported. `deepseek-v4-pro` does not support image input. See the [Vision Guide](../guides/vision.md) for image limits.
 
@@ -343,7 +345,7 @@ oneOf
 - Image URL
 - Uploaded image file
 
-**[Null value]**
+**[Tool-result content blocks]**
 
 **type** stringrequired
 
@@ -357,7 +359,7 @@ oneOf
 
 The base64-encoded image bytes, without a data-URL prefix.
 
-**[Text block]**
+**[Null value]**
 
 **type** stringrequired
 
@@ -367,7 +369,7 @@ The base64-encoded image bytes, without a data-URL prefix.
 
 An HTTP or HTTPS URL from which the server can download the image.
 
-**[Image block]**
+**[Text block]**
 
 Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
@@ -379,9 +381,21 @@ Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
 The ID of an uploaded image file. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
 
+**[Image block]**
+
+Loads a deferred tool that is declared in the request's top-level `tools`. Only valid inside `tool_result.content`. List each tool returned by a client-side tool search as a `tool_reference` block. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
+
+**type** stringrequired
+
+**Possible values:** `tool_reference`
+
+**tool\_name** stringrequired
+
+The name of a tool declared in the request's top-level `tools`.
+
 - ]
 
-**[Base64 image]**
+**[Tool-reference block]**
 
 null
 
@@ -391,7 +405,7 @@ Ignored. Include any error details in `content`.
 
 - ]
 
-**[Image URL]**
+**[Base64 image]**
 
 A previous assistant message. Preserve its content blocks when passing it back, including thinking, tool use, and web search results.
 
@@ -408,11 +422,11 @@ oneOf
 - Text content
 - Assistant content blocks
 
-**[Uploaded image file]**
+**[Image URL]**
 
 string
 
-**[Text content]**
+**[Uploaded image file]**
 
 **Minimum items:** `1`
 
@@ -427,7 +441,7 @@ oneOf
 - Web search result block
 - Web fetch result block
 
-**[Assistant content blocks]**
+**[Text content]**
 
 Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
 
@@ -473,7 +487,7 @@ The answer text of the current text block up to this citation. Unlike the Anthro
 
 - ]
 
-**[Text block]**
+**[Assistant content blocks]**
 
 **type** stringrequired
 
@@ -487,7 +501,7 @@ Thinking content returned by the model. Pass it back unchanged when continuing a
 
 The signature returned with the thinking block. Preserve it when passing back the block; the input signature is not validated.
 
-**[Thinking block]**
+**[Text block]**
 
 Appears in assistant messages. Each tool-use block must have a matching tool-result block in the immediately following user message.
 
@@ -507,7 +521,7 @@ The name of the client tool.
 
 The JSON arguments supplied to the tool, normally an object matching its `input_schema`.
 
-**[Tool-use block]**
+**[Thinking block]**
 
 Returned when the service runs web search, `deepseek_web_search` or `deepseek_read_url`. Its matching `web_search_tool_result` or `web_fetch_tool_result` appears in the same assistant message; the client does not run this tool.
 
@@ -543,7 +557,7 @@ Identifies a direct server-tool call.
 
 DeepSeek extension on blocks produced by the web tools: `search` for web search, `deep_search` for deep thinking search, `read_link` for URL reading, and `image_search` or `deep_image_search` (during deep thinking search) for image search. Pass it back unchanged.
 
-**[Server-tool-use block]**
+**[Tool-use block]**
 
 **type** stringrequired
 
@@ -568,7 +582,7 @@ oneOf
 - Web search result
 - Web search error
 
-**[Web search result block]**
+**[Server-tool-use block]**
 
 **type** stringrequired
 
@@ -602,7 +616,7 @@ DeepSeek extension. The name of the site, or `null` when unknown.
 
 DeepSeek extension. The URL of the site icon, or `null` when unknown.
 
-**[Web fetch result block]**
+**[Web search result block]**
 
 **type** stringrequired
 
@@ -622,7 +636,7 @@ The reason the server-side search failed.
 
 DeepSeek extension on blocks produced by the web tools: `search` for web search, `deep_search` for deep thinking search, `read_link` for URL reading, and `image_search` or `deep_image_search` (during deep thinking search) for image search. Pass it back unchanged.
 
-**[Web search result]**
+**[Web fetch result block]**
 
 Returned for a page opened during deep thinking search (`deepseek_web_search`), or a link read by `deepseek_read_url`. Pass it back unchanged, including `kind` and `signature`. See the [Web Tools Guide](../guides/web_tools.md#response-blocks).
 
@@ -645,7 +659,7 @@ oneOf
 - Web fetch result
 - Web fetch error
 
-**[Web search error]**
+**[Web search result]**
 
 **type** stringrequired
 
@@ -691,7 +705,7 @@ The page title.
 
 DeepSeek extension, in place of `retrieved_at`. The publication time of the page, or `null` when unknown. For a link read from the user message, the date found on the page, in no fixed format; for a page opened during deep thinking search, an RFC 3339 timestamp.
 
-**[Web fetch result]**
+**[Web search error]**
 
 **type** stringrequired
 
@@ -715,7 +729,111 @@ DeepSeek extension. Present on successful `read_link` results: the page that was
 
 - ]
 
+**[Web fetch result]**
+
+A system message placed between turns in the conversation history. Its content may include `tool_addition` blocks to load deferred tools. A system message cannot appear between an assistant `tool_use` block and its `tool_result`. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
+
+**role** stringrequired
+
+**Possible values:** `system`
+
+**content** string | object[]
+
+required
+
+The message content, either a string or a list of text and `tool_addition` blocks.
+
+oneOf
+
+- Text content
+- System message blocks
+
 **[Web fetch error]**
+
+string
+
+**[Text content]**
+
+**Minimum items:** `1`
+
+- Array [
+
+oneOf
+
+- Text block
+- Tool-addition block
+
+**[System message blocks]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**citations**
+
+object[]
+
+nullable
+
+Sources cited by this text. Returned when the answer cites results of the web tools; ignored on input.
+
+A source cited by the answer. Returned with the web tools.
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+The URL of the cited source.
+
+**title** stringnullable
+
+The title of the cited source, or `null` when unknown.
+
+**encrypted\_index** string
+
+Always an empty string.
+
+**cited\_text** string
+
+The answer text of the current text block up to this citation. Unlike the Anthropic API, it is not text quoted from the source.
+
+- ]
+
+**[Text block]**
+
+Loads a deferred tool that is declared in the request's top-level `tools`. Only valid in a mid-conversation `system` message. Only additions are supported: `tool_removal` and inline `tool_definition` blocks are not supported.
+
+**type** stringrequired
+
+**Possible values:** `tool_addition`
+
+**tool**
+
+object
+
+required
+
+**type** stringrequired
+
+**Possible values:** `tool_reference`
+
+**name** stringrequired
+
+The name of a tool declared in the request's top-level `tools`.
+
+- ]
+
+**[Tool-addition block]**
 
 DeepSeek extension. Gives the model the current date, location, platform and language, like DeepSeek Chat. Place it directly before the `user` message it belongs to; anywhere else it returns `400`. Works with or without the web tools. See the [User Metadata Marker Guide](../guides/latest_reminder.md).
 
@@ -851,7 +969,7 @@ object[]
 
 nullable
 
-Tools available to the model. Supports client-defined tools, the web search server tool, and the `deepseek_web_search` and `deepseek_read_url` server tools. Tool names must be unique. An empty list is treated as no tools. `cache_control` is ignored.
+Tools available to the model. Supports client-defined tools, the web search server tool, and the `deepseek_web_search` and `deepseek_read_url` server tools. Client tools may set `defer_loading` to keep their definitions out of the prompt until they are loaded. Tool names must be unique. An empty list is treated as no tools. `cache_control` is ignored. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
 
 - Array [
 
@@ -889,6 +1007,10 @@ required
 A valid JSON Schema describing the tool arguments. Its top-level `type` must be `object`.
 
 **property name\*** anynullable
+
+**defer\_loading** booleannullable
+
+If `true`, the tool is declared but not shown to the model until it is loaded by a `tool_reference` block (in a `tool_result`) or a `tool_addition` block (in a mid-conversation `system` message). Supported with `deepseek-flash`; ignored with `deepseek-v4-pro`. At least one tool in the request must not be deferred. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
 
 **[Web search server tool]**
 
@@ -1010,7 +1132,7 @@ null
 
 **Maximum items:** `16`
 
-Up to 16 non-empty strings that stop generation. If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
+Up to 16 non-empty strings that stop generation. Each string must be at most 512 bytes (UTF-8 encoded). If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
 
 **temperature** numbernullable
 
@@ -1506,7 +1628,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -1518,13 +1640,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Web fetch error]**
 
@@ -2011,7 +2133,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -2023,13 +2145,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Server tool use output]**
 
@@ -2568,7 +2690,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -2580,13 +2702,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Signature delta]**
 

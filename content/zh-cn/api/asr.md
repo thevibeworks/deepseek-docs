@@ -1,8 +1,8 @@
 ---
 title: "语音识别"
 description: "把音频文件识别为文本。整段音频在一次请求中上传，返回完整的识别结果。语种、限制、错误与计费见 [语音识别指南](/zh-cn/guides/asr)。"
-source: https://api-docs.deepseek.com/zh-cn/api/asr
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/asr/
+fetched: 2026-11-28
 ---
 
 # 语音识别

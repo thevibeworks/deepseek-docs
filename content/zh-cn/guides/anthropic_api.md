@@ -1,8 +1,8 @@
 ---
 title: "使用 Anthropic API"
 description: "为了满足大家对 Anthropic API 生态的使用需求，我们的 API 新增了对 Anthropic API 格式的支持，其 base_url 为 https://api.deepseek.com/anthropic。"
-source: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api/
+fetched: 2026-11-28
 ---
 
 # 使用 Anthropic API
@@ -102,7 +102,7 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | mcp\_servers | 忽略 |
 | metadata | 支持 `user_id`，其它字段忽略 关于 `user_id` 参数的更多信息，请参考 [限速与隔离](../quick_start/rate_limit.md)。 |
 | service\_tier | 忽略 |
-| stop\_sequences | 完全支持 |
+| stop\_sequences | 完全支持。最多 16 个非空字符串，每个字符串不能超过 512 字节（UTF-8 编码） |
 | stream | 完全支持 |
 | system | 完全支持 |
 | temperature | 有效范围为 [0.0 ~ 2.0]。非思考模式下生效；思考模式下固定为 `1.0` |
@@ -119,7 +119,7 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 
 #### tools
 
-定义客户端工具时，提供 `name`、`input_schema` 和可选的 `description`，不要传入 `type`。`type` 用于选择服务端工具；为客户端工具传入 `type: "custom"` 会返回 `422` 错误。
+定义客户端工具时，提供 `name`、`input_schema` 和可选的 `description`，不要传入 `type`。可以设置 `defer_loading`，让工具在加载前不进入 prompt。`type` 用于选择服务端工具；为客户端工具传入 `type: "custom"` 会返回 `422` 错误。
 
 | 字段 | 支持情况 |
 | --- | --- |
@@ -127,8 +127,17 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | input\_schema | 完全支持 |
 | description | 完全支持 |
 | cache\_control | 忽略 |
+| defer\_loading | `deepseek-flash` 支持；`deepseek-v4-pro` 忽略。工具定义会保留在 prompt 之外，直到被加载。见[延迟加载工具](tool_calls.md#deferred-tool-loading) |
 
 使用联网工具时，声明服务端工具 `deepseek_web_search` 与 `deepseek_read_url`，详见 [联网工具](web_tools.md#declare-tools)。同一请求中不能再声明其他服务端工具。
+
+#### 延迟加载工具
+
+把 `defer_loading` 设为 `true` 后，工具会被声明，但初始不会展示给模型，直到对话加载它。请求中至少要有一个工具不带 `defer_loading`。
+
+当 `tool_reference` 引用某个工具时，该工具会被加载：`tool_reference` 可以放在 `tool_result` 的 `content` 中，也可以作为对话中途 `system` 消息里 `tool_addition` 块的 `tool`。被引用的工具必须已在请求顶层的 `tools` 中声明。加载只支持增加工具：不支持 `tool_removal` 和内联 `tool_definition` 块。延迟加载不能与 `deepseek_web_search`、`deepseek_read_url` 同时使用。
+
+完整的请求流程见[延迟加载工具](tool_calls.md#deferred-tool-loading)。
 
 #### tool\_choice
 
@@ -144,6 +153,16 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 多轮对话需要在每次请求的 `messages` 中发送对话历史。如果 assistant 消息包含客户端 `tool_use`，紧接着的消息必须为 `user`，并为全部工具调用提供 `tool_use_id` 对应的 `tool_result`。该 user 消息中的所有 `tool_result` 块必须放在文本之前。
 
 在思考模式下继续工具调用时，建议原样保留并回传 assistant 的完整 `content` 数组，包括 `thinking` 和工具调用块。遗漏思考内容时，服务端可能根据工具调用 ID 恢复；需要恢复但无法恢复时，请求会返回 `400` 错误。请勿依赖自动恢复。
+
+#### 从工具结果中加载工具
+
+`tool_result` 的 `content` 数组中还可以包含 `tool_reference` 块。每个 `tool_reference` 引用请求 `tools` 中声明的一个客户端工具，被引用的工具从对话中的该位置起可用。客户端的工具搜索结果就是这样回传给模型的。见[延迟加载工具](tool_calls.md#deferred-tool-loading)。
+
+#### 对话中途的 system 消息
+
+`messages` 的轮次之间可以出现 `system` 消息。除了文本，其内容还可以包含 `tool_addition` 块，用来按需加载工具。`system` 消息不能出现在 assistant 的 `tool_use` 块和它对应的 `tool_result` 之间。
+
+对于 `system_prompt_update` 为 `in-history` 的模型（见[模型列表 API](../api/list-models.md#responses)），最新的一条 `system` 消息会更新当前生效的 system 提示词；冲突时以更晚的为准（此前的 `system` 消息仍保留在历史中，不冲突的指令仍可能生效）。
 
 ### Message 字段
 
@@ -163,9 +182,10 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 | name | 完全支持 |
 | cache\_control | 忽略 |
 | array, type = "tool\_result" | tool\_use\_id | 完全支持 |
-| content | 完全支持 |
+| content | 完全支持。可包含 `tool_reference` 块，用来按需加载工具。见[延迟加载工具](tool_calls.md#deferred-tool-loading) |
 | cache\_control | 忽略 |
 | is\_error | 忽略 |
+| array, type = "tool\_addition" |  | `system` 消息中支持。用于按需加载工具。见[延迟加载工具](tool_calls.md#deferred-tool-loading) |
 | array, type = "server\_tool\_use" |  | 支持 |
 | array, type = "web\_search\_tool\_result" |  | 支持 |
 | array, type = "code\_execution\_tool\_result" |  | 不支持 |
@@ -228,8 +248,6 @@ claude-opus 映射到的 `deepseek-v4-pro` 按 V4 Pro 价格计费。
 ### 联网工具的服务端工具块
 
 使用联网工具时，`server_tool_use` 的 `name` 为 `deepseek_web_search` 或 `deepseek_read_url`，并带 `input.action` 与 `kind`；结果块还包括 `web_fetch_tool_result`。被内容安全拒答的响应以 `stop_reason: "refusal"` 结束。见 [联网工具](web_tools.md#response-blocks) 与 [模型内容安全](safety.md#handling-refusals)。
-
-使用联网工具时，`usage.server_tool_use` 还会返回 `web_fetch_requests`、`tool_fetch` 与 `tool_image_search`，各字段的含义与计费见 [联网工具](web_tools.md#billing)。
 
 ## 流式输出与 Token 用量
 

@@ -1,8 +1,8 @@
 ---
 title: "接入 Hermes"
 description: "Hermes 是 Nous Research 打造的开源 AI Agent。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/hermes
-fetched: 2026-08-08
+source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/hermes/
+fetched: 2026-11-28
 ---
 
 # 接入 Hermes

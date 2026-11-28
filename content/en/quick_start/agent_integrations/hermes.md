@@ -1,8 +1,8 @@
 ---
 title: "Integrate with Hermes Agent"
 description: "Hermes is an open-source AI agent built by Nous Research."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/hermes
-fetched: 2026-08-08
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/hermes/
+fetched: 2026-11-28
 ---
 
 # Integrate with Hermes Agent

@@ -1,7 +1,7 @@
 ---
 title: "Office operation skills are replaced by Office tools"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/office-operation-tools/guide.md
-fetched: 2026-11-15
+fetched: 2026-11-28
 ---
 # Office operation skills are replaced by Office tools
 
@@ -9,7 +9,7 @@ English | [中文](guide.zh.md)
 
 ## Change
 
-`@deepseek-ai/dsh-skill-office` no longer registers the `office-render`, `office-recalculate`, and `office-export-pdf` skills; it registers the `office` router and the `office-docx`, `office-pptx`, and `office-xlsx` authoring skills. After an Office skill loads, the model calls [`office_render`, `office_convert`, and `office_recalculate`](../../../../packages/document/tool-office/README.md) from the following step.
+`@deepseek-ai/dsh-skill-office` no longer registers the `office-render`, `office-recalculate`, and `office-export-pdf` skills; it registers the `office` router and the `office-docx`, `office-pptx`, and `office-xlsx` authoring skills. After an Office skill loads, the model calls [`office_render`, `office_convert`, and `office_recalculate`](../../../../packages/document/tool-document/README.md) from the following step.
 
 Configuration changes:
 

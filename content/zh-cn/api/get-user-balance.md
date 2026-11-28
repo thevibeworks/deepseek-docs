@@ -1,8 +1,8 @@
 ---
 title: "查询余额"
 description: "查询账号余额"
-source: https://api-docs.deepseek.com/zh-cn/api/get-user-balance
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/get-user-balance/
+fetched: 2026-11-28
 ---
 
 # 查询余额

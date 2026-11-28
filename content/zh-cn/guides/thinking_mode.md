@@ -1,8 +1,8 @@
 ---
 title: "思考模式"
 description: "DeepSeek 模型支持思考模式：在输出最终回答之前，模型会先输出一段思维链内容，以提升最终答案的准确性。"
-source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/zh-cn/guides/thinking_mode/
+fetched: 2026-11-28
 ---
 
 # 思考模式

@@ -1,8 +1,8 @@
 ---
 title: "上下文硬盘缓存"
 description: "DeepSeek API 上下文硬盘缓存技术对所有用户默认开启，用户无需修改代码即可享用。"
-source: https://api-docs.deepseek.com/zh-cn/guides/kv_cache
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/zh-cn/guides/kv_cache/
+fetched: 2026-11-28
 ---
 
 # 上下文硬盘缓存

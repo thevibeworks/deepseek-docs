@@ -1,8 +1,8 @@
 ---
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
-source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/anthropic_api/
+fetched: 2026-11-28
 ---
 
 # Using the Anthropic API
@@ -102,7 +102,7 @@ Authenticate with either `x-api-key: <API_KEY>` or `Authorization: Bearer <API_K
 | mcp\_servers | Ignored |
 | metadata | `user_id` is supported, others are ignored Please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md) for more information about `user_id` parameter. |
 | service\_tier | Ignored |
-| stop\_sequences | Fully Supported |
+| stop\_sequences | Fully Supported. Up to 16 sequences; each non-empty string must be at most 512 bytes (UTF-8 encoded) |
 | stream | Fully Supported |
 | system | Fully Supported |
 | temperature | Valid range: [0.0 ~ 2.0]. Takes effect in non-thinking mode; fixed at `1.0` in thinking mode |
@@ -119,7 +119,7 @@ For certain main-agent requests from Claude Code or OpenCode in thinking mode, c
 
 #### tools
 
-For client-defined tools, provide `name`, `input_schema`, and an optional `description`, and omit `type`. The `type` field selects a server tool; passing `type: "custom"` for a client tool returns a `422` error.
+For client-defined tools, provide `name`, `input_schema`, and an optional `description`, and omit `type`. Set `defer_loading` to keep a tool out of the prompt until it is loaded. The `type` field selects a server tool; passing `type: "custom"` for a client tool returns a `422` error.
 
 | Field | Support Status |
 | --- | --- |
@@ -127,8 +127,17 @@ For client-defined tools, provide `name`, `input_schema`, and an optional `descr
 | input\_schema | Fully Supported |
 | description | Fully Supported |
 | cache\_control | Ignored |
+| defer\_loading | Supported with `deepseek-flash`; ignored with `deepseek-v4-pro`. Keeps the tool definition out of the prompt until it is loaded. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 
 To use the web tools, declare the server tools `deepseek_web_search` and `deepseek_read_url`. See [Web Tools](web_tools.md#declare-tools). No other server tools can be declared together with them.
+
+#### Loading deferred tools
+
+When `defer_loading` is set to `true`, the tool is declared but not shown to the model until the conversation loads it. At least one tool in the request must not be deferred.
+
+A deferred tool is loaded when a `tool_reference` names it, either in a `tool_result` content block or as the `tool` of a `tool_addition` block in a mid-conversation `system` message. The tool must be declared in the request's top-level `tools`. Loading is addition-only: `tool_removal` and inline `tool_definition` blocks are not supported. Deferred loading cannot be combined with `deepseek_web_search` or `deepseek_read_url`.
+
+See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) for the complete request flow.
 
 #### tool\_choice
 
@@ -144,6 +153,16 @@ To use the web tools, declare the server tools `deepseek_web_search` and `deepse
 For multi-turn conversations, send the conversation history in `messages` on every request. After an assistant message containing client `tool_use` blocks, the immediately following message must have the `user` role and include a `tool_result` for every tool call, with matching `tool_use_id` values. Place all `tool_result` blocks before any text in that user message.
 
 When continuing tool calls in thinking mode, preserve and pass back the assistant's complete `content` array, including `thinking` and tool-use blocks. If thinking content is omitted, the service may recover it using the tool-call IDs; if recovery is required but fails, the request returns a `400` error. Do not rely on automatic recovery.
+
+#### Loading deferred tools from a tool result
+
+A `tool_result` may contain `tool_reference` blocks in its `content` array. Each `tool_reference` names a client tool declared in the request's `tools`, and the referenced tool becomes available from that point in the conversation. This is how the client returns the results of a tool-search call. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading).
+
+#### Mid-conversation system messages
+
+A `system` message may appear between turns in `messages`. Besides text, its content may contain `tool_addition` blocks that load deferred tools. A system message cannot appear between an assistant `tool_use` block and its `tool_result`.
+
+On models whose `system_prompt_update` is `in-history` (see the [List Models API](../api/list-models.md#responses)), the latest `system` message updates the effective system prompt; when instructions conflict, later `system` messages take precedence over earlier ones (earlier messages remain in the history, and non-conflicting instructions can still apply).
 
 ### Message Fields
 
@@ -163,9 +182,10 @@ When continuing tool calls in thinking mode, preserve and pass back the assistan
 | name | Fully Supported |
 | cache\_control | Ignored |
 | array, type = "tool\_result" | tool\_use\_id | Fully Supported |
-| content | Fully Supported |
+| content | Fully Supported. May contain `tool_reference` blocks to load deferred tools. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 | cache\_control | Ignored |
 | is\_error | Ignored |
+| array, type = "tool\_addition" |  | Supported in `system` messages. Loads a deferred tool. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 | array, type = "server\_tool\_use" |  | Supported |
 | array, type = "web\_search\_tool\_result" |  | Supported |
 | array, type = "code\_execution\_tool\_result" |  | Not Supported |
@@ -228,8 +248,6 @@ A successful response to this request contained `server_tool_use`, `web_search_t
 ### Server Tool Blocks of the Web Tools
 
 With the web tools, the `name` of a `server_tool_use` block is `deepseek_web_search` or `deepseek_read_url`, and the block carries `input.action` and `kind`; results also include `web_fetch_tool_result`. A response refused by model content safety ends with `stop_reason: "refusal"`. See [Web Tools](web_tools.md#response-blocks) and [Model Content Safety](safety.md#handling-refusals).
-
-With the web tools, `usage.server_tool_use` also returns `web_fetch_requests`, `tool_fetch` and `tool_image_search`. See [Web Tools](web_tools.md#billing) for their meaning and for billing.
 
 ## Streaming and token usage
 
