@@ -1,8 +1,8 @@
 ---
 title: "查询文件"
 description: "返回指定文件的信息。"
-source: https://api-docs.deepseek.com/zh-cn/api/retrieve-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/retrieve-file/
+fetched: 2026-11-28
 ---
 
 # 查询文件

@@ -1,8 +1,8 @@
 ---
 title: "Error Codes"
 description: "When calling DeepSeek API, you may encounter errors. Here list the causes and solutions."
-source: https://api-docs.deepseek.com/quick_start/error_codes
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/quick_start/error_codes/
+fetched: 2026-11-28
 ---
 
 # Error Codes

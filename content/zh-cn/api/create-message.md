@@ -1,8 +1,8 @@
 ---
 title: "Messages API"
 description: "以 Anthropic Messages API 格式创建模型响应。"
-source: https://api-docs.deepseek.com/zh-cn/api/create-message
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/create-message/
+fetched: 2026-11-28
 ---
 
 # Messages API
@@ -51,7 +51,7 @@ required
 
 **最少元素数：** `1`
 
-对话历史。至少包含 1 条消息。该 API 是无状态的，每次请求都需要传入本轮所需的历史消息。系统提示词使用顶层 `system` 字段。工具调用后继续对话时，请回传完整的 assistant 内容（包括思考块和工具调用块），随后传入对应的工具结果。服务端可能根据工具调用 ID 恢复遗漏的思考内容，需要恢复但无法恢复时返回 `400`。为保证回传可靠性，请保留完整内容。
+对话历史。至少包含 1 条消息。该 API 是无状态的，每次请求都需要传入本轮所需的历史消息。系统提示词使用顶层 `system` 字段；对话轮次之间也可以出现 `system` 消息，其内容可以包含 `tool_addition` 块，用来按需加载工具。工具调用后继续对话时，请回传完整的 assistant 内容（包括思考块和工具调用块），随后传入对应的工具结果。服务端可能根据工具调用 ID 恢复遗漏的思考内容，需要恢复但无法恢复时返回 `400`。为保证回传可靠性，请保留完整内容。
 
 - Array [
 
@@ -59,6 +59,7 @@ oneOf
 
 - 用户消息
 - 助手消息
+- system 消息
 - 最新提醒消息
 
 **[用户消息]**
@@ -80,7 +81,7 @@ oneOf
 
 string
 
-**[最新提醒消息]**
+**[system 消息]**
 
 **最少元素数：** `1`
 
@@ -95,7 +96,7 @@ oneOf
 - 文档块
 - 工具结果块
 
-**[文本内容]**
+**[最新提醒消息]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -141,7 +142,7 @@ nullable
 
 - ]
 
-**[用户内容块]**
+**[文本内容]**
 
 `deepseek-flash` 支持用户消息和工具结果中的图片输入，不支持 assistant 消息中的图片。`deepseek-v4-pro` 不支持图片输入。图片限制见[视觉理解指南](../guides/vision.md)。
 
@@ -159,7 +160,7 @@ oneOf
 - 图片 URL
 - 已上传的图片文件
 
-**[文本块]**
+**[用户内容块]**
 
 **type** stringrequired
 
@@ -173,7 +174,7 @@ oneOf
 
 Base64 编码的图片数据，不包含 data URL 前缀。
 
-**[图片块]**
+**[文本块]**
 
 **type** stringrequired
 
@@ -183,7 +184,7 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 服务端可下载图片的 HTTP 或 HTTPS URL。
 
-**[文档块]**
+**[图片块]**
 
 请求必须携带 `anthropic-beta: files-api-2025-04-14` 请求头。
 
@@ -195,7 +196,7 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 已上传图片文件的 ID，见 [Files API 指南](../guides/files_api.md#anthropic-compatible-files-api)。
 
-**[工具结果块]**
+**[文档块]**
 
 供模型阅读的文档，支持出现在用户消息中。详见 [文件解析指南](../guides/document_parsing.md#document-qa)。
 
@@ -212,7 +213,7 @@ oneOf
 - 已上传的文件
 - 内联文本
 
-**[Base64 图片]**
+**[工具结果块]**
 
 请求必须携带 `anthropic-beta: files-api-2025-04-14` 请求头。
 
@@ -224,7 +225,7 @@ oneOf
 
 通过 [Files API](../guides/files_api.md) 上传的文件 ID，形如 `file-api-...`。
 
-**[图片 URL]**
+**[Base64 图片]**
 
 **type** stringrequired
 
@@ -242,9 +243,9 @@ oneOf
 
 可选。`text` 来源的文档展示给模型的文件名。
 
-**[已上传的图片文件]**
+**[图片 URL]**
 
-仅用于 user 消息。为每个待处理的工具调用 ID 返回一个结果，不得重复，并将结果放在所有文本块或图片块之前。
+仅用于 user 消息。为每个待处理的工具调用 ID 返回一个结果，不得重复，并将结果放在所有文本块或图片块之前。`content` 中还可以包含 `tool_reference` 块，用来按需加载工具。
 
 **type** stringrequired
 
@@ -258,7 +259,7 @@ oneOf
 
 nullable
 
-工具输出，可以是字符串或文本、图片块数组。省略或为 `null` 时结果为空。
+工具输出，可以是字符串或文本、图片、`tool_reference` 块数组。省略或为 `null` 时结果为空。
 
 oneOf
 
@@ -266,11 +267,11 @@ oneOf
 - 工具结果内容块
 - 空值
 
-**[已上传的文件]**
+**[已上传的图片文件]**
 
 string
 
-**[内联文本]**
+**[已上传的文件]**
 
 - Array [
 
@@ -278,8 +279,9 @@ oneOf
 
 - 文本块
 - 图片块
+- 工具引用块
 
-**[文本内容]**
+**[内联文本]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -325,7 +327,7 @@ nullable
 
 - ]
 
-**[工具结果内容块]**
+**[文本内容]**
 
 `deepseek-flash` 支持用户消息和工具结果中的图片输入，不支持 assistant 消息中的图片。`deepseek-v4-pro` 不支持图片输入。图片限制见[视觉理解指南](../guides/vision.md)。
 
@@ -343,7 +345,7 @@ oneOf
 - 图片 URL
 - 已上传的图片文件
 
-**[空值]**
+**[工具结果内容块]**
 
 **type** stringrequired
 
@@ -357,7 +359,7 @@ oneOf
 
 Base64 编码的图片数据，不包含 data URL 前缀。
 
-**[文本块]**
+**[空值]**
 
 **type** stringrequired
 
@@ -367,7 +369,7 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 服务端可下载图片的 HTTP 或 HTTPS URL。
 
-**[图片块]**
+**[文本块]**
 
 请求必须携带 `anthropic-beta: files-api-2025-04-14` 请求头。
 
@@ -379,9 +381,21 @@ Base64 编码的图片数据，不包含 data URL 前缀。
 
 已上传图片文件的 ID，见 [Files API 指南](../guides/files_api.md#anthropic-compatible-files-api)。
 
+**[图片块]**
+
+加载请求顶层 `tools` 中声明的延迟加载工具。仅用于 `tool_result.content`。客户端工具搜索命中的每个工具都以一个 `tool_reference` 块返回。详见[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
+
+**type** stringrequired
+
+**Possible values:** `tool_reference`
+
+**tool\_name** stringrequired
+
+请求顶层 `tools` 中声明的工具名称。
+
 - ]
 
-**[Base64 图片]**
+**[工具引用块]**
 
 null
 
@@ -391,7 +405,7 @@ null
 
 - ]
 
-**[图片 URL]**
+**[Base64 图片]**
 
 历史 assistant 消息。回传时保留其内容块，包括思考、工具调用和网页搜索结果。
 
@@ -408,11 +422,11 @@ oneOf
 - 文本内容
 - 助手内容块
 
-**[已上传的图片文件]**
+**[图片 URL]**
 
 string
 
-**[文本内容]**
+**[已上传的图片文件]**
 
 **最少元素数：** `1`
 
@@ -427,7 +441,7 @@ oneOf
 - 网页搜索结果块
 - 网页抓取结果块
 
-**[助手内容块]**
+**[文本内容]**
 
 每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
 
@@ -473,7 +487,7 @@ nullable
 
 - ]
 
-**[文本块]**
+**[助手内容块]**
 
 **type** stringrequired
 
@@ -487,7 +501,7 @@ nullable
 
 思考块附带的签名。回传该块时应保留；输入签名目前不会被校验。
 
-**[思考块]**
+**[文本块]**
 
 出现在 assistant 消息中。每个工具调用块都必须在紧接的 user 消息中有对应的工具结果块。
 
@@ -507,7 +521,7 @@ nullable
 
 传给工具的 JSON 参数，通常为符合其 `input_schema` 的对象。
 
-**[工具调用块]**
+**[思考块]**
 
 服务端执行网页搜索、`deepseek_web_search` 或 `deepseek_read_url` 时返回。对应的 `web_search_tool_result` 或 `web_fetch_tool_result` 出现在同一条 assistant 消息中，客户端无需执行该工具。
 
@@ -543,7 +557,7 @@ object
 
 DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
 
-**[服务端工具调用块]**
+**[工具调用块]**
 
 **type** stringrequired
 
@@ -568,7 +582,7 @@ oneOf
 - 网页搜索结果
 - 网页搜索错误
 
-**[网页搜索结果块]**
+**[服务端工具调用块]**
 
 **type** stringrequired
 
@@ -602,7 +616,7 @@ DeepSeek 扩展字段。站点名称，未知时为 `null`。
 
 DeepSeek 扩展字段。站点图标的 URL，未知时为 `null`。
 
-**[网页抓取结果块]**
+**[网页搜索结果块]**
 
 **type** stringrequired
 
@@ -622,7 +636,7 @@ DeepSeek 扩展字段。站点图标的 URL，未知时为 `null`。
 
 DeepSeek 扩展字段，出现在联网工具产生的块上：`search` 表示联网搜索，`deep_search` 表示深度思考搜索，`read_link` 表示阅读用户消息中的链接，`image_search` 与 `deep_image_search`（深度思考搜索中）表示图片搜索。回传时请原样保留。
 
-**[网页搜索结果]**
+**[网页抓取结果块]**
 
 深度思考搜索中打开网页（`deepseek_web_search`）或 `deepseek_read_url` 阅读链接时返回。回传时请原样保留，包括 `kind` 和 `signature`。详见 [联网工具指南](../guides/web_tools.md#response-blocks)。
 
@@ -645,7 +659,7 @@ oneOf
 - 网页抓取结果
 - 网页抓取错误
 
-**[网页搜索错误]**
+**[网页搜索结果]**
 
 **type** stringrequired
 
@@ -691,7 +705,7 @@ object
 
 DeepSeek 扩展字段，替代 `retrieved_at`。网页的发布时间，未知时为 `null`。阅读用户消息中的链接时，为网页上提取到的日期，格式不固定；深度思考搜索中打开的网页为 RFC 3339 时间戳。
 
-**[网页抓取结果]**
+**[网页搜索错误]**
 
 **type** stringrequired
 
@@ -715,7 +729,111 @@ DeepSeek 扩展字段。仅出现在成功的 `read_link` 结果上，内容是�
 
 - ]
 
+**[网页抓取结果]**
+
+放在对话历史轮次之间的 system 消息。其内容可以包含 `tool_addition` 块，用来按需加载工具。system 消息不能出现在 assistant 的 `tool_use` 块和它对应的 `tool_result` 之间。详见[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
+
+**role** stringrequired
+
+**Possible values:** `system`
+
+**content** string | object[]
+
+required
+
+消息内容，可以是字符串，或文本块与 `tool_addition` 块组成的列表。
+
+oneOf
+
+- 文本内容
+- system 消息内容块
+
 **[网页抓取错误]**
+
+string
+
+**[文本内容]**
+
+**最少元素数：** `1`
+
+- Array [
+
+oneOf
+
+- 文本块
+- 工具增加块
+
+**[system 消息内容块]**
+
+每个文本块的 `type` 必须为 `"text"`，内容放在 `text` 字段中。请求中额外传入的 `cache_control` 和 `citations` 字段会被忽略。
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+文本内容。
+
+**citations**
+
+object[]
+
+nullable
+
+该段文本引用的来源。回答引用了联网工具的结果时返回；请求中传入时会被忽略。
+
+回答引用的一个来源，随联网工具返回。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+被引用来源的 URL。
+
+**title** stringnullable
+
+被引用来源的标题，未知时为 `null`。
+
+**encrypted\_index** string
+
+恒为空字符串。
+
+**cited\_text** string
+
+当前文本块截至该引用处的回答文本。与 Anthropic API 不同，它不是从来源中摘录的原文。
+
+- ]
+
+**[文本块]**
+
+加载请求顶层 `tools` 中声明的延迟加载工具。仅用于对话中途的 `system` 消息。只支持增加工具：不支持 `tool_removal` 和内联 `tool_definition` 块。
+
+**type** stringrequired
+
+**Possible values:** `tool_addition`
+
+**tool**
+
+object
+
+required
+
+**type** stringrequired
+
+**Possible values:** `tool_reference`
+
+**name** stringrequired
+
+请求顶层 `tools` 中声明的工具名称。
+
+- ]
+
+**[工具增加块]**
 
 DeepSeek 扩展。与 DeepSeek 网页端一样，向模型提供当前日期、地点、平台与语言。请紧挨着放在它所属的 `user` 消息之前，放在其他位置返回 `400`。无论是否使用联网工具均可使用。详见 [用户元信息标记指南](../guides/latest_reminder.md)。
 
@@ -851,7 +969,7 @@ object[]
 
 nullable
 
-模型可使用的工具，支持客户端定义的工具、服务端网页搜索工具，以及服务端工具 `deepseek_web_search` 与 `deepseek_read_url`。工具名称必须唯一，空数组等同于未提供工具。`cache_control` 会被忽略。
+模型可使用的工具，支持客户端定义的工具、服务端网页搜索工具，以及服务端工具 `deepseek_web_search` 与 `deepseek_read_url`。客户端工具可以设置 `defer_loading`，让工具定义在加载前不进入 prompt。工具名称必须唯一，空数组等同于未提供工具。`cache_control` 会被忽略。详见[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
 
 - Array [
 
@@ -889,6 +1007,10 @@ required
 描述工具参数的有效 JSON Schema，顶层 `type` 必须为 `object`。
 
 **property name\*** anynullable
+
+**defer\_loading** booleannullable
+
+设为 `true` 时，工具会被声明，但在被 `tool_reference` 块（位于 `tool_result` 中）或 `tool_addition` 块（位于对话中途的 `system` 消息中）加载之前，不会展示给模型。`deepseek-flash` 支持，`deepseek-v4-pro` 忽略。请求中至少要有一个工具不带 `defer_loading`。详见[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
 
 **[网页搜索服务端工具]**
 
@@ -1010,7 +1132,7 @@ null
 
 **最多元素数：** `16`
 
-最多 16 个非空停止字符串。匹配到其中一个字符串时，`stop_reason` 为 `stop_sequence`，`stop_sequence` 返回匹配的字符串。
+最多 16 个非空停止字符串，每个字符串不能超过 512 字节（UTF-8 编码）。匹配到其中一个字符串时，`stop_reason` 为 `stop_sequence`，`stop_sequence` 返回匹配的字符串。
 
 **temperature** numbernullable
 
@@ -1506,7 +1628,7 @@ object
 
 **Possible values:** `>= 0`
 
-成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
+成功且返回非空结果的服务端网页搜索次数。
 
 **web\_fetch\_requests** integer
 
@@ -1518,13 +1640,13 @@ object
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的网页抓取次数。
+使用联网工具时返回。网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的图片搜索次数。
+使用联网工具时返回。图片搜索次数。
 
 **[网页抓取错误]**
 
@@ -2011,7 +2133,7 @@ object
 
 **Possible values:** `>= 0`
 
-成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
+成功且返回非空结果的服务端网页搜索次数。
 
 **web\_fetch\_requests** integer
 
@@ -2023,13 +2145,13 @@ object
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的网页抓取次数。
+使用联网工具时返回。网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的图片搜索次数。
+使用联网工具时返回。图片搜索次数。
 
 **[服务端工具调用输出]**
 
@@ -2568,7 +2690,7 @@ object
 
 **Possible values:** `>= 0`
 
-成功且返回非空结果的服务端网页搜索次数。失败或结果为空的尝试不计入。此字段可作为计费依据。
+成功且返回非空结果的服务端网页搜索次数。
 
 **web\_fetch\_requests** integer
 
@@ -2580,13 +2702,13 @@ object
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的网页抓取次数。
+使用联网工具时返回。网页抓取次数。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。计费的图片搜索次数。
+使用联网工具时返回。图片搜索次数。
 
 **[签名增量]**
 

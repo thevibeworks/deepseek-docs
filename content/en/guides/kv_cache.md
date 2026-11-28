@@ -1,8 +1,8 @@
 ---
 title: "Context Caching"
 description: "The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code."
-source: https://api-docs.deepseek.com/guides/kv_cache
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/guides/kv_cache/
+fetched: 2026-11-28
 ---
 
 # Context Caching

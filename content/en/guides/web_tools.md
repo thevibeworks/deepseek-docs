@@ -1,15 +1,15 @@
 ---
 title: "Web Tools"
-description: "DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool."
-source: https://api-docs.deepseek.com/guides/web_tools
-fetched: 2026-11-15
+description: "DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool."
+source: https://api-docs.deepseek.com/guides/web_tools/
+fetched: 2026-11-28
 ---
 
 # Web Tools
 
-DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool.
+DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool.
 
-To call search and fetch directly from your own code, use the [Search & Fetch](search.md) APIs instead.
+These tools are designed for conversations, to [build a chatbot](build_a_chatbot.md). To search and fetch web pages in an agent or in your own code, use the [Search & Fetch](search.md) APIs instead.
 
 | Capability | How to enable it | What it does |
 | --- | --- | --- |
@@ -610,16 +610,10 @@ The `usage` in the final `message_delta`, or in a non-streaming response, is the
 | `output_tokens` | Output tokens |
 | `output_tokens_details.thinking_tokens` | The thinking tokens among them, returned when thinking is enabled |
 | `cache_creation_input_tokens` | Always `0` |
-| `server_tool_use.web_search_requests`, `web_fetch_requests` | The numbers of search result blocks and fetch result blocks in the response, including errors. They are for display and are not billed counts |
-| `server_tool_use.tool_search`, `tool_fetch`, `tool_image_search` | The billed numbers of searches (excluding image searches), fetches and image searches |
+| `server_tool_use.web_search_requests`, `web_fetch_requests` | The numbers of search result blocks and fetch result blocks in the response, including errors |
+| `server_tool_use.tool_search`, `tool_fetch`, `tool_image_search` | The numbers of searches (excluding image searches), fetches and image searches |
 
-Tool calls are billed separately, at the web search, image search and web fetch prices in [Models & Pricing](../quick_start/pricing.md#web-tools-pricing), the same prices as the Search and Fetch APIs:
-
-- Web search: a search call that returns results is billed for each of its queries, so a call with three queries counts as three. A call that fails or returns no results is not billed.
-- Image search: each image counts as 1 search, and each region the model selects in an image counts as 1 more. A search that fails or finds no results is not billed.
-- Web fetch, URL reading: per page fetched successfully, including pages whose result is then replaced by a `url_not_allowed` or `unavailable` error under model content safety. Links that cannot be fetched are not billed.
-- Web fetch, deep thinking search: an opened page is billed only when it is fetched from the web. Opening the same page again, moving through a page, and opening a page whose content came with the search results are free.
-- Finding text in a page is free.
+These server tools are not billed (text search, image search and page fetch). Only model token usage is billed.
 
 ---
 
@@ -640,7 +634,7 @@ Common error messages:
 
 ### Generation Failures
 
-If an error occurs after the answer has started to generate, such as an inference timeout or interruption, the HTTP status is already `200`. The response ends with an error and carries `usage`. Inference, searches and page reads that ran before the failure are billed as usual.
+If an error occurs after the answer has started to generate, such as an inference timeout or interruption, the HTTP status is already `200`. The response ends with an error and carries `usage`.
 
 | Protocol | Streaming | Non-streaming |
 | --- | --- | --- |
@@ -736,7 +730,7 @@ Each tool call is a `web_search_call` item with the DeepSeek extension `kind`:
 
 ### Usage
 
-- In `usage.server_tool_use`, `tool_search` is the number of billed searches (excluding image searches), `tool_fetch` the number of billed fetches, and `tool_image_search` the number of billed image searches. The field is omitted when all three are `0`.
+- In `usage.server_tool_use`, `tool_search` is the number of searches (excluding image searches), `tool_fetch` the number of fetches, and `tool_image_search` the number of image searches. The field is omitted when all three are `0`.
 
 ### Multi-turn Conversations
 
@@ -849,7 +843,7 @@ The tool calls are in the extension field `message.server_tool_calls`. Each entr
 
 ### Usage
 
-In `usage.server_tool_use`, `tool_search`, `tool_fetch` and `tool_image_search` are the numbers of billed searches, fetches and image searches, as in the [Responses API](#responses-api).
+In `usage.server_tool_use`, `tool_search`, `tool_fetch` and `tool_image_search` are the numbers of searches, fetches and image searches, as in the [Responses API](#responses-api).
 
 ### Multi-turn Conversations
 

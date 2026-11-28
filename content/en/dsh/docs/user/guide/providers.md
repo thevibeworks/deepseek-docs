@@ -1,7 +1,7 @@
 ---
 title: "Configure models"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md
-fetched: 2026-11-15
+fetched: 2026-11-28
 ---
 # Configure models
 
@@ -11,13 +11,13 @@ This guide assumes you started the Web UI through the [root README](../../../REA
 
 ## Configure DeepSeek
 
-Open **Settings → Models**. The DeepSeek card exposes one API-key field; enter the key and save it.
+Open **Settings → Models**. The DeepSeek API card exposes one API-key field; enter the key and save it.
 
 ![The Models page: the DeepSeek card, with Add model provider below it](https://raw.githubusercontent.com/deepseek-ai/deepseek-harness/master/docs/user/guide/providers-models-page.png)
 
 Keys are write-only. The page receives a redacted descriptor after saving, never the literal secret. The key is stored in `$DSH_HOME/.credentials.yaml`, while settings retain only its credential reference.
 
-With a key saved and the default endpoint, DeepSeek's models follow the list the DeepSeek API publishes. The list loads when the models are first needed, refreshes in the background about every ten minutes while they are in use, and falls back to the built-in models when it cannot load. Editing **Models** under **Customized settings** keeps your own list instead and stops following the published one; **Restore defaults** follows it again and reloads it. While the published list is in use, the card shows the built-in models, so a newly published model appears only in the model picker. The [API-key provider reference](../../../packages/llm/llm-deepseek-api-key/README.md) owns the listing, fallback, and gating rules.
+With a key saved and the default endpoint, DeepSeek's models follow the list the DeepSeek API publishes. The list loads when the models are first needed, refreshes in the background about every ten minutes while they are in use, and falls back to the built-in models when it cannot load. Editing **Models** keeps your own list instead and stops following the published one; **Restore defaults** follows it again and reloads it. While the published list is in use, the card shows the built-in models, so a newly published model appears only in the model picker. The [API-key provider reference](../../../packages/llm/llm-deepseek-api-key/README.md) owns the listing, fallback, and gating rules.
 
 ## Add a third-party provider
 
@@ -25,9 +25,9 @@ Choose **Add model provider**. The card opens on **Third-party model provider**:
 
 The authentication **?** explains saved-credential priority and environment fallbacks. Leave the key blank to use a saved credential or try the listed environment variables. A green hint identifies a detected environment variable. A yellow hint means no credential variable was detected; enter an API key or configure the listed variable. An unconfirmed hint means the status read failed. Detection does not validate the credential or test the connection. Provider-managed credential files, including AWS profiles and Google application-default credentials, are outside this check. Providers without native key authentication, such as `openai-codex`, show no key field unless the profile explicitly names a credential reference.
 
-A saved credential displays a masked preview in the input and a green hint that the saved key will be used. The preview retains the identifier before the first hyphen or underscore, then five leading and four trailing key characters, only when at least eight middle characters stay hidden; otherwise the entire key and identifier become dots. Counts use Unicode code points. Saved keys have no eye button and cannot be revealed, copied, cut, or partially edited; typing or pasting replaces the whole key. Backspace or Delete stages whole-key removal. Press Backspace or Delete, then **Apply**, to remove the stored override and use environment authentication. Emptying a replacement also stages deletion of the saved key. **Cancel** preserves the saved key before saving. A refused deletion leaves settings unchanged. If the key is removed but settings fail, the warning reports that deletion cannot be undone; retry **Apply** to finish settings, or **Close** to leave the partial result. Clearing a shared credential affects every feature using the same reference. Without an environment credential, the provider has no authentication after clearing. Environment fallback uses **Leave blank to use env as auth** and one detection hint while the input is empty. A replacement draft shows a reminder to apply the new key. Pending removal names the environment variable used after applying, when the route declares one. Other nonempty inputs show no authentication status text. Address configuration variables appear under **Base URL** and do not count as credentials.
+A saved key appears as read-only text: its masked preview, followed by the **Replace API key** and **Clear API key** icon buttons. The preview retains the identifier before the first hyphen or underscore, then five leading and four trailing key characters, only when at least eight middle characters stay hidden; otherwise the entire key and identifier become dots. Counts use Unicode code points. The saved key itself cannot be revealed, copied, or partially edited. To replace it, select **Replace API key**, type or paste the whole new key, then select **Apply**. When focus leaves the field, or you press Enter, a draft that passes validation returns to read-only text shown entirely as dots; select **Replace API key** again to keep editing it. A draft with a format error stays in the input with its error. An emptied draft keeps the saved key. To remove the stored override and use environment authentication, select **Clear API key**, then **Apply**. **Cancel** preserves the saved key before saving. A refused deletion leaves settings unchanged. If the key is removed but settings fail, the warning reports that deletion cannot be undone; retry **Apply** to finish settings, or **Close** to leave the partial result. Clearing a shared credential affects every feature using the same reference. Without an environment credential, the provider has no authentication after clearing. Environment fallback uses **Leave blank to use env as auth** and one detection hint while the input is empty. After **Clear API key**, the empty input shows only the **Leave blank to use env as auth** placeholder until **Apply**. No hint appears below it, because the saved key still hides the environment status. Other nonempty inputs show no authentication status text. Address configuration variables appear under **Base URL** and do not count as credentials.
 
-An editable, nonempty key draft has an eye button. Select **Show secret** to check what you typed, and **Hide secret** to mask it again. Changing the input masks it again. Native password fields do not offer cut; select the draft and press Backspace to erase it, or reveal it before cutting. Stored credentials remain write-only.
+An editable, nonempty key draft has an eye button. Select **Show secret** to check what you typed, and **Hide secret** to mask it again. Changing the input or returning to read-only text masks it again. Native password fields do not offer cut; select the draft and press Backspace to erase it, or reveal it before cutting. Stored credentials remain write-only.
 
 ## Add a custom model API
 
@@ -39,7 +39,7 @@ The Provider ID is permanent because requests, saved sessions, model defaults, a
 
 ### Discover models
 
-Under **Model catalog**, choose **Fetch available models** to ask the endpoint which models it serves. The request uses the base URL, protocol, and key currently in the form, or a saved provider's stored key, and the reply opens a searchable picker: models already in the list start ticked, so search, tick the models to add, untick the ones to remove, and choose **Update list**. Configured models the endpoint does not list stay. Nothing is stored until you save or create the provider.
+Under **Models**, choose **Fetch available models** to ask the endpoint which models it serves. The request uses the base URL, protocol, and key currently in the form, or a saved provider's stored key, and the reply opens a searchable picker: models already in the list start ticked, so search, tick the models to add, untick the ones to remove, and choose **Update list**. Configured models the endpoint does not list stay. Nothing is stored until you save or create the provider.
 
 Discovery reads the listing formats common gateways publish, but not every endpoint answers in one of them, so treat it as a convenience rather than a guarantee: when it fails or lists nothing, add the model ids by hand and they work just the same. A built-in provider is always answered from the installed catalog, even when its base URL points at a gateway, so fetch through a custom provider to see what the gateway really serves.
 
@@ -47,7 +47,7 @@ Discovery reads the listing formats common gateways publish, but not every endpo
 
 Configured providers appear in the model picker. Selecting a model also makes it the default for new sessions. A session that has already sent a request retains the model recorded in its own log.
 
-To change a provider’s model order, edit it in **Settings → Models**, open **Customized settings**, and drag a model’s three-line handle. You can also focus the handle and press the up or down arrow key. **Apply** keeps the order; **Cancel** discards it. The model picker follows the saved order within that provider.
+To change a provider’s model order, edit it in **Settings → Models** and drag a folded model row; fold an unfolded model before dragging it. Reordering needs a mouse. **Apply** keeps the order; **Cancel** discards it. The model picker follows the saved order within that provider.
 
 If a saved default names a provider that was deleted, the composer displays **Select model** and blocks input until another model is selected.
 
@@ -56,14 +56,14 @@ If a saved default names a provider that was deleted, the composer displays **Se
 The generated [plugin configuration catalog](../../config-catalog.md) lists every supported field and default for every plugin; [`dsh-llm-pi-ai`](../../config-catalog.md#deepseek-aidsh-llm-pi-ai) is the provider section this page configures. The [`dsh-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) and [`dsh-llm-deepseek`](../../../packages/llm/llm-deepseek/README.md) references own direct `cordis.patch.yml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.
 
 ::: tip Additional settings
-The Models page exposes the API key, display name, base URL, API protocol, and each model's id, display name, context window, max output tokens, and input types, plus the reasoning levels of a model on a custom model API provider. Configure the reasoning levels of a built-in provider's models, request-compatibility switches, headers, timeouts, and retry policy in `$DSH_HOME/profiles/<profile>/cordis.patch.yml`, the same document the page writes. Edit it directly, or, when the browser runs on the same machine as the server, open it with **Open configuration file** in the Settings header; the adapters re-read it on the next request, so nothing needs a restart. The subsections below cover the fields most gateways need.
+The Models page exposes the API key, display name, base URL, API protocol, and each model's id, display name, context window, max output tokens, and input types, plus the reasoning levels of a model on a built-in or custom model API provider. Configure request-compatibility switches, headers, timeouts, and retry policy in `$DSH_HOME/profiles/<profile>/cordis.patch.yml`, the same document the page writes. Edit it directly, or, when the browser runs on the same machine as the server, open it with **Open configuration file** in the Settings header; the adapters re-read it on the next request, so nothing needs a restart. The subsections below cover the fields most gateways need.
 
 For the standard Web UI launch with `dsh web`, `<profile>` is `web`, so the path is `$DSH_HOME/profiles/web/cordis.patch.yml`. If you launch a custom profile, use the name selected at startup instead.
 :::
 
 ### Image input
 
-In **Settings → Models**, edit the provider, open **Customized settings**, and expand the model's **Model options**. **Input types** occupies its own row below the capacity fields. Select **Image** for a model that accepts images, and save. **Text** starts selected for a new custom model with no inherited image capability. At least one type must remain selected; select Image before clearing Text for an image-only model.
+In **Settings → Models**, edit the provider and expand the model's **Model options**. **Input types** occupies its own row below the capacity fields. Select **Image** for a model that accepts images, and save. **Text** starts selected for a new custom model with no inherited image capability. At least one type must remain selected; select Image before clearing Text for an image-only model.
 
 The checkboxes save `input` for pi-ai models and `inputModalities` for the direct DeepSeek adapter. You can also edit the model in `$DSH_HOME/profiles/<profile>/cordis.patch.yml`; for example, this custom pi-ai provider declares one text-only model and one vision model:
 
@@ -85,7 +85,7 @@ These examples show config fields inside a profile patch. A Cordis config overri
 
 Pi-ai's `input` accepts `text` and `image` and applies to that model alone. An explicit nonempty selection takes priority. An omitted or empty `input` inherits the installed catalog's input types, then the route's `defaultInput`, which defaults to `[text]`. The checkboxes display these inherited values without saving an override when you merely open the row.
 
-DeepSeek treats an omitted `inputModalities` as text-only and rejects an empty list. Clearing Image also removes that model's `imagePixelBudget` and `imageMaxBytes`, because DeepSeek rejects image limits on a text-only model. Set those limits again if you later enable images and need custom limits.
+DeepSeek treats an omitted `inputModalities` as text-only and rejects an empty list. Clearing Image also removes that model's `imagePixelBudget` and `imageTargetBytes`, because DeepSeek rejects image limits on a text-only model. Set those limits again if you later enable images and need custom limits.
 
 To restore inheritance after editing the checkboxes, remove the model's `input` or `inputModalities` field from `cordis.patch.yml`. **Restore defaults** removes the entire model-catalog override, including other model edits, so use it only when you want to restore the whole catalog.
 
@@ -140,7 +140,7 @@ A model that needs a newer DeepSeek Harness fails with `CLIENT_UPGRADE_REQUIRED`
 
 The model picker offers an **Effort** menu for a model that declares reasoning levels. A built-in provider's models inherit their levels from the installed catalog, and DeepSeek's models keep the adapter's levels. A model you enter by hand declares none until you add them, so until then the Effort entry does not appear in the menu and the endpoint's own default decides whether the model thinks.
 
-On a custom model API provider, declare the levels in **Settings → Models**: edit the provider, open **Customized settings**, expand the model's **Model options**, and turn on **Reasoning levels**. The rows start with off, low, medium, and high. Each row pairs a level with the **API value** sent for it, which defaults to the level name; change it only where the model provider's API documentation spells the level differently. Add or delete rows to match what the endpoint supports, keep at least one level besides off, and save. Turning the switch off removes the declaration.
+On a built-in or custom model API provider, declare the levels in **Settings → Models**: edit the provider, expand the model's **Model options**, and turn on **Reasoning levels**. The rows start with off, low, medium, and high. Each row pairs a level with the **API value** sent for it, which defaults to the level name; change it only where the model provider's API documentation spells the level differently. Add or delete rows to match what the endpoint supports, keep at least one level besides off, and save. Levels declared for a built-in provider's model replace the ones it inherits. Turning the switch off removes the declaration, and a built-in provider's model then inherits its levels again.
 
 The page writes `reasoningEfforts` in `$DSH_HOME/profiles/<profile>/cordis.patch.yml`, where you can also declare the levels directly:
 
@@ -221,6 +221,26 @@ Each switch belongs to the protocols that declare it, so a switch valid on one `
 
 Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `dsh-llm-pi-ai` configuration reference](../../config-catalog.md#deepseek-aidsh-llm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
 
+### Providers supplied by a deployment
+
+A deployment can supply providers to every profile on a machine by writing provider rows into the home patch, `$DSH_HOME/cordis.patch.yml`. Each row holds one provider: its ID in `provider`, and beside it the same fields a provider takes in the profile's own file.
+
+```yaml
+- insert:
+    - id: llm-pi-ai-team-gateway
+      name: '@deepseek-ai/dsh-llm-pi-ai/provider'
+      config:
+        provider: team-gateway
+        displayName: Team Gateway
+        apiKeyEnv: TEAM_GATEWAY_API_KEY
+        api: openai-completions
+        baseURL: https://gateway.example/v1
+        models:
+          - id: team-model
+```
+
+The Models page lists such a provider beside your own and opens it with the settings the deployment gave it. It cannot be deleted there. You can enter your own API key for it; a change to any other field is refused when you save, because the deployment's file holds that provider. Your own providers stay in your profile's file and are not affected when the deployment replaces its file. A provider ID selects one configuration, so when both files use the same ID the deployment's row is in effect, your provider of that ID is not shown, and it serves again once the deployment removes its row. A deployment that offers a vendor you may also configure yourself gives its row an ID of its own and a display name. Only an ID that names a built-in provider takes that provider's address and models; any other ID declares `api`, `baseURL`, and `models`, as in the example.
+
 ## Troubleshooting
 
 - **`MISSING_CREDENTIAL`** — Store the provider key through the Models page or supply the referenced environment variable.
@@ -229,7 +249,7 @@ Every switch, its accepted values, and the protocols that take it are listed und
 - **Fetching available models reports neither a `data` array nor a `models` object** — The endpoint's listing is in a format discovery does not read. Enter the models by hand.
 - **The gateway refuses every request although the key and URL are right** — Its request shape differs from OpenAI's. Start with `compat.supportsDeveloperRole: false` and `compat.maxTokensField: max_tokens` on the route.
 - **Only reasoning models fail** — pi-ai sends their system prompt as the `developer` role, which the gateway rejects. Set `compat.supportsDeveloperRole: false`.
-- **The Effort menu does not appear for a model you entered by hand** — It declares no levels. On a custom model API provider, turn on **Reasoning levels** in the model's **Model options**; elsewhere, add `reasoningEfforts` to the model in `cordis.patch.yml`.
+- **The Effort menu does not appear for a model you entered by hand** — It declares no levels. Turn on **Reasoning levels** in the model's **Model options**, or add `reasoningEfforts` to the model in `cordis.patch.yml`.
 - **`off` does not stop a DeepSeek model from thinking** — An empty `off` sends no reasoning field at all, and an endpoint that thinks by default keeps thinking. Set `compat.thinkingFormat: deepseek` on the model or the route.
 - **A compat switch is refused as having no value** — A key written with nothing after the colon. Give it a value, or remove the key to keep the installed catalog's.
 - **An image is refused before sending** — The model declares no image modality. Give a custom provider's model `input: [text, image]`; on DeepSeek's own route, select an image-capable entry from the configured catalog (`deepseek-flash` by default) and confirm that your gateway serves that model with image input.

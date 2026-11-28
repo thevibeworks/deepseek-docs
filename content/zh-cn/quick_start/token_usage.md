@@ -1,8 +1,8 @@
 ---
 title: "Token 用量计算"
 description: "token 是模型用来表示自然语言文本的基本单位，也是我们的计费单元，可以直观的理解为“字”或“词”；通常 1 个中文词语、1 个英文单词、1 个数字或 1 个符号计为 1 个 token。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/token_usage
-fetched: 2026-08-29
+source: https://api-docs.deepseek.com/zh-cn/quick_start/token_usage/
+fetched: 2026-11-28
 ---
 
 # Token 用量计算

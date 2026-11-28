@@ -6,8 +6,8 @@
 ---
 title: "Speech to Text"
 description: "Transcribe an audio file into text. The whole file is sent in one request and the complete transcript is returned. See the [Speech to Text guide](/guides/asr) for the languages, limits, errors and billing."
-source: https://api-docs.deepseek.com/api/asr
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/asr/
+fetched: 2026-11-28
 ---
 
 # Speech to Text
@@ -73,8 +73,8 @@ Loading...
 ---
 title: "Chat Completions API"
 description: "Creates a model response for the given chat conversation."
-source: https://api-docs.deepseek.com/api/create-chat-completion
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-chat-completion/
+fetched: 2026-11-28
 ---
 
 # Chat Completions API
@@ -427,7 +427,7 @@ nullable
 
 **Default value:** `null`
 
-Up to 16 sequences where the API will stop generating further tokens.
+Up to 16 sequences where the API will stop generating further tokens. Each sequence must be a non-empty string of at most 512 bytes (UTF-8 encoded).
 
 oneOf
 
@@ -981,25 +981,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 **[Example]**
 
@@ -1320,8 +1320,8 @@ Loading...
 ---
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
-source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-completion/
+fetched: 2026-11-28
 ---
 
 # FIM Completion API (Beta)
@@ -1377,7 +1377,7 @@ nullable
 
 **Default value:** `null`
 
-Up to 16 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
+Up to 16 sequences where the API will stop generating further tokens. Each sequence must be a non-empty string of at most 512 bytes (UTF-8 encoded). The returned text will not contain the stop sequence.
 
 oneOf
 
@@ -1594,25 +1594,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 **[Example]**
 
@@ -1781,25 +1781,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 - ]
 
@@ -1829,8 +1829,8 @@ Loading...
 ---
 title: "Upload File"
 description: "Upload an image file that can later be referenced by its `file_id` in chat completion requests."
-source: https://api-docs.deepseek.com/api/create-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-file/
+fetched: 2026-11-28
 ---
 
 # Upload File
@@ -1941,8 +1941,8 @@ Loading...
 ---
 title: "Messages API"
 description: "Creates a model response in the Anthropic Messages API format."
-source: https://api-docs.deepseek.com/api/create-message
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-message/
+fetched: 2026-11-28
 ---
 
 # Messages API
@@ -1991,7 +1991,7 @@ required
 
 **Minimum items:** `1`
 
-The conversation history. At least one message is required. This API is stateless: include the messages needed for the current turn in every request. Use the top-level `system` field for the system prompt. When continuing after a tool call, pass back the complete assistant content, including thinking and tool-use blocks, followed by the matching tool results. The service may restore omitted thinking content from tool-call IDs; if recovery is required but fails, the request returns `400`. Preserve the complete content for reliable replay.
+The conversation history. At least one message is required. This API is stateless: include the messages needed for the current turn in every request. Use the top-level `system` field for the system prompt. A `system` message may also appear between turns; its content may include `tool_addition` blocks to load deferred tools. When continuing after a tool call, pass back the complete assistant content, including thinking and tool-use blocks, followed by the matching tool results. The service may restore omitted thinking content from tool-call IDs; if recovery is required but fails, the request returns `400`. Preserve the complete content for reliable replay.
 
 - Array [
 
@@ -1999,6 +1999,7 @@ oneOf
 
 - User message
 - Assistant message
+- System message
 - Latest reminder message
 
 **[User message]**
@@ -2020,7 +2021,7 @@ oneOf
 
 string
 
-**[Latest reminder message]**
+**[System message]**
 
 **Minimum items:** `1`
 
@@ -2035,7 +2036,7 @@ oneOf
 - Document block
 - Tool-result block
 
-**[Text content]**
+**[Latest reminder message]**
 
 Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
 
@@ -2081,7 +2082,7 @@ The answer text of the current text block up to this citation. Unlike the Anthro
 
 - ]
 
-**[User content blocks]**
+**[Text content]**
 
 Image input is supported by `deepseek-flash` in user messages and tool results. Images in assistant messages are not supported. `deepseek-v4-pro` does not support image input. See the [Vision Guide](../guides/vision.md) for image limits.
 
@@ -2099,7 +2100,7 @@ oneOf
 - Image URL
 - Uploaded image file
 
-**[Text block]**
+**[User content blocks]**
 
 **type** stringrequired
 
@@ -2113,7 +2114,7 @@ oneOf
 
 The base64-encoded image bytes, without a data-URL prefix.
 
-**[Image block]**
+**[Text block]**
 
 **type** stringrequired
 
@@ -2123,7 +2124,7 @@ The base64-encoded image bytes, without a data-URL prefix.
 
 An HTTP or HTTPS URL from which the server can download the image.
 
-**[Document block]**
+**[Image block]**
 
 Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
@@ -2135,7 +2136,7 @@ Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
 The ID of an uploaded image file. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
 
-**[Tool-result block]**
+**[Document block]**
 
 A document for the model to read, supported in user messages. See the [File Parsing Guide](../guides/document_parsing.md#document-qa).
 
@@ -2152,7 +2153,7 @@ oneOf
 - Uploaded file
 - Inline text
 
-**[Base64 image]**
+**[Tool-result block]**
 
 The request must carry the `anthropic-beta: files-api-2025-04-14` header.
 
@@ -2164,7 +2165,7 @@ The request must carry the `anthropic-beta: files-api-2025-04-14` header.
 
 The ID of a file uploaded via the [Files API](../guides/files_api.md), of the form `file-api-...`.
 
-**[Image URL]**
+**[Base64 image]**
 
 **type** stringrequired
 
@@ -2182,9 +2183,9 @@ The text of the document.
 
 Optional. The file name shown to the model for a `text` source.
 
-**[Uploaded image file]**
+**[Image URL]**
 
-Only valid in user messages. Return one result for every pending tool-use ID, with no duplicates, before any text or image blocks.
+Only valid in user messages. Return one result for every pending tool-use ID, with no duplicates, before any text or image blocks. The `content` may also contain `tool_reference` blocks to load deferred tools.
 
 **type** stringrequired
 
@@ -2198,7 +2199,7 @@ The ID of the corresponding `tool_use` block in the immediately preceding assist
 
 nullable
 
-The tool output as a string or a list of text and image blocks. If omitted or `null`, the result is empty.
+The tool output as a string or a list of text, image, and `tool_reference` blocks. If omitted or `null`, the result is empty.
 
 oneOf
 
@@ -2206,11 +2207,11 @@ oneOf
 - Tool-result content blocks
 - Null value
 
-**[Uploaded file]**
+**[Uploaded image file]**
 
 string
 
-**[Inline text]**
+**[Uploaded file]**
 
 - Array [
 
@@ -2218,8 +2219,9 @@ oneOf
 
 - Text block
 - Image block
+- Tool-reference block
 
-**[Text content]**
+**[Inline text]**
 
 Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
 
@@ -2265,7 +2267,7 @@ The answer text of the current text block up to this citation. Unlike the Anthro
 
 - ]
 
-**[Tool-result content blocks]**
+**[Text content]**
 
 Image input is supported by `deepseek-flash` in user messages and tool results. Images in assistant messages are not supported. `deepseek-v4-pro` does not support image input. See the [Vision Guide](../guides/vision.md) for image limits.
 
@@ -2283,7 +2285,7 @@ oneOf
 - Image URL
 - Uploaded image file
 
-**[Null value]**
+**[Tool-result content blocks]**
 
 **type** stringrequired
 
@@ -2297,7 +2299,7 @@ oneOf
 
 The base64-encoded image bytes, without a data-URL prefix.
 
-**[Text block]**
+**[Null value]**
 
 **type** stringrequired
 
@@ -2307,7 +2309,7 @@ The base64-encoded image bytes, without a data-URL prefix.
 
 An HTTP or HTTPS URL from which the server can download the image.
 
-**[Image block]**
+**[Text block]**
 
 Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
@@ -2319,9 +2321,21 @@ Requires the request header `anthropic-beta: files-api-2025-04-14`.
 
 The ID of an uploaded image file. See the [Files API Guide](../guides/files_api.md#anthropic-compatible-files-api).
 
+**[Image block]**
+
+Loads a deferred tool that is declared in the request's top-level `tools`. Only valid inside `tool_result.content`. List each tool returned by a client-side tool search as a `tool_reference` block. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
+
+**type** stringrequired
+
+**Possible values:** `tool_reference`
+
+**tool\_name** stringrequired
+
+The name of a tool declared in the request's top-level `tools`.
+
 - ]
 
-**[Base64 image]**
+**[Tool-reference block]**
 
 null
 
@@ -2331,7 +2345,7 @@ Ignored. Include any error details in `content`.
 
 - ]
 
-**[Image URL]**
+**[Base64 image]**
 
 A previous assistant message. Preserve its content blocks when passing it back, including thinking, tool use, and web search results.
 
@@ -2348,11 +2362,11 @@ oneOf
 - Text content
 - Assistant content blocks
 
-**[Uploaded image file]**
+**[Image URL]**
 
 string
 
-**[Text content]**
+**[Uploaded image file]**
 
 **Minimum items:** `1`
 
@@ -2367,7 +2381,7 @@ oneOf
 - Web search result block
 - Web fetch result block
 
-**[Assistant content blocks]**
+**[Text content]**
 
 Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
 
@@ -2413,7 +2427,7 @@ The answer text of the current text block up to this citation. Unlike the Anthro
 
 - ]
 
-**[Text block]**
+**[Assistant content blocks]**
 
 **type** stringrequired
 
@@ -2427,7 +2441,7 @@ Thinking content returned by the model. Pass it back unchanged when continuing a
 
 The signature returned with the thinking block. Preserve it when passing back the block; the input signature is not validated.
 
-**[Thinking block]**
+**[Text block]**
 
 Appears in assistant messages. Each tool-use block must have a matching tool-result block in the immediately following user message.
 
@@ -2447,7 +2461,7 @@ The name of the client tool.
 
 The JSON arguments supplied to the tool, normally an object matching its `input_schema`.
 
-**[Tool-use block]**
+**[Thinking block]**
 
 Returned when the service runs web search, `deepseek_web_search` or `deepseek_read_url`. Its matching `web_search_tool_result` or `web_fetch_tool_result` appears in the same assistant message; the client does not run this tool.
 
@@ -2483,7 +2497,7 @@ Identifies a direct server-tool call.
 
 DeepSeek extension on blocks produced by the web tools: `search` for web search, `deep_search` for deep thinking search, `read_link` for URL reading, and `image_search` or `deep_image_search` (during deep thinking search) for image search. Pass it back unchanged.
 
-**[Server-tool-use block]**
+**[Tool-use block]**
 
 **type** stringrequired
 
@@ -2508,7 +2522,7 @@ oneOf
 - Web search result
 - Web search error
 
-**[Web search result block]**
+**[Server-tool-use block]**
 
 **type** stringrequired
 
@@ -2542,7 +2556,7 @@ DeepSeek extension. The name of the site, or `null` when unknown.
 
 DeepSeek extension. The URL of the site icon, or `null` when unknown.
 
-**[Web fetch result block]**
+**[Web search result block]**
 
 **type** stringrequired
 
@@ -2562,7 +2576,7 @@ The reason the server-side search failed.
 
 DeepSeek extension on blocks produced by the web tools: `search` for web search, `deep_search` for deep thinking search, `read_link` for URL reading, and `image_search` or `deep_image_search` (during deep thinking search) for image search. Pass it back unchanged.
 
-**[Web search result]**
+**[Web fetch result block]**
 
 Returned for a page opened during deep thinking search (`deepseek_web_search`), or a link read by `deepseek_read_url`. Pass it back unchanged, including `kind` and `signature`. See the [Web Tools Guide](../guides/web_tools.md#response-blocks).
 
@@ -2585,7 +2599,7 @@ oneOf
 - Web fetch result
 - Web fetch error
 
-**[Web search error]**
+**[Web search result]**
 
 **type** stringrequired
 
@@ -2631,7 +2645,7 @@ The page title.
 
 DeepSeek extension, in place of `retrieved_at`. The publication time of the page, or `null` when unknown. For a link read from the user message, the date found on the page, in no fixed format; for a page opened during deep thinking search, an RFC 3339 timestamp.
 
-**[Web fetch result]**
+**[Web search error]**
 
 **type** stringrequired
 
@@ -2655,7 +2669,111 @@ DeepSeek extension. Present on successful `read_link` results: the page that was
 
 - ]
 
+**[Web fetch result]**
+
+A system message placed between turns in the conversation history. Its content may include `tool_addition` blocks to load deferred tools. A system message cannot appear between an assistant `tool_use` block and its `tool_result`. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
+
+**role** stringrequired
+
+**Possible values:** `system`
+
+**content** string | object[]
+
+required
+
+The message content, either a string or a list of text and `tool_addition` blocks.
+
+oneOf
+
+- Text content
+- System message blocks
+
 **[Web fetch error]**
+
+string
+
+**[Text content]**
+
+**Minimum items:** `1`
+
+- Array [
+
+oneOf
+
+- Text block
+- Tool-addition block
+
+**[System message blocks]**
+
+Each text block must have `type: "text"`, with its content in the `text` field. On input, additional `cache_control` and `citations` fields are ignored.
+
+**type** stringrequired
+
+**Possible values:** `text`
+
+**text** stringrequired
+
+The text content.
+
+**citations**
+
+object[]
+
+nullable
+
+Sources cited by this text. Returned when the answer cites results of the web tools; ignored on input.
+
+A source cited by the answer. Returned with the web tools.
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `web_search_result_location`
+
+**url** stringrequired
+
+The URL of the cited source.
+
+**title** stringnullable
+
+The title of the cited source, or `null` when unknown.
+
+**encrypted\_index** string
+
+Always an empty string.
+
+**cited\_text** string
+
+The answer text of the current text block up to this citation. Unlike the Anthropic API, it is not text quoted from the source.
+
+- ]
+
+**[Text block]**
+
+Loads a deferred tool that is declared in the request's top-level `tools`. Only valid in a mid-conversation `system` message. Only additions are supported: `tool_removal` and inline `tool_definition` blocks are not supported.
+
+**type** stringrequired
+
+**Possible values:** `tool_addition`
+
+**tool**
+
+object
+
+required
+
+**type** stringrequired
+
+**Possible values:** `tool_reference`
+
+**name** stringrequired
+
+The name of a tool declared in the request's top-level `tools`.
+
+- ]
+
+**[Tool-addition block]**
 
 DeepSeek extension. Gives the model the current date, location, platform and language, like DeepSeek Chat. Place it directly before the `user` message it belongs to; anywhere else it returns `400`. Works with or without the web tools. See the [User Metadata Marker Guide](../guides/latest_reminder.md).
 
@@ -2791,7 +2909,7 @@ object[]
 
 nullable
 
-Tools available to the model. Supports client-defined tools, the web search server tool, and the `deepseek_web_search` and `deepseek_read_url` server tools. Tool names must be unique. An empty list is treated as no tools. `cache_control` is ignored.
+Tools available to the model. Supports client-defined tools, the web search server tool, and the `deepseek_web_search` and `deepseek_read_url` server tools. Client tools may set `defer_loading` to keep their definitions out of the prompt until they are loaded. Tool names must be unique. An empty list is treated as no tools. `cache_control` is ignored. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
 
 - Array [
 
@@ -2829,6 +2947,10 @@ required
 A valid JSON Schema describing the tool arguments. Its top-level `type` must be `object`.
 
 **property name\*** anynullable
+
+**defer\_loading** booleannullable
+
+If `true`, the tool is declared but not shown to the model until it is loaded by a `tool_reference` block (in a `tool_result`) or a `tool_addition` block (in a mid-conversation `system` message). Supported with `deepseek-flash`; ignored with `deepseek-v4-pro`. At least one tool in the request must not be deferred. See [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
 
 **[Web search server tool]**
 
@@ -2950,7 +3072,7 @@ null
 
 **Maximum items:** `16`
 
-Up to 16 non-empty strings that stop generation. If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
+Up to 16 non-empty strings that stop generation. Each string must be at most 512 bytes (UTF-8 encoded). If a string is matched, `stop_reason` is `stop_sequence` and `stop_sequence` contains the matched string.
 
 **temperature** numbernullable
 
@@ -3446,7 +3568,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -3458,13 +3580,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Web fetch error]**
 
@@ -3951,7 +4073,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -3963,13 +4085,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Server tool use output]**
 
@@ -4508,7 +4630,7 @@ Number of server-side web search attempts, including failed attempts and attempt
 
 **Possible values:** `>= 0`
 
-Number of successful server-side web searches that returned nonempty results. Failed attempts and empty results are not counted. This field can be used as a basis for billing.
+Number of successful server-side web searches that returned nonempty results.
 
 **web\_fetch\_requests** integer
 
@@ -4520,13 +4642,13 @@ With the web tools. Number of fetch result blocks in the response, including err
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed page fetches.
+With the web tools. Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of billed image searches.
+With the web tools. Number of image searches.
 
 **[Signature delta]**
 
@@ -4618,8 +4740,8 @@ Loading...
 ---
 title: "Responses API"
 description: "Creates a model response in the OpenAI Responses API format."
-source: https://api-docs.deepseek.com/api/create-response
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-response/
+fetched: 2026-11-28
 ---
 
 # Responses API
@@ -4650,7 +4772,7 @@ nullable
 
 The input to the model. Either a plain string (treated as a single `user` message), or a list of input items.
 
-Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error. In `user` messages, `input_file` with a `file_id` references an uploaded file, see [File Parsing](../guides/document_parsing.md); `file_url` is not supported.
+Supported input item types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call` / `tool_search_call` / `tool_search_output`; other types are ignored. `tool_search_call` and `tool_search_output` are supported with `deepseek-flash` and load the tools discovered by a client-executed `tool_search` call. Message roles can be `user` / `assistant` / `system` / `developer` (`developer` is treated as `system` with `deepseek-flash` and as `user` with `deepseek-v4-pro`). With the `deepseek-flash` model, `input_image` content parts are supported in `user` / `system` / `developer` message items and in the `output` of `function_call_output` / `custom_tool_call_output` items; images in `assistant` messages return a `400` error. In `user` messages, `input_file` with a `file_id` references an uploaded file, see [File Parsing](../guides/document_parsing.md); `file_url` is not supported.
 
 At least one of `input` and `instructions` is required.
 
@@ -4667,15 +4789,15 @@ string
 
 **[Input item list]**
 
-An input item. Supported types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`; other types are ignored. `reasoning` and `function_call` items are automatically merged into the adjacent assistant message by the server. A `web_search_call` item returned by a previous response can be passed back to restore its search results into the context. Please refer to the [Responses API Guide](../guides/responses_api.md#multi-turn-conversation) for the pass-back rules in multi-turn conversations.
+An input item. Supported types are `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call` / `tool_search_call` / `tool_search_output`; other types are ignored. `reasoning` and `function_call` items are automatically merged into the adjacent assistant message by the server. A `web_search_call` item returned by a previous response can be passed back to restore its search results into the context. A `tool_search_call` item returned by a previous response is passed back together with a matching `tool_search_output` item to load the discovered tools; this is supported with `deepseek-flash`. Please refer to the [Responses API Guide](../guides/responses_api.md#multi-turn-conversation) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading) for the pass-back rules.
 
 - Array [
 
 **type** string
 
-**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`
+**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`, `tool_search_call`, `tool_search_output`
 
-The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool. `web_search_call` items restore the search results of a previous server-side search.
+The type of the input item. For `message` items, this field can be omitted if `role` is present. `custom_tool_call` / `custom_tool_call_output` items are used together with the `apply_patch` custom tool. `web_search_call` items restore the search results of a previous server-side search. `tool_search_call` / `tool_search_output` items load the tools discovered by a client-executed `tool_search` call.
 
 **role** string
 
@@ -4773,15 +4895,23 @@ The chain-of-thought text content.
 
 **call\_id** string
 
-For `function_call` / `function_call_output` items. The ID pairing a function call with its output. Must be non-empty and unique, and every `function_call` must have a matching `function_call_output`.
+For `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `tool_search_call` / `tool_search_output` items. The ID that pairs a tool call with its output. Must be non-empty and unique. A `function_call` must have a matching `function_call_output`; a `tool_search_output` must have a matching `tool_search_call`.
 
 **name** string
 
-For `function_call` items. The name of the function to call.
+For `function_call` / `custom_tool_call` items. The name of the function or custom tool to call.
 
-**arguments** string
+**arguments** string | object
 
-For `function_call` items. The arguments to call the function with, in JSON format.
+For `function_call` items, the arguments to call the function with, in JSON format. For `tool_search_call` items, an object containing the search arguments.
+
+oneOf
+
+- JSON string
+
+**[JSON string]**
+
+string
 
 **output** string | object[]
 
@@ -4871,6 +5001,54 @@ The chain-of-thought text content.
 
 - ]
 
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search_call` / `tool_search_output` items. Must be `client`.
+
+**tools**
+
+object[]
+
+For `tool_search_output` items. The tool definitions to load, in the same format as top-level `tools`. The model can call these tools from this point in the input.
+
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `tool_search` enables client-executed tool search and is supported with `deepseek-flash`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `function`, `custom`, `web_search`, `tool_search`, `deepseek_web_search`, `deepseek_read_url`
+
+The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `tool_search` (`deepseek-flash` only, with `execution: "client"`), `deepseek_web_search` or `deepseek_read_url`.
+
+**name** string
+
+For `function` and `custom` tools. The name of the tool. For function tools, must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. For custom tools, must be `apply_patch`.
+
+**description** string
+
+For `function` tools, and optionally for `tool_search`, a description of what the tool does, used by the model to choose when and how to call it.
+
+**parameters**
+
+object
+
+The parameters the functions accepts, described as a JSON Schema object. See the [Tool Calls Guide](../guides/tool_calls.md) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
+
+Omitting `parameters` defines a function with an empty parameter list.
+
+**property name\*** anynullable
+
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search` tools. Must be `client`: the client performs the search and returns the discovered tools in a `tool_search_output` input item. Server-executed tool search is not supported.
+
+- ]
+
 - ]
 
 **instructions** stringnullable
@@ -4952,17 +5130,17 @@ object[]
 
 nullable
 
-A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) for details.
+A list of tools the model may call. Function names must be non-empty, at most 128 characters, match `^[a-zA-Z0-9_-]+$`, and be unique across all tools. `function` tools are supported; `web_search` is supported with `deepseek-v4-pro`; a client-executed `tool_search` tool is supported with `deepseek-flash` to load tool definitions mid-conversation; other built-in tool types are ignored. Please refer to the [Responses API Guide](../guides/responses_api.md) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading) for details.
 
-A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api).
+A tool the model may call. `function` defines a function tool — note that in the Responses API format, `name` / `parameters` and other function fields are at the top level of the tool object. `custom` defines a custom tool; only `{"type": "custom", "name": "apply_patch"}` is supported, and other names return a `400` error. `web_search` enables server-side web search and is supported with `deepseek-v4-pro`. `tool_search` enables client-executed tool search and is supported with `deepseek-flash`. `deepseek_web_search` and `deepseek_read_url` are the web tools; they cannot be declared together with `web_search`. See the [Web Tools guide](../guides/web_tools.md#responses-api) and [Deferred Tool Loading](../guides/tool_calls.md#deferred-tool-loading).
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** `function`, `custom`, `web_search`, `deepseek_web_search`, `deepseek_read_url`
+**Possible values:** `function`, `custom`, `web_search`, `tool_search`, `deepseek_web_search`, `deepseek_read_url`
 
-The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `deepseek_web_search` or `deepseek_read_url`.
+The type of the tool: `function`, `custom` (only `apply_patch`), `web_search` (`deepseek-v4-pro` only), `tool_search` (`deepseek-flash` only, with `execution: "client"`), `deepseek_web_search` or `deepseek_read_url`.
 
 **name** string
 
@@ -4970,7 +5148,7 @@ For `function` and `custom` tools. The name of the tool. For function tools, mus
 
 **description** string
 
-For `function` tools. A description of what the function does, used by the model to choose when and how to call the function.
+For `function` tools, and optionally for `tool_search`, a description of what the tool does, used by the model to choose when and how to call it.
 
 **parameters**
 
@@ -4981,6 +5159,12 @@ The parameters the functions accepts, described as a JSON Schema object. See the
 Omitting `parameters` defines a function with an empty parameter list.
 
 **property name\*** anynullable
+
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search` tools. Must be `client`: the client performs the search and returns the discovered tools in a `tool_search_output` input item. Server-executed tool search is not supported.
 
 - ]
 
@@ -5125,7 +5309,7 @@ required
 
 The list of output items generated by the model. In thinking mode, the chain-of-thought is returned as a `reasoning` item before the `message` item. Function calls are returned as `function_call` items.
 
-An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent tool searches. With the web tools, every tool call is a `web_search_call` item with the extension fields `kind`, `page`, `signature` and `error`.
+An output item generated by the model. `message` items carry the assistant text, `reasoning` items carry the chain-of-thought, `function_call` items represent function calls, `custom_tool_call` items represent custom tool calls (such as `apply_patch`), `web_search_call` items represent server-side web searches (`deepseek-v4-pro` only), and `tool_search_call` items represent client-executed tool searches (`deepseek-flash` only). With the web tools, every tool call is a `web_search_call` item with the extension fields `kind`, `page`, `signature` and `error`.
 
 - Array [
 
@@ -5175,9 +5359,23 @@ For `function_call` / `custom_tool_call` / `tool_search_call` items. An identifi
 
 For `function_call` / `custom_tool_call` items. The name of the function or custom tool to call.
 
-**arguments** string
+**arguments** string | object
 
-For `function_call` items. The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+For `function_call` items, the arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function. For `tool_search_call` items, an object containing the search arguments.
+
+oneOf
+
+- JSON string
+
+**[Example]**
+
+string
+
+**execution** string
+
+**Possible values:** `client`
+
+For `tool_search_call` items. Always `client`.
 
 **kind** Web tools capability (string)
 
@@ -5263,21 +5461,21 @@ Successful server-side web search and page-fetch counts, separate from token usa
 
 **Possible values:** `>= 0`
 
-Number of successful web search queries. A search with multiple queries can add more than one; failed queries and queries with no results are not counted. This field can be used as a basis for billing.
+Number of successful web search queries. A search with multiple queries can add more than one.
 
 **tool\_fetch** integerrequired
 
 **Possible values:** `>= 0`
 
-Number of successful page fetches performed by open\_page or find\_in\_page. Failed attempts are not counted. With the web tools, finding text in a page is not counted. This field can be used as a basis for billing.
+Number of successful page fetches performed by open\_page or find\_in\_page. With the web tools, finding text in a page is not counted.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-With the web tools. Number of successful image searches. This field can be used as a basis for billing.
+With the web tools. Number of successful image searches.
 
-**[Example]**
+**[JSON string]**
 
 ```json
 {
@@ -5473,8 +5671,8 @@ DeepSeek Support: [api-service@deepseek.com](mailto:api-service@deepseek.com)
 ---
 title: "Delete File"
 description: "Deletes a file."
-source: https://api-docs.deepseek.com/api/delete-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/delete-file/
+fetched: 2026-11-28
 ---
 
 # Delete File
@@ -5540,8 +5738,8 @@ Loading...
 ---
 title: "Fetch"
 description: "Fetch a web page and return its title and content as Markdown. See the [Search & Fetch guide](/guides/search) for error handling and billing."
-source: https://api-docs.deepseek.com/api/fetch
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/fetch/
+fetched: 2026-11-28
 ---
 
 # Fetch
@@ -5608,8 +5806,8 @@ Loading...
 ---
 title: "Get User Balance"
 description: "Get user current balance"
-source: https://api-docs.deepseek.com/api/get-user-balance
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/get-user-balance/
+fetched: 2026-11-28
 ---
 
 # Get User Balance
@@ -5689,8 +5887,8 @@ Loading...
 ---
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
-source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/list-files/
+fetched: 2026-11-28
 ---
 
 # List Files
@@ -5839,8 +6037,8 @@ Loading...
 ---
 title: "Lists Models"
 description: "Lists the currently available models, and provides metadata about each one, such as its display name, context window, output limit, supported input/output modalities, supported effort levels, and per-protocol API capabilities. Check [Models & Pricing](/quick_start/pricing) for our currently supported models."
-source: https://api-docs.deepseek.com/api/list-models
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/list-models/
+fetched: 2026-11-28
 ---
 
 # Lists Models
@@ -5955,7 +6153,16 @@ Capabilities that apply when the model is used through the [Anthropic Messages A
 How the model picks up an updated system prompt during a conversation.
 
 - `leading-only`: only the system prompt at the start of the conversation takes effect. To change the system prompt, modify that leading system prompt; system messages appearing later in the history are not treated as system prompt updates.
-- `in-history`: a `system` message may be appended to the conversation history. The latest `system` message in the history provides the complete effective system prompt and replaces all earlier ones.
+- `in-history`: a `system` message may be appended to the conversation history. The latest `system` message updates the effective system prompt; when instructions conflict, later `system` messages take precedence over earlier ones (earlier messages remain in the history, and non-conflicting instructions can still apply).
+
+**tool\_update** stringrequired
+
+**Possible values:** `leading-only`, `addition-only`
+
+How the model handles tool changes during a conversation.
+
+- `leading-only`: only the tools declared at the top level of the request are used. `defer_loading`, `tool_addition`, and `tool_reference` loading effects are ignored (`tool_reference` is rendered as plain text). When the available tools change, resend the complete `tools` array in every request.
+- `addition-only`: tools declared with `defer_loading: true` are loaded when a later `system` message contains a `tool_addition` block, or when a `tool_result` contains a `tool_reference` block. `tool_removal` blocks are not supported.
 
 - ]
 
@@ -5980,7 +6187,8 @@ How the model picks up an updated system prompt during a conversation.
       },
       "api_capabilities": {
         "anthropic_messages": {
-          "system_prompt_update": "in-history"
+          "system_prompt_update": "in-history",
+          "tool_update": "addition-only"
         }
       }
     },
@@ -5999,7 +6207,8 @@ How the model picks up an updated system prompt during a conversation.
       },
       "api_capabilities": {
         "anthropic_messages": {
-          "system_prompt_update": "leading-only"
+          "system_prompt_update": "leading-only",
+          "tool_update": "leading-only"
         }
       }
     }
@@ -6015,8 +6224,8 @@ Loading...
 ---
 title: "OCR"
 description: "Recognize the text in a PDF, Word or PowerPoint document or in an image, and return the result page by page. The file is not stored in the Files API. See the [OCR guide](/guides/ocr) for the limits, errors and billing."
-source: https://api-docs.deepseek.com/api/ocr
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/ocr/
+fetched: 2026-11-28
 ---
 
 # OCR
@@ -6160,8 +6369,8 @@ Loading...
 ---
 title: "Retrieve File"
 description: "Returns information about a specific file."
-source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/retrieve-file/
+fetched: 2026-11-28
 ---
 
 # Retrieve File
@@ -6248,8 +6457,8 @@ Loading...
 ---
 title: "Search"
 description: "Search the web for a query and return a ranked list of structured results. See the [Search & Fetch guide](/guides/search) for supported query operators, error handling, and billing."
-source: https://api-docs.deepseek.com/api/search
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/search/
+fetched: 2026-11-28
 ---
 
 # Search
@@ -6402,8 +6611,8 @@ Loading...
 ---
 title: "Text to Speech"
 description: "Convert text into speech. The audio is streamed in the response body as it is synthesized. See the [Text to Speech guide](/guides/tts) for the voices, languages, limits, errors and billing."
-source: https://api-docs.deepseek.com/api/tts
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/tts/
+fetched: 2026-11-28
 ---
 
 # Text to Speech
@@ -7158,8 +7367,8 @@ If you are not redirected automatically, please visit [FAQ](https://static.deeps
 ---
 title: "Using the Anthropic API"
 description: "To meet the demand for using the Anthropic API ecosystem, our API has added support for the Anthropic API format, with the base_url being https://api.deepseek.com/anthropic."
-source: https://api-docs.deepseek.com/guides/anthropic_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/anthropic_api/
+fetched: 2026-11-28
 ---
 
 # Using the Anthropic API
@@ -7259,7 +7468,7 @@ Authenticate with either `x-api-key: <API_KEY>` or `Authorization: Bearer <API_K
 | mcp\_servers | Ignored |
 | metadata | `user_id` is supported, others are ignored Please refer to [Rate Limit & Isolation](../quick_start/rate_limit.md) for more information about `user_id` parameter. |
 | service\_tier | Ignored |
-| stop\_sequences | Fully Supported |
+| stop\_sequences | Fully Supported. Up to 16 sequences; each non-empty string must be at most 512 bytes (UTF-8 encoded) |
 | stream | Fully Supported |
 | system | Fully Supported |
 | temperature | Valid range: [0.0 ~ 2.0]. Takes effect in non-thinking mode; fixed at `1.0` in thinking mode |
@@ -7276,7 +7485,7 @@ For certain main-agent requests from Claude Code or OpenCode in thinking mode, c
 
 #### tools
 
-For client-defined tools, provide `name`, `input_schema`, and an optional `description`, and omit `type`. The `type` field selects a server tool; passing `type: "custom"` for a client tool returns a `422` error.
+For client-defined tools, provide `name`, `input_schema`, and an optional `description`, and omit `type`. Set `defer_loading` to keep a tool out of the prompt until it is loaded. The `type` field selects a server tool; passing `type: "custom"` for a client tool returns a `422` error.
 
 | Field | Support Status |
 | --- | --- |
@@ -7284,8 +7493,17 @@ For client-defined tools, provide `name`, `input_schema`, and an optional `descr
 | input\_schema | Fully Supported |
 | description | Fully Supported |
 | cache\_control | Ignored |
+| defer\_loading | Supported with `deepseek-flash`; ignored with `deepseek-v4-pro`. Keeps the tool definition out of the prompt until it is loaded. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 
 To use the web tools, declare the server tools `deepseek_web_search` and `deepseek_read_url`. See [Web Tools](web_tools.md#declare-tools). No other server tools can be declared together with them.
+
+#### Loading deferred tools
+
+When `defer_loading` is set to `true`, the tool is declared but not shown to the model until the conversation loads it. At least one tool in the request must not be deferred.
+
+A deferred tool is loaded when a `tool_reference` names it, either in a `tool_result` content block or as the `tool` of a `tool_addition` block in a mid-conversation `system` message. The tool must be declared in the request's top-level `tools`. Loading is addition-only: `tool_removal` and inline `tool_definition` blocks are not supported. Deferred loading cannot be combined with `deepseek_web_search` or `deepseek_read_url`.
+
+See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) for the complete request flow.
 
 #### tool\_choice
 
@@ -7301,6 +7519,16 @@ To use the web tools, declare the server tools `deepseek_web_search` and `deepse
 For multi-turn conversations, send the conversation history in `messages` on every request. After an assistant message containing client `tool_use` blocks, the immediately following message must have the `user` role and include a `tool_result` for every tool call, with matching `tool_use_id` values. Place all `tool_result` blocks before any text in that user message.
 
 When continuing tool calls in thinking mode, preserve and pass back the assistant's complete `content` array, including `thinking` and tool-use blocks. If thinking content is omitted, the service may recover it using the tool-call IDs; if recovery is required but fails, the request returns a `400` error. Do not rely on automatic recovery.
+
+#### Loading deferred tools from a tool result
+
+A `tool_result` may contain `tool_reference` blocks in its `content` array. Each `tool_reference` names a client tool declared in the request's `tools`, and the referenced tool becomes available from that point in the conversation. This is how the client returns the results of a tool-search call. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading).
+
+#### Mid-conversation system messages
+
+A `system` message may appear between turns in `messages`. Besides text, its content may contain `tool_addition` blocks that load deferred tools. A system message cannot appear between an assistant `tool_use` block and its `tool_result`.
+
+On models whose `system_prompt_update` is `in-history` (see the [List Models API](../api/list-models.md#responses)), the latest `system` message updates the effective system prompt; when instructions conflict, later `system` messages take precedence over earlier ones (earlier messages remain in the history, and non-conflicting instructions can still apply).
 
 ### Message Fields
 
@@ -7320,9 +7548,10 @@ When continuing tool calls in thinking mode, preserve and pass back the assistan
 | name | Fully Supported |
 | cache\_control | Ignored |
 | array, type = "tool\_result" | tool\_use\_id | Fully Supported |
-| content | Fully Supported |
+| content | Fully Supported. May contain `tool_reference` blocks to load deferred tools. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 | cache\_control | Ignored |
 | is\_error | Ignored |
+| array, type = "tool\_addition" |  | Supported in `system` messages. Loads a deferred tool. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 | array, type = "server\_tool\_use" |  | Supported |
 | array, type = "web\_search\_tool\_result" |  | Supported |
 | array, type = "code\_execution\_tool\_result" |  | Not Supported |
@@ -7386,8 +7615,6 @@ A successful response to this request contained `server_tool_use`, `web_search_t
 
 With the web tools, the `name` of a `server_tool_use` block is `deepseek_web_search` or `deepseek_read_url`, and the block carries `input.action` and `kind`; results also include `web_fetch_tool_result`. A response refused by model content safety ends with `stop_reason: "refusal"`. See [Web Tools](web_tools.md#response-blocks) and [Model Content Safety](safety.md#handling-refusals).
 
-With the web tools, `usage.server_tool_use` also returns `web_fetch_requests`, `tool_fetch` and `tool_image_search`. See [Web Tools](web_tools.md#billing) for their meaning and for billing.
-
 ## Streaming and token usage
 
 Set `stream` to `true` to receive server-sent events (SSE). A normal response starts with `message_start`, emits `content_block_start`, `content_block_delta`, and `content_block_stop` for its content blocks, then ends with `message_delta` and `message_stop`. `ping` events may appear between these events. The stream does not send `data: [DONE]`.
@@ -7404,8 +7631,8 @@ See the [Messages API reference](../api/create-message.md) for response examples
 ---
 title: "Speech to Text"
 description: "Transcribe an audio file into text, for example for voice input in a chatbot."
-source: https://api-docs.deepseek.com/guides/asr
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/asr/
+fetched: 2026-11-28
 ---
 
 # Speech to Text
@@ -7494,8 +7721,8 @@ An account can have at most 50 requests in progress; beyond that a request retur
 ---
 title: "Build a Chatbot"
 description: "The DeepSeek API offers the same conversation features as DeepSeek Chat on the web and in the app: web search, deep thinking search, file input and URL reading, plus basic risk control for model content safety. You can use them to build your own chatbot."
-source: https://api-docs.deepseek.com/guides/build_a_chatbot
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/build_a_chatbot/
+fetched: 2026-11-28
 ---
 
 # Build a Chatbot
@@ -7716,8 +7943,8 @@ When a request declares `deepseek_web_search` or `deepseek_read_url`, sets `safe
 ---
 title: "Chat Prefix Completion (Beta)"
 description: "The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the message."
-source: https://api-docs.deepseek.com/guides/chat_prefix_completion
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/chat_prefix_completion/
+fetched: 2026-11-28
 ---
 
 # Chat Prefix Completion (Beta)
@@ -7918,8 +8145,8 @@ Please refer to the [latest API documentation](../index.md) for current usage in
 ---
 title: "Conversation Title"
 description: "Set \"title\" true} to have the response carry a short title for the conversation, for example to show in a conversation list. The model writes the title together with the answer, so no extra request is needed."
-source: https://api-docs.deepseek.com/guides/conversation_title
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/conversation_title/
+fetched: 2026-11-28
 ---
 
 # Conversation Title
@@ -8003,8 +8230,8 @@ data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":
 ---
 title: "File Parsing"
 description: "Have the model answer questions based on your files, like uploading files in DeepSeek Chat. There are two steps:"
-source: https://api-docs.deepseek.com/guides/document_parsing
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/document_parsing/
+fetched: 2026-11-28
 ---
 
 # File Parsing
@@ -8194,8 +8421,8 @@ In the Messages API, you can also pass text directly in a `document` block witho
 ---
 title: "Files API"
 description: "The Files API lets you upload files and reference them later by file_id. You can upload two kinds of files:"
-source: https://api-docs.deepseek.com/guides/files_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/files_api/
+fetched: 2026-11-28
 ---
 
 # Files API
@@ -8467,8 +8694,8 @@ On the Anthropic-compatible endpoint, the `purpose` field is optional and defaul
 ---
 title: "FIM Completion (Beta)"
 description: "In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is commonly used for content completion、code completion."
-source: https://api-docs.deepseek.com/guides/fim_completion
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/guides/fim_completion/
+fetched: 2026-11-28
 ---
 
 # FIM Completion (Beta)
@@ -8511,8 +8738,8 @@ print(response.choices[0].text)
 ---
 title: "JSON Output"
 description: "In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing."
-source: https://api-docs.deepseek.com/guides/json_mode
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/guides/json_mode/
+fetched: 2026-11-28
 ---
 
 # JSON Output
@@ -8587,8 +8814,8 @@ The model will output:
 ---
 title: "Context Caching"
 description: "The DeepSeek API Context Caching on Disk Technology is enabled by default for all users, allowing them to benefit without needing to modify their code."
-source: https://api-docs.deepseek.com/guides/kv_cache
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/guides/kv_cache/
+fetched: 2026-11-28
 ---
 
 # Context Caching
@@ -8692,8 +8919,8 @@ The hard disk cache only matches the prefix part of the user's input. The output
 ---
 title: "User Metadata Marker"
 description: "DeepSeek Chat tells the model the current date and the user's location, platform and language, so that answers fit the user's situation. With the API, you provide this information in a latest_reminder message."
-source: https://api-docs.deepseek.com/guides/latest_reminder
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/latest_reminder/
+fetched: 2026-11-28
 ---
 
 # User Metadata Marker
@@ -8766,8 +8993,8 @@ curl https://api.deepseek.com/chat/completions \
 ---
 title: "Multi-round Conversation"
 description: "This guide will introduce how to use the DeepSeek /chat/completions API for multi-turn conversations."
-source: https://api-docs.deepseek.com/guides/multi_round_chat
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/multi_round_chat/
+fetched: 2026-11-28
 ---
 
 # Multi-round Conversation
@@ -8836,8 +9063,8 @@ The `messages` ultimately passed to the API are:
 ---
 title: "OCR"
 description: "The OCR API recognizes the text in a PDF, Word or PowerPoint document or in an image, and returns the result page by page. The file is not stored in the Files API and is not passed to a chat model. To have the model answer questions about a document instead, see File Parsing."
-source: https://api-docs.deepseek.com/guides/ocr
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/ocr/
+fetched: 2026-11-28
 ---
 
 # OCR
@@ -8985,8 +9212,8 @@ An account can have at most 15 recognitions in progress, counted separately from
 ---
 title: "Using the Responses API"
 description: "To meet the demand for Codex, our API now supports the Responses API format, with the base_url being https://api.deepseek.com."
-source: https://api-docs.deepseek.com/guides/responses_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/responses_api/
+fetched: 2026-11-28
 ---
 
 # Using the Responses API
@@ -9113,7 +9340,7 @@ This section lists the compatibility details of the DeepSeek API with the Respon
 | `top_p` | Supported; behavior depends on the model: `deepseek-flash`: takes effect in thinking mode (lower bound `0.95`); fixed at `1.0` in non-thinking mode. `deepseek-v4-pro`: ignored in thinking mode (fixed at `0.95` when tool calling is enabled, otherwise `1.0`); takes effect in non-thinking mode. Setting `tool_choice` to `none` disables tool calling even when `tools` is provided |
 | `max_output_tokens` | Supported |
 | `top_logprobs` | Supported (range [0, 20]) |
-| `tools` | Partially supported. `function` supported; `web_search` supported with `deepseek-v4-pro`; other types ignored, see the Tools table below |
+| `tools` | Partially supported. `function` supported; `web_search` supported with `deepseek-v4-pro`; client-executed `tool_search` supported with `deepseek-flash`; other types ignored, see the Tools table below |
 | `tool_choice` | Supported. `none` / `auto` / `required` / a specific tool (`{"type": "function", "name": ...}`) |
 | `reasoning` | Partially supported. `effort` supported; `summary` accepted but no summary is generated |
 | `text` | Partially supported. `format` fully supported; `verbosity` accepted but has no effect |
@@ -9147,6 +9374,7 @@ Unsupported parameters are **silently ignored** and do not cause errors, so exis
 | `function_call_output` | Supported. The `output` may be a string or a list of content parts; `input_image` parts in the output are processed as real images |
 | `reasoning` | Supported. Plain-text `content` is merged into the adjacent assistant message; `summary` and `encrypted_content` are not supported |
 | `custom_tool_call` / `custom_tool_call_output` | Supported (for the `apply_patch` custom tool, with `call_id` pairing validation). `input_image` parts in the `output` are processed as real images |
+| `tool_search_call` / `tool_search_output` | Supported with `deepseek-flash`. Loads tools returned by a client-executed `tool_search` call. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 | Other types | Ignored |
 
 Note: `web_search_call` items returned by a previous response can be passed back in `input`; their search results are restored and concatenated into the context.
@@ -9158,10 +9386,11 @@ Note: `web_search_call` items returned by a previous response can be passed back
 | `function` | Supported |
 | `custom` | Only `{"type": "custom", "name": "apply_patch"}` is supported (for Codex compatibility); other names return a `400` error |
 | `web_search` | Supported with `deepseek-v4-pro`. The API runs the search on the server, adds the results to the context, and continues the response. Ignored with `deepseek-flash` |
+| `tool_search` | Supported with `deepseek-flash` when `execution` is `client`. The model returns a `tool_search_call`; reply with a `tool_search_output` item containing the tool definitions to load. `execution: "server"` is not supported. See [Deferred Tool Loading](tool_calls.md#deferred-tool-loading) |
 | `deepseek_web_search` / `deepseek_read_url` | Supported. Cannot be declared together with `web_search`; see [Web Tools](web_tools.md#responses-api) |
 | `file_search` / `code_interpreter` / `computer_use` / `mcp` / other built-in tools | Ignored |
 
-The `web_search` tool above runs on the server through the Responses API. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
+The `web_search` tool above runs on the server through the Responses API and is not charged. Codex's Alpha Search uses a standalone search endpoint and supports both `deepseek-flash` and `deepseek-v4-pro`; the model restriction above does not apply to it. See [Integrate with Codex](../quick_start/agent_integrations/codex.md) for setup instructions.
 
 ### Response Fields
 
@@ -9222,8 +9451,8 @@ The following usage excerpt shows one successful search and no page reads. Token
 ---
 title: "Model Content Safety"
 description: "Set safety_check to {\"level\": \"high\"} to turn on basic risk control, which reviews the model input and output."
-source: https://api-docs.deepseek.com/guides/safety
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/safety/
+fetched: 2026-11-28
 ---
 
 # Model Content Safety
@@ -9377,8 +9606,8 @@ In all three protocols:
 ---
 title: "Search & Fetch"
 description: "The Search API and the Fetch API give agents and RAG applications access to live web content:"
-source: https://api-docs.deepseek.com/guides/search
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/search/
+fetched: 2026-11-28
 ---
 
 # Search & Fetch
@@ -9616,18 +9845,18 @@ Search and Fetch are read-only. For HTTP 408, 429, or 5xx errors, wait and retry
 
 ## Billing
 
-Search and Fetch are billed per successful request, not by tokens or by the number of returned results:
+The Search and Fetch APIs are billed per successful request, not by tokens or by the number of returned results:
 
 | API | Unit | Price |
 | --- | --- | --- |
-| Search | Per 1,000 successful requests | $0.75 |
-| Fetch | Per 1,000 successful requests | $0.75 |
+| Search API | Per 1,000 successful requests | $0.75 |
+| Fetch API | Per 1,000 successful requests | $0.75 |
 
-A request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
+A standalone request is billable only when it returns HTTP 200 and produces a result (Search must return a non-empty `results` array, and Fetch must return page content). Failed requests, empty search results, and timeouts are not billed. `count` only controls how many results are returned and does not affect the per-request price.
 
-Search and Fetch calls triggered by tools when using the DeepSeek API through DeepSeek Harness, Claude Code, or Codex, including [Codex Alpha Search](../quick_start/agent_integrations/codex.md), are also billed per successful request.
+Searches performed by the model through server-side tools are not billed (text search, image search and page fetch). Only model token usage is billed. Server-side tools include the [web tools](web_tools.md#billing), the `web_search` tool in the Responses API, Web Search in Claude Code, and search in DeepSeek Harness when **Web search provider** is set to **DeepSeek server-side search** or **Auto** (the default).
 
-The [web tools](web_tools.md#billing) are billed at the same web search and web fetch prices.
+Searches that call the Search and Fetch APIs directly from the client are billed at the prices above, such as search in DeepSeek Harness when **Web search provider** is **DeepSeek Search API**, and [Codex Alpha Search](../quick_start/agent_integrations/codex.md).
 
 ---
 
@@ -9648,8 +9877,8 @@ The QPS (requests per second) limits are calculated at the account level, regard
 ---
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
-source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/guides/thinking_mode/
+fetched: 2026-11-28
 ---
 
 # Thinking Mode
@@ -9949,8 +10178,8 @@ tool_calls=None
 ---
 title: "Tool Calls"
 description: "Tool Calls allows the model to call external tools to enhance its capabilities."
-source: https://api-docs.deepseek.com/guides/tool_calls
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/guides/tool_calls/
+fetched: 2026-11-28
 ---
 
 # Tool Calls
@@ -10033,12 +10262,215 @@ From DeepSeek-V3.2, the API supports tool use in the thinking mode. For more det
 
 ---
 
+## Deferred Tool Loading
+
+Some agent clients have a large tool catalog but only want to expose a few tools to the model in a given conversation. With deferred tool loading (also called dynamic tool loading or tool search), the client controls which tool definitions enter the model's context: tools can be declared up front and loaded later, or supplied only when they are needed. This keeps the context small and makes tool selection easier. Support differs across API formats:
+
+| Capability | Anthropic API | Responses API | Chat Completion API |
+| --- | --- | --- | --- |
+| Keep a tool out of the prompt until it is loaded | Supported (`defer_loading`) | Supported (tool supplied in `tool_search_output`) | Not supported |
+| Load a tool in the middle of a conversation | Supported | Supported | Not supported |
+| Model support | `deepseek-flash` | `deepseek-flash` | — |
+
+Currently, deferred loading is not available with `deepseek-v4-pro`: the Anthropic API ignores the loading effect of `defer_loading`, `tool_addition`, and `tool_reference` (a `tool_reference` is rendered as plain text) and makes all declared tools available from the start, and the Responses API ignores `tool_search` tool declarations and `tool_search_call` / `tool_search_output` items.
+
+Loaded tools are part of the conversation history. The API is stateless, so replay the history — including the loading record — in every later request. In the Anthropic API, keep the deferred tool declared in the top-level `tools` array with `defer_loading: true` as well. A loaded tool remains available for the rest of the conversation.
+
+Deferred loading also keeps the context cache effective. Deferred tool definitions are left out of the leading system prompt, and loading a tool appends its schema after the existing history instead of rewriting the beginning of the request, so previously cached prefixes stay valid and only the appended part is new input (a cache miss). In contrast, changing the set of non-deferred tools in the top-level `tools` array changes the leading prompt and can prevent the previous cached prefix from matching. See [Context Caching](kv_cache.md).
+
+### Anthropic API
+
+Mark the tools to defer with `defer_loading: true` in the top-level `tools` array. Deferred tools are declared but not shown to the model initially; at least one tool in the request must not be deferred.
+
+On models whose `system_prompt_update` is `in-history` (see the [List Models API](../api/list-models.md#responses)), a mid-conversation `system` message updates the effective system prompt; when instructions conflict, later `system` messages take precedence over earlier ones (earlier messages remain in the history, and non-conflicting instructions can still apply). See [Mid-conversation system messages](anthropic_api.md#mid-conversation-system-messages).
+
+A deferred tool is loaded when a `tool_reference` block naming it appears in either of these places:
+
+- the `content` of a `tool_result` block in a `user` message;
+- the `tool` field of a `tool_addition` block in a mid-conversation `system` message.
+
+For the `tool_result` path, the client usually provides a normal tool, such as `search_tools`, that the model calls with a query. The deferred tool schemas are still invisible, so the model needs another way to learn what it can load: describe the catalog in the search tool's description, or add a system message that lists the available deferred tools. When the model calls `search_tools`, append that assistant `tool_use` block and your `tool_result` to the history in the next request, and return the matching tools as `tool_reference` blocks:
+
+```json
+{
+  "model": "deepseek-flash",
+  "max_tokens": 1024,
+  "thinking": {"type": "disabled"},
+  "tools": [
+    {
+      "name": "search_tools",
+      "description": "Search the tool catalog for tools that can help with the user's request.",
+      "input_schema": {
+        "type": "object",
+        "properties": {"query": {"type": "string"}},
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "get_weather",
+      "description": "Get the current weather for a city.",
+      "input_schema": {
+        "type": "object",
+        "properties": {"city": {"type": "string"}},
+        "required": ["city"]
+      },
+      "defer_loading": true
+    }
+  ],
+  "messages": [
+    {"role": "user", "content": "What's the weather in Hangzhou?"},
+    {
+      "role": "assistant",
+      "content": [
+        {"type": "tool_use", "id": "toolu_1", "name": "search_tools", "input": {"query": "weather"}}
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_1",
+          "content": [{"type": "tool_reference", "tool_name": "get_weather"}]
+        },
+        {"type": "text", "text": "Continue."}
+      ]
+    }
+  ]
+}
+```
+
+`get_weather` is loaded at that point in the history, so the model can call it in the same response:
+
+```json
+{
+  "stop_reason": "tool_use",
+  "content": [
+    {"type": "tool_use", "id": "toolu_2", "name": "get_weather", "input": {"city": "Hangzhou"}}
+  ]
+}
+```
+
+To load a tool without a model-generated search call, put a `tool_addition` block in a mid-conversation `system` message instead:
+
+```json
+{
+  "role": "system",
+  "content": [
+    {"type": "tool_addition", "tool": {"type": "tool_reference", "name": "get_weather"}}
+  ]
+}
+```
+
+Loading is addition-only. Every tool referenced by a `tool_addition` block or a `tool_reference` block must be declared in the top-level `tools` array. `tool_removal` and inline `tool_definition` blocks are not supported. Deferred loading cannot be combined with `deepseek_web_search` or `deepseek_read_url`.
+
+### Responses API
+
+In the Responses API format, functions declared in the top-level `tools` array are available from the start, and additional tools are added mid-conversation through `tool_search`. Send a request with a client-executed `tool_search` tool in `tools`; its `description` and `parameters` tell the model when to search and what arguments to pass. This example disables thinking so that the follow-up request does not have to pass reasoning items back:
+
+```json
+{
+  "model": "deepseek-flash",
+  "reasoning": {"effort": "none"},
+  "tools": [
+    {
+      "type": "tool_search",
+      "execution": "client",
+      "description": "Search for tools that can help with the user's request.",
+      "parameters": {
+        "type": "object",
+        "properties": {"query": {"type": "string"}},
+        "required": ["query"]
+      }
+    }
+  ],
+  "input": "What's the weather in Hangzhou?"
+}
+```
+
+When the model needs a tool, it returns a `tool_search_call` output item. `tsc_1` and `call_1` below are placeholders for the item `id` and `call_id`:
+
+```json
+{
+  "type": "tool_search_call",
+  "id": "tsc_1",
+  "call_id": "call_1",
+  "execution": "client",
+  "status": "completed",
+  "arguments": {"query": "weather"}
+}
+```
+
+The application searches its catalog and sends a new request. The request repeats the original input and the `tool_search_call` item, and adds a `tool_search_output` item with the same `call_id` and the full definitions of the matched tools in its own `tools` field. Only `type`, `call_id`, `execution`, and `arguments` need to be passed back for the `tool_search_call` item:
+
+```json
+{
+  "model": "deepseek-flash",
+  "reasoning": {"effort": "none"},
+  "tools": [
+    {
+      "type": "tool_search",
+      "execution": "client",
+      "description": "Search for tools that can help with the user's request.",
+      "parameters": {
+        "type": "object",
+        "properties": {"query": {"type": "string"}},
+        "required": ["query"]
+      }
+    }
+  ],
+  "input": [
+    {"role": "user", "content": "What's the weather in Hangzhou?"},
+    {
+      "type": "tool_search_call",
+      "call_id": "call_1",
+      "execution": "client",
+      "arguments": {"query": "weather"}
+    },
+    {
+      "type": "tool_search_output",
+      "call_id": "call_1",
+      "execution": "client",
+      "tools": [
+        {
+          "type": "function",
+          "name": "get_weather",
+          "description": "Get the current weather for a city.",
+          "parameters": {
+            "type": "object",
+            "properties": {"city": {"type": "string"}},
+            "required": ["city"]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+The tools in `tool_search_output.tools` are available from that point in the input. The model can call them like normal function tools; return each result as a `function_call_output` item and continue the conversation. Only `execution: "client"` is supported — the service does not search for tools on the server. `tool_search` cannot be combined with `deepseek_web_search` or `deepseek_read_url`.
+
+With thinking enabled, pass back the model's `reasoning` output items as well, or reuse the exact `call_id` returned by the API so the service can recover the reasoning.
+
+### Chat Completion API
+
+The Chat Completion API has no deferred loading. Every tool in `tools` is available to the model from the start of the request. To change the available tools, send the complete new `tools` array with the next request; the conversation history does not record tool definitions.
+
+---
+
 ## Inserting Tool Calls Mid-Conversation
 
-In some agent scenarios, the client needs to dynamically insert tool calls that were not generated by the model — together with their results — into the middle of the conversation history. Support for this differs across API formats:
+In some agent scenarios, the client needs to insert a tool call that was not generated by the model — together with its result — into the middle of the conversation history. All three API formats accept such a history, but the required shape differs:
 
-- The [Anthropic API](anthropic_api.md) (`/messages`) and the [Responses API](responses_api.md) support inserting tool call messages mid-conversation, and also support inserting `system` messages mid-conversation.
-- The Chat Completion API does not support inserting tool calls mid-conversation but does support inserting `system` messages mid-conversation; to insert tool calls, use the Anthropic API or the Responses API instead.
+- **Anthropic API**: an assistant message containing `tool_use` blocks must be followed immediately by a `user` message whose first blocks are `tool_result` blocks, one for each `tool_use` ID.
+- **Responses API**: a `function_call` input item must be followed by a `function_call_output` item with the same `call_id` before any other message item. Outputs for a group of calls may appear in any order.
+- **Chat Completion API**: an assistant message with `tool_calls` must be followed immediately by one `tool` message per call, with matching `tool_call_id` values. The API validates the pairing and rejects duplicate IDs, but does not verify that the calls were generated by the model or that the tools are declared in `tools`.
+
+Inserting a call does not declare or load a tool. In the Anthropic and Responses APIs, use the deferred-loading mechanisms above if the tool definition is not already available in the conversation. In the Chat Completion API, the model can call a tool only if it is present in the top-level `tools` array; inserting a call does not add it.
+
+### Inserting System Messages Mid-Conversation
+
+All three API formats support `system` messages in the middle of the conversation: Anthropic and Chat Completion use a message with `role: "system"`, and the Responses API uses a `message` item with role `system`. A system message cannot split a tool call from its results.
 
 ---
 
@@ -10302,8 +10734,8 @@ You can use `$def` to define reusable modules and then use `$ref` to reference t
 ---
 title: "Text to Speech"
 description: "Convert text into natural speech, for example to read chatbot answers aloud."
-source: https://api-docs.deepseek.com/guides/tts
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/tts/
+fetched: 2026-11-28
 ---
 
 # Text to Speech
@@ -10431,8 +10863,8 @@ An account can have at most 50 requests in progress; beyond that a request retur
 ---
 title: "Vision"
 description: "The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name deepseek-v4-flash-vision-exp is still accepted, but the model has been retired and its requests are served by the latest Flash model as well."
-source: https://api-docs.deepseek.com/guides/vision
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/vision/
+fetched: 2026-11-28
 ---
 
 # Vision
@@ -10696,16 +11128,16 @@ For field semantics, restrictions (images in `assistant` messages are rejected w
 
 ---
 title: "Web Tools"
-description: "DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool."
-source: https://api-docs.deepseek.com/guides/web_tools
-fetched: 2026-11-15
+description: "DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool."
+source: https://api-docs.deepseek.com/guides/web_tools/
+fetched: 2026-11-28
 ---
 
 # Web Tools
 
-DeepSeek provides two server tools that give the model the web capabilities of DeepSeek Chat. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool.
+DeepSeek provides two server tools that bring the web search, deep thinking search and URL reading of DeepSeek Chat to your conversations. The model decides whether to go online, and searching and fetching run on the service. Your client does not execute any tool.
 
-To call search and fetch directly from your own code, use the [Search & Fetch](search.md) APIs instead.
+These tools are designed for conversations, to [build a chatbot](build_a_chatbot.md). To search and fetch web pages in an agent or in your own code, use the [Search & Fetch](search.md) APIs instead.
 
 | Capability | How to enable it | What it does |
 | --- | --- | --- |
@@ -11306,16 +11738,10 @@ The `usage` in the final `message_delta`, or in a non-streaming response, is the
 | `output_tokens` | Output tokens |
 | `output_tokens_details.thinking_tokens` | The thinking tokens among them, returned when thinking is enabled |
 | `cache_creation_input_tokens` | Always `0` |
-| `server_tool_use.web_search_requests`, `web_fetch_requests` | The numbers of search result blocks and fetch result blocks in the response, including errors. They are for display and are not billed counts |
-| `server_tool_use.tool_search`, `tool_fetch`, `tool_image_search` | The billed numbers of searches (excluding image searches), fetches and image searches |
+| `server_tool_use.web_search_requests`, `web_fetch_requests` | The numbers of search result blocks and fetch result blocks in the response, including errors |
+| `server_tool_use.tool_search`, `tool_fetch`, `tool_image_search` | The numbers of searches (excluding image searches), fetches and image searches |
 
-Tool calls are billed separately, at the web search, image search and web fetch prices in [Models & Pricing](../quick_start/pricing.md#web-tools-pricing), the same prices as the Search and Fetch APIs:
-
-- Web search: a search call that returns results is billed for each of its queries, so a call with three queries counts as three. A call that fails or returns no results is not billed.
-- Image search: each image counts as 1 search, and each region the model selects in an image counts as 1 more. A search that fails or finds no results is not billed.
-- Web fetch, URL reading: per page fetched successfully, including pages whose result is then replaced by a `url_not_allowed` or `unavailable` error under model content safety. Links that cannot be fetched are not billed.
-- Web fetch, deep thinking search: an opened page is billed only when it is fetched from the web. Opening the same page again, moving through a page, and opening a page whose content came with the search results are free.
-- Finding text in a page is free.
+These server tools are not billed (text search, image search and page fetch). Only model token usage is billed.
 
 ---
 
@@ -11336,7 +11762,7 @@ Common error messages:
 
 ### Generation Failures
 
-If an error occurs after the answer has started to generate, such as an inference timeout or interruption, the HTTP status is already `200`. The response ends with an error and carries `usage`. Inference, searches and page reads that ran before the failure are billed as usual.
+If an error occurs after the answer has started to generate, such as an inference timeout or interruption, the HTTP status is already `200`. The response ends with an error and carries `usage`.
 
 | Protocol | Streaming | Non-streaming |
 | --- | --- | --- |
@@ -11432,7 +11858,7 @@ Each tool call is a `web_search_call` item with the DeepSeek extension `kind`:
 
 ### Usage
 
-- In `usage.server_tool_use`, `tool_search` is the number of billed searches (excluding image searches), `tool_fetch` the number of billed fetches, and `tool_image_search` the number of billed image searches. The field is omitted when all three are `0`.
+- In `usage.server_tool_use`, `tool_search` is the number of searches (excluding image searches), `tool_fetch` the number of fetches, and `tool_image_search` the number of image searches. The field is omitted when all three are `0`.
 
 ### Multi-turn Conversations
 
@@ -11545,7 +11971,7 @@ The tool calls are in the extension field `message.server_tool_calls`. Each entr
 
 ### Usage
 
-In `usage.server_tool_use`, `tool_search`, `tool_fetch` and `tool_image_search` are the numbers of billed searches, fetches and image searches, as in the [Responses API](#responses-api).
+In `usage.server_tool_use`, `tool_search`, `tool_fetch` and `tool_image_search` are the numbers of searches, fetches and image searches, as in the [Responses API](#responses-api).
 
 ### Multi-turn Conversations
 
@@ -11667,8 +12093,8 @@ main();
 ---
 title: "DeepSeek API Upgrade"
 description: "Now Supporting Chat Prefix Completion, FIM, Function Calling and JSON Output"
-source: https://api-docs.deepseek.com/news/news0725
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news0725/
+fetched: 2026-11-28
 ---
 
 # DeepSeek API Upgrade
@@ -11781,8 +12207,8 @@ The related model versions will be released to the open-source community once th
 ---
 title: "DeepSeek API introduces Context Caching on Disk, cutting prices by an order of magnitude"
 description: "In large language model API usage, a significant portion of user inputs tends to be repetitive. For instance, user prompts often include repeated references, and in multi-turn conversations, previous content is frequently re-entered."
-source: https://api-docs.deepseek.com/news/news0802
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news0802/
+fetched: 2026-11-28
 ---
 
 # DeepSeek API introduces Context Caching on Disk, cutting prices by an order of magnitude
@@ -11881,8 +12307,8 @@ Unused cache entries are automatically cleared, typically within a few hours to 
 ---
 title: "DeepSeek-V2.5: A New Open-Source Model Combining General and Coding Capabilities"
 description: "We’ve officially launched DeepSeek-V2.5 – a powerful combination of DeepSeek-V2-0628 and DeepSeek-Coder-V2-0724! This new version not only retains the general conversational capabilities of the Chat model and the robust code processing power of the Coder model but also better aligns with human preferences. Additionally, DeepSeek-V2.5 has seen significant improvements in tasks such as writing and instruction-following. The model is now available on both the web and API, with backward-compatible API endpoints. Users can access the new model via deepseek-coder or deepseek-chat. Features like Function Calling, FIM completion, and JSON output remain unchanged. The all-in-one DeepSeek-V2.5 offers a more streamlined, intelligent, and efficient user experience."
-source: https://api-docs.deepseek.com/news/news0905
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news0905/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V2.5: A New Open-Source Model Combining General and Coding Capabilities
@@ -11939,8 +12365,8 @@ DeepSeek-V2.5 is now open-source on HuggingFace! Check it out:
 ---
 title: "🚀 DeepSeek-R1-Lite-Preview is now live: unleashing supercharged reasoning power!"
 description: "🔍 o1-preview-level performance on AIME & MATH benchmarks."
-source: https://api-docs.deepseek.com/news/news1120
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news1120/
+fetched: 2026-11-28
 ---
 
 # 🚀 DeepSeek-R1-Lite-Preview is now live: unleashing supercharged reasoning power!
@@ -11975,8 +12401,8 @@ Longer Reasoning, Better Performance. DeepSeek-R1-Lite-Preview shows steady scor
 ---
 title: "🚀 DeepSeek V2.5: The Grand Finale 🎉"
 description: "🌐 Internet Search is now live on the web! Visit https://chat.deepseek.com/ and toggle “Internet Search” for real-time answers. 🕒"
-source: https://api-docs.deepseek.com/news/news1210
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news1210/
+fetched: 2026-11-28
 ---
 
 # 🚀 DeepSeek V2.5: The Grand Finale 🎉
@@ -12005,8 +12431,8 @@ fetched: 2026-08-02
 ---
 title: "🚀 Introducing DeepSeek-V3"
 description: "Biggest leap forward yet"
-source: https://api-docs.deepseek.com/news/news1226
-fetched: 2026-08-03
+source: https://api-docs.deepseek.com/news/news1226/
+fetched: 2026-11-28
 ---
 
 # 🚀 Introducing DeepSeek-V3
@@ -12065,8 +12491,8 @@ fetched: 2026-08-03
 ---
 title: "Introducing DeepSeek App"
 description: "* 💡 Powered by world-class DeepSeek-V3"
-source: https://api-docs.deepseek.com/news/news250115
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news250115/
+fetched: 2026-11-28
 ---
 
 # Introducing DeepSeek App
@@ -12107,8 +12533,8 @@ fetched: 2026-08-02
 ---
 title: "DeepSeek-R1 Release"
 description: "* ⚡ Performance on par with OpenAI-o1"
-source: https://api-docs.deepseek.com/news/news250120
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/news/news250120/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-R1 Release
@@ -12168,8 +12594,8 @@ fetched: 2026-11-02
 ---
 title: "DeepSeek-V3-0324 Release"
 description: "* 🔹 Major boost in reasoning performance"
-source: https://api-docs.deepseek.com/news/news250325
-fetched: 2026-08-03
+source: https://api-docs.deepseek.com/news/news250325/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V3-0324 Release
@@ -12193,8 +12619,8 @@ fetched: 2026-08-03
 ---
 title: "DeepSeek-R1-0528 Release"
 description: "🚀 DeepSeek-R1-0528 is here!"
-source: https://api-docs.deepseek.com/news/news250528
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/news/news250528/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-R1-0528 Release
@@ -12225,8 +12651,8 @@ fetched: 2026-11-02
 ---
 title: "DeepSeek-V3.1 Release"
 description: "Introducing DeepSeek-V3.1: our first step toward the agent era! 🚀"
-source: https://api-docs.deepseek.com/news/news250821
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/news/news250821/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V3.1 Release
@@ -12289,8 +12715,8 @@ Try it now — toggle Think/Non-Think via the "DeepThink" button: <https://chat.
 ---
 title: "DeepSeek-V3.1-Terminus"
 description: "🚀 DeepSeek-V3.1 → DeepSeek-V3.1-Terminus"
-source: https://api-docs.deepseek.com/news/news250922
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/news/news250922/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V3.1-Terminus
@@ -12323,8 +12749,8 @@ Thanks to everyone for your feedback. It drives us to keep improving and refinin
 ---
 title: "Introducing DeepSeek-V3.2-Exp"
 description: "🚀 Introducing DeepSeek-V3.2-Exp — our latest experimental model!"
-source: https://api-docs.deepseek.com/news/news250929
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/news/news250929/
+fetched: 2026-11-28
 ---
 
 # Introducing DeepSeek-V3.2-Exp
@@ -12377,8 +12803,8 @@ fetched: 2026-11-16
 ---
 title: "DeepSeek-V3.2 Release"
 description: "🚀 Launching DeepSeek-V3.2 & DeepSeek-V3.2-Speciale — Reasoning-first models built for agents!"
-source: https://api-docs.deepseek.com/news/news251201
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/news/news251201/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V3.2 Release
@@ -12436,8 +12862,8 @@ fetched: 2026-11-02
 ---
 title: "DeepSeek V4 Preview Release"
 description: "🚀 DeepSeek-V4 Preview is officially live & open-sourced! Welcome to the era of cost-effective 1M context length."
-source: https://api-docs.deepseek.com/news/news260424
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/news/news260424/
+fetched: 2026-11-28
 ---
 
 # DeepSeek V4 Preview Release
@@ -12520,8 +12946,8 @@ The figure below showcases a sample PDF generated by DeepSeek-V4-Pro.
 ---
 title: "DeepSeek-V4-Pro GA Release"
 description: "We’re launching DeepSeek-V4-Pro today! 🚀"
-source: https://api-docs.deepseek.com/news/news260813
-fetched: 2026-08-13
+source: https://api-docs.deepseek.com/news/news260813/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V4-Pro GA Release
@@ -12556,8 +12982,8 @@ New pricing takes effect at 16:00 UTC, Aug 16, 2026 🕒
 ---
 title: "DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live"
 description: "DeepSeek-V4-Flash-Vision-Exp is now live on the DeepSeek API Platform! 🚀"
-source: https://api-docs.deepseek.com/news/news260821
-fetched: 2026-08-23
+source: https://api-docs.deepseek.com/news/news260821/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V4-Flash-Vision-Exp Release: Multimodal API Now Live
@@ -12616,8 +13042,8 @@ Learn more: [API Guides - Files API](../guides/files_api.md)
 ---
 title: "DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient"
 description: "🚀 Introducing DeepSeek-V4.1-Flash: smarter, faster, more efficient."
-source: https://api-docs.deepseek.com/news/news260910
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/news/news260910/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient
@@ -12702,8 +13128,8 @@ Planning a large-scale deployment with 2,000 GPUs + a storage cluster? Let's tal
 ---
 title: "DeepSeek-V4.1-Flash-1017: Wish-Driven Programming Made Real"
 description: "🚀 DeepSeek-V4.1-Flash-1017 is here!"
-source: https://api-docs.deepseek.com/news/news261017
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/news/news261017/
+fetched: 2026-11-28
 ---
 
 # DeepSeek-V4.1-Flash-1017: Wish-Driven Programming Made Real
@@ -12774,8 +13200,8 @@ Get DeepSeek-V4.1-Flash-1017:
 ---
 title: "The full DeepSeek App experience, now via API"
 description: "Search, files, links, safety, and voice. The capabilities behind the DeepSeek App are now available through the DeepSeek API."
-source: https://api-docs.deepseek.com/news/news261113
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/news/news261113/
+fetched: 2026-11-28
 ---
 
 # The full DeepSeek App experience, now via API
@@ -13568,8 +13994,8 @@ You can also configure messaging platforms to use AstrBot directly from your pre
 ---
 title: "Integrate with Claude Code"
 description: "Claude Code is an AI coding assistant that runs in the terminal."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/
+fetched: 2026-11-28
 ---
 
 # Integrate with Claude Code
@@ -13676,7 +14102,7 @@ claude
 
 ## Using Web Search in Claude Code
 
-The DeepSeek API natively supports the Web Search feature in Claude Code. When using Claude Code, if the model determines that your question requires a web search, it will invoke the Web Search tool and perform the search through the API provided by DeepSeek. Because invoking the Web Search tool generates additional LLM API requests to summarize the retrieved search content, additional model token costs will be incurred. The search requests themselves are also subject to [Search API billing](../../guides/search.md#billing).
+The DeepSeek API natively supports the Web Search feature in Claude Code. When using Claude Code, if the model determines that your question requires a web search, it will invoke the Web Search tool and perform the search through the API provided by DeepSeek. Because invoking the Web Search tool generates additional LLM API requests to summarize the retrieved search content, additional model token costs will be incurred. The search requests themselves are not billed.
 
 The following image shows an example of triggering the Web Search feature in Claude Code, where the user's question (Help me to search for best Rust tutorials) triggered the Web Search tool:
 
@@ -13701,8 +14127,8 @@ With this mapping, when using the developer mode of the new Claude Desktop APP, 
 ---
 title: "Integrate with Codex"
 description: "Codex is an AI coding assistant from OpenAI. It talks to models via the Responses API, which the DeepSeek API natively supports."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/codex/
+fetched: 2026-11-28
 ---
 
 # Integrate with Codex
@@ -13939,7 +14365,7 @@ If you are updating an existing file, remove any top-level `web_search` setting 
 
 ### Web Search
 
-With Alpha Search, Codex can search the web, open a page and find text on that page. Each query that returns results counts as one Search request. Opening a page or finding text on it counts as one Fetch request when the page is successfully retrieved. See [Search and Fetch billing](../../guides/search.md#billing).
+With Alpha Search, Codex uses the standalone Search and Fetch APIs to search the web, open a page and find text on that page. Each query that returns results counts as one Search request. Opening a page or finding text on it counts as one Fetch request when the page is successfully retrieved. These standalone requests are billed per successful request. See [Search and Fetch billing](../../guides/search.md#billing).
 
 To turn off Alpha Search, add `web_search = "disabled"` at the top level of `~/.codex/config.toml` (before the first `[section]`) and restart Codex. This turns off web search in Codex, so no Search or Fetch requests are made. Note: selecting option 1 or 2 in the setup script again removes this setting and turns Alpha Search back on.
 
@@ -14303,8 +14729,8 @@ DeepSeek V4 is text-only, but the extension handles images automatically. Drop a
 ---
 title: "Integrate with Hermes Agent"
 description: "Hermes is an open-source AI agent built by Nous Research."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/hermes
-fetched: 2026-08-08
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/hermes/
+fetched: 2026-11-28
 ---
 
 # Integrate with Hermes Agent
@@ -14674,8 +15100,8 @@ In `models.yml`, `compat` replaces the built-in block wholesale — it does not 
 ---
 title: "Integrate with OpenClaw"
 description: "OpenClaw is an open-source personal AI assistant that can connect to popular chat tools like Feishu and WeChat, and can be extended through Skills."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/openclaw
-fetched: 2026-08-02
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/openclaw/
+fetched: 2026-11-28
 ---
 
 # Integrate with OpenClaw
@@ -14752,8 +15178,8 @@ openclaw terminal
 ---
 title: "Integrate with OpenCode"
 description: "OpenCode is an open-source AI coding assistant available in terminal, web, and other forms."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/opencode
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/opencode/
+fetched: 2026-11-28
 ---
 
 # Integrate with OpenCode
@@ -14939,8 +15365,8 @@ For more configuration options, see the [Pi models documentation](https://github
 ---
 title: "Integrate with Qoder"
 description: "Qoder is an agentic coding product available in three forms: IDE, CLI, and JetBrains Plugin."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/qoder
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/qoder/
+fetched: 2026-11-28
 ---
 
 # Integrate with Qoder
@@ -15052,8 +15478,8 @@ For more details, see the [Qoder custom models documentation](https://docs.qoder
 ---
 title: "Integrate with Reasonix"
 description: "Reasonix is a coding agent that runs in the terminal."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix
-fetched: 2026-08-08
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/reasonix/
+fetched: 2026-11-28
 ---
 
 # Integrate with Reasonix
@@ -15086,8 +15512,8 @@ No global install required. By default Reasonix uses **DeepSeek-V4-Flash** for c
 ---
 title: "Integrate with WorkBuddy/CodeBuddy"
 description: "WorkBuddy/CodeBuddy is an AI agent and coding assistant. It supports custom models through local model configuration files, and DeepSeek V4 can be connected through the OpenAI-compatible Chat Completions API."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/workbuddy/
+fetched: 2026-11-28
 ---
 
 # Integrate with WorkBuddy/CodeBuddy
@@ -15184,8 +15610,8 @@ If the request succeeds, the API Key and model name are valid.
 ---
 title: "Error Codes"
 description: "When calling DeepSeek API, you may encounter errors. Here list the causes and solutions."
-source: https://api-docs.deepseek.com/quick_start/error_codes
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/quick_start/error_codes/
+fetched: 2026-11-28
 ---
 
 # Error Codes
@@ -15210,14 +15636,14 @@ When calling DeepSeek API, you may encounter errors. Here list the causes and so
 
 ---
 title: "Models & Pricing"
-description: "Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
-source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-11-15
+description: "Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
+source: https://api-docs.deepseek.com/quick_start/pricing/
+fetched: 2026-11-28
 ---
 
 # Models & Pricing
 
-Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model.
+Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model.
 
 ---
 
@@ -15255,16 +15681,18 @@ Model prices are listed in units of per 1M tokens. A token, the smallest unit of
 
 ---
 
-## Web Search & Fetch Pricing
+## Search & Fetch API Pricing
 
-Search (text, image) and web fetch are billed per use, whether you call the [Search and Fetch APIs](../guides/search.md) directly or the model uses them through tools such as the [web tools](../guides/web_tools.md).
+The [Search and Fetch APIs](../guides/search.md) are billed per use.
 
 | Item | Unit | Price |
 | --- | --- | --- |
-| Search (text, image) | Per 1,000 searches | $0.75 |
-| Web fetch | Per 1,000 fetches | $0.75 |
+| Search API (text) | Per 1,000 successful requests | $0.75 |
+| Fetch API | Per 1,000 successful requests | $0.75 |
 
-For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools](../guides/web_tools.md#billing).
+For the billing rules, see [Search & Fetch](../guides/search.md).
+
+Starting 12:00 on November 18, 2026 (Beijing Time, UTC+8), the server-side search and web fetch tool calls triggered when calling the model are no longer billed; the results they return are appended to the model context and billed as model token usage. Server-side search is triggered when you use the [web tools](../guides/web_tools.md), the [`web_search` tool in the Anthropic API](../guides/anthropic_api.md#server-tool-usage) or the [`web_search` tool in the Responses API](../guides/responses_api.md#tools).
 
 ---
 
@@ -15285,7 +15713,7 @@ For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools]
 
 ## Deduction Rules
 
-For model usage, the expense = number of tokens × price. Search (text, image) and web fetch are charged per use at the rates above.
+For model usage, the expense = number of tokens × price. Search API and Fetch API calls are charged per use at the rates above.
 The corresponding fees will be directly deducted from your topped-up balance or granted balance, with a preference for using the granted balance first when both balances are available.
 
 Product prices may vary and DeepSeek reserves the right to adjust them. We recommend topping up based on your actual usage and regularly checking this page for the most recent pricing information.
@@ -15296,8 +15724,8 @@ Product prices may vary and DeepSeek reserves the right to adjust them. We recom
 ---
 title: "Rate Limit & Isolation"
 description: "Concurrency Limit"
-source: https://api-docs.deepseek.com/quick_start/rate_limit
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/quick_start/rate_limit/
+fetched: 2026-11-28
 ---
 
 # Rate Limit & Isolation
@@ -15400,8 +15828,8 @@ If the request has not started inference after 10 minutes, the server will close
 ---
 title: "Token & Token Usage"
 description: "Tokens are the basic units used by models to represent natural language text, and also the units we use for billing. They can be intuitively understood as 'characters' or 'words'. Typically, a Chinese word, an English word, a number, or a symbol is counted as a token."
-source: https://api-docs.deepseek.com/quick_start/token_usage
-fetched: 2026-08-29
+source: https://api-docs.deepseek.com/quick_start/token_usage/
+fetched: 2026-11-28
 ---
 
 # Token & Token Usage
@@ -15417,7 +15845,7 @@ However, due to the different tokenization methods used by different models, the
 
 ## Calculate token usage offline
 
-You can run the demo tokenizer code in the following zip package to calculate the token usage for your intput/output.
+You can run the demo tokenizer code in the following zip package to calculate the token usage for your input/output.
 
 [deepseek\_tokenizer.zip](https://cdn.deepseek.com/api-docs/deepseek_v4_tokenizer.zip)
 
@@ -15439,8 +15867,8 @@ Height (px)
 ---
 title: "Change Log"
 description: "Date: 2026-11-13"
-source: https://api-docs.deepseek.com/updates
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/updates/
+fetched: 2026-11-28
 ---
 
 # Change Log

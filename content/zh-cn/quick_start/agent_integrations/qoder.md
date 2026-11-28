@@ -1,8 +1,8 @@
 ---
 title: "接入 Qoder"
 description: "Qoder 是一款 Agentic Coding 产品，支持 IDE、CLI 和 JetBrains Plugin 三种形态。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/qoder
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/qoder/
+fetched: 2026-11-28
 ---
 
 # 接入 Qoder

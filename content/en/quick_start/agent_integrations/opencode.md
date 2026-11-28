@@ -1,8 +1,8 @@
 ---
 title: "Integrate with OpenCode"
 description: "OpenCode is an open-source AI coding assistant available in terminal, web, and other forms."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/opencode
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/opencode/
+fetched: 2026-11-28
 ---
 
 # Integrate with OpenCode

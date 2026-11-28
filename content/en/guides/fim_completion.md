@@ -1,8 +1,8 @@
 ---
 title: "FIM Completion (Beta)"
 description: "In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is commonly used for content completion、code completion."
-source: https://api-docs.deepseek.com/guides/fim_completion
-fetched: 2026-10-17
+source: https://api-docs.deepseek.com/guides/fim_completion/
+fetched: 2026-11-28
 ---
 
 # FIM Completion (Beta)

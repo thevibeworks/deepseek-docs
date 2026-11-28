@@ -1,8 +1,8 @@
 ---
 title: "User Metadata Marker"
 description: "DeepSeek Chat tells the model the current date and the user's location, platform and language, so that answers fit the user's situation. With the API, you provide this information in a latest_reminder message."
-source: https://api-docs.deepseek.com/guides/latest_reminder
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/latest_reminder/
+fetched: 2026-11-28
 ---
 
 # User Metadata Marker

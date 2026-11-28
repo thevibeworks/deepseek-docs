@@ -1,8 +1,8 @@
 ---
 title: "文件解析"
 description: "让模型基于你的文件回答问题，与 DeepSeek 网页端上传文件一致。分两步："
-source: https://api-docs.deepseek.com/zh-cn/guides/document_parsing
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/document_parsing/
+fetched: 2026-11-28
 ---
 
 # 文件解析

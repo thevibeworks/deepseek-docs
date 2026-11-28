@@ -1,13 +1,13 @@
 ---
 title: "Models & Pricing"
-description: "Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
-source: https://api-docs.deepseek.com/quick_start/pricing
-fetched: 2026-11-15
+description: "Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model."
+source: https://api-docs.deepseek.com/quick_start/pricing/
+fetched: 2026-11-28
 ---
 
 # Models & Pricing
 
-Model prices are listed in units of per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model.
+Model prices are listed per 1M tokens. A token, the smallest unit of text that the model recognizes, can be a word, a number, or even a punctuation mark. We bill model usage based on the total number of input and output tokens by the model.
 
 ---
 
@@ -45,16 +45,18 @@ Model prices are listed in units of per 1M tokens. A token, the smallest unit of
 
 ---
 
-## Web Search & Fetch Pricing
+## Search & Fetch API Pricing
 
-Search (text, image) and web fetch are billed per use, whether you call the [Search and Fetch APIs](../guides/search.md) directly or the model uses them through tools such as the [web tools](../guides/web_tools.md).
+The [Search and Fetch APIs](../guides/search.md) are billed per use.
 
 | Item | Unit | Price |
 | --- | --- | --- |
-| Search (text, image) | Per 1,000 searches | $0.75 |
-| Web fetch | Per 1,000 fetches | $0.75 |
+| Search API (text) | Per 1,000 successful requests | $0.75 |
+| Fetch API | Per 1,000 successful requests | $0.75 |
 
-For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools](../guides/web_tools.md#billing).
+For the billing rules, see [Search & Fetch](../guides/search.md).
+
+Starting 12:00 on November 18, 2026 (Beijing Time, UTC+8), the server-side search and web fetch tool calls triggered when calling the model are no longer billed; the results they return are appended to the model context and billed as model token usage. Server-side search is triggered when you use the [web tools](../guides/web_tools.md), the [`web_search` tool in the Anthropic API](../guides/anthropic_api.md#server-tool-usage) or the [`web_search` tool in the Responses API](../guides/responses_api.md#tools).
 
 ---
 
@@ -75,7 +77,7 @@ For the billing rules, see [Search & Fetch](../guides/search.md) and [Web Tools]
 
 ## Deduction Rules
 
-For model usage, the expense = number of tokens × price. Search (text, image) and web fetch are charged per use at the rates above.
+For model usage, the expense = number of tokens × price. Search API and Fetch API calls are charged per use at the rates above.
 The corresponding fees will be directly deducted from your topped-up balance or granted balance, with a preference for using the granted balance first when both balances are available.
 
 Product prices may vary and DeepSeek reserves the right to adjust them. We recommend topping up based on your actual usage and regularly checking this page for the most recent pricing information.

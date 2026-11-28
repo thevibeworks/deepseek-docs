@@ -1,7 +1,7 @@
 ---
 title: "Process Sandbox"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/sandbox.md
-fetched: 2026-11-15
+fetched: 2026-11-28
 ---
 # Process Sandbox
 
@@ -212,13 +212,15 @@ The sandbox-policy service (`ctx.sandboxPolicy`). Owns the deployment default mo
 /**
  * Resolve the complete policy for one capability call. An approved explicit
  * mode outranks the session's last `sandbox/mode` event, which outranks the
- * deployment default. A session cwd is its workspace-write boundary; the
- * configured root is the fallback for agentless calls and sessions without a
- * cwd. Configured extra roots and this Session's active registrations are
- * snapshotted together; existing operations and processes keep their policy.
+ * deployment default. A session's working directory is its workspace-write
+ * boundary, so a Host move of the Session moves the boundary; the configured
+ * root is the fallback for agentless calls and, without the working-directory
+ * service, sessions without a header directory. Configured extra roots and
+ * this Session's active registrations are snapshotted together; existing
+ * operations and processes keep their policy.
  * @param request - optional session and approved mode override.
  * @returns the fully resolved per-call mode and absolute workspace root.
- * @throws `SandboxInvalidRootError` (`SANDBOX_INVALID_ROOT`) when the session's recorded cwd is
+ * @throws `SandboxInvalidRootError` (`SANDBOX_INVALID_ROOT`) when the session's directory is
  *   relative or contains a NUL byte.
  */
 resolve(request: SandboxPolicyRequest = {}): SandboxExecutionPolicy

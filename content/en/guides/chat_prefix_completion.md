@@ -1,8 +1,8 @@
 ---
 title: "Chat Prefix Completion (Beta)"
 description: "The chat prefix completion follows the Chat Completion API, where users provide an assistant's prefix message for the model to complete the rest of the message."
-source: https://api-docs.deepseek.com/guides/chat_prefix_completion
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/chat_prefix_completion/
+fetched: 2026-11-28
 ---
 
 # Chat Prefix Completion (Beta)

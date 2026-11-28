@@ -1,8 +1,8 @@
 ---
 title: "OCR"
 description: "OCR API 识别 PDF、Word、PowerPoint 文档或图片中的文字，按页返回识别结果。文件不会存入 Files API，也不会交给对话模型。如果要让模型基于文档回答问题，请参阅 文件解析。"
-source: https://api-docs.deepseek.com/zh-cn/guides/ocr
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/ocr/
+fetched: 2026-11-28
 ---
 
 # OCR

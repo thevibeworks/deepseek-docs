@@ -1,8 +1,8 @@
 ---
 title: "语音合成"
 description: "把文字转换为自然语音，例如朗读 Chatbot 的回答。"
-source: https://api-docs.deepseek.com/zh-cn/guides/tts
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/tts/
+fetched: 2026-11-28
 ---
 
 # 语音合成

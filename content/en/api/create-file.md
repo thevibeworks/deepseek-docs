@@ -1,8 +1,8 @@
 ---
 title: "Upload File"
 description: "Upload an image file that can later be referenced by its `file_id` in chat completion requests."
-source: https://api-docs.deepseek.com/api/create-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-file/
+fetched: 2026-11-28
 ---
 
 # Upload File

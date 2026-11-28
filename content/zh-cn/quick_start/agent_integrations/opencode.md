@@ -1,8 +1,8 @@
 ---
 title: "接入 OpenCode"
 description: "OpenCode 是一个开源 AI 编程助手，提供终端、网页等运行形式。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/opencode/
+fetched: 2026-11-28
 ---
 
 # 接入 OpenCode

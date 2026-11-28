@@ -1,8 +1,8 @@
 ---
 title: "接入 Reasonix"
 description: "Reasonix 是一款终端编程 Agent。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/reasonix
-fetched: 2026-08-08
+source: https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/reasonix/
+fetched: 2026-11-28
 ---
 
 # 接入 Reasonix

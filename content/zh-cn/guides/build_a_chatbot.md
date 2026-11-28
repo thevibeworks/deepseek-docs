@@ -1,8 +1,8 @@
 ---
 title: "构建 Chatbot"
 description: "DeepSeek API 提供与 DeepSeek 网页端和 App 一致的对话能力：联网搜索、深度思考搜索、文件输入、阅读链接，以及基础的模型内容安全风控。你可以用它们构建自己的 Chatbot。"
-source: https://api-docs.deepseek.com/zh-cn/guides/build_a_chatbot
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/build_a_chatbot/
+fetched: 2026-11-28
 ---
 
 # 构建 Chatbot

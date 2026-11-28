@@ -1,8 +1,8 @@
 ---
 title: "Thinking Mode"
 description: "The DeepSeek model supports the thinking mode: before outputting the final answer, the model will first output a chain-of-thought reasoning to improve the accuracy of the final response."
-source: https://api-docs.deepseek.com/guides/thinking_mode
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/guides/thinking_mode/
+fetched: 2026-11-28
 ---
 
 # Thinking Mode

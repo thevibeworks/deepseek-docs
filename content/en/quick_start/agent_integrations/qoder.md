@@ -1,8 +1,8 @@
 ---
 title: "Integrate with Qoder"
 description: "Qoder is an agentic coding product available in three forms: IDE, CLI, and JetBrains Plugin."
-source: https://api-docs.deepseek.com/quick_start/agent_integrations/qoder
-fetched: 2026-09-18
+source: https://api-docs.deepseek.com/quick_start/agent_integrations/qoder/
+fetched: 2026-11-28
 ---
 
 # Integrate with Qoder

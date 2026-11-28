@@ -1,7 +1,7 @@
 ---
 title: "DeepSeek Harness Architecture"
 source: https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md
-fetched: 2026-11-15
+fetched: 2026-11-28
 ---
 # DeepSeek Harness Architecture
 
@@ -69,6 +69,8 @@ Electron starts the private Desktop Host in Electron Node mode. The Host invokes
 | [`core/scope`](subsystems/scope.md) | The per-agent scoped-registration primitive | library, no key |
 | [`llm/llm`](subsystems/llm-streaming.md) | Message and stream vocabulary plus the adapter seam | `ctx.llm` |
 
+<a id="events"></a>
+
 ## Events
 
 Events provide extension points in three domains.
@@ -83,6 +85,8 @@ AgentLoop rolls back failed initialization and awaits serial `agent/created` bef
 
 [Event producers and consumers](event-producer-consumer.md).
 
+<a id="turn-flow"></a>
+
 ## Turn flow
 
 A **step** is one model request plus the tools it calls. A **turn** is zero or more steps: it opens before its first input is claimed and closes once nothing is owed.
@@ -90,13 +94,13 @@ A **step** is one model request plus the tools it calls. A **turn** is zero or m
 ```text
 turn/start
   claim next-step input plus one queued message
-  snapshot Session model selection; assemble prompt sections + step-admitted tool schemas
+  snapshot model selection; capture ToolStep; assemble sections + ToolStep schemas
   -> agent/pre-step; project runtime context at fallback
                                      reject | enter(messages, startsRequestSeries?)
      reject, or a first enter rewritten empty -> close the turn with no step
      step/start
      agent/request -> prepareCall (cancellation commits neither system nor users)
-     reconcile system/message using the prepared call capability
+     commit system/message updates; rebuild the system head after compaction
      append entered messages as user/message; reconcile retained runtime context
      log request/header and request/context as needed
      derive and freeze model history from the log
@@ -112,19 +116,21 @@ turn/end
 
 `turn/*`, `step/*`, `system/message`, `user/message`, `assistant/message`, `assistant/attempt`, and `tool/*` are durable session events; the rest are live extension points across three domains. `agent/assistant-stream` publishes process-local start, transient chunk, and end frames. The loop commits the complete compact stream as one message or log-only attempt before a committed end frame, and the Web Session-follow adapter is the live event's only remote consumer. `agent/pre-step`, `agent/request`, `llm/stream`, and the three `tools/*` events are waterfalls, whose listeners must call `next()` to delegate; `agent/turn-stopping` is serial and has no `next()`.
 
-Factory setup follows SessionStore entry and `session/created`, preceding `agent/created`; closing events commit before removal.
+Fork creation stores the caller-supplied history; a sharing backend persists the parent prefix first ([lifecycle](../packages/core/agent-loop/README.md#understand-the-implementation)). Factory setup follows SessionStore entry and `session/created`, preceding `agent/created`; closing events commit before removal.
 
-One inbox feeds the driver; injected context waits for a waking message. AgentLoop’s durable `inbox` projection exposes pending input without live Agents.
+Injected context waits for a wake. The `inbox` projection tracks queues and [claims for unopened steps](../packages/core/agent-loop/README.md#returned-input) across Agent lifetimes.
 
-Before assembly, the loop snapshots Session model selection in `AssembleContext.modelSelection` and `agent/pre-step.modelSelection`; retries retain it; omitted reasoning effort uses adapter defaults. `agent/pre-step` listeners accept, rewrite, or reject claimed messages; a rejected or empty first claim closes a durable turn without a step. An enter decision may set `startsRequestSeries`: the loop logs a fresh `request/header` (reason `series`, or `change` with `startsSeries: true` when the envelope also changed). Wrapping listeners preserve that declaration with `{ ...decision, messages }`. After assembly and `step/start`, the deprecated `agent/request` hook adjusts controls without changing the provider, model, or effort selection, and `prepareCall()` binds the adapter before the system prompt and accepted users are committed; cancellation during either async phase commits neither. Prepared call capabilities govern prompt admission, not preceding `request/context`. Each attempt refreshes registered runtime facts, reconciles the bound prompt, admits users once, reconciles runtime reminders by recorded sections, logs header/context as needed, and freezes the request before streaming the bound call. Retries do not repeat assembly or `agent/pre-step`. Surface replacements and image-offload decisions after attachment start a new request series, including during the first resumed pre-step; unchanged resume continues the series. The system prompt travels as `system/message` history: empty text clears it, capable routes append updates, and other routes consolidate it at the first system node. [Agent-loop](../packages/core/agent-loop/README.md#understand-the-implementation) owns prompt admission and replacement details.
+Before assembly, the loop captures Session model selection and the Agent's [`ToolStep`](subsystems/tools.md#tool-registries-roots-and-model-steps); retries retain both; omitted reasoning effort uses adapter defaults. System assembly captures live source values and lifecycle with committed Session admissions, fixing whether to append updates or rebuild the full prompt. `agent/pre-step` listeners accept, rewrite, or reject claimed messages; a rejected or empty first claim closes a durable turn without a step. An enter decision may set `startsRequestSeries`: the loop logs a fresh `request/header` (reason `series`, or `change` with `startsSeries: true` when the envelope also changed). Wrapping listeners preserve that declaration with `{ ...decision, messages }`.
+
+After acceptance and `step/start`, the deprecated `agent/request` hook adjusts controls without changing provider, model, or effort selection; `prepareCall()` binds the adapter. Cancellation during either phase commits neither system candidates nor accepted users. Every attempt refreshes runtime facts and derives history; the first commits both.
+
+Retries retain their assembly and `ToolStep`; later source changes wait for the next assembly. Surface replacements and image-offload decisions start a new request series; unchanged resume continues it. Each attempt appends the assembly’s `systemUpdates()` writes; at the first attempt after a logged compaction summary, including a retry, they clear retained system additions and replace the initial system node with the captured instructions through ordinary `system/message` events. [Agent-loop](../packages/core/agent-loop/README.md#understand-the-implementation) owns request and retry timing.
 
 The loop sends immutable requests with live cancellation and reuses freeze evidence for frozen identities; [agent-loop](../packages/core/agent-loop/README.md) owns construction and cancellation causes.
 
 Failed steps [record missing tool results](../packages/core/agent-loop/README.md#understand-the-implementation).
 
-Details: the [sequence diagram](agent-lifecycle.md), the [tool pipeline](tool-execution-pipeline.md), and [cancellation and error recovery](subsystems/core.md#the-agent-handle).
-
-[`ctx.tools.execute()`](subsystems/tools.md) receives raw batches and concurrency limits.
+Details: the [sequence diagram](agent-lifecycle.md), the [tool pipeline](tool-execution-pipeline.md) behind [`ctx.tools.execute()`](subsystems/tools.md), and [cancellation and error recovery](subsystems/core.md#the-agent-handle).
 
 ## Session log
 
@@ -169,7 +175,7 @@ New behavior attaches to a documented extension point. Changing the loop itself 
 | Add durable session state | extend `SessionEventMap`; render and replay from the log |
 | Generate session titles | register the sole `ctx.sessionTitle` provider |
 | Manage a same-session objective | use `ctx.goals`; continue through `agent/*` |
-| Fork at a turn boundary | `ctx.agents.create({ sessionId, seed, inheritedEventCount, meta: { isSeeded: true } })` — only agent-loop-published sessions persist |
+| Fork at a turn boundary | `ctx.agents.create({ sessionId, source, inheritedEventCount, meta: { isSeeded: true } })` stores the supplied parent prefix and child events before publication |
 | Store sessions in a new backend | implement `SessionPersistence` (`create`/`open`/`stat`/`list`/`export`) over the shared handle scaffolding |
 | Scope a registration to one agent | use that agent's `agent.ctx` |
 

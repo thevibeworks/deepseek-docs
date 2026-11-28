@@ -1,8 +1,8 @@
 ---
 title: "List Files"
 description: "Returns a list of files that belong to the user, with cursor-based pagination."
-source: https://api-docs.deepseek.com/api/list-files
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/list-files/
+fetched: 2026-11-28
 ---
 
 # List Files

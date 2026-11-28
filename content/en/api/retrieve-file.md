@@ -1,8 +1,8 @@
 ---
 title: "Retrieve File"
 description: "Returns information about a specific file."
-source: https://api-docs.deepseek.com/api/retrieve-file
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/retrieve-file/
+fetched: 2026-11-28
 ---
 
 # Retrieve File

@@ -1,8 +1,8 @@
 ---
 title: "OCR"
 description: "The OCR API recognizes the text in a PDF, Word or PowerPoint document or in an image, and returns the result page by page. The file is not stored in the Files API and is not passed to a chat model. To have the model answer questions about a document instead, see File Parsing."
-source: https://api-docs.deepseek.com/guides/ocr
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/ocr/
+fetched: 2026-11-28
 ---
 
 # OCR

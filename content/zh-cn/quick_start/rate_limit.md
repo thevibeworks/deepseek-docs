@@ -1,8 +1,8 @@
 ---
 title: "限速与隔离"
 description: "并发限速"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit/
+fetched: 2026-11-28
 ---
 
 # 限速与隔离

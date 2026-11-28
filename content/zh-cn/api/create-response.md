@@ -1,8 +1,8 @@
 ---
 title: "Responses API"
 description: "以 OpenAI Responses API 格式创建模型响应。"
-source: https://api-docs.deepseek.com/zh-cn/api/create-response
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/zh-cn/api/create-response/
+fetched: 2026-11-28
 ---
 
 # Responses API
@@ -33,7 +33,7 @@ nullable
 
 模型的输入。既可以传纯字符串（视作一条 `user` 消息），也可以传输入 item 列表。
 
-支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 在 `deepseek-flash` 上视同 `system`，在 `deepseek-v4-pro` 上视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `system` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`assistant` 消息中的图片将返回 `400` 错误。`user` 消息中支持用 `input_file` 的 `file_id` 引用已上传的文件，见[文件解析](../guides/document_parsing.md)；`file_url` 不支持。
+支持的输入 item 类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call` / `tool_search_call` / `tool_search_output`，其他类型会被忽略。`tool_search_call` 与 `tool_search_output` 在 `deepseek-flash` 下支持，用于加载客户端执行的 `tool_search` 调用搜索到的工具。消息角色支持 `user` / `assistant` / `system` / `developer`（`developer` 在 `deepseek-flash` 上视同 `system`，在 `deepseek-v4-pro` 上视同 `user`）。使用 `deepseek-flash` 模型时，`user` / `system` / `developer` 消息 item 以及 `function_call_output` / `custom_tool_call_output` item 的 `output` 中支持 `input_image` 内容块；`assistant` 消息中的图片将返回 `400` 错误。`user` 消息中支持用 `input_file` 的 `file_id` 引用已上传的文件，见[文件解析](../guides/document_parsing.md)；`file_url` 不支持。
 
 `input` 与 `instructions` 至少传一个。
 
@@ -50,15 +50,15 @@ string
 
 **[Input item list]**
 
-输入 item。支持的类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call`，其他类型会被忽略。`reasoning` 和 `function_call` item 会由服务端自动归并到相邻的 assistant 消息中。上一次响应返回的 `web_search_call` item 可以回传，以将其搜索结果还原到上下文中。多轮对话中的回传规则请参考 [Responses API 指南](../guides/responses_api.md#multi-turn-conversation)。
+输入 item。支持的类型为 `message` / `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `reasoning` / `web_search_call` / `tool_search_call` / `tool_search_output`，其他类型会被忽略。`reasoning` 和 `function_call` item 会由服务端自动归并到相邻的 assistant 消息中。上一次响应返回的 `web_search_call` item 可以回传，以将其搜索结果还原到上下文中。上一次响应返回的 `tool_search_call` item 会和匹配的 `tool_search_output` item 一起回传，以加载搜索到的工具；该能力在 `deepseek-flash` 下支持。多轮对话中的回传规则请参考 [Responses API 指南](../guides/responses_api.md#multi-turn-conversation) 与[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
 
 - Array [
 
 **type** string
 
-**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`
+**Possible values:** `message`, `function_call`, `function_call_output`, `custom_tool_call`, `custom_tool_call_output`, `reasoning`, `web_search_call`, `tool_search_call`, `tool_search_output`
 
-输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。`custom_tool_call` / `custom_tool_call_output` item 配合 `apply_patch` custom 工具使用。`web_search_call` item 用于还原上一次服务端搜索的结果。
+输入 item 的类型。对于 `message` item，如果传了 `role`，此字段可省略。`custom_tool_call` / `custom_tool_call_output` item 配合 `apply_patch` custom 工具使用。`web_search_call` item 用于还原上一次服务端搜索的结果。`tool_search_call` / `tool_search_output` item 用于加载客户端执行的 `tool_search` 调用搜索到的工具。
 
 **role** string
 
@@ -156,15 +156,23 @@ oneOf
 
 **call\_id** string
 
-用于 `function_call` / `function_call_output` item。将函数调用与其结果配对的 ID。必须非空且唯一，且每个 `function_call` 必须有对应的 `function_call_output`。
+用于 `function_call` / `function_call_output` / `custom_tool_call` / `custom_tool_call_output` / `tool_search_call` / `tool_search_output` item。将工具调用与其结果配对的 ID。必须非空且唯一。每个 `function_call` 必须有对应的 `function_call_output`；每个 `tool_search_output` 必须有对应的 `tool_search_call`。
 
 **name** string
 
-用于 `function_call` item。要调用的函数的名称。
+用于 `function_call` / `custom_tool_call` item。要调用的函数或 custom 工具的名称。
 
-**arguments** string
+**arguments** string | object
 
-用于 `function_call` item。调用函数的入参，格式为 JSON。
+用于 `function_call` item 时为调用函数的入参，格式为 JSON。用于 `tool_search_call` item 时为包含搜索参数的对象。
+
+oneOf
+
+- JSON string
+
+**[JSON string]**
+
+string
 
 **output** string | object[]
 
@@ -254,6 +262,52 @@ oneOf
 
 - ]
 
+**execution** string
+
+**Possible values:** `client`
+
+用于 `tool_search_call` / `tool_search_output` item。必须为 `client`。
+
+**tools**
+
+object[]
+
+用于 `tool_search_output` item。要加载的工具定义，格式与顶层 `tools` 相同。模型可以从输入的该位置起调用这些工具。
+
+模型可能会调用的工具。`function` 定义一个函数工具——注意在 Responses API 格式中，`name` / `parameters` 等函数字段位于工具对象的顶层。`custom` 定义 custom 工具，仅支持 `{"type": "custom", "name": "apply_patch"}`，其他名称会返回 `400` 错误。`web_search` 启用服务端网页搜索，在 `deepseek-v4-pro` 下支持。`tool_search` 启用客户端执行的工具搜索，在 `deepseek-flash` 下支持。`deepseek_web_search` 与 `deepseek_read_url` 是联网工具，不能与 `web_search` 同时声明，详见 [联网工具指南](../guides/web_tools.md#responses-api) 与[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
+
+- Array [
+
+**type** stringrequired
+
+**Possible values:** `function`, `custom`, `web_search`, `tool_search`, `deepseek_web_search`, `deepseek_read_url`
+
+工具类型：`function`、`custom`（仅 `apply_patch`）、`web_search`（仅 `deepseek-v4-pro`）、`tool_search`（仅 `deepseek-flash`，且 `execution` 为 `"client"`）、`deepseek_web_search` 或 `deepseek_read_url`。
+
+**name** string
+
+用于 `function` / `custom` 工具。工具的名称。对于函数工具，必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。对于 custom 工具，必须为 `apply_patch`。
+
+**description** string
+
+用于 `function` 工具，也可用于 `tool_search`。工具功能的描述，供模型理解何时以及如何调用它。
+
+**parameters**
+
+object
+
+function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls 指南](../guides/tool_calls.md)获取示例，并参阅[JSON Schema 参考](https://json-schema.org/understanding-json-schema/)了解有关格式的文档。省略 `parameters` 会定义一个参数列表为空的 function。
+
+**property name\*** anynullable
+
+**execution** string
+
+**Possible values:** `client`
+
+用于 `tool_search` 工具。必须为 `client`：由客户端执行搜索，并在 `tool_search_output` 输入 item 中返回搜索到的工具。不支持服务端执行的工具搜索。
+
+- ]
+
 - ]
 
 **instructions** stringnullable
@@ -335,17 +389,17 @@ object[]
 
 nullable
 
-模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。支持 `function` 工具；`web_search` 在 `deepseek-v4-pro` 下支持，其余内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md)。
+模型可能会调用的工具的列表。函数名必须非空、不超过 128 个字符、匹配 `^[a-zA-Z0-9_-]+$`，且所有工具的名称必须唯一。支持 `function` 工具；`web_search` 在 `deepseek-v4-pro` 下支持；客户端执行的 `tool_search` 工具在 `deepseek-flash` 下支持，用于在对话中途加载工具定义；其余内置工具类型会被忽略。详情请参考 [Responses API 指南](../guides/responses_api.md) 与[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
 
-模型可能会调用的工具。`function` 定义一个函数工具——注意在 Responses API 格式中，`name` / `parameters` 等函数字段位于工具对象的顶层。`custom` 定义 custom 工具，仅支持 `{"type": "custom", "name": "apply_patch"}`，其他名称会返回 `400` 错误。`web_search` 启用服务端网页搜索，在 `deepseek-v4-pro` 下支持。`deepseek_web_search` 与 `deepseek_read_url` 是联网工具，不能与 `web_search` 同时声明，详见 [联网工具指南](../guides/web_tools.md#responses-api)。
+模型可能会调用的工具。`function` 定义一个函数工具——注意在 Responses API 格式中，`name` / `parameters` 等函数字段位于工具对象的顶层。`custom` 定义 custom 工具，仅支持 `{"type": "custom", "name": "apply_patch"}`，其他名称会返回 `400` 错误。`web_search` 启用服务端网页搜索，在 `deepseek-v4-pro` 下支持。`tool_search` 启用客户端执行的工具搜索，在 `deepseek-flash` 下支持。`deepseek_web_search` 与 `deepseek_read_url` 是联网工具，不能与 `web_search` 同时声明，详见 [联网工具指南](../guides/web_tools.md#responses-api) 与[延迟加载工具](../guides/tool_calls.md#deferred-tool-loading)。
 
 - Array [
 
 **type** stringrequired
 
-**Possible values:** `function`, `custom`, `web_search`, `deepseek_web_search`, `deepseek_read_url`
+**Possible values:** `function`, `custom`, `web_search`, `tool_search`, `deepseek_web_search`, `deepseek_read_url`
 
-工具类型：`function`、`custom`（仅 `apply_patch`）、`web_search`（仅 `deepseek-v4-pro`）、`deepseek_web_search` 或 `deepseek_read_url`。
+工具类型：`function`、`custom`（仅 `apply_patch`）、`web_search`（仅 `deepseek-v4-pro`）、`tool_search`（仅 `deepseek-flash`，且 `execution` 为 `"client"`）、`deepseek_web_search` 或 `deepseek_read_url`。
 
 **name** string
 
@@ -353,7 +407,7 @@ nullable
 
 **description** string
 
-用于 `function` 工具。函数功能的描述，供模型理解何时以及如何调用该函数。
+用于 `function` 工具，也可用于 `tool_search`。工具功能的描述，供模型理解何时以及如何调用它。
 
 **parameters**
 
@@ -362,6 +416,12 @@ object
 function 的输入参数，以 JSON Schema 对象描述。请参阅[Tool Calls 指南](../guides/tool_calls.md)获取示例，并参阅[JSON Schema 参考](https://json-schema.org/understanding-json-schema/)了解有关格式的文档。省略 `parameters` 会定义一个参数列表为空的 function。
 
 **property name\*** anynullable
+
+**execution** string
+
+**Possible values:** `client`
+
+用于 `tool_search` 工具。必须为 `client`：由客户端执行搜索，并在 `tool_search_output` 输入 item 中返回搜索到的工具。不支持服务端执行的工具搜索。
 
 - ]
 
@@ -506,7 +566,7 @@ required
 
 模型生成的输出 item 列表。思考模式下，思维链以 `reasoning` item 的形式在 `message` item 之前返回。函数调用以 `function_call` item 返回。
 
-模型生成的输出 item。`message` item 承载模型回复文本，`reasoning` item 承载思维链，`function_call` item 表示函数调用，`custom_tool_call` item 表示 custom 工具调用（如 `apply_patch`），`web_search_call` item 表示服务端网页搜索（仅 `deepseek-v4-pro`），`tool_search_call` item 表示工具搜索。使用联网工具时，每次工具调用都是一个 `web_search_call` item，并带扩展字段 `kind`、`page`、`signature` 与 `error`。
+模型生成的输出 item。`message` item 承载模型回复文本，`reasoning` item 承载思维链，`function_call` item 表示函数调用，`custom_tool_call` item 表示 custom 工具调用（如 `apply_patch`），`web_search_call` item 表示服务端网页搜索（仅 `deepseek-v4-pro`），`tool_search_call` item 表示客户端执行的工具搜索（仅 `deepseek-flash`）。使用联网工具时，每次工具调用都是一个 `web_search_call` item，并带扩展字段 `kind`、`page`、`signature` 与 `error`。
 
 - Array [
 
@@ -556,9 +616,23 @@ object[]
 
 用于 `function_call` / `custom_tool_call` item。要调用的函数或 custom 工具的名称。
 
-**arguments** string
+**arguments** string | object
 
-用于 `function_call` item。模型生成的调用函数的入参，格式为 JSON。请注意，模型并不总是生成有效的 JSON，且可能会虚构出您的函数模式中未定义的参数。在调用函数之前，请在您的代码中验证这些入参是否有效。
+用于 `function_call` item 时为模型生成的调用函数的入参，格式为 JSON。请注意，模型并不总是生成有效的 JSON，且可能会虚构出您的函数模式中未定义的参数。在调用函数之前，请在您的代码中验证这些入参是否有效。用于 `tool_search_call` item 时为包含搜索参数的对象。
+
+oneOf
+
+- JSON string
+
+**[Example]**
+
+string
+
+**execution** string
+
+**Possible values:** `client`
+
+用于 `tool_search_call` item。其值恒为 `client`。
 
 **kind** 联网工具能力 (string)
 
@@ -644,21 +718,21 @@ object
 
 **Possible values:** `>= 0`
 
-成功的网页搜索查询次数。一次搜索含多个查询时可能累计多次；失败或结果为空的查询不计入。此字段可作为计费依据。
+成功的网页搜索查询次数。一次搜索含多个查询时可能累计多次。
 
 **tool\_fetch** integerrequired
 
 **Possible values:** `>= 0`
 
-通过 open\_page 或 find\_in\_page 成功抓取网页的次数。失败的尝试不计入。此字段可作为计费依据。使用联网工具时，页内查找不计入。
+通过 open\_page 或 find\_in\_page 成功抓取网页的次数。使用联网工具时，页内查找不计入。
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-使用联网工具时返回。成功的图片搜索次数。此字段可作为计费依据。
+使用联网工具时返回。成功的图片搜索次数。
 
-**[Example]**
+**[JSON string]**
 
 ```json
 {

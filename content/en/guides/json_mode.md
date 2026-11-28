@@ -1,8 +1,8 @@
 ---
 title: "JSON Output"
 description: "In many scenarios, users need the model to output in strict JSON format to achieve structured output, facilitating subsequent parsing."
-source: https://api-docs.deepseek.com/guides/json_mode
-fetched: 2026-11-02
+source: https://api-docs.deepseek.com/guides/json_mode/
+fetched: 2026-11-28
 ---
 
 # JSON Output

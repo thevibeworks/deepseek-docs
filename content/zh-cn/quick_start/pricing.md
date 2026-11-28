@@ -1,13 +1,13 @@
 ---
 title: "模型 & 价格"
-description: "下表所列模型价格以“百万 tokens”为单位。Token 是模型用来表示自然语言文本的的最小单位，可以是一个词、一个数字或一个标点符号等。我们将根据模型输入和输出的总 token 数进行计量计费。"
-source: https://api-docs.deepseek.com/zh-cn/quick_start/pricing
-fetched: 2026-11-15
+description: "下表所列模型价格以“百万 tokens”为单位。Token 是模型用来表示自然语言文本的最小单位，可以是一个词、一个数字或一个标点符号等。我们将根据模型输入和输出的总 token 数进行计量计费。"
+source: https://api-docs.deepseek.com/zh-cn/quick_start/pricing/
+fetched: 2026-11-28
 ---
 
 # 模型 & 价格
 
-下表所列模型价格以“百万 tokens”为单位。Token 是模型用来表示自然语言文本的的最小单位，可以是一个词、一个数字或一个标点符号等。我们将根据模型输入和输出的总 token 数进行计量计费。
+下表所列模型价格以“百万 tokens”为单位。Token 是模型用来表示自然语言文本的最小单位，可以是一个词、一个数字或一个标点符号等。我们将根据模型输入和输出的总 token 数进行计量计费。
 
 ---
 
@@ -45,16 +45,18 @@ fetched: 2026-11-15
 
 ---
 
-## 联网搜索与抓取价格
+## Search 与 Fetch API 价格
 
-搜索（文字、图片）和网页抓取按次计费。无论是直接调用 [Search 与 Fetch API](../guides/search.md)，还是模型通过 [联网工具](../guides/web_tools.md) 等工具使用，都按此价格计费。
+[Search 与 Fetch API](../guides/search.md) 按次计费。
 
 | 项目 | 计费单位 | 价格 |
 | --- | --- | --- |
-| 搜索（文字、图片） | 每 1,000 次 | 5元 |
-| 网页抓取 | 每 1,000 次 | 5元 |
+| Search API（文字） | 每 1,000 次成功请求 | 5元 |
+| Fetch API | 每 1,000 次成功请求 | 5元 |
 
-计费规则见 [网页搜索与抓取](../guides/search.md) 与 [联网工具](../guides/web_tools.md#billing)。
+计费规则见 [网页搜索与抓取](../guides/search.md)。
+
+自北京时间 2026 年 11 月 18 日 12:00 起，调用模型时触发的服务端搜索、网页抓取，其工具调用本身不再计费；工具返回的结果会拼接到模型上下文中参与推理，按模型 Token 用量计费。使用以下接口时会触发服务端搜索：[联网工具](../guides/web_tools.md)、[Anthropic API 的 `web_search` 工具](../guides/anthropic_api.md#server-tool-usage)、[Responses API 的 `web_search` 工具](../guides/responses_api.md#tools)。
 
 ---
 
@@ -75,7 +77,7 @@ fetched: 2026-11-15
 
 ## 扣费规则
 
-模型调用费用 = token 消耗量 × 模型单价；搜索（文字、图片）和网页抓取按上表价格按次计费。对应的费用将直接从充值余额或赠送余额中进行扣减。
+模型调用费用 = token 消耗量 × 模型单价；Search API 与 Fetch API 按上表价格按次计费。对应的费用将直接从充值余额或赠送余额中进行扣减。
 当充值余额与赠送余额同时存在时，优先扣减赠送余额。
 
 产品价格可能发生变动，DeepSeek 保留修改价格的权利。请您依据实际用量按需充值，定期查看此页面以获知最新价格信息。

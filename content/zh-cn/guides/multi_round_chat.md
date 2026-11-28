@@ -1,8 +1,8 @@
 ---
 title: "多轮对话"
 description: "本指南将介绍如何使用 DeepSeek /chat/completions API 进行多轮对话。"
-source: https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat/
+fetched: 2026-11-28
 ---
 
 # 多轮对话

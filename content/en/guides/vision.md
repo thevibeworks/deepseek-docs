@@ -1,8 +1,8 @@
 ---
 title: "Vision"
 description: "The deepseek-flash model accepts images alongside text, so you can ask the model to describe pictures, read text from screenshots, analyze charts, and more. The legacy model name deepseek-v4-flash-vision-exp is still accepted, but the model has been retired and its requests are served by the latest Flash model as well."
-source: https://api-docs.deepseek.com/guides/vision
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/vision/
+fetched: 2026-11-28
 ---
 
 # Vision

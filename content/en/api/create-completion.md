@@ -1,8 +1,8 @@
 ---
 title: "FIM Completion API (Beta)"
 description: "FIM (Fill In the Middle) Completion API.<br/>User must set `base_url='https://api.deepseek.com/beta'` to use this feature."
-source: https://api-docs.deepseek.com/api/create-completion
-fetched: 2026-11-16
+source: https://api-docs.deepseek.com/api/create-completion/
+fetched: 2026-11-28
 ---
 
 # FIM Completion API (Beta)
@@ -58,7 +58,7 @@ nullable
 
 **Default value:** `null`
 
-Up to 16 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
+Up to 16 sequences where the API will stop generating further tokens. Each sequence must be a non-empty string of at most 512 bytes (UTF-8 encoded). The returned text will not contain the stop sequence.
 
 oneOf
 
@@ -275,25 +275,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 **[Example]**
 
@@ -462,25 +462,25 @@ DeepSeek extension. Tokens of the safety review, already included in `completion
 
 object
 
-With the web tools. The numbers of billed searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
+With the web tools. The numbers of searches and fetches; omitted when all counts are zero. See the [Web Tools Guide](../guides/web_tools.md#chat-completions-api).
 
 **tool\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed searches, excluding image searches.
+Number of searches, excluding image searches.
 
 **tool\_fetch** integer
 
 **Possible values:** `>= 0`
 
-Number of billed page fetches.
+Number of page fetches.
 
 **tool\_image\_search** integer
 
 **Possible values:** `>= 0`
 
-Number of billed image searches.
+Number of image searches.
 
 - ]
 

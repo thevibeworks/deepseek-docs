@@ -1,8 +1,8 @@
 ---
 title: "Files API"
 description: "Files API 让你上传文件，之后通过 file_id 引用。可以上传两类文件："
-source: https://api-docs.deepseek.com/zh-cn/guides/files_api
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/files_api/
+fetched: 2026-11-28
 ---
 
 # Files API
@@ -262,7 +262,7 @@ Anthropic 兼容接口的 `purpose` 字段是可选的，不传时按 `user_data
 | 限制项 | 数值 |
 | --- | --- |
 | 支持的格式 | 图片：JPEG、PNG、GIF、WebP。其他文件见上文的 `purpose` 表格 |
-| 单个上传文件最大大小 | 图片 64 MiB；PDF、Word、PowerPoint 等文档 100 MiB；纯文本、表格与电子书 32 MiB |
+| 单个上传文件大小上限 | 图片 64 MiB；PDF、Word、PowerPoint 等文档 100 MiB；纯文本、表格与电子书 32 MiB |
 | 文件名最大长度 | 512 字节 |
 | 单用户最大存储空间 | 25 GiB |
 | 单用户最大存储文件数 | 10000 |

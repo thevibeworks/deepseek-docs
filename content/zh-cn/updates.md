@@ -1,8 +1,8 @@
 ---
 title: "更新日志"
 description: "时间: 2026-11-13"
-source: https://api-docs.deepseek.com/zh-cn/updates
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/updates/
+fetched: 2026-11-28
 ---
 
 # 更新日志

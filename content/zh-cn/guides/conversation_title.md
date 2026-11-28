@@ -1,8 +1,8 @@
 ---
 title: "会话标题"
 description: "传入 \"title\" true}，响应会带上一个简短的会话标题，可用于对话列表等处展示。标题由模型在回答时顺带生成，无需额外请求。"
-source: https://api-docs.deepseek.com/zh-cn/guides/conversation_title
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/zh-cn/guides/conversation_title/
+fetched: 2026-11-28
 ---
 
 # 会话标题

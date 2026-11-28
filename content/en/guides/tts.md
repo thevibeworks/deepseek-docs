@@ -1,8 +1,8 @@
 ---
 title: "Text to Speech"
 description: "Convert text into natural speech, for example to read chatbot answers aloud."
-source: https://api-docs.deepseek.com/guides/tts
-fetched: 2026-11-15
+source: https://api-docs.deepseek.com/guides/tts/
+fetched: 2026-11-28
 ---
 
 # Text to Speech
